@@ -43,10 +43,10 @@ public class OmegaTracksToolDialog extends GenericDialog {
 
 	private JButton chooseFile_btt, action_btt, close_btt;
 	private JButton addData_btt, moveDataUp_btt, moveDataDown_btt,
-	        removeData_btt;
+	removeData_btt;
 	private JTextField file_txt, fileIdentifier_txt, trackIdentifier_txt,
-	        particleIdentifier_txt, nonParticleIdentifier_txt,
-	        particleSeparatordentifier_txt;
+	particleIdentifier_txt, nonParticleIdentifier_txt,
+	particleSeparatordentifier_txt;
 	private JList<String> particleData_lst;
 	private DefaultListModel<String> particleData_mdl;
 	private JFileChooser fileChooser;
@@ -63,10 +63,10 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	private JPanel fieldsPanel;
 
 	public OmegaTracksToolDialog(final RootPaneContainer parentContainer,
-	        final boolean isImpExp, final boolean isImporter,
-	        final OmegaTrajectoryIOUtility otio) {
+			final boolean isImpExp, final boolean isImporter,
+			final OmegaTrajectoryIOUtility otio) {
 		super(parentContainer, "Omega Tracks Importer", false);
-		if (this.isImporter) {
+		if (isImporter) {
 			this.setTitle("Omega Tracks Exporter");
 		}
 		this.isImporter = isImporter;
@@ -113,10 +113,10 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	@Override
 	protected void createAndAddWidgets() {
 		this.insertDialog = new GenericInsertDialog(this.getParentContainer(),
-		        "Insert particle data", true);
+				"Insert particle data", true);
 		this.fileChooser = new JFileChooser(System.getProperty("user.dir"));
 		this.fileChooser
-		        .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -150,12 +150,12 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel fileIdentifierPanel = new JPanel();
 		fileIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel fileIdentifier_lbl = new JLabel(
-		        "Insert file indentifier: ");
+				"Insert file indentifier: ");
 		fileIdentifier_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		fileIdentifierPanel.add(fileIdentifier_lbl);
 		this.fileIdentifier_txt = new JTextField();
 		this.fileIdentifier_txt
-		        .setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		fileIdentifierPanel.add(this.fileIdentifier_txt);
 		this.fieldsPanel.add(fileIdentifierPanel);
 
@@ -166,27 +166,27 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		trackIdentifierPanel.add(trackIdentifier_lbl);
 		this.trackIdentifier_txt = new JTextField();
 		this.trackIdentifier_txt
-		        .setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		trackIdentifierPanel.add(this.trackIdentifier_txt);
 		this.fieldsPanel.add(trackIdentifierPanel);
 
 		final JPanel particleIdentifierPanel = new JPanel();
 		particleIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel particleIdentifier_lbl = new JLabel(
-		        "Particle indentifier: ");
+				"Particle indentifier: ");
 		particleIdentifier_lbl
-		        .setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
+		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleIdentifierPanel.add(particleIdentifier_lbl);
 		this.particleIdentifier_txt = new JTextField();
 		this.particleIdentifier_txt
-		        .setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		particleIdentifierPanel.add(this.particleIdentifier_txt);
 		this.fieldsPanel.add(particleIdentifierPanel);
 
 		final JPanel particleStartPanel = new JPanel();
 		particleStartPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel particleStart_lbl = new JLabel(
-		        "Particle index starts at 1: ");
+				"Particle index starts at 1: ");
 		particleStart_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleStartPanel.add(particleStart_lbl);
 		this.startAtOne_ckb = new JCheckBox();
@@ -196,53 +196,53 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel nonParticleIdentifierPanel = new JPanel();
 		nonParticleIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel nonParticleIdentifier_lbl = new JLabel(
-		        "Non-particle indentifier: ");
+				"Non-particle indentifier: ");
 		nonParticleIdentifier_lbl
-		        .setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
+		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		nonParticleIdentifierPanel.add(nonParticleIdentifier_lbl);
 		this.nonParticleIdentifier_txt = new JTextField();
 		this.nonParticleIdentifier_txt
-		        .setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		nonParticleIdentifierPanel.add(this.nonParticleIdentifier_txt);
 		this.fieldsPanel.add(nonParticleIdentifierPanel);
 
 		final JPanel particleSeparatorIdentifierPanel = new JPanel();
 		particleSeparatorIdentifierPanel.setLayout(new FlowLayout(
-		        FlowLayout.LEFT));
+				FlowLayout.LEFT));
 		final JLabel particleSeparatorIdentifier_lbl = new JLabel(
-		        "Particle separator: ");
+				"Particle separator: ");
 		particleSeparatorIdentifier_lbl
-		        .setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
+		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleSeparatorIdentifierPanel.add(particleSeparatorIdentifier_lbl);
 		this.particleSeparatordentifier_txt = new JTextField();
 		this.particleSeparatordentifier_txt
-		        .setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		particleSeparatorIdentifierPanel
-		        .add(this.particleSeparatordentifier_txt);
+		.add(this.particleSeparatordentifier_txt);
 		this.fieldsPanel.add(particleSeparatorIdentifierPanel);
 
 		final JPanel particleDataPanel = new JPanel();
 		particleDataPanel.setLayout(new BorderLayout(5, 5));
 		particleDataPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JLabel particleDataPanel_lbl = new JLabel(
-		        "Particle data and order: ");
+				"Particle data and order: ");
 		particleDataPanel_lbl
-		        .setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
+		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleDataPanel_lbl.setHorizontalAlignment(SwingConstants.LEFT);
 		particleDataPanel_lbl.setVerticalAlignment(SwingConstants.TOP);
 		particleDataPanel.add(particleDataPanel_lbl, BorderLayout.WEST);
 		this.particleData_mdl = new DefaultListModel<String>();
 		this.particleData_lst = new JList<String>(this.particleData_mdl);
 		this.particleData_mdl
-		.addElement(OmegaTracksExporter.PARTICLE_FRAMEINDEX);
+		        .addElement(OmegaTracksExporter.PARTICLE_FRAMEINDEX);
 		this.particleData_mdl.addElement(OmegaTracksExporter.PARTICLE_XCOORD);
 		this.particleData_mdl.addElement(OmegaTracksExporter.PARTICLE_YCOORD);
 		// this.particleData_mdl.addElement("intensity");
 		this.particleData_lst
-		        .setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		final JScrollPane sp = new JScrollPane(this.particleData_lst);
 		sp.setPreferredSize(new Dimension(OmegaConstants.LARGE_TEXT_SIZE.width,
-		        200));
+				200));
 		particleDataPanel.add(sp, BorderLayout.CENTER);
 		final JPanel particleDataButtonPanelMain = new JPanel();
 		particleDataButtonPanelMain.setLayout(new BorderLayout());
@@ -264,7 +264,7 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		this.removeData_btt.setEnabled(false);
 		particleDataButtonPanel.add(this.removeData_btt);
 		particleDataButtonPanelMain.add(particleDataButtonPanel,
-		        BorderLayout.NORTH);
+				BorderLayout.NORTH);
 		particleDataButtonPanelMain.add(new JLabel(), BorderLayout.CENTER);
 		particleDataPanel.add(particleDataButtonPanelMain, BorderLayout.EAST);
 
@@ -304,12 +304,12 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			}
 		});
 		this.particleData_lst
-		        .addListSelectionListener(new ListSelectionListener() {
-			        @Override
-			        public void valueChanged(final ListSelectionEvent e) {
-				        OmegaTracksToolDialog.this.handleListSelection();
-			        }
-		        });
+		.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(final ListSelectionEvent e) {
+				OmegaTracksToolDialog.this.handleListSelection();
+			}
+		});
 		this.addData_btt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -392,9 +392,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			return;
 		final int index = this.particleData_mdl.indexOf(this.selectedVal);
 		if (!this.selectedVal.equals("identifier")
-		        && !this.selectedVal.equals("x")
-		        && !this.selectedVal.equals("y")
-		        && !this.selectedVal.equals("intensity")) {
+				&& !this.selectedVal.equals("x")
+				&& !this.selectedVal.equals("y")
+				&& !this.selectedVal.equals("intensity")) {
 			if (index == 3) {
 				this.moveDataDown_btt.setEnabled(true);
 				this.removeData_btt.setEnabled(true);
@@ -482,16 +482,16 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			if (this.isImporter) {
 				final OmegaTracksImporter oti = (OmegaTracksImporter) this.otio;
 				oti.importTrajectories(fileIdentifier, trackIdentifier,
-				        particleIdentifier, startAtOne, nonParticleIdentifier,
-				        particleSeparator, dataOrder, sourceFolder);
+						particleIdentifier, startAtOne, nonParticleIdentifier,
+						particleSeparator, dataOrder, sourceFolder);
 			} else {
 				final String extension = (String) this.extension_cmb
-						.getSelectedItem();
+				        .getSelectedItem();
 				final OmegaTracksExporter ote = (OmegaTracksExporter) this.otio;
 				ote.exportTrajectories(fileIdentifier, extension,
-						trackIdentifier, particleIdentifier, startAtOne,
-						nonParticleIdentifier, particleSeparator, dataOrder,
-						sourceFolder);
+				        trackIdentifier, particleIdentifier, startAtOne,
+				        nonParticleIdentifier, particleSeparator, dataOrder,
+				        sourceFolder);
 			}
 		} catch (final IllegalArgumentException e) {
 			// TODO MANAGE ERROR

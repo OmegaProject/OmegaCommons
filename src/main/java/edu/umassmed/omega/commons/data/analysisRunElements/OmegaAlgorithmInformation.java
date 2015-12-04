@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -41,7 +41,7 @@ public class OmegaAlgorithmInformation extends OmegaNamedElement {
 	private OmegaPerson author;
 
 	public OmegaAlgorithmInformation(final String name, final double version,
-	        final String description) {
+			final String description) {
 		super(-1, name);
 
 		this.author = null;
@@ -51,15 +51,15 @@ public class OmegaAlgorithmInformation extends OmegaNamedElement {
 	}
 
 	public OmegaAlgorithmInformation(final String name, final double version,
-	        final String description, final OmegaPerson author) {
+			final String description, final OmegaPerson author) {
 		this(name, version, description);
 
 		this.author = author;
 	}
 
 	public OmegaAlgorithmInformation(final String name, final double version,
-	        final String description, final OmegaPerson author,
-	        final Date publicationDate) {
+			final String description, final OmegaPerson author,
+			final Date publicationDate) {
 		super(-1, name);
 
 		this.version = version;
