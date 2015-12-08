@@ -24,22 +24,16 @@
 			<groupId>flanagan</groupId>
 			<artifactId>flanagan</artifactId>
 			<version>1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/flanagan.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>jcommon</groupId>
 			<artifactId>jcommon</artifactId>
 			<version>1.0.16</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/jfreechart/jcommon-1.0.16.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>jfreechart</groupId>
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.13</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/jfreechart/jfreechart-1.0.13.jar</systemPath>
 		</dependency>
 	</dependencies>
 
