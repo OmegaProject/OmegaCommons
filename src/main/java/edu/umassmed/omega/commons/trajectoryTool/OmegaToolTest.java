@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.trajectoryTool;
+package edu.umassmed.omega.commons.trajectoryTool;
 
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -10,9 +10,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.OmegaTrajectoryIOEventListener;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaTrajectoryIOEvent;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.OmegaTrajectoryIOEventListener;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaTrajectoryIOEvent;
 
 public class OmegaToolTest implements OmegaTrajectoryIOEventListener {
 

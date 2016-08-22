@@ -1,20 +1,20 @@
-package main.java.edu.umassmed.omega.commons.plugins;
+package edu.umassmed.omega.commons.plugins;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OrphanedAnalysisContainer;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaImageConsumerPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedAnalysisConsumerPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaLoaderPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaOrphanedAnalysisConsumerPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectImagePluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectParticleDetectionRunPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectParticleLinkingRunPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectTrajectoriesInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectTrajectoriesRelinkingRunPluginInterface;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OrphanedAnalysisContainer;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaImageConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedAnalysisConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoaderPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaOrphanedAnalysisConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectImagePluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectParticleDetectionRunPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectParticleLinkingRunPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectTrajectoriesInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectTrajectoriesRelinkingRunPluginInterface;
 
 public abstract class OmegaTrajectoriesRelinkingPlugin extends
         OmegaAlgorithmPlugin implements OmegaSelectImagePluginInterface,

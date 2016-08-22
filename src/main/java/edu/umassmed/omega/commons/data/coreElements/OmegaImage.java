@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,27 +25,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.coreElements;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
 
-public class OmegaImage extends OmegaNamedElement implements
+public class OmegaImage extends OmegaNamedElement implements OmeroElement,
         OmegaAnalysisRunContainer {
 
 	private final List<OmegaDataset> datasets;
 
 	private final List<OmegaImagePixels> pixelsList;
 
-	private final OmegaExperimenter experimenter;
+	private OmegaExperimenter experimenter;
 
 	private final List<OmegaAnalysisRun> analysisRuns;
 
 	private final Date acquisitionDate, importedDate;
+
+	private Long omeroId;
 
 	// where
 	// sizeX and sizeY = micron per pixel on axis
@@ -53,11 +55,10 @@ public class OmegaImage extends OmegaNamedElement implements
 	// sizeC = channels
 	// sizeT = seconds per frames
 
-	public OmegaImage(final Long elementID, final String name,
-	        final OmegaExperimenter experimenter, final Date acquisitionDate,
-	        final Date importedDate) {
-		super(elementID, name);
-
+	public OmegaImage(final String name, final OmegaExperimenter experimenter,
+	        final Date acquisitionDate, final Date importedDate) {
+		super(-1L, name);
+		this.omeroId = -1L;
 		this.acquisitionDate = acquisitionDate;
 		this.importedDate = importedDate;
 
@@ -70,11 +71,11 @@ public class OmegaImage extends OmegaNamedElement implements
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
 
-	public OmegaImage(final Long elementID, final String name,
-	        final OmegaExperimenter experimenter, final Date acquisitionDate,
-	        final Date importedDate, final List<OmegaImagePixels> pixelsList) {
-		super(elementID, name);
-
+	public OmegaImage(final String name, final OmegaExperimenter experimenter,
+	        final Date acquisitionDate, final Date importedDate,
+	        final List<OmegaImagePixels> pixelsList) {
+		super(-1L, name);
+		this.omeroId = -1L;
 		this.acquisitionDate = acquisitionDate;
 		this.importedDate = importedDate;
 
@@ -123,10 +124,15 @@ public class OmegaImage extends OmegaNamedElement implements
 		return this.pixelsList.get(index);
 	}
 
-	public boolean containsPixels(final Long id) {
+	public boolean containsPixels(final Long id, final boolean gatewayId) {
 		for (final OmegaImagePixels pixels : this.pixelsList) {
-			if (pixels.getElementID() == id)
-				return true;
+			if (!gatewayId) {
+				if (pixels.getElementID() == id)
+					return true;
+			} else {
+				if (pixels.getOmeroId() == id)
+					return true;
+			}
 		}
 		return false;
 	}
@@ -157,5 +163,19 @@ public class OmegaImage extends OmegaNamedElement implements
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void setOmeroId(final Long omeroId) {
+		this.omeroId = omeroId;
+	}
+
+	@Override
+	public Long getOmeroId() {
+		return this.omeroId;
+	}
+
+	public void changeExperimenter(final OmegaExperimenter experimenter) {
+		this.experimenter = experimenter;
 	}
 }

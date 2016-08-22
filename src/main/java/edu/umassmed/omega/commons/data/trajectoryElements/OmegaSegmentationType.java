@@ -1,8 +1,8 @@
-package main.java.edu.umassmed.omega.commons.data.trajectoryElements;
+package edu.umassmed.omega.commons.data.trajectoryElements;
 
 import java.awt.Color;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaSegmentationType extends OmegaNamedElement {
 
@@ -36,8 +36,8 @@ public class OmegaSegmentationType extends OmegaNamedElement {
 	private boolean isChanged;
 
 	public OmegaSegmentationType(final String name, final Integer value,
-	        final Color color) {
-		super(-1, name);
+			final Color color) {
+		super(-1L, name);
 		this.value = value;
 		this.color = color;
 		this.isChanged = false;

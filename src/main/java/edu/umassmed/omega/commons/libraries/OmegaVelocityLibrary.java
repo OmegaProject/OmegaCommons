@@ -1,9 +1,9 @@
-package main.java.edu.umassmed.omega.commons.libraries;
+package edu.umassmed.omega.commons.libraries;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaVelocityLibrary {
 
@@ -60,7 +60,7 @@ public class OmegaVelocityLibrary {
 		return OmegaVelocityLibrary.computeMovementOverTime(dist, startT, endT);
 	}
 
-	public static Double computeMeanSpeed(final List<OmegaROI> rois) {
+	public static Double computeAveragerCurvilinearSpeed(final List<OmegaROI> rois) {
 		final int startT = rois.get(0).getFrameIndex();
 		final int endT = rois.get(rois.size() - 1).getFrameIndex();
 		final Double dist = OmegaMobilityLibrary.computeTotalDistanceTraveled(
@@ -82,7 +82,7 @@ public class OmegaVelocityLibrary {
 				.computeMovementOverTime(displ, startT, endT);
 	}
 
-	public static Double computeMeanVelocity(final List<OmegaROI> rois) {
+	public static Double computeAverageStraightLineVelocity(final List<OmegaROI> rois) {
 		final int startT = rois.get(0).getFrameIndex();
 		final int endT = rois.get(rois.size() - 1).getFrameIndex();
 		final Double displ = OmegaMobilityLibrary.computeTotalNetDisplacement(

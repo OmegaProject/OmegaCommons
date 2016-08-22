@@ -25,12 +25,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import javax.swing.JSplitPane;
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.gui.interfaces.GenericPanelInterface;
+import edu.umassmed.omega.commons.gui.interfaces.GenericPanelInterface;
 
 public class GenericSplitPane extends JSplitPane implements GenericPanelInterface {
 	private static final long serialVersionUID = 7177189735018949022L;

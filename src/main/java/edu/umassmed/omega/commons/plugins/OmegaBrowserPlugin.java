@@ -25,16 +25,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.plugins;
+package edu.umassmed.omega.commons.plugins;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.OmegaData;
-import main.java.edu.umassmed.omega.commons.data.OmegaLoadedData;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedAnalysisConsumerPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedDataConsumerPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaMainDataConsumerPluginInterface;
+import edu.umassmed.omega.commons.data.OmegaData;
+import edu.umassmed.omega.commons.data.OmegaLoadedData;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedAnalysisConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedDataConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaMainDataConsumerPluginInterface;
 
 public abstract class OmegaBrowserPlugin extends OmegaPlugin implements
         OmegaMainDataConsumerPluginInterface,

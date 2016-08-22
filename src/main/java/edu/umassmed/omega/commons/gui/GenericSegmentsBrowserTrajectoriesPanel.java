@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,16 +14,16 @@ import java.util.Map;
 
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.OmegaImageManager;
-import main.java.edu.umassmed.omega.commons.OmegaLogFileManager;
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
-import main.java.edu.umassmed.omega.commons.runnable.TBROIThumbnailLoader;
+import edu.umassmed.omega.commons.OmegaImageManager;
+import edu.umassmed.omega.commons.OmegaLogFileManager;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
+import edu.umassmed.omega.commons.runnable.TBROIThumbnailLoader;
 
 public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 
@@ -206,7 +206,7 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 					final int roiIndex = roi.getFrameIndex();
 					BufferedImage bufferedImage = null;
 					final List<BufferedImage> buffImages = OmegaImageManager
-							.getImages(this.img.getElementID());
+							.getImages(this.img.getOmeroId());
 					// if (this.buffImages.size() > roiIndex) {
 					// bufferedImage = this.buffImages.get(roiIndex);
 					// }
@@ -336,7 +336,7 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 			// OmegaLogFileManager.handleCoreException(ex);
 			// }
 		}
-		if (OmegaImageManager.getImages(img.getElementID()) != null) {
+		if (OmegaImageManager.getImages(img.getOmeroId()) != null) {
 			this.sbPanel.updateMessageStatus(new OmegaMessageEventTBLoader(
 			        "All frames loaded", true));
 			this.frameLoader = null;
@@ -358,7 +358,7 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 		if (this.frameLoader != null) {
 			final List<BufferedImage> images = this.frameLoader.getImages();
 			OmegaImageManager.clearImages();
-			OmegaImageManager.saveImages(this.img.getElementID(), images);
+			OmegaImageManager.saveImages(this.img.getOmeroId(), images);
 		}
 		// this.buffImages.addAll(this.frameLoader.getImages());
 		this.repaint();

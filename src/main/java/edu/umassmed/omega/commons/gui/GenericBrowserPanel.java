@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -7,10 +7,10 @@ import java.util.List;
 
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEvent;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEvent;
+import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
 
 public abstract class GenericBrowserPanel extends GenericPanel implements
         OmegaMessageDisplayerPanelInterface {

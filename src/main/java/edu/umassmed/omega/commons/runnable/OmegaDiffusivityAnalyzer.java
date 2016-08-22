@@ -1,5 +1,9 @@
-package main.java.edu.umassmed.omega.commons.runnable;
+package edu.umassmed.omega.commons.runnable;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -7,16 +11,16 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrackingMeasuresDiffusivityRun;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.errorInterpolation.ErrorInterpolation;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
-import main.java.edu.umassmed.omega.commons.libraries.OmegaDiffusivityLibrary;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrackingMeasuresDiffusivityRun;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.errorInterpolation.ErrorInterpolation;
+import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
+import edu.umassmed.omega.commons.libraries.OmegaDiffusivityLibrary;
 
 public class OmegaDiffusivityAnalyzer implements Runnable {
 
@@ -28,7 +32,7 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 	private final Map<OmegaSegment, Double[]> nyMap;
 	private final Map<OmegaSegment, Double[]> gammaFromLogMap;
-	private final Map<OmegaSegment, Double[]> gammaMap;
+	// private final Map<OmegaSegment, Double[]> gammaMap;
 	private final Map<OmegaSegment, Double[][]> gammaDFromLogMap;
 	private final Map<OmegaSegment, Double[][]> gammaDMap;
 	private final Map<OmegaSegment, Double[][]> logMuMap;
@@ -36,11 +40,12 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 	private final Map<OmegaSegment, Double[][]> logDeltaTMap;
 	private final Map<OmegaSegment, Double[][]> deltaTMap;
 	private final Map<OmegaSegment, Double[]> smssFromLogMap;
-	private final Map<OmegaSegment, Double[]> smssMap;
-	private final Map<OmegaROI, Double> snrValues;
+	// private final Map<OmegaSegment, Double[]> smssMap;
+	private final Map<OmegaROI, Double> snrValues, snrErrorIndexValues;
 
 	// 0: errorD, 1: errorSMSS
-	private final Map<OmegaSegment, Double[]> errors, errorsFromLog;
+	// private final Map<OmegaSegment, Double[]> errors;
+	private final Map<OmegaSegment, Double[]> errorsFromLog;
 
 	private final List<OmegaParameter> params;
 
@@ -48,6 +53,8 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 	private String option, computeError;
 	private final OmegaSNRRun snrRun;
 	private final OmegaTrackingMeasuresDiffusivityRun diffRun;
+
+	private String fileOutput;
 
 	public OmegaDiffusivityAnalyzer(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
@@ -96,10 +103,11 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 
 		if (snrRun != null) {
 			this.snrValues = snrRun.getResultingLocalSNRs();
-			// this.snrValues =
-					// snrRun.getResultingLocalBhattacharyyaPoissonSNRs();
+			this.snrErrorIndexValues = snrRun.getResultingLocalErrorIndexSNRs();
+			// snrRun.getResultingLocalBhattacharyyaPoissonSNRs();
 		} else {
 			this.snrValues = null;
+			this.snrErrorIndexValues = null;
 		}
 
 		this.params = params;
@@ -110,17 +118,17 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 			this.nyMap = new LinkedHashMap<>();
 			if (this.option
 					.equals(OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY)) {
-				this.gammaMap = null;
+				// this.gammaMap = null;
 				this.gammaDMap = null;
 				this.muMap = null;
 				this.deltaTMap = null;
-				this.smssMap = null;
+				// this.smssMap = null;
 			} else {
-				this.gammaMap = new LinkedHashMap<>();
+				// this.gammaMap = new LinkedHashMap<>();
 				this.gammaDMap = new LinkedHashMap<>();
 				this.muMap = new LinkedHashMap<>();
 				this.deltaTMap = new LinkedHashMap<>();
-				this.smssMap = new LinkedHashMap<>();
+				// this.smssMap = new LinkedHashMap<>();
 			}
 
 			if (this.option
@@ -139,11 +147,11 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 			}
 		} else {
 			this.nyMap = diffRun.getNyResults();
-			this.gammaMap = diffRun.getGammaResults();
+			// this.gammaMap = diffRun.getGammaResults();
 			this.gammaDMap = diffRun.getGammaDResults();
 			this.muMap = diffRun.getMuResults();
 			this.deltaTMap = diffRun.getDeltaTResults();
-			this.smssMap = diffRun.getSmssResults();
+			// this.smssMap = diffRun.getSmssResults();
 			this.gammaFromLogMap = diffRun.getGammaFromLogResults();
 			this.gammaDFromLogMap = diffRun.getGammaDFromLogResults();
 			this.logMuMap = diffRun.getLogMuResults();
@@ -153,14 +161,64 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 
 		if (!this.computeError
 				.equals(OmegaConstants.PARAMETER_ERROR_OPTION_DISABLED)) {
-			this.errors = new LinkedHashMap<OmegaSegment, Double[]>();
+			// this.errors = new LinkedHashMap<OmegaSegment, Double[]>();
 			this.errorsFromLog = new LinkedHashMap<OmegaSegment, Double[]>();
 			this.initializeInterpolators();
 		} else {
-			this.errors = null;
+			// this.errors = null;
 			this.errorsFromLog = null;
 		}
 
+	}
+
+	private void printSingleValuesMap(final String name,
+	        final OmegaTrajectory track, final OmegaSegment segm,
+	        final Double[] values) throws IOException {
+		final File f = new File(
+		        "E:\\2016-01-12_OmegaSMSSAndDValidation_NoNoise_WD3_Test\\"
+						+ this.fileOutput + ".txt");
+		final FileWriter fw = new FileWriter(f, true);
+		final BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(name);
+		bw.write("\n");
+		bw.write(track.getName() + "_f_"
+		        + segm.getStartingROI().getFrameIndex() + "_t_"
+		        + segm.getEndingROI().getFrameIndex());
+		bw.write("\t");
+		for (final Double val : values) {
+			bw.write(val + "\t");
+		}
+		bw.write("\n");
+		bw.write("####################################");
+		bw.write("\n");
+		bw.close();
+		fw.close();
+	}
+
+	private void printDoubleValuesMap(final String name,
+	        final OmegaTrajectory track, final OmegaSegment segm,
+	        final Double[][] values) throws IOException {
+		final File f = new File(
+		        "E:\\2016-01-12_OmegaSMSSAndDValidation_NoNoise_WD3_Test\\"
+						+ this.fileOutput + ".txt");
+		final FileWriter fw = new FileWriter(f, true);
+		final BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(name);
+		bw.write("\n");
+		for (final Double[] value : values) {
+			bw.write(track.getName() + "_f_"
+			        + segm.getStartingROI().getFrameIndex() + "_t_"
+			        + segm.getEndingROI().getFrameIndex());
+			bw.write("\t");
+			for (final Double val : value) {
+				bw.write(val + "\t");
+			}
+			bw.write("\n");
+		}
+		bw.write("####################################");
+		bw.write("\n");
+		bw.close();
+		fw.close();
 	}
 
 	private void initializeParameters() {
@@ -224,81 +282,92 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 			final List<OmegaROI> rois = track.getROIs();
 			if (this.displayerPanel != null) {
 				this.updateStatusAsync("Processing error analysis, trajectory "
-				        + track.getName() + " " + counter + "/" + max, false,
-				        false);
+						+ track.getName() + " " + counter + "/" + max, false,
+						false);
 			}
 			for (final OmegaSegment segment : this.segments.get(track)) {
 				final int roiStart = rois.indexOf(segment.getStartingROI());
 				final int roiEnd = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-				        roiEnd + 1);
+						roiEnd + 1);
 				Double segmentSNR = 0.0;
+				Double segmentErrorIndexSNR = 0.0;
 				for (int i = 0; i < segmentROIs.size(); i++) {
 					final OmegaROI roi = segmentROIs.get(i);
 					segmentSNR += this.snrValues.get(roi);
+					segmentErrorIndexSNR += this.snrErrorIndexValues.get(roi);
 				}
 				segmentSNR /= segmentROIs.size();
+				segmentErrorIndexSNR /= segmentROIs.size();
 
 				if (!this.option
-				        .equals(OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY)) {
+						.equals(OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY)) {
 					final double dVal = this.gammaDMap.get(segment)[2][3];
-					final double smssVal = this.smssMap.get(segment)[0];
+					// final double smssVal = this.smssMap.get(segment)[0];
 					final double lVal = segmentROIs.size();
 					boolean canComputeError = true;
 					final int valD = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateD(dVal);
+							.validateD(dVal);
 					canComputeError = this.validateErrorParam(valD, dVal, "D",
-					        false, track, segment) && canComputeError;
-					final int valSMSS = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateSMSS(smssVal);
-					canComputeError = this.validateErrorParam(valSMSS, smssVal,
-					        "SMSS", false, track, segment) && canComputeError;
+							false, track, segment) && canComputeError;
+					// final int valSMSS =
+					// OmegaDiffusivityAnalyzer.dInterpolation
+					// .validateSMSS(smssVal);
+					// canComputeError = this.validateErrorParam(valSMSS,
+					// smssVal,
+					// "SMSS", false, track, segment) && canComputeError;
 					final int valL = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateLength(lVal);
+							.validateLength(lVal);
 					canComputeError = this.validateErrorParam(valL, lVal, "L",
-					        false, track, segment) && canComputeError;
+							false, track, segment) && canComputeError;
 					final int valSNR = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateSNR(segmentSNR);
+							.validateSNR(segmentErrorIndexSNR);
 					canComputeError = this.validateErrorParam(valSNR,
-					        segmentSNR, "SNR", false, track, segment)
+							segmentErrorIndexSNR, "SNR", false, track, segment)
 							&& canComputeError;
 					if (canComputeError) {
-						final Double dError = OmegaDiffusivityAnalyzer.dInterpolation
-						        .interpolate(segmentSNR, lVal, smssVal, dVal);
-						final Double smssError = OmegaDiffusivityAnalyzer.smssInterpolation
-						        .interpolate(segmentSNR, lVal, smssVal, dVal);
-						final Double[] segmentErrors = { dError, smssError };
-						this.errors.put(segment, segmentErrors);
+						// final Double dError =
+						// OmegaDiffusivityAnalyzer.dInterpolation
+						// .interpolate(segmentErrorIndexSNR, lVal, smssVal,
+						// dVal);
+						// final Double smssError =
+						// OmegaDiffusivityAnalyzer.smssInterpolation
+						// .interpolate(segmentErrorIndexSNR, lVal, smssVal,
+						// dVal);
+						// final Double[] segmentErrors = { dError, smssError };
+						// this.errors.put(segment, segmentErrors);
 					}
 				}
 				if (!this.option
-				        .equals(OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LINEAR_ONLY)) {
+						.equals(OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LINEAR_ONLY)) {
 					final double dVal = this.gammaDFromLogMap.get(segment)[2][3];
 					final double smssVal = this.smssFromLogMap.get(segment)[0];
 					final double lVal = segmentROIs.size();
 					boolean canComputeError = true;
 					final int valD = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateD(dVal);
+							.validateD(dVal);
 					canComputeError = this.validateErrorParam(valD, dVal, "D",
 							true, track, segment) && canComputeError;
 					final int valSMSS = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateSMSS(smssVal);
+							.validateSMSS(smssVal);
 					canComputeError = this.validateErrorParam(valSMSS, smssVal,
-					        "SMSS", true, track, segment) && canComputeError;
+							"SMSS", true, track, segment) && canComputeError;
 					final int valL = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateLength(lVal);
+							.validateLength(lVal);
 					canComputeError = this.validateErrorParam(valL, lVal, "L",
-					        true, track, segment) && canComputeError;
+							true, track, segment) && canComputeError;
 					final int valSNR = OmegaDiffusivityAnalyzer.dInterpolation
-					        .validateSNR(segmentSNR);
+							.validateSNR(segmentErrorIndexSNR);
 					canComputeError = this.validateErrorParam(valSNR,
-					        segmentSNR, "SNR", true, track, segment)
-					        && canComputeError;
+							segmentErrorIndexSNR, "SNR", true, track, segment)
+							&& canComputeError;
 					if (canComputeError) {
 						final Double dError = OmegaDiffusivityAnalyzer.dInterpolation
-						        .interpolate(segmentSNR, lVal, smssVal, dVal);
+								.interpolate(segmentErrorIndexSNR, lVal,
+						                smssVal, dVal);
 						final Double smssError = OmegaDiffusivityAnalyzer.smssInterpolation
-						        .interpolate(segmentSNR, lVal, smssVal, dVal);
+								.interpolate(segmentErrorIndexSNR, lVal,
+						                smssVal, dVal);
 						final Double[] segmentErrors = { dError, smssError };
 						this.errorsFromLog.put(segment, segmentErrors);
 					}
@@ -317,10 +386,12 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 		for (final OmegaTrajectory track : this.segments.keySet()) {
 			final List<OmegaROI> rois = track.getROIs();
 			if (this.displayerPanel != null) {
-				this.updateStatusAsync(
-						"Processing diffusivity analysis, trajectory "
-				                + track.getName() + " " + counter + "/" + max,
-				        false, false);
+				if ((counter % 100) == 0) {
+					this.updateStatusAsync(
+					        "Processing diffusivity analysis, trajectory "
+					                + track.getName() + " " + counter + "/"
+					                + max, false, false);
+				}
 			}
 			for (final OmegaSegment segment : this.segments.get(track)) {
 				final int roiStart = rois.indexOf(segment.getStartingROI());
@@ -335,10 +406,10 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 					y[i] = roi.getY();
 				}
 				if ((x.length / this.windowDivisor) < 2) {
-					System.out.println(track.getName()
+					this.updateStatusAsync(track.getName()
 							+ " skipped because length=" + x.length
 							+ " divided by wd=" + this.windowDivisor
-							+ " less than 2");
+							+ " less than 2", false, false);
 					continue;
 				}
 				final int Delta_t = 1; // Time between frames?
@@ -352,17 +423,18 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 					final Double[][] deltaT = nu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS[1];
 					final Double[][] mu = nu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS[2];
 					final Double[][] gammaD = nu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS[3];
-					final Double[] gamma = new Double[ny.length];
-					for (int i = 0; i < gammaD.length; i++) {
-						gamma[i] = gammaD[i][0];
-					}
-					final Double[] smss = nu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS[4][0];
+					// final Double[] gamma = new Double[ny.length];
+					// for (int i = 0; i < gammaD.length; i++) {
+					// gamma[i] = gammaD[i][0];
+					// }
+					// final Double[] smss =
+					// nu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS[4][0];
 					this.nyMap.put(segment, ny);
-					this.gammaMap.put(segment, gamma);
+					// this.gammaMap.put(segment, gamma);
 					this.deltaTMap.put(segment, deltaT);
 					this.muMap.put(segment, mu);
 					this.gammaDMap.put(segment, gammaD);
-					this.smssMap.put(segment, smss);
+					// this.smssMap.put(segment, smss);
 				}
 
 				if (!this.option
@@ -376,7 +448,7 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 					final Double[][] logDeltaT = nu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog[1];
 					final Double[][] logMu = nu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog[2];
 					final Double[][] gammaDFromLog = nu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog[3];
-					System.out.println(gammaDFromLog[2][3]);
+					// System.out.println(gammaDFromLog[2][3]);
 					final Double[] gammaFromLog = new Double[ny.length];
 					for (int i = 0; i < gammaDFromLog.length; i++) {
 						gammaFromLog[i] = gammaDFromLog[i][0];
@@ -387,6 +459,20 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 					this.logMuMap.put(segment, logMu);
 					this.gammaDFromLogMap.put(segment, gammaDFromLog);
 					this.smssFromLogMap.put(segment, smssFromLog);
+					// try {
+					// this.printSingleValuesMap("gammaFromLogMap", track,
+					// segment, gammaFromLog);
+					// this.printDoubleValuesMap("logDeltaTMap", track,
+					// segment, logDeltaT);
+					// this.printDoubleValuesMap("logMuMap", track, segment,
+					// logMu);
+					// this.printDoubleValuesMap("gammaDFromLogMap", track,
+					// segment, gammaDFromLog);
+					// this.printSingleValuesMap("smssFromLogMap", track,
+					// segment, smssFromLog);
+					// } catch (final IOException ex) {
+					// ex.printStackTrace();
+					// }
 				}
 				this.nyMap.put(segment, ny);
 				counter++;
@@ -409,9 +495,9 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 		return this.gammaFromLogMap;
 	}
 
-	public Map<OmegaSegment, Double[]> getGammaResults() {
-		return this.gammaMap;
-	}
+	// public Map<OmegaSegment, Double[]> getGammaResults() {
+	// return this.gammaMap;
+	// }
 
 	public Map<OmegaSegment, Double[][]> getGammaDFromLogResults() {
 		return this.gammaDFromLogMap;
@@ -441,13 +527,13 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 		return this.smssFromLogMap;
 	}
 
-	public Map<OmegaSegment, Double[]> getSmssResults() {
-		return this.smssMap;
-	}
+	// public Map<OmegaSegment, Double[]> getSmssResults() {
+	// return this.smssMap;
+	// }
 
-	public Map<OmegaSegment, Double[]> getErrors() {
-		return this.errors;
-	}
+	// public Map<OmegaSegment, Double[]> getErrors() {
+	// return this.errors;
+	// }
 
 	public Map<OmegaSegment, Double[]> getErrorsFromLog() {
 		return this.errorsFromLog;
@@ -521,5 +607,9 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 
 	public OmegaTrackingMeasuresDiffusivityRun getTrackiMeasuresDiffusivityRun() {
 		return this.diffRun;
+	}
+
+	public void setFileOutput(final String string) {
+		this.fileOutput = string;
 	}
 }

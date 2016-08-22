@@ -1,6 +1,6 @@
-package main.java.edu.umassmed.omega.commons.plugins.interfaces;
+package edu.umassmed.omega.commons.plugins.interfaces;
 
-import main.java.edu.umassmed.omega.commons.data.OmegaLoadedData;
+import edu.umassmed.omega.commons.data.OmegaLoadedData;
 
 public interface OmegaLoadedDataConsumerPluginInterface {
 	public void setLoadedData(final OmegaLoadedData loadedData);

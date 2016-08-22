@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.constants;
+package edu.umassmed.omega.commons.constants;
 
 public class StatsConstants {
 

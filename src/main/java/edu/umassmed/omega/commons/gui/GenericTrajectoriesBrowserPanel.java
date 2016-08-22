@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,18 +27,18 @@ import javax.swing.RootPaneContainer;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaGUIConstants;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEvent;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
-import main.java.edu.umassmed.omega.commons.gui.dialogs.GenericConfirmationDialog;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.GenericTrajectoriesBrowserContainerInterface;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaColorManagerUtilities;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEvent;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
+import edu.umassmed.omega.commons.gui.dialogs.GenericConfirmationDialog;
+import edu.umassmed.omega.commons.gui.interfaces.GenericTrajectoriesBrowserContainerInterface;
+import edu.umassmed.omega.commons.utilities.OmegaColorManagerUtilities;
 
 public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 implements OmegaFilterEventListener {
@@ -491,8 +491,8 @@ implements OmegaFilterEventListener {
 		if (this.img == null)
 			return;
 		final OmegaImagePixels pixels = this.img.getDefaultPixels();
-		final Double physicalSizeT = gateway.computeSizeT(
-		        pixels.getElementID(), pixels.getSizeT(), pixels.getSizeT());
+		final Double physicalSizeT = gateway.computeSizeT(pixels.getOmeroId(),
+				pixels.getSizeT(), pixels.getSizeT());
 		this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 		this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 	}
@@ -506,7 +506,7 @@ implements OmegaFilterEventListener {
 			final OmegaImagePixels pixels = this.img.getDefaultPixels();
 			this.setSizeT(pixels.getSizeT());
 			final Double physicalSizeT = this.gateway.computeSizeT(
-			        pixels.getElementID(), this.getSizeT(), this.getSizeT());
+			        pixels.getOmeroId(), this.getSizeT(), this.getSizeT());
 			this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 			this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 		}

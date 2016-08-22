@@ -25,19 +25,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.constants;
+package edu.umassmed.omega.commons.constants;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.UIDefaults;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 
 public class OmegaConstants {
 
 	public final static OmegaExperimenter OMEGA_DEFAULT_EXPERIMENTER = new OmegaExperimenter(
-			-1, "Default", "Experimenter");
+			"Default", "Experimenter");
 
 	// ***BUILD AND INFO
 	public final static String OMEGA_TITLE = "OMEGA pre beta release";
@@ -63,7 +63,7 @@ public class OmegaConstants {
 	public final static Dimension BUTTON_SIZE = new Dimension(120, 20);
 	public final static Dimension BUTTON_SIZE_LARGE = new Dimension(180, 20);
 	public final static Dimension BUTTON_SIZE_LARGE_DOUBLE_HEIGHT = new Dimension(
-	        180, 40);
+			180, 40);
 	public final static Dimension TEXT_SIZE = new Dimension(200, 20);
 	public final static Dimension LARGE_TEXT_SIZE = new Dimension(300, 20);
 

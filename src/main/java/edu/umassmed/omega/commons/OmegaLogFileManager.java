@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons;
+package edu.umassmed.omega.commons;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
 
 public class OmegaLogFileManager implements UncaughtExceptionHandler {
 

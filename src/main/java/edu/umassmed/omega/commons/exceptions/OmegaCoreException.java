@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.exceptions;
+package edu.umassmed.omega.commons.exceptions;
 
 
 public class OmegaCoreException extends Exception {

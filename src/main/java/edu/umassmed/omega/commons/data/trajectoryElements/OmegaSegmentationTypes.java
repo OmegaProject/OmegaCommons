@@ -1,10 +1,10 @@
-package main.java.edu.umassmed.omega.commons.data.trajectoryElements;
+package edu.umassmed.omega.commons.data.trajectoryElements;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaSegmentationTypes extends OmegaNamedElement {
 
@@ -42,13 +42,13 @@ public class OmegaSegmentationTypes extends OmegaNamedElement {
 	private boolean isChanged;
 
 	public OmegaSegmentationTypes(final String name) {
-		super(-1, name);
+		super(-1L, name);
 		this.types = new ArrayList<OmegaSegmentationType>();
 		this.isChanged = false;
 	}
 
 	public OmegaSegmentationTypes(final String name,
-			final List<OmegaSegmentationType> types) {
+	        final List<OmegaSegmentationType> types) {
 		this(name);
 		this.types.addAll(types);
 	}
@@ -128,9 +128,9 @@ public class OmegaSegmentationTypes extends OmegaNamedElement {
 	public static OmegaSegmentationType getDefaultNotAssigned() {
 		if (OmegaSegmentationTypes.NOT_ASSIGNED_TYPE == null) {
 			final OmegaSegmentationType notAss = new OmegaSegmentationType(
-					OmegaSegmentationTypes.NOT_ASSIGNED,
-					OmegaSegmentationTypes.NOT_ASSIGNED_VAL,
-					OmegaSegmentationTypes.NOT_ASSIGNED_COL);
+			        OmegaSegmentationTypes.NOT_ASSIGNED,
+			        OmegaSegmentationTypes.NOT_ASSIGNED_VAL,
+			        OmegaSegmentationTypes.NOT_ASSIGNED_COL);
 			OmegaSegmentationTypes.NOT_ASSIGNED_TYPE = notAss;
 		}
 		return OmegaSegmentationTypes.NOT_ASSIGNED_TYPE;
@@ -139,38 +139,38 @@ public class OmegaSegmentationTypes extends OmegaNamedElement {
 	private static OmegaSegmentationTypes createDefaultSegmentationTypes() {
 		final String name = OmegaSegmentationTypes.DEFAULT_NAME;
 		final OmegaSegmentationTypes defaultSegType = new OmegaSegmentationTypes(
-				name);
+		        name);
 		defaultSegType.types
-		.add(OmegaSegmentationTypes.getDefaultNotAssigned());
+		        .add(OmegaSegmentationTypes.getDefaultNotAssigned());
 
 		final OmegaSegmentationType dir = new OmegaSegmentationType(
-				OmegaSegmentationTypes.DIRECTED,
-				OmegaSegmentationTypes.DIRECTED_VAL,
-				OmegaSegmentationTypes.DIRECTED_COL);
+		        OmegaSegmentationTypes.DIRECTED,
+		        OmegaSegmentationTypes.DIRECTED_VAL,
+		        OmegaSegmentationTypes.DIRECTED_COL);
 		defaultSegType.types.add(dir);
 
 		final OmegaSegmentationType con = new OmegaSegmentationType(
-				OmegaSegmentationTypes.CONFINED,
-				OmegaSegmentationTypes.CONFINED_VAL,
-				OmegaSegmentationTypes.CONFINED_COL);
+		        OmegaSegmentationTypes.CONFINED,
+		        OmegaSegmentationTypes.CONFINED_VAL,
+		        OmegaSegmentationTypes.CONFINED_COL);
 		defaultSegType.types.add(con);
 
 		final OmegaSegmentationType sub = new OmegaSegmentationType(
-				OmegaSegmentationTypes.SUB_DIFFUSIVE,
-				OmegaSegmentationTypes.SUB_DIFFUSIVE_VAL,
-				OmegaSegmentationTypes.SUB_DIFFUSIVE_COL);
+		        OmegaSegmentationTypes.SUB_DIFFUSIVE,
+		        OmegaSegmentationTypes.SUB_DIFFUSIVE_VAL,
+		        OmegaSegmentationTypes.SUB_DIFFUSIVE_COL);
 		defaultSegType.types.add(sub);
 
 		final OmegaSegmentationType dif = new OmegaSegmentationType(
-				OmegaSegmentationTypes.DIFFUSIVE,
-				OmegaSegmentationTypes.DIFFUSIVE_VAL,
-				OmegaSegmentationTypes.DIFFUSIVE_COL);
+		        OmegaSegmentationTypes.DIFFUSIVE,
+		        OmegaSegmentationTypes.DIFFUSIVE_VAL,
+		        OmegaSegmentationTypes.DIFFUSIVE_COL);
 		defaultSegType.types.add(dif);
 
 		final OmegaSegmentationType sup = new OmegaSegmentationType(
-				OmegaSegmentationTypes.SUPER_DIFFUSIVE,
-				OmegaSegmentationTypes.SUPER_DIFFUSIVE_VAL,
-				OmegaSegmentationTypes.SUPER_DIFFUSIVE_COL);
+		        OmegaSegmentationTypes.SUPER_DIFFUSIVE,
+		        OmegaSegmentationTypes.SUPER_DIFFUSIVE_VAL,
+		        OmegaSegmentationTypes.SUPER_DIFFUSIVE_COL);
 		defaultSegType.types.add(sup);
 		return defaultSegType;
 	}

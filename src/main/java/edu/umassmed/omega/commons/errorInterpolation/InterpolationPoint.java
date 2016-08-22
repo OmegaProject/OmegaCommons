@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.errorInterpolation;
+package edu.umassmed.omega.commons.errorInterpolation;
 
 public class InterpolationPoint {
 	private final Double snr;

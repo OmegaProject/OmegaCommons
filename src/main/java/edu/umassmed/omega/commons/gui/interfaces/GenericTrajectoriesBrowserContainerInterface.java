@@ -1,8 +1,8 @@
-package main.java.edu.umassmed.omega.commons.gui.interfaces;
+package edu.umassmed.omega.commons.gui.interfaces;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public interface GenericTrajectoriesBrowserContainerInterface {
 

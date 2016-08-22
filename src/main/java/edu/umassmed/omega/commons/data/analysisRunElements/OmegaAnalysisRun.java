@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,9 +34,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 
 public abstract class OmegaAnalysisRun extends OmegaElement implements
 OmegaAnalysisRunContainer {
@@ -45,23 +45,28 @@ OmegaAnalysisRunContainer {
 
 	private final Date timeStamps;
 
-	private final OmegaExperimenter experimenter;
+	private OmegaExperimenter experimenter;
 
 	// TODO aggiungere OmegaExperimenterGroup permissions
 
-	private final OmegaAlgorithmSpecification algorithmSpec;
+	private final OmegaRunDefinition algorithmSpec;
 
 	private List<OmegaAnalysisRun> analysisRuns;
 
+	private final AnalysisRunType type;
+
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaAlgorithmSpecification algorithmSpec) {
-		super((long) -1);
+			final OmegaRunDefinition algorithmSpec,
+	        final AnalysisRunType type) {
+		super(-1L);
 
 		this.timeStamps = Calendar.getInstance().getTime();
 
 		this.experimenter = owner;
 
 		this.algorithmSpec = algorithmSpec;
+
+		this.type = type;
 
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 
@@ -75,14 +80,17 @@ OmegaAnalysisRunContainer {
 	}
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaAlgorithmSpecification algorithmSpec, final String name) {
-		super((long) -1);
+			final OmegaRunDefinition algorithmSpec,
+	        final AnalysisRunType type, final String name) {
+		super(-1L);
 
 		this.timeStamps = Calendar.getInstance().getTime();
 
 		this.experimenter = owner;
 
 		this.algorithmSpec = algorithmSpec;
+
+		this.type = type;
 
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 
@@ -96,9 +104,9 @@ OmegaAnalysisRunContainer {
 	}
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaAlgorithmSpecification algorithmSpec,
-			final Date timeStamps, final String name) {
-		super((long) -1);
+			final OmegaRunDefinition algorithmSpec,
+			final AnalysisRunType type, final Date timeStamps, final String name) {
+		super(-1L);
 
 		this.timeStamps = timeStamps;
 
@@ -106,17 +114,24 @@ OmegaAnalysisRunContainer {
 
 		this.algorithmSpec = algorithmSpec;
 
+		this.type = type;
+
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 
 		this.name = name;
 	}
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaAlgorithmSpecification algorithmSpec,
+			final OmegaRunDefinition algorithmSpec,
+			final AnalysisRunType type,
 			final List<OmegaAnalysisRun> analysisRuns) {
-		this(owner, algorithmSpec);
+		this(owner, algorithmSpec, type);
 
 		this.analysisRuns = analysisRuns;
+	}
+
+	public AnalysisRunType getType() {
+		return this.type;
 	}
 
 	public String getName() {
@@ -131,7 +146,7 @@ OmegaAnalysisRunContainer {
 		return this.experimenter;
 	}
 
-	public OmegaAlgorithmSpecification getAlgorithmSpec() {
+	public OmegaRunDefinition getAlgorithmSpec() {
 		return this.algorithmSpec;
 	}
 
@@ -157,5 +172,9 @@ OmegaAnalysisRunContainer {
 				return true;
 		}
 		return false;
+	}
+
+	public void changeExperimenter(final OmegaExperimenter experimenter) {
+		this.experimenter = experimenter;
 	}
 }

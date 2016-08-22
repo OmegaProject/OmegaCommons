@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,31 +25,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 
-public class OmegaAlgorithmSpecification extends OmegaElement {
+public class OmegaRunDefinition extends OmegaElement {
 
 	private final OmegaAlgorithmInformation algorithmInfo;
 
 	private List<OmegaParameter> parameters;
 
-	public OmegaAlgorithmSpecification(
-	        final OmegaAlgorithmInformation algorithmInfo) {
-		super((long) -1);
+	public OmegaRunDefinition(
+			final OmegaAlgorithmInformation algorithmInfo) {
+		super(-1L);
 
 		this.algorithmInfo = algorithmInfo;
 
 		this.parameters = new ArrayList<OmegaParameter>();
 	}
 
-	public OmegaAlgorithmSpecification(
-	        final OmegaAlgorithmInformation algorithmInfo,
-	        final List<OmegaParameter> parameters) {
+	public OmegaRunDefinition(
+			final OmegaAlgorithmInformation algorithmInfo,
+			final List<OmegaParameter> parameters) {
 		this(algorithmInfo);
 
 		this.parameters = parameters;

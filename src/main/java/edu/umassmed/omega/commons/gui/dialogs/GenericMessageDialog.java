@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.gui.dialogs;
+package edu.umassmed.omega.commons.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -39,8 +39,8 @@ import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericMessageDialog extends GenericDialog {
 

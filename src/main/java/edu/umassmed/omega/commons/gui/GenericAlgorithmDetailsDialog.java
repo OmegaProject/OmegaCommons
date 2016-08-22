@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,11 +16,11 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.constants.OmegaGUIConstants;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
-import main.java.edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
+import edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
+import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericAlgorithmDetailsDialog extends GenericDialog {
 
@@ -28,7 +28,8 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 	private JPanel topIconPanel, topInfoPanel, mainPanel;
 	private JButton close_btt;
 
-	private JLabel name_lbl, auth_lbl, date_lbl, version_lbl, desc_lbl;
+	private JLabel name_lbl, auth_lbl, date_lbl, version_lbl, ref_lbl,
+	        desc_lbl;
 
 	public GenericAlgorithmDetailsDialog(final RootPaneContainer parentContainer) {
 		super(parentContainer, OmegaGUIConstants.ALGORITHM_INFORMATION, false);
@@ -83,16 +84,18 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 		this.name_lbl = new JLabel(OmegaGUIConstants.SIDEPANEL_INFO_NAME);
 		this.auth_lbl = new JLabel(OmegaGUIConstants.AUTHOR);
 		this.date_lbl = new JLabel(OmegaGUIConstants.RELEASED);
-		this.version_lbl = new JLabel();
+		this.version_lbl = new JLabel(OmegaGUIConstants.VERSION);
+		this.ref_lbl = new JLabel(OmegaGUIConstants.REFERENCE);
 		// final JLabel reference_lbl = new JLabel(OmegaGUIConstants.REFERENCE
 		// + this.plugin.getAlgorithmReference());
 		this.topInfoPanel.add(this.name_lbl);
 		this.topInfoPanel.add(this.auth_lbl);
 		this.topInfoPanel.add(this.date_lbl);
 		this.topInfoPanel.add(this.version_lbl);
+		this.topInfoPanel.add(this.ref_lbl);
 		this.desc_lbl = new JLabel();
 		final Dimension dim = new Dimension(this.getWidth() - 10,
-				(this.getHeight() - 30) / 2);
+		        (this.getHeight() - 30) / 2);
 		this.desc_lbl.setPreferredSize(dim);
 		this.desc_lbl.setSize(dim);
 		this.mainPanel.add(this.desc_lbl);
@@ -109,28 +112,31 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 	}
 
 	public void updateAlgorithmInformation(
-	        final OmegaAlgorithmInformation algoInfo) {
+			final OmegaAlgorithmInformation algoInfo) {
 		if (algoInfo != null) {
 			this.name_lbl.setText(OmegaGUIConstants.SIDEPANEL_INFO_NAME
-					+ algoInfo.getName());
+			        + algoInfo.getName());
 			this.auth_lbl.setText(OmegaGUIConstants.AUTHOR
-					+ algoInfo.getAuthor().getFirstName() + " "
-					+ algoInfo.getAuthor().getLastName());
+			        + algoInfo.getAuthor().getFirstName() + " "
+			        + algoInfo.getAuthor().getLastName());
 			final DateFormat format = new SimpleDateFormat(
-					OmegaConstants.OMEGA_DATE_FORMAT_LBL);
+			        OmegaConstants.OMEGA_DATE_FORMAT_LBL);
 			this.date_lbl.setText(OmegaGUIConstants.RELEASED
-					+ format.format(algoInfo.getPublicationData()));
+			        + format.format(algoInfo.getPublicationData()));
 			this.version_lbl.setText(OmegaGUIConstants.VERSION + " "
-					+ algoInfo.getVersion());
+			        + algoInfo.getVersion());
+			this.ref_lbl.setText(OmegaGUIConstants.REFERENCE + " "
+			        + algoInfo.getReference());
 			final String s = algoInfo.getDescription();
 			final String desc = OmegaStringUtilities.getHtmlString(s, " ",
-					SwingConstants.LEADING);
+			        SwingConstants.LEADING);
 			this.desc_lbl.setText(desc);
 		} else {
 			this.name_lbl.setText(OmegaGUIConstants.SIDEPANEL_INFO_NAME);
 			this.auth_lbl.setText(OmegaGUIConstants.AUTHOR);
 			this.date_lbl.setText(OmegaGUIConstants.RELEASED);
 			this.version_lbl.setText(OmegaGUIConstants.VERSION);
+			this.version_lbl.setText(OmegaGUIConstants.REFERENCE);
 			this.desc_lbl.setText("");
 		}
 	}

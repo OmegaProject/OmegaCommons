@@ -25,42 +25,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
-import java.util.Calendar;
 import java.util.Date;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaPerson;
+import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPerson;
 
 public class OmegaAlgorithmInformation extends OmegaNamedElement {
 
 	private final double version;
 	private final String description;
 	private final Date publicationDate;
+	private final String reference;
 	private OmegaPerson author;
 
+	// public OmegaAlgorithmInformation(final String name, final double version,
+	// final String description) {
+	// super(-1L, name);
+	//
+	// this.author = null;
+	// this.version = version;
+	// this.description = description;
+	// this.publicationDate = Calendar.getInstance().getTime();
+	// }
+
+	// public OmegaAlgorithmInformation(final String name, final double version,
+	// final String description, final OmegaPerson author,String reference) {
+	// this(name, version, description, reference);
+	//
+	// this.author = author;
+	// }
+
 	public OmegaAlgorithmInformation(final String name, final double version,
-			final String description) {
-		super(-1, name);
-
-		this.author = null;
-		this.version = version;
-		this.description = description;
-		this.publicationDate = Calendar.getInstance().getTime();
-	}
-
-	public OmegaAlgorithmInformation(final String name, final double version,
-			final String description, final OmegaPerson author) {
-		this(name, version, description);
-
-		this.author = author;
-	}
-
-	public OmegaAlgorithmInformation(final String name, final double version,
-			final String description, final OmegaPerson author,
-			final Date publicationDate) {
-		super(-1, name);
+	        final String description, final OmegaPerson author,
+	        final Date publicationDate, final String reference) {
+		super(-1L, name);
 
 		this.version = version;
 		this.description = description;
@@ -68,6 +68,8 @@ public class OmegaAlgorithmInformation extends OmegaNamedElement {
 		this.author = author;
 
 		this.publicationDate = publicationDate;
+
+		this.reference = reference;
 	}
 
 	public String getDescription() {
@@ -84,5 +86,13 @@ public class OmegaAlgorithmInformation extends OmegaNamedElement {
 
 	public OmegaPerson getAuthor() {
 		return this.author;
+	}
+
+	public void changeAuthor(final OmegaPerson person) {
+		this.author = person;
+	}
+
+	public String getReference() {
+		return this.reference;
 	}
 }

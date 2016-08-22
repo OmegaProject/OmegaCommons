@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.trajectoryTool.gui;
+package edu.umassmed.omega.commons.trajectoryTool.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,13 +29,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.constants.OmegaGUIConstants;
-import main.java.edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
-import main.java.edu.umassmed.omega.commons.gui.dialogs.GenericInsertDialog;
-import main.java.edu.umassmed.omega.commons.trajectoryTool.OmegaTracksExporter;
-import main.java.edu.umassmed.omega.commons.trajectoryTool.OmegaTracksImporter;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
+import edu.umassmed.omega.commons.gui.dialogs.GenericInsertDialog;
+import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksExporter;
+import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksImporter;
+import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
 
 public class OmegaTracksToolDialog extends GenericDialog {
 

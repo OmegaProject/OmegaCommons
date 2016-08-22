@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -18,17 +18,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
 
 public class GenericTrackingResultsPanel extends GenericScrollPane implements
 OmegaFilterEventListener {
@@ -211,14 +211,14 @@ OmegaFilterEventListener {
 	}
 
 	public void populateParticlesResults(
-	        final Map<OmegaFrame, List<OmegaROI>> particles,
+	        final Map<OmegaPlane, List<OmegaROI>> particles,
 	        final Map<OmegaROI, Map<String, Object>> particlesValues) {
 		this.resetResultsPanel();
 		this.addParticleColumns();
 		this.addParticleValuesColumns();
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
-		for (final OmegaFrame frame : particles.keySet()) {
+		for (final OmegaPlane frame : particles.keySet()) {
 			final List<OmegaROI> rois = particles.get(frame);
 			for (final OmegaROI roi : rois) {
 				final Map<String, Object> particleValues = particlesValues

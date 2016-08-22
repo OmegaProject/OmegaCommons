@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.runnable;
+package edu.umassmed.omega.commons.runnable;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -10,12 +10,12 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
-import main.java.edu.umassmed.omega.commons.OmegaLogFileManager;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
+import edu.umassmed.omega.commons.OmegaLogFileManager;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
+import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
 
 public class TBROIThumbnailLoader implements Runnable {
 
@@ -28,8 +28,8 @@ public class TBROIThumbnailLoader implements Runnable {
 	private boolean killed;
 
 	public TBROIThumbnailLoader(
-	        final OmegaMessageDisplayerPanelInterface displayerPanel,
-	        final OmegaGateway gateway, final OmegaImage img) {
+			final OmegaMessageDisplayerPanelInterface displayerPanel,
+			final OmegaGateway gateway, final OmegaImage img) {
 		this.displayerPanel = displayerPanel;
 		this.gateway = gateway;
 		this.img = img;
@@ -54,9 +54,9 @@ public class TBROIThumbnailLoader implements Runnable {
 			}
 			try {
 				final byte[] values = gateway.renderCompressed(
-				        pixels.getElementID(), x, pixels.getSelectedZ());
+						pixels.getOmeroId(), x, pixels.getSelectedZ());
 				final ByteArrayInputStream stream = new ByteArrayInputStream(
-				        values);
+						values);
 				final BufferedImage bufferedImage = ImageIO.read(stream);
 				bufferedImage.setAccelerationPriority(1f);
 				this.buffImages.add(bufferedImage);
@@ -86,8 +86,8 @@ public class TBROIThumbnailLoader implements Runnable {
 				@Override
 				public void run() {
 					TBROIThumbnailLoader.this.displayerPanel
-					        .updateMessageStatus(new OmegaMessageEventTBLoader(
-					                status, repaint));
+					.updateMessageStatus(new OmegaMessageEventTBLoader(
+							status, repaint));
 				}
 			});
 		} catch (final InvocationTargetException | InterruptedException ex) {

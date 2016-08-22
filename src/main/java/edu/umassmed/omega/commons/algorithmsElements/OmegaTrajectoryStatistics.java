@@ -1,9 +1,13 @@
-package main.java.edu.umassmed.omega.commons.algorithmsElements;
+package edu.umassmed.omega.commons.algorithmsElements;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.utilities.OmegaMathsUtilities;
+import edu.umassmed.omega.commons.utilities.OmegaMathsUtilities;
 
 public class OmegaTrajectoryStatistics {
 	public static final Integer MAX_NU = 6;
@@ -17,8 +21,10 @@ public class OmegaTrajectoryStatistics {
 	private Integer[] bounds = null;
 	private final Double[][] d;
 
+	private String fileOutput, trackName;
+
 	public OmegaTrajectoryStatistics(final List<OmegaAlgorithmPoint> points,
-	        final Double deltaT, final Integer windowDivisor) {
+			final Double deltaT, final Integer windowDivisor) {
 		this.points = new ArrayList<OmegaAlgorithmPoint>(points);
 		this.segments = null;
 		this.bounds = null;
@@ -29,8 +35,8 @@ public class OmegaTrajectoryStatistics {
 	}
 
 	public OmegaTrajectoryStatistics(final List<OmegaAlgorithmPoint> points,
-	        final Double deltaT, final Integer windowDivisor,
-	        final List<OmegaAlgorithmSegment> segments) {
+			final Double deltaT, final Integer windowDivisor,
+			final List<OmegaAlgorithmSegment> segments) {
 		this.points = new ArrayList<OmegaAlgorithmPoint>(points);
 		this.segments = new ArrayList<OmegaAlgorithmSegment>(segments);
 		this.bounds = new Integer[segments.size() + 1];
@@ -39,6 +45,50 @@ public class OmegaTrajectoryStatistics {
 		this.windowDivisor = windowDivisor;
 		this.d = new Double[1 + ((this.getM()) / this.windowDivisor)][];
 		this.norms();
+	}
+
+	private void printSingleValuesMap(final String name, final int from,
+	        final int to, final Double[] values) throws IOException {
+		final File f = new File(
+				"E:\\2016-01-12_OmegaSMSSAndDValidation_NoNoise_WD3_Test\\"
+		                + this.fileOutput + "_stats.txt");
+		final FileWriter fw = new FileWriter(f, true);
+		final BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(name);
+		bw.write("\n");
+		bw.write(this.trackName + "_f_" + from + "_t_" + to);
+		bw.write("\t");
+		for (final Double val : values) {
+			bw.write(val + "\t");
+		}
+		bw.write("\n");
+		bw.write("####################################");
+		bw.write("\n");
+		bw.close();
+		fw.close();
+	}
+
+	private void printDoubleValuesMap(final String name, final int from,
+	        final int to, final Double[][] values) throws IOException {
+		final File f = new File(
+				"E:\\2016-01-12_OmegaSMSSAndDValidation_NoNoise_WD3_Test\\"
+		                + this.fileOutput + "_stats.txt");
+		final FileWriter fw = new FileWriter(f, true);
+		final BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(name);
+		bw.write("\n");
+		for (int i = 0; i < 2; i++) {
+			bw.write(this.trackName + "_f_" + from + "_t_" + to);
+			bw.write("\t");
+			for (final Double val : values[i]) {
+				bw.write(val + "\t");
+			}
+			bw.write("\n");
+		}
+		bw.write("####################################");
+		bw.write("\n");
+		bw.close();
+		fw.close();
 	}
 
 	private void calculateBounds() {
@@ -58,7 +108,7 @@ public class OmegaTrajectoryStatistics {
 				final OmegaAlgorithmPoint p1 = this.points.get(i + deltaN);
 
 				normsDeltaN[i] = StrictMath.hypot(p1.getX() - p0.getX(),
-				        p1.getY() - p0.getY());
+						p1.getY() - p0.getY());
 			}
 			this.d[deltaN] = normsDeltaN;
 		}
@@ -101,7 +151,7 @@ public class OmegaTrajectoryStatistics {
 	}
 
 	public double getMu(final Integer nu, final Integer deltaN,
-	        final Integer from, final Integer to) {
+			final Integer from, final Integer to) {
 		Double sum = 0.0;
 		for (int i = from; i <= (to - deltaN); ++i) {
 			sum += StrictMath.pow(this.d[deltaN][i], nu);
@@ -116,7 +166,7 @@ public class OmegaTrajectoryStatistics {
 	}
 
 	public Double getMu(final Integer nu, final Integer deltaN,
-	        final Integer segment) {
+			final Integer segment) {
 		return this.getMu(nu, deltaN, this.from(segment), this.to(segment));
 	}
 
@@ -155,7 +205,7 @@ public class OmegaTrajectoryStatistics {
 	}
 
 	public Double[] getLogMu(final Integer nu, final Integer from,
-	        final Integer to) {
+			final Integer to) {
 		final Integer M = (to + 1) - from;
 		StrictMath.log(this.deltaT);
 		final Integer maxDeltaN = StrictMath.max(M / 3, 2);
@@ -179,12 +229,23 @@ public class OmegaTrajectoryStatistics {
 	        final Integer to) {
 		final Double[] logDeltaT = this.getLogDeltaT(from, to);
 		final Double[] logMu = this.getLogMu(nu, from, to);
-
 		final Integer M = (to + 1) - from;
 		final Integer maxDeltaN = StrictMath.max(M / 3, 2);
 		final Double[] fit = OmegaMathsUtilities.linearFit(logDeltaT, logMu, 1,
 		        maxDeltaN);
 		final Double D = StrictMath.exp(fit[1]) / (2.0 * nu);
+
+		// try {
+		// this.printSingleValuesMap("logDeltaT", from, to, logDeltaT);
+		// this.printSingleValuesMap("logMu", from, to, logMu);
+		// final Double[] gammaAndDFromLog = new Double[] { fit[0], fit[1],
+		// fit[2], D };
+		// this.printSingleValuesMap("gammaDFromLog", from, to,
+		// gammaAndDFromLog);
+		// } catch (final IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		return new Double[] { fit[0], fit[1], fit[2], D };
 	}
@@ -218,12 +279,29 @@ public class OmegaTrajectoryStatistics {
 
 	public Double[] getSMSS() {
 		final Double[][] nuAndGamma = this.getNuAndGamma(0, this.intervals());
-		return OmegaMathsUtilities.linearFit(nuAndGamma[0], nuAndGamma[1]);
+		final Double[] smss = OmegaMathsUtilities.linearFit(nuAndGamma[0],
+		        nuAndGamma[1]);
+		try {
+			this.printSingleValuesMap("smssFromLogMap", 0, this.intervals(),
+					smss);
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return smss;
 	}
 
 	public Double[] getSMSS(final Integer segment) {
 		final Double[][] nuAndGamma = this.getNuAndGamma(this.from(segment),
-		        this.to(segment));
+				this.to(segment));
 		return OmegaMathsUtilities.linearFit(nuAndGamma[0], nuAndGamma[1]);
+	}
+
+	public void setOutputFile(final String string) {
+		this.fileOutput = string;
+	}
+
+	public void setTrack(final String name) {
+		this.trackName = name;
 	}
 }

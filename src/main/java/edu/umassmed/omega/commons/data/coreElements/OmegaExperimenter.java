@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,28 +25,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.coreElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OmegaExperimenter extends OmegaPerson {
+public class OmegaExperimenter extends OmegaPerson implements OmeroElement {
 
 	private final List<OmegaExperimenterGroup> groups;
 
-	private final Long omeroId;
+	private Long omeroId;
 
-	public OmegaExperimenter(final long omeroId, final String firstName,
-	        final String lastName) {
+	public OmegaExperimenter(final String firstName, final String lastName) {
 		super(firstName, lastName);
-		this.omeroId = omeroId;
+		this.omeroId = 1L;
 		this.groups = new ArrayList<OmegaExperimenterGroup>();
 	}
 
-	public OmegaExperimenter(final long omegaId, final String firstName,
-	        final String lastName, final List<OmegaExperimenterGroup> groups) {
+	public OmegaExperimenter(final String firstName, final String lastName,
+	        final List<OmegaExperimenterGroup> groups) {
 		super(firstName, lastName);
-		this.omeroId = omegaId;
+		this.omeroId = 1L;
 		this.groups = groups;
 	}
 
@@ -58,23 +57,44 @@ public class OmegaExperimenter extends OmegaPerson {
 		this.groups.add(group);
 	}
 
-	public boolean containsGroup(final long id) {
-		for (final OmegaExperimenterGroup group : this.groups) {
-			if (group.getElementID() == id)
-				return true;
-		}
-		return false;
+	public boolean containsGroup(final OmegaExperimenterGroup group) {
+		return this.groups.contains(group);
 	}
 
-	public OmegaExperimenterGroup getGroup(final long id) {
-		for (final OmegaExperimenterGroup group : this.groups) {
-			if (group.getElementID() == id)
-				return group;
-		}
-		return null;
-	}
+	// public boolean containsGroup(final long id, final boolean gatewayId) {
+	// for (final OmegaExperimenterGroup group : this.groups) {
+	// if (!gatewayId) {
+	// if (group.getElementID() == id)
+	// return true;
+	// } else {
+	// if (group.getOmeroId() == id)
+	// return true;
+	// }
+	// }
+	// return false;
+	// }
+	//
+	// public OmegaExperimenterGroup getGroup(final long id,
+	// final boolean gatewayId) {
+	// for (final OmegaExperimenterGroup group : this.groups) {
+	// if (!gatewayId) {
+	// if (group.getElementID() == id)
+	// return group;
+	// } else {
+	// if (group.getOmeroId() == id)
+	// return group;
+	// }
+	// }
+	// return null;
+	// }
 
+	@Override
 	public Long getOmeroId() {
 		return this.omeroId;
+	}
+
+	@Override
+	public void setOmeroId(final Long omeroId) {
+		this.omeroId = omeroId;
 	}
 }

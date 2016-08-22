@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.exceptions;
+package edu.umassmed.omega.commons.exceptions;
 
 public class OmegaCoreExceptionLoadedElementNotFound extends OmegaCoreException {
 

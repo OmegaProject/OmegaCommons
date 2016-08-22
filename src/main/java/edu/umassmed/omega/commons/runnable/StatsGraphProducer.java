@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.runnable;
+package edu.umassmed.omega.commons.runnable;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -13,13 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
-
-import main.java.edu.umassmed.omega.commons.constants.StatsConstants;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -49,6 +42,13 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
 
+import edu.umassmed.omega.commons.constants.StatsConstants;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+
 public abstract class StatsGraphProducer implements Runnable {
 
 	public final static int LINE_GRAPH = 0;
@@ -67,8 +67,8 @@ public abstract class StatsGraphProducer implements Runnable {
 	private final OmegaSegmentationTypes segmTypes;
 
 	public StatsGraphProducer(final int graphType,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
-	        final OmegaSegmentationTypes segmTypes) {
+			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
+			final OmegaSegmentationTypes segmTypes) {
 		this.segmentsMap = segmentsMap;
 		this.segmTypes = segmTypes;
 
@@ -110,9 +110,9 @@ public abstract class StatsGraphProducer implements Runnable {
 			@Override
 			public Paint getItemPaint(final int row, final int column) {
 				final String name = (String) this.getPlot().getDataset()
-				        .getColumnKey(column);
+						.getColumnKey(column);
 				for (final OmegaTrajectory track : StatsGraphProducer.this.segmentsMap
-				        .keySet()) {
+						.keySet()) {
 					if (track.getName().equals(name))
 						return track.getColor();
 				}
@@ -169,7 +169,7 @@ public abstract class StatsGraphProducer implements Runnable {
 	 * @return
 	 */
 	public CategoryItemRenderer getTimepointsRenderer(
-	        final Map<String, Map<Integer, Boolean>> renderingMap) {
+			final Map<String, Map<Integer, Boolean>> renderingMap) {
 		if (this.xyLineAndShapeRenderer == null) {
 			switch (this.graphType) {
 			case BAR_GRAPH:
@@ -187,17 +187,17 @@ public abstract class StatsGraphProducer implements Runnable {
 	}
 
 	private void createTimepointsBarRenderer(
-	        final Map<String, Map<Integer, Boolean>> renderingMap) {
+			final Map<String, Map<Integer, Boolean>> renderingMap) {
 		this.xyLineAndShapeRenderer = new BarRenderer() {
 			private static final long serialVersionUID = -4868788326156259962L;
 
 			@Override
 			public boolean getItemVisible(final int series, final int item) {
 				final DefaultCategoryDataset dataset = (DefaultCategoryDataset) this
-				        .getPlot().getDataset();
+						.getPlot().getDataset();
 				final String name = (String) dataset.getRowKey(series);
 				final Map<Integer, Boolean> renderingList = renderingMap
-				        .get(name);
+						.get(name);
 				if (!renderingList.containsKey(item))
 					return false;
 				final boolean bool = renderingList.get(item);
@@ -207,18 +207,18 @@ public abstract class StatsGraphProducer implements Runnable {
 			@Override
 			public Paint getSeriesPaint(final int series) {
 				final String trackName = (String) this.getPlot().getDataset()
-						.getRowKey(series);
+				        .getRowKey(series);
 				for (final OmegaTrajectory track : StatsGraphProducer.this.segmentsMap
-						.keySet()) {
+				        .keySet()) {
 					for (final OmegaSegment segment : StatsGraphProducer.this.segmentsMap
-							.get(track)) {
+					        .get(track)) {
 						final String name = track.getName() + " "
-								+ segment.getStartingROI().getFrameIndex()
-						        + "-" + segment.getEndingROI().getFrameIndex();
+						        + segment.getStartingROI().getFrameIndex()
+								+ "-" + segment.getEndingROI().getFrameIndex();
 						if (name.equals(trackName))
 							return StatsGraphProducer.this.segmTypes
-									.getSegmentationColor(segment
-											.getSegmentationType());
+							        .getSegmentationColor(segment
+							                .getSegmentationType());
 					}
 					if (track.getName().equals(trackName))
 						return track.getColor();
@@ -236,7 +236,7 @@ public abstract class StatsGraphProducer implements Runnable {
 	}
 
 	private void createTimepointsLineRenderer(
-			final Map<String, Map<Integer, Boolean>> renderingMap) {
+	        final Map<String, Map<Integer, Boolean>> renderingMap) {
 		this.xyLineAndShapeRenderer = new DefaultCategoryItemRenderer() {
 			private static final long serialVersionUID = 1071820316920620277L;
 
@@ -272,10 +272,10 @@ public abstract class StatsGraphProducer implements Runnable {
 			@Override
 			public boolean getItemShapeVisible(final int series, final int item) {
 				final DefaultCategoryDataset dataset = (DefaultCategoryDataset) this
-						.getPlot().getDataset();
+				        .getPlot().getDataset();
 				final String name = (String) dataset.getRowKey(series);
 				final Map<Integer, Boolean> renderingList = renderingMap
-						.get(name);
+				        .get(name);
 				if (!renderingList.containsKey(item))
 					return false;
 				final boolean bool = renderingList.get(item);
@@ -288,13 +288,13 @@ public abstract class StatsGraphProducer implements Runnable {
 					return new BasicStroke(1.0f);
 
 				final DefaultCategoryDataset dataset = (DefaultCategoryDataset) this
-						.getPlot().getDataset();
+				        .getPlot().getDataset();
 				final String name = (String) dataset.getRowKey(row);
 				final Map<Integer, Boolean> renderingList = renderingMap
-						.get(name);
+				        .get(name);
 
 				if (!renderingList.containsKey(column)
-						|| !renderingList.containsKey(column - 1))
+				        || !renderingList.containsKey(column - 1))
 					return new BasicStroke(1.0f);
 
 				final Boolean bool1 = renderingList.get(column);
@@ -302,8 +302,8 @@ public abstract class StatsGraphProducer implements Runnable {
 
 				if (!bool1 || !bool2)
 					return new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-							BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f,
-							5.0f }, 0.0f);
+					        BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f,
+					                5.0f }, 0.0f);
 				else
 					return new BasicStroke(1.0f);
 			}
@@ -311,18 +311,18 @@ public abstract class StatsGraphProducer implements Runnable {
 			@Override
 			public Paint getSeriesPaint(final int series) {
 				final String trackName = (String) this.getPlot().getDataset()
-						.getRowKey(series);
+				        .getRowKey(series);
 				for (final OmegaTrajectory track : StatsGraphProducer.this.segmentsMap
-						.keySet()) {
+				        .keySet()) {
 					for (final OmegaSegment segment : StatsGraphProducer.this.segmentsMap
-							.get(track)) {
+					        .get(track)) {
 						final String name = track.getName() + " "
-								+ segment.getStartingROI().getFrameIndex()
-						        + "-" + segment.getEndingROI().getFrameIndex();
+						        + segment.getStartingROI().getFrameIndex()
+								+ "-" + segment.getEndingROI().getFrameIndex();
 						if (name.equals(trackName))
 							return StatsGraphProducer.this.segmTypes
-									.getSegmentationColor(segment
-											.getSegmentationType());
+							        .getSegmentationColor(segment
+							                .getSegmentationType());
 					}
 					if (track.getName().equals(trackName))
 						return track.getColor();
@@ -341,13 +341,13 @@ public abstract class StatsGraphProducer implements Runnable {
 	protected abstract Double[] getValue(OmegaSegment segment, OmegaROI roi);
 
 	protected Map<String, Map<Integer, Boolean>> createRenderingMap(
-	        final DefaultCategoryDataset catDataset) {
+			final DefaultCategoryDataset catDataset) {
 		final Map<String, Map<Integer, Boolean>> renderingMap = new LinkedHashMap<>();
 		for (final OmegaTrajectory track : this.getSegmentsMap().keySet()) {
 			for (final OmegaSegment segment : this.getSegmentsMap().get(track)) {
 				final String name = track.getName() + " "
-				        + segment.getStartingROI().getFrameIndex() + "-"
-				        + segment.getEndingROI().getFrameIndex();
+						+ segment.getStartingROI().getFrameIndex() + "-"
+						+ segment.getEndingROI().getFrameIndex();
 				final Map<Integer, Boolean> renderingList = new LinkedHashMap<>();
 				Integer oldIndex = null;
 				Double oldVal = null;
@@ -355,7 +355,7 @@ public abstract class StatsGraphProducer implements Runnable {
 				final int roiStart = rois.indexOf(segment.getStartingROI());
 				final int roiEnd = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-						roiEnd + 1);
+				        roiEnd + 1);
 				for (final OmegaROI roi : segmentROIs) {
 					final OmegaParticle particle = (OmegaParticle) roi;
 					final int newIndex = particle.getFrameIndex();
@@ -401,7 +401,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
-		        RoundingMode.HALF_UP).doubleValue();
+				RoundingMode.HALF_UP).doubleValue();
 		final CategoryItemRenderer renderer = this.getTracksRenderer();
 		final List<Double> histValues = new ArrayList<>();
 		for (final OmegaTrajectory track : this.getSegmentsMap().keySet()) {
@@ -410,16 +410,16 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.isTerminated())
 					return null;
 				final String name = track.getName() + " "
-						+ segment.getStartingROI().getFrameIndex() + "-"
-						+ segment.getEndingROI().getFrameIndex();
+				        + segment.getStartingROI().getFrameIndex() + "-"
+				        + segment.getEndingROI().getFrameIndex();
 				final Double value;
 				if (isROI) {
 					final int roiStart = rois.indexOf(segment.getStartingROI());
 					final int roiEnd = rois.indexOf(segment.getEndingROI());
 					final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-					        roiEnd + 1);
+							roiEnd + 1);
 					final OmegaROI roi = segmentROIs
-					        .get(segmentROIs.size() - 1);
+							.get(segmentROIs.size() - 1);
 					value = this.getValue(segment, roi)[0];
 				} else {
 					value = this.getValue(segment, null)[0];
@@ -447,7 +447,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 
 		final CategoryAxis xAxis = new CategoryAxis(
-		        StatsConstants.GRAPH_LAB_X_TRACK);
+				StatsConstants.GRAPH_LAB_X_TRACK);
 		final NumberAxis yAxis = new NumberAxis(this.getYAxisTitle());
 
 		// renderer.setSeriesFillPaint(0, Color.black);
@@ -456,8 +456,8 @@ public abstract class StatsGraphProducer implements Runnable {
 		if (dataset instanceof HistogramDataset) {
 			final HistogramDataset histDataset = (HistogramDataset) dataset;
 			chart = ChartFactory.createHistogram(title, this.getYAxisTitle(),
-			        StatsConstants.GRAPH_LAB_Y_FREQ, histDataset,
-			        PlotOrientation.VERTICAL, true, true, true);
+					StatsConstants.GRAPH_LAB_Y_FREQ, histDataset,
+					PlotOrientation.VERTICAL, true, true, true);
 			plot = chart.getPlot();
 		} else {
 			final DefaultCategoryDataset catDataset = (DefaultCategoryDataset) dataset;
@@ -486,23 +486,23 @@ public abstract class StatsGraphProducer implements Runnable {
 			dataset = new DefaultCategoryDataset();
 		}
 		final double partial = 100.0 / (maxT * this.getSegmentsMap().keySet()
-		        .size());
+				.size());
 		final double increase = new BigDecimal(partial).setScale(2,
-		        RoundingMode.HALF_UP).doubleValue();
+				RoundingMode.HALF_UP).doubleValue();
 		for (Integer t = 0; t < maxT; t++) {
 			final List<Double> histValues = new ArrayList<>();
 			for (final OmegaTrajectory track : this.getSegmentsMap().keySet()) {
 				final List<OmegaROI> rois = track.getROIs();
 				for (final OmegaSegment segment : this.getSegmentsMap().get(
-						track)) {
+				        track)) {
 					final String name = track.getName() + " "
-							+ segment.getStartingROI().getFrameIndex() + "-"
-							+ segment.getEndingROI().getFrameIndex();
+					        + segment.getStartingROI().getFrameIndex() + "-"
+					        + segment.getEndingROI().getFrameIndex();
 					boolean found = false;
 					final int roiStart = rois.indexOf(segment.getStartingROI());
 					final int roiEnd = rois.indexOf(segment.getEndingROI());
 					final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-					        roiEnd + 1);
+							roiEnd + 1);
 					for (final OmegaROI roi : segmentROIs) {
 						if (this.isTerminated())
 							return null;
@@ -546,15 +546,15 @@ public abstract class StatsGraphProducer implements Runnable {
 
 		Map<String, Map<Integer, Boolean>> renderingMap = null;
 		if ((dataset instanceof CategoryDataset)
-		        && (this.getGraphType() == StatsGraphProducer.LINE_GRAPH)) {
+				&& (this.getGraphType() == StatsGraphProducer.LINE_GRAPH)) {
 			renderingMap = this
-			        .createRenderingMap((DefaultCategoryDataset) dataset);
+					.createRenderingMap((DefaultCategoryDataset) dataset);
 		}
 		final CategoryItemRenderer renderer = this
-		        .getTimepointsRenderer(renderingMap);
+				.getTimepointsRenderer(renderingMap);
 
 		final CategoryAxis xAxis = new CategoryAxis(
-		        StatsConstants.GRAPH_LAB_X_TIME);
+				StatsConstants.GRAPH_LAB_X_TIME);
 		// xAxis.setTickUnit(new NumberTickUnit(1.0));
 		final NumberAxis yAxis = new NumberAxis(this.getYAxisTitle());
 
@@ -563,8 +563,8 @@ public abstract class StatsGraphProducer implements Runnable {
 		if (dataset instanceof HistogramDataset) {
 			final HistogramDataset histDataset = (HistogramDataset) dataset;
 			chart = ChartFactory.createHistogram(title, this.getYAxisTitle(),
-			        StatsConstants.GRAPH_LAB_Y_FREQ, histDataset,
-			        PlotOrientation.VERTICAL, true, true, true);
+					StatsConstants.GRAPH_LAB_Y_FREQ, histDataset,
+					PlotOrientation.VERTICAL, true, true, true);
 			plot = chart.getPlot();
 		} else {
 			final DefaultCategoryDataset catDataset = (DefaultCategoryDataset) dataset;
@@ -588,7 +588,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		final String title = StatsConstants.GRAPH_MTC_NAME_MSD;
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
-				RoundingMode.HALF_UP).doubleValue();
+		        RoundingMode.HALF_UP).doubleValue();
 		int counter = 0;
 		final Map<OmegaSegment, Integer> segmentSeriesMap = new LinkedHashMap<OmegaSegment, Integer>();
 		final XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
@@ -597,8 +597,8 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.isTerminated)
 					return null;
 				final String serieName = track.getName() + " "
-						+ segment.getStartingROI().getFrameIndex() + "-"
-						+ segment.getEndingROI().getFrameIndex();
+				        + segment.getStartingROI().getFrameIndex() + "-"
+				        + segment.getEndingROI().getFrameIndex();
 				final XYSeries serie = new XYSeries(serieName, false);
 				final Double[] msd = this.getValue(segment, null);
 				final Double[] deltaT = this.getValue(segment, null);
@@ -621,20 +621,20 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 
 		final NumberAxis xAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSD_X);
+		        StatsConstants.GRAPH_MTC_LAB_MSD_X);
 		final NumberAxis yAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSD_Y);
+		        StatsConstants.GRAPH_MTC_LAB_MSD_Y);
 
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
 		final XYPlot plot = new XYPlot(xySeriesCollection, xAxis, yAxis,
-				renderer);
+		        renderer);
 		plot.setBackgroundPaint(Color.WHITE);
 
 		for (final OmegaSegment segment : segmentSeriesMap.keySet()) {
 			final int index = segmentSeriesMap.get(segment);
 			final Color c = this.segmTypes.getSegmentationColor(segment
-					.getSegmentationType());
+			        .getSegmentationType());
 			renderer.setSeriesPaint(index, c);
 		}
 		plot.setRenderer(renderer);
@@ -654,7 +654,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		final String title = StatsConstants.GRAPH_MTC_NAME_MSS;
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
-				RoundingMode.HALF_UP).doubleValue();
+		        RoundingMode.HALF_UP).doubleValue();
 		int counter = 0;
 		final Map<OmegaSegment, Integer> segmentSeriesMap = new LinkedHashMap<OmegaSegment, Integer>();
 		final XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
@@ -666,8 +666,8 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.isTerminated)
 					return null;
 				final String serieName = title + " "
-				        + segment.getStartingROI().getFrameIndex() + "-"
-				        + segment.getEndingROI().getFrameIndex();
+						+ segment.getStartingROI().getFrameIndex() + "-"
+						+ segment.getEndingROI().getFrameIndex();
 				final XYSeries serie = new XYSeries(serieName, false);
 				final Double[] gamma = this.getValue(segment, null);
 				if (gamma == null) {
@@ -709,33 +709,33 @@ public abstract class StatsGraphProducer implements Runnable {
 		boundsCollection.addSeries(lowerbound);
 
 		final NumberAxis xAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSS_X);
+		        StatsConstants.GRAPH_MTC_LAB_MSS_X);
 		final NumberAxis yAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSS_Y);
+		        StatsConstants.GRAPH_MTC_LAB_MSS_Y);
 
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
 		final XYPlot plot = new XYPlot(xySeriesCollection, xAxis, yAxis,
-				renderer);
+		        renderer);
 		plot.setBackgroundPaint(Color.WHITE);
 
 		for (final OmegaSegment segment : segmentSeriesMap.keySet()) {
 			final int index = segmentSeriesMap.get(segment);
 			final Color c = this.segmTypes.getSegmentationColor(segment
-			        .getSegmentationType());
+					.getSegmentationType());
 			renderer.setSeriesPaint(index, c);
 		}
 		plot.setRenderer(renderer);
 
 		final XYDifferenceRenderer diffRenderer = new XYDifferenceRenderer(
-				Color.lightGray, Color.white, false);
+		        Color.lightGray, Color.white, false);
 
 		diffRenderer.setSeriesStroke(0, new BasicStroke(1.0f,
-				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
-				new float[] { 5.0f, 5.0f }, 0.0f));
+		        BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+		        new float[] { 5.0f, 5.0f }, 0.0f));
 		diffRenderer.setSeriesStroke(1, new BasicStroke(1.0f,
-				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
-				new float[] { 5.0f, 5.0f }, 0.0f));
+		        BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+		        new float[] { 5.0f, 5.0f }, 0.0f));
 
 		plot.setDataset(1, boundsCollection);
 		plot.setRenderer(1, diffRenderer);
@@ -755,7 +755,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		// final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
-				RoundingMode.HALF_UP).doubleValue();
+		        RoundingMode.HALF_UP).doubleValue();
 		int counter = 0;
 		final Map<OmegaSegment, Integer> segmentSeriesMap = new LinkedHashMap<OmegaSegment, Integer>();
 		final XYIntervalSeriesCollection xySeriesCollection = new XYIntervalSeriesCollection();
@@ -764,8 +764,8 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.isTerminated)
 					return null;
 				final String serieName = track.getName() + " "
-						+ segment.getStartingROI().getFrameIndex() + "-"
-						+ segment.getEndingROI().getFrameIndex();
+				        + segment.getStartingROI().getFrameIndex() + "-"
+				        + segment.getEndingROI().getFrameIndex();
 				final XYIntervalSeries serie = new XYIntervalSeries(serieName);
 				final Double[] values = this.getValue(segment, null);
 				if (values == null) {
@@ -773,12 +773,14 @@ public abstract class StatsGraphProducer implements Runnable {
 				}
 				final Double d = values[0];
 				final Double smss = values[1];
-				final double deltaD = values[2];
-				final double deltaSMSS = values[3];
-				final double dMinus = d - deltaD;
-				final double dPlus = d + deltaD;
-				final double smssMinus = smss - deltaSMSS;
-				final double smssPlus = smss + deltaSMSS;
+				final double errorD = values[2];
+				final double errorSMSS = values[3];
+				System.out.println(track.getName() + " - " + errorD + " - "
+				        + errorSMSS);
+				final double dMinus = d - errorD;
+				final double dPlus = d + errorD;
+				final double smssMinus = smss - errorSMSS;
+				final double smssPlus = smss + errorSMSS;
 				serie.add(d, dMinus, dPlus, smss, smssMinus, smssPlus);
 				this.updateStatus(false);
 				this.completed += increase;
@@ -796,10 +798,10 @@ public abstract class StatsGraphProducer implements Runnable {
 
 		// X axis NumberAxis or LogarithmicAxis
 		final NumberAxis numberaxisX = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_SMSS_D_X);
+		        StatsConstants.GRAPH_MTC_LAB_SMSS_D_X);
 		// numberaxisX.setTickUnit(new NumberTickUnit(0.1));
 		final NumberAxis numberaxisY = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_SMSS_D_Y);
+		        StatsConstants.GRAPH_MTC_LAB_SMSS_D_Y);
 		numberaxisY.setRange(0.0, 1.0);
 		// numberaxisY.setTickUnit(new NumberTickUnit(0.1));
 
@@ -807,10 +809,10 @@ public abstract class StatsGraphProducer implements Runnable {
 		final XYErrorRenderer renderer = new XYErrorRenderer();
 		// renderer.setErrorPaint(Color.black);
 		renderer.setErrorStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-				BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f, 5.0f }, 0.0f));
+		        BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f, 5.0f }, 0.0f));
 		// }
 		final XYPlot plot = new XYPlot(xySeriesCollection, numberaxisX,
-				numberaxisY, renderer);
+		        numberaxisY, renderer);
 		plot.setBackgroundPaint(Color.WHITE);
 
 		// series
@@ -827,7 +829,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		for (final OmegaSegment segment : segmentSeriesMap.keySet()) {
 			final int index = segmentSeriesMap.get(segment);
 			final Color c = this.segmTypes.getSegmentationColor(segment
-					.getSegmentationType());
+			        .getSegmentationType());
 			renderer.setSeriesPaint(index, c);
 		}
 		plot.setRenderer(renderer);
@@ -835,7 +837,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		final Marker marker = new ValueMarker(0.5);
 		marker.setPaint(Color.BLACK);
 		marker.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-				BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f, 5.0f }, 0.0f));
+		        BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f, 5.0f }, 0.0f));
 		plot.addRangeMarker(marker);
 
 		final JFreeChart chart = new JFreeChart(title, plot);
@@ -852,7 +854,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		final String title = StatsConstants.GRAPH_MTC_NAME_TRACK;
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
-				RoundingMode.HALF_UP).doubleValue();
+		        RoundingMode.HALF_UP).doubleValue();
 		Double maxX = 0.0, maxY = 0.0, minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
 		int counter = 0;
 		final Map<OmegaSegment, Integer> segmentSeriesMap = new LinkedHashMap<OmegaSegment, Integer>();
@@ -865,13 +867,13 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.isTerminated)
 					return null;
 				final String serieName = track.getName() + " "
-				        + segment.getStartingROI().getFrameIndex() + "-"
-				        + segment.getEndingROI().getFrameIndex();
+						+ segment.getStartingROI().getFrameIndex() + "-"
+						+ segment.getEndingROI().getFrameIndex();
 				final XYSeries serie = new XYSeries(serieName, false);
 				final int roiStart = rois.indexOf(segment.getStartingROI());
 				final int roiEnd = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-				        roiEnd + 1);
+						roiEnd + 1);
 				for (final OmegaROI roi : segmentROIs) {
 					if (this.isTerminated)
 						return null;
@@ -929,22 +931,22 @@ public abstract class StatsGraphProducer implements Runnable {
 		max += 2.5;
 
 		final NumberAxis xAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_TRACK_X);
+		        StatsConstants.GRAPH_MTC_LAB_TRACK_X);
 		xAxis.setRange(min, max);
 		final NumberAxis yAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_TRACK_Y);
+		        StatsConstants.GRAPH_MTC_LAB_TRACK_Y);
 		yAxis.setRange(min, max);
 
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 
 		final XYPlot plot = new XYPlot(xySeriesCollection, xAxis, yAxis,
-				renderer);
+		        renderer);
 		plot.setBackgroundPaint(Color.WHITE);
 
 		for (final OmegaSegment segment : segmentSeriesMap.keySet()) {
 			final int index = segmentSeriesMap.get(segment);
 			final Color c = this.segmTypes.getSegmentationColor(segment
-			        .getSegmentationType());
+					.getSegmentationType());
 			renderer.setSeriesPaint(index, c);
 		}
 		plot.setRenderer(renderer);

@@ -25,9 +25,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.plugins.interfaces;
+package edu.umassmed.omega.commons.plugins.interfaces;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
 
 public interface OmegaSelectParticleDetectionRunPluginInterface {
 	public void selectParticleDetectionRun(OmegaParticleDetectionRun analysisRun);

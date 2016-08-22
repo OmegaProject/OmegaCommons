@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.constants;
+package edu.umassmed.omega.commons.constants;
 
 public class OmegaConstantsAlgorithmParameters {
 	public static final String PARAM_RADIUS = "Radius";

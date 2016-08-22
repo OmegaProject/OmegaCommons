@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;

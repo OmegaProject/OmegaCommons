@@ -1,11 +1,11 @@
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.eventSystem.OmegaTrajectoryIOEventListener;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaTrajectoryIOEvent;
+import edu.umassmed.omega.commons.eventSystem.OmegaTrajectoryIOEventListener;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaTrajectoryIOEvent;
 
 public class OmegaTrajectoryIOUtility {
 	private final List<OmegaTrajectoryIOEventListener> listeners = new ArrayList<OmegaTrajectoryIOEventListener>();

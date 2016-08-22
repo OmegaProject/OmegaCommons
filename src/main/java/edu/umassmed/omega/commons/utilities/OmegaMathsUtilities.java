@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;

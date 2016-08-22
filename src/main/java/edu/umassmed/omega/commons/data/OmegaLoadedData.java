@@ -25,18 +25,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data;
+package edu.umassmed.omega.commons.data;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaDataset;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaProject;
-import main.java.edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionLoadedElementNotFound;
+import edu.umassmed.omega.commons.data.coreElements.OmegaDataset;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.coreElements.OmegaProject;
+import edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionLoadedElementNotFound;
 
 public class OmegaLoadedData {
 
@@ -44,14 +44,14 @@ public class OmegaLoadedData {
 	private final List<OmegaDataset> datasets;
 	private final List<OmegaImage> images;
 	private final List<OmegaImagePixels> pixels;
-	private final List<OmegaFrame> frames;
+	private final List<OmegaPlane> frames;
 
 	public OmegaLoadedData() {
 		this.projects = new ArrayList<OmegaProject>();
 		this.datasets = new ArrayList<OmegaDataset>();
 		this.images = new ArrayList<OmegaImage>();
 		this.pixels = new ArrayList<OmegaImagePixels>();
-		this.frames = new ArrayList<OmegaFrame>();
+		this.frames = new ArrayList<OmegaPlane>();
 	}
 
 	public int getLoadedDataSize() {
@@ -87,7 +87,7 @@ public class OmegaLoadedData {
 			return index;
 		}
 		index += this.pixels.size();
-		if (element instanceof OmegaFrame) {
+		if (element instanceof OmegaPlane) {
 			index += this.frames.indexOf(element);
 			return index;
 		}
@@ -180,19 +180,19 @@ public class OmegaLoadedData {
 		return this.pixels.contains(pixels);
 	}
 
-	public List<OmegaFrame> getFrames() {
+	public List<OmegaPlane> getFrames() {
 		return this.frames;
 	}
 
-	public void addFrame(final OmegaFrame frame) {
+	public void addFrame(final OmegaPlane frame) {
 		this.frames.add(frame);
 	}
 
-	public void removeFrame(final OmegaFrame frame) {
+	public void removeFrame(final OmegaPlane frame) {
 		this.frames.remove(frame);
 	}
 
-	public boolean containsFrame(final OmegaFrame frame) {
+	public boolean containsFrame(final OmegaPlane frame) {
 		return this.frames.contains(frame);
 	}
 
@@ -205,8 +205,8 @@ public class OmegaLoadedData {
 			this.addImage((OmegaImage) element);
 		} else if (element instanceof OmegaImagePixels) {
 			this.addImagePixels((OmegaImagePixels) element);
-		} else if (element instanceof OmegaFrame) {
-			this.addFrame((OmegaFrame) element);
+		} else if (element instanceof OmegaPlane) {
+			this.addFrame((OmegaPlane) element);
 		} else {
 			// TODO THROW EXCEPTION
 		}
@@ -221,8 +221,8 @@ public class OmegaLoadedData {
 			this.removeImage((OmegaImage) element);
 		} else if (element instanceof OmegaImagePixels) {
 			this.removeImagePixels((OmegaImagePixels) element);
-		} else if (element instanceof OmegaFrame) {
-			this.removeFrame((OmegaFrame) element);
+		} else if (element instanceof OmegaPlane) {
+			this.removeFrame((OmegaPlane) element);
 		} else {
 			// TODO THROW EXCEPTION
 		}

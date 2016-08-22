@@ -25,26 +25,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventResultsParticleDetection extends
         OmegaPluginEventAlgorithm {
 
-	private final Map<OmegaFrame, List<OmegaROI>> resultingParticles;
+	private final Map<OmegaPlane, List<OmegaROI>> resultingParticles;
 	private final Map<OmegaROI, Map<String, Object>> resultingParticlesValues;
 
 	public OmegaPluginEventResultsParticleDetection(final OmegaElement element,
 	        final List<OmegaParameter> params,
-	        final Map<OmegaFrame, List<OmegaROI>> resultingParticles,
+	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
 			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
 		this(null, element, params, resultingParticles,
 				resultingParticlesValues);
@@ -52,7 +52,7 @@ public class OmegaPluginEventResultsParticleDetection extends
 
 	public OmegaPluginEventResultsParticleDetection(final OmegaPlugin source,
 	        final OmegaElement element, final List<OmegaParameter> params,
-	        final Map<OmegaFrame, List<OmegaROI>> resultingParticles,
+	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
 			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
 		super(source, element, params);
 
@@ -61,7 +61,7 @@ public class OmegaPluginEventResultsParticleDetection extends
 		this.resultingParticlesValues = resultingParticlesValues;
 	}
 
-	public Map<OmegaFrame, List<OmegaROI>> getResultingParticles() {
+	public Map<OmegaPlane, List<OmegaROI>> getResultingParticles() {
 		return this.resultingParticles;
 	}
 

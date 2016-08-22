@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,32 +25,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.coreElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
 
-public class OmegaProject extends OmegaNamedElement implements
-        OmegaAnalysisRunContainer {
+public class OmegaProject extends OmegaNamedElement implements OmeroElement,
+OmegaAnalysisRunContainer {
 
 	private final List<OmegaDataset> datasets;
 
 	private final List<OmegaAnalysisRun> analysisRuns;
 
-	public OmegaProject(final Long elementID, final String name) {
-		super(elementID, name);
+	private Long omeroId;
 
+	public OmegaProject(final String name) {
+		super(-1L, name);
+		this.omeroId = -1L;
 		this.datasets = new ArrayList<OmegaDataset>();
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
 
-	public OmegaProject(final Long elementID, final String name,
-	        final List<OmegaDataset> datasets) {
-		super(elementID, name);
-
+	public OmegaProject(final String name, final List<OmegaDataset> datasets) {
+		super(-1L, name);
+		this.omeroId = -1L;
 		this.datasets = datasets;
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
@@ -59,10 +60,15 @@ public class OmegaProject extends OmegaNamedElement implements
 		return this.datasets;
 	}
 
-	public boolean containsDataset(final long id) {
+	public boolean containsDataset(final long id, final boolean gatewayId) {
 		for (final OmegaDataset dataset : this.datasets) {
-			if (dataset.getElementID() == id)
-				return true;
+			if (gatewayId) {
+				if (dataset.getOmeroId() == id)
+					return true;
+			} else {
+				if (dataset.getElementID() == id)
+					return true;
+			}
 		}
 		return false;
 	}
@@ -93,5 +99,15 @@ public class OmegaProject extends OmegaNamedElement implements
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void setOmeroId(final Long omeroId) {
+		this.omeroId = omeroId;
+	}
+
+	@Override
+	public Long getOmeroId() {
+		return this.omeroId;
 	}
 }

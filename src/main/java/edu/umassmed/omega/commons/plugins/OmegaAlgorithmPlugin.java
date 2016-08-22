@@ -25,16 +25,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.plugins;
+package edu.umassmed.omega.commons.plugins;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaPerson;
-import main.java.edu.umassmed.omega.commons.utilities.OperatingSystemEnum;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPerson;
+import edu.umassmed.omega.commons.utilities.OperatingSystemEnum;
 
 public abstract class OmegaAlgorithmPlugin extends OmegaPlugin {
 
@@ -59,9 +59,9 @@ public abstract class OmegaAlgorithmPlugin extends OmegaPlugin {
 	public OmegaAlgorithmInformation getAlgorithmInformation() {
 		if (this.algoInfo == null) {
 			this.algoInfo = new OmegaAlgorithmInformation(
-			        this.getAlgorithmName(), this.getAlgorithmVersion(),
-			        this.getAlgorithmDescription(), this.getAlgorithmAuthor(),
-			        this.getAlgorithmPublicationDate());
+					this.getAlgorithmName(), this.getAlgorithmVersion(),
+					this.getAlgorithmDescription(), this.getAlgorithmAuthor(),
+					this.getAlgorithmPublicationDate(), this.getReference());
 		}
 		return this.algoInfo;
 	}
@@ -78,18 +78,20 @@ public abstract class OmegaAlgorithmPlugin extends OmegaPlugin {
 
 	public abstract Date getAlgorithmPublicationDate();
 
+	public abstract String getReference();
+
 	public boolean checkIfThisAlgorithm(final OmegaAnalysisRun analysisRun) {
 		final OmegaAlgorithmInformation algoInfo = analysisRun
-		        .getAlgorithmSpec().getAlgorithmInfo();
+				.getAlgorithmSpec().getAlgorithmInfo();
 		final boolean tof1 = this.getAlgorithmName().equals(algoInfo.getName());
 		final boolean tof2 = this.getAlgorithmDescription().equals(
-		        algoInfo.getDescription());
+				algoInfo.getDescription());
 		final boolean tof3 = this.getAlgorithmAuthor().isSamePersonAs(
-		        algoInfo.getAuthor());
+				algoInfo.getAuthor());
 		final boolean tof4 = this.getAlgorithmVersion().equals(
-		        algoInfo.getVersion());
+				algoInfo.getVersion());
 		final boolean tof5 = this.getAlgorithmPublicationDate().equals(
-		        algoInfo.getPublicationData());
+				algoInfo.getPublicationData());
 		return tof1 && tof2 && tof3 && tof4 && tof5;
 	}
 }

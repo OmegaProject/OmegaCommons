@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.trajectoryTool;
+package edu.umassmed.omega.commons.trajectoryTool;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,15 +11,15 @@ import java.util.Map;
 
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaImporterEventResultsParticleTracking;
-import main.java.edu.umassmed.omega.commons.trajectoryTool.gui.OmegaTracksToolDialog;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaImporterEventResultsParticleTracking;
+import edu.umassmed.omega.commons.trajectoryTool.gui.OmegaTracksToolDialog;
+import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
+import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
 
 //TODO just copied from the importer, needs to be review to export a list of tracks
 public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
@@ -30,8 +30,8 @@ public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
 	public static final String PARTICLE_PROBABILITY = "probability";
 	public static final String PARTICLE_SEPARATOR = "separator";
 
-	private final Map<Integer, OmegaFrame> frames;
-	private final Map<OmegaFrame, List<OmegaROI>> particles;
+	private final Map<Integer, OmegaPlane> frames;
+	private final Map<OmegaPlane, List<OmegaROI>> particles;
 	private final Map<OmegaROI, Map<String, Object>> particlesValues;
 	private final List<OmegaTrajectory> tracks;
 
@@ -40,8 +40,8 @@ public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
 	private OmegaAnalysisRunContainer container;
 
 	public OmegaTracksImporter(final RootPaneContainer parent) {
-		this.frames = new LinkedHashMap<Integer, OmegaFrame>();
-		this.particles = new LinkedHashMap<OmegaFrame, List<OmegaROI>>();
+		this.frames = new LinkedHashMap<Integer, OmegaPlane>();
+		this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		this.particlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>();
 		this.tracks = new ArrayList<OmegaTrajectory>();
 
@@ -51,8 +51,8 @@ public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
 	}
 
 	public OmegaTracksImporter() {
-		this.frames = new LinkedHashMap<Integer, OmegaFrame>();
-		this.particles = new LinkedHashMap<OmegaFrame, List<OmegaROI>>();
+		this.frames = new LinkedHashMap<Integer, OmegaPlane>();
+		this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		this.particlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>();
 		this.tracks = new ArrayList<OmegaTrajectory>();
 
@@ -109,7 +109,7 @@ public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
 			t.recalculateLength();
 		}
 
-		final Map<OmegaFrame, List<OmegaROI>> resultingParticles = new LinkedHashMap<OmegaFrame, List<OmegaROI>>(
+		final Map<OmegaPlane, List<OmegaROI>> resultingParticles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>(
 				this.particles);
 		final Map<OmegaROI, Map<String, Object>> resultingParticlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>(
 				this.particlesValues);
@@ -220,11 +220,11 @@ public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
 			p = new OmegaParticle(frameIndex, x, y, intensity, probability);
 		}
 
-		OmegaFrame frame;
+		OmegaPlane frame;
 		if (this.frames.containsKey(frameIndex)) {
 			frame = this.frames.get(frameIndex);
 		} else {
-			frame = new OmegaFrame(frameIndex);
+			frame = new OmegaPlane(frameIndex);
 			this.frames.put(frameIndex, frame);
 		}
 
@@ -241,11 +241,11 @@ public class OmegaTracksImporter extends OmegaTrajectoryIOUtility {
 		return p;
 	}
 
-	public Map<Integer, OmegaFrame> getFrames() {
+	public Map<Integer, OmegaPlane> getFrames() {
 		return this.frames;
 	}
 
-	public Map<OmegaFrame, List<OmegaROI>> getParticles() {
+	public Map<OmegaPlane, List<OmegaROI>> getParticles() {
 		return this.particles;
 	}
 

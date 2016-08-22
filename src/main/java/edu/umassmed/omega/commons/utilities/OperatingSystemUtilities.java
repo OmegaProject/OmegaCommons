@@ -1,6 +1,6 @@
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
-import main.java.edu.umassmed.omega.commons.plugins.OmegaAlgorithmPlugin;
+import edu.umassmed.omega.commons.plugins.OmegaAlgorithmPlugin;
 
 public class OperatingSystemUtilities {
 

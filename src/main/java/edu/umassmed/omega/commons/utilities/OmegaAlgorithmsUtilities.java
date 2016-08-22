@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,64 +7,71 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmSpecification;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaPerson;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaRunDefinition;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPerson;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaAlgorithmsUtilities {
 
-	public static OmegaAlgorithmSpecification DEFAULT_IMPORTER_SPEC;
+	public static OmegaRunDefinition DEFAULT_IMPORTER_SPEC;
 	private static String DEFAULT_IMPORTER_ALGO_NAME = "Omega default tracks importer";
 	private static Double DEFAULT_IMPORTER_ALGO_VERSION = 1.0;
 	private static String DEFAULT_IMPORTER_ALGO_DESC = "Omega default tracks importer";
 	private static Date DEFAULT_IMPORTER_ALGO_DATE = new GregorianCalendar(
 			2015, 5, 16).getTime();
+	private static String DEFAULT_IMPORTER_ALGO_REFERENCE = "TBD";
 
-	public static OmegaAlgorithmSpecification DEFAULT_TRACKING_MEASURES_DIFF_SPEC;
+	public static OmegaRunDefinition DEFAULT_TRACKING_MEASURES_DIFF_SPEC;
 	private static String DEFAULT_TRACKING_MEASURES_DIFF_ALGO_NAME = "Omega default diffusivity tracking measures";
 	private static Double DEFAULT_TRACKING_MEASURES_DIFF_ALGO_VERSION = 1.0;
 	private static String DEFAULT_TRACKING_MEASURES_DIFF_ALGO_DESC = "Omega default diffusivity tracking measures";
 	private static Date DEFAULT_TRACKING_MEASURES_DIFF_ALGO_DATE = new GregorianCalendar(
 			2014, 29, 1).getTime();
+	private static String DEFAULT_TRACKING_MEASURES_DIFF_ALGO_REFERENCE = "TBD";
 
-	public static OmegaAlgorithmSpecification DEFAULT_TRACKING_MEASURES_MOBI_SPEC;
+	public static OmegaRunDefinition DEFAULT_TRACKING_MEASURES_MOBI_SPEC;
 	private static String DEFAULT_TRACKING_MEASURES_MOBI_ALGO_NAME = "Omega default mobility tracking measures";
 	private static Double DEFAULT_TRACKING_MEASURES_MOBI_ALGO_VERSION = 1.0;
 	private static String DEFAULT_TRACKING_MEASURES_MOBI_ALGO_DESC = "Omega default mobility tracking measures";
 	private static Date DEFAULT_TRACKING_MEASURES_MOBI_ALGO_DATE = new GregorianCalendar(
 			2014, 29, 1).getTime();
+	private static String DEFAULT_TRACKING_MEASURES_MOBI_ALGO_REFERENCE = "TBD";
 
-	public static OmegaAlgorithmSpecification DEFAULT_TRACKING_MEASURES_VELO_SPEC;
+	public static OmegaRunDefinition DEFAULT_TRACKING_MEASURES_VELO_SPEC;
 	private static String DEFAULT_TRACKING_MEASURES_VELO_ALGO_NAME = "Omega default velocity tracking measures";
 	private static Double DEFAULT_TRACKING_MEASURES_VELO_ALGO_VERSION = 1.0;
 	private static String DEFAULT_TRACKING_MEASURES_VELO_ALGO_DESC = "Omega default velocity tracking measures";
 	private static Date DEFAULT_TRACKING_MEASURES_VELO_ALGO_DATE = new GregorianCalendar(
 			2014, 29, 1).getTime();
+	private static String DEFAULT_TRACKING_MEASURES_VELO_ALGO_REFERENCE = "TBD";
 
-	public static OmegaAlgorithmSpecification DEFAULT_TRACKING_MEASURES_INTE_SPEC;
+	public static OmegaRunDefinition DEFAULT_TRACKING_MEASURES_INTE_SPEC;
 	private static String DEFAULT_TRACKING_MEASURES_INTE_ALGO_NAME = "Omega default intensity tracking measures";
 	private static Double DEFAULT_TRACKING_MEASURES_INTE_ALGO_VERSION = 1.0;
 	private static String DEFAULT_TRACKING_MEASURES_INTE_ALGO_DESC = "Omega default intensity tracking measures";
 	private static Date DEFAULT_TRACKING_MEASURES_INTE_ALGO_DATE = new GregorianCalendar(
 			2014, 29, 1).getTime();
+	private static String DEFAULT_TRACKING_MEASURES_INTE_ALGO_REFERENCE = "TBD";
 
-	public static OmegaAlgorithmSpecification DEFAULT_SEGMENTATIONS_SPEC;
+	public static OmegaRunDefinition DEFAULT_SEGMENTATIONS_SPEC;
 	private static String DEFAULT_SEGMENTATION_ALGO_NAME = "Omega default segmentation";
 	private static Double DEFAULT_SEGMENTATION_ALGO_VERSION = 1.0;
 	private static String DEFAULT_SEGMENTATION_ALGO_DESC = "Omega default segmentation";
 	private static Date DEFAULT_SEGMENTATION_ALGO_DATE = new GregorianCalendar(
 			2014, 12, 1).getTime();
+	private static String DEFAULT_SEGMENTATION_ALGO_REFERENCE = "TBD";
 
-	public static OmegaAlgorithmSpecification DEFAULT_RELINKING_SPEC;
+	public static OmegaRunDefinition DEFAULT_RELINKING_SPEC;
 	private static String DEFAULT_RELINKING_ALGO_NAME = "Omega default relinking";
 	private static Double DEFAULT_RELINKING_ALGO_VERSION = 1.0;
 	private static String DEFAULT_RELINKING_ALGO_DESC = "Omega default relinking";
 	private static Date DEFAULT_RELINKING_ALGO_DATE = new GregorianCalendar(
 			2014, 12, 1).getTime();
+	private static String DEFAULT_RELINKING_ALGO_REFERENCE = "TBD";
 
 	public static OmegaPerson DEFAULT_DEVELOPER;
 
@@ -76,80 +83,87 @@ public class OmegaAlgorithmsUtilities {
 				OmegaAlgorithmsUtilities.DEFAULT_RELINKING_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_RELINKING_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_RELINKING_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_RELINKING_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_RELINKING_ALGO_DATE,
+		        OmegaAlgorithmsUtilities.DEFAULT_RELINKING_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_RELINKING_SPEC = new OmegaRunDefinition(
 				algoInfoRelinking);
 		final OmegaAlgorithmInformation algoInfoSegmentation = new OmegaAlgorithmInformation(
 				OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATION_ALGO_NAME,
 				OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATION_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATION_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATION_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATIONS_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATION_ALGO_DATE,
+		        OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATION_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATIONS_SPEC = new OmegaRunDefinition(
 				algoInfoSegmentation);
 		final OmegaAlgorithmInformation algoInfoTrackingMeasuresDiff = new OmegaAlgorithmInformation(
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_ALGO_NAME,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_ALGO_DATE,
+		        OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_SPEC = new OmegaRunDefinition(
 		        algoInfoTrackingMeasuresDiff);
 		final OmegaAlgorithmInformation algoInfoTrackingMeasuresMobi = new OmegaAlgorithmInformation(
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_ALGO_NAME,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_ALGO_DATE,
+		        OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_SPEC = new OmegaRunDefinition(
 		        algoInfoTrackingMeasuresMobi);
 		final OmegaAlgorithmInformation algoInfoTrackingMeasuresVelo = new OmegaAlgorithmInformation(
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_ALGO_NAME,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_ALGO_DATE,
+		        OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_SPEC = new OmegaRunDefinition(
 		        algoInfoTrackingMeasuresVelo);
 		final OmegaAlgorithmInformation algoInfoTrackingMeasuresInte = new OmegaAlgorithmInformation(
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_ALGO_NAME,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_ALGO_DATE,
+				OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_SPEC = new OmegaRunDefinition(
 		        algoInfoTrackingMeasuresInte);
 		final OmegaAlgorithmInformation algoInfoTracksImporter = new OmegaAlgorithmInformation(
 				OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_ALGO_NAME,
 				OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_ALGO_VERSION,
 				OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_ALGO_DESC,
 				OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER,
-				OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_ALGO_DATE);
-		OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_SPEC = new OmegaAlgorithmSpecification(
+				OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_ALGO_DATE,
+				OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_ALGO_REFERENCE);
+		OmegaAlgorithmsUtilities.DEFAULT_IMPORTER_SPEC = new OmegaRunDefinition(
 				algoInfoTracksImporter);
 	}
 
-	public static OmegaAlgorithmSpecification getDefaultRelinkingAlgorithmSpecification() {
+	public static OmegaRunDefinition getDefaultRelinkingAlgorithmSpecification() {
 		return OmegaAlgorithmsUtilities.DEFAULT_RELINKING_SPEC;
 	}
 
-	public static OmegaAlgorithmSpecification getDefaultSegmentationAlgorithmSpecification() {
+	public static OmegaRunDefinition getDefaultSegmentationAlgorithmSpecification() {
 		return OmegaAlgorithmsUtilities.DEFAULT_SEGMENTATIONS_SPEC;
 	}
 
-	public static OmegaAlgorithmSpecification getDefaultTrackingMeasuresDiffusivitySpecification() {
+	public static OmegaRunDefinition getDefaultTrackingMeasuresDiffusivitySpecification() {
 		return OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_SPEC;
 	}
 
-	public static OmegaAlgorithmSpecification getDefaultTrackingMeasuresMobilitySpecification() {
+	public static OmegaRunDefinition getDefaultTrackingMeasuresMobilitySpecification() {
 		return OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_MOBI_SPEC;
 	}
 
-	public static OmegaAlgorithmSpecification getDefaultTrackingMeasuresVelocitySpecification() {
+	public static OmegaRunDefinition getDefaultTrackingMeasuresVelocitySpecification() {
 		return OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_VELO_SPEC;
 	}
 
-	public static OmegaAlgorithmSpecification getDefaultTrackingMeasuresIntensitySpecification() {
+	public static OmegaRunDefinition getDefaultTrackingMeasuresIntensitySpecification() {
 		return OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_SPEC;
 	}
 

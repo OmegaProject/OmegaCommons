@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -39,7 +39,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Utilities;
 
-import main.java.edu.umassmed.omega.commons.OmegaLogFileManager;
+import edu.umassmed.omega.commons.OmegaLogFileManager;
 
 public class OmegaStringUtilities {
 

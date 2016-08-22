@@ -1,8 +1,8 @@
-package main.java.edu.umassmed.omega.commons.plugins.interfaces;
+package edu.umassmed.omega.commons.plugins.interfaces;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 
 public interface OmegaImageConsumerPluginInterface {
 	public List<OmegaImage> getLoadedImages();

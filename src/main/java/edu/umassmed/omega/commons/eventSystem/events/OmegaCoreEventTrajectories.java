@@ -1,8 +1,8 @@
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaCoreEventTrajectories extends OmegaCoreEvent {
 	private final List<OmegaTrajectory> trajectories;

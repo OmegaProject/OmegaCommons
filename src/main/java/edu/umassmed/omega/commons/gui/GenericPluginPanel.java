@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,9 +39,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaGUIConstants;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.GenericPluginPanelInterface;
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.gui.interfaces.GenericPluginPanelInterface;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public abstract class GenericPluginPanel extends GenericPanel implements
         GenericPluginPanelInterface {

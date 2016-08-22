@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.utilities;
+package edu.umassmed.omega.commons.utilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,7 +34,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import main.java.edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionFileManager;
+import edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionFileManager;
 
 public class OmegaFileUtilities {
 

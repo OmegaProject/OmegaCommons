@@ -25,14 +25,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.plugins;
+package edu.umassmed.omega.commons.plugins;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaImageConsumerPluginInterface;
-import main.java.edu.umassmed.omega.commons.plugins.interfaces.OmegaLoaderPluginInterface;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaImageConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoaderPluginInterface;
 
 public abstract class OmegaParticleTrackingPlugin extends OmegaAlgorithmPlugin
         implements OmegaLoaderPluginInterface,

@@ -1,11 +1,11 @@
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaCoreEventSegments extends OmegaCoreEvent {
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;

@@ -6,7 +6,7 @@
  * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
  * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
  * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
- * Ivo Sbalzarini and Mario Valle.
+ * Ivo ErrorIndex and Mario Valle.
  *
  * Key contacts:
  * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
@@ -25,136 +25,166 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.Date;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 
 public class OmegaSNRRun extends OmegaAnalysisRun {
 
-	private final Map<OmegaFrame, Double> resultingImageBGR;
-	private final Map<OmegaFrame, Double> resultingImageNoise;
-	private final Map<OmegaFrame, Double> resultingImageAvgSNR;
-	private final Map<OmegaFrame, Double> resultingImageMinSNR;
-	private final Map<OmegaFrame, Double> resultingImageMaxSNR;
-	private final Map<OmegaROI, Integer> resultingLocalCenterSignals;
-	private final Map<OmegaROI, Double> resultingLocalMeanSignals;
-	private final Map<OmegaROI, Integer> resultingLocalSignalSizes;
-	private final Map<OmegaROI, Integer> resultingLocalPeakSignals;
-	private final Map<OmegaROI, Double> resultingLocalNoises;
-	private final Map<OmegaROI, Double> resultingLocalSNRs;
-	private final Map<OmegaROI, Double> resultingLocalBhattacharyyaPoissonSNRs;
+	private final Map<OmegaPlane, Double> resultingImageBGR;
+	private final Map<OmegaPlane, Double> resultingImageNoise;
+	private final Map<OmegaPlane, Double> resultingImageAvgSNR;
+	private final Map<OmegaPlane, Double> resultingImageMinSNR;
+	private final Map<OmegaPlane, Double> resultingImageMaxSNR;
+	private final Map<OmegaPlane, Double> resultingImageAvgErrorIndexSNR;
+	private final Map<OmegaPlane, Double> resultingImageMinErrorIndexSNR;
+	private final Map<OmegaPlane, Double> resultingImageMaxErrorIndexSNR;
+	// VA SU PARTICLE
+	private final Map<OmegaROI, Integer> resultingLocalCenterSignal;
+	private final Map<OmegaROI, Double> resultingLocalMeanSignal;
+	private final Map<OmegaROI, Integer> resultingLocalParticleArea;
+	// VA SU PARTICLE
+	private final Map<OmegaROI, Integer> resultingLocalPeakSignal;
+	private final Map<OmegaROI, Double> resultingLocalNoise;
+	private final Map<OmegaROI, Double> resultingLocalSNR;
+	private final Map<OmegaROI, Double> resultingLocalErrorIndexSNR;
 
 	public OmegaSNRRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Map<OmegaFrame, Double> resultingImageNoise,
-	        final Map<OmegaFrame, Double> resultingImageBGR,
-	        final Map<OmegaFrame, Double> resultingImageAverageSNR,
-	        final Map<OmegaFrame, Double> resultingImageMinimumSNR,
-	        final Map<OmegaFrame, Double> resultingImageMaximumSNR,
-	        final Map<OmegaROI, Integer> resultingLocalCenterSignals,
-	        final Map<OmegaROI, Double> resultingLocalMeanSignals,
-	        final Map<OmegaROI, Integer> resultingLocalSignalSizes,
-	        final Map<OmegaROI, Integer> resultingLocalPeakSignals,
-	        final Map<OmegaROI, Double> resultingLocalNoises,
-	        final Map<OmegaROI, Double> resultingLocalSNRs,
-			final Map<OmegaROI, Double> resultingLocalBhattacharyyaPoissonSNRs) {
-		super(owner, algorithmSpec);
+			final OmegaRunDefinition algorithmSpec,
+			final Map<OmegaPlane, Double> resultingImageNoise,
+			final Map<OmegaPlane, Double> resultingImageBGR,
+			final Map<OmegaPlane, Double> resultingImageAverageSNR,
+			final Map<OmegaPlane, Double> resultingImageMinimumSNR,
+			final Map<OmegaPlane, Double> resultingImageMaximumSNR,
+			final Map<OmegaPlane, Double> resultingImageAverageErrorIndexSNR,
+			final Map<OmegaPlane, Double> resultingImageMinimumErrorIndexSNR,
+			final Map<OmegaPlane, Double> resultingImageMaximumErrorIndexSNR,
+			final Map<OmegaROI, Integer> resultingLocalCenterSignal,
+			final Map<OmegaROI, Double> resultingLocalMeanSignal,
+			final Map<OmegaROI, Integer> resultingLocalParticleArea,
+			final Map<OmegaROI, Integer> resultingLocalPeakSignal,
+			final Map<OmegaROI, Double> resultingLocalNoise,
+			final Map<OmegaROI, Double> resultingLocalSNR,
+	        final Map<OmegaROI, Double> resultingLocalErrorIndexSNR) {
+		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun);
 
 		this.resultingImageBGR = resultingImageBGR;
 		this.resultingImageNoise = resultingImageNoise;
 		this.resultingImageAvgSNR = resultingImageAverageSNR;
 		this.resultingImageMinSNR = resultingImageMinimumSNR;
 		this.resultingImageMaxSNR = resultingImageMaximumSNR;
-		this.resultingLocalCenterSignals = resultingLocalCenterSignals;
-		this.resultingLocalMeanSignals = resultingLocalMeanSignals;
-		this.resultingLocalSignalSizes = resultingLocalSignalSizes;
-		this.resultingLocalPeakSignals = resultingLocalPeakSignals;
-		this.resultingLocalNoises = resultingLocalNoises;
-		this.resultingLocalSNRs = resultingLocalSNRs;
-		this.resultingLocalBhattacharyyaPoissonSNRs = resultingLocalBhattacharyyaPoissonSNRs;
+		this.resultingImageAvgErrorIndexSNR = resultingImageAverageErrorIndexSNR;
+		this.resultingImageMinErrorIndexSNR = resultingImageMinimumErrorIndexSNR;
+		this.resultingImageMaxErrorIndexSNR = resultingImageMaximumErrorIndexSNR;
+		this.resultingLocalCenterSignal = resultingLocalCenterSignal;
+		this.resultingLocalMeanSignal = resultingLocalMeanSignal;
+		this.resultingLocalParticleArea = resultingLocalParticleArea;
+		this.resultingLocalPeakSignal = resultingLocalPeakSignal;
+		this.resultingLocalNoise = resultingLocalNoise;
+		this.resultingLocalSNR = resultingLocalSNR;
+		this.resultingLocalErrorIndexSNR = resultingLocalErrorIndexSNR;
 	}
 
 	public OmegaSNRRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Date timeStamps, final String name,
-	        final Map<OmegaFrame, Double> resultingImageNoise,
-	        final Map<OmegaFrame, Double> resultingImageBGR,
-	        final Map<OmegaFrame, Double> resultingImageAverageSNR,
-	        final Map<OmegaFrame, Double> resultingImageMinimumSNR,
-	        final Map<OmegaFrame, Double> resultingImageMaximumSNR,
-	        final Map<OmegaROI, Integer> resultingLocalCenterSignals,
-	        final Map<OmegaROI, Double> resultingLocalMeanSignals,
-	        final Map<OmegaROI, Integer> resultingLocalSignalSizes,
-	        final Map<OmegaROI, Integer> resultingLocalPeakSignals,
-	        final Map<OmegaROI, Double> resultingLocalNoises,
-	        final Map<OmegaROI, Double> resultingLocalSNRs,
-			final Map<OmegaROI, Double> resultingLocalBhattacharyyaPoissonSNRs) {
-		super(owner, algorithmSpec, timeStamps, name);
+			final OmegaRunDefinition algorithmSpec, final Date timeStamps,
+	        final String name,
+			final Map<OmegaPlane, Double> resultingImageNoise,
+			final Map<OmegaPlane, Double> resultingImageBGR,
+			final Map<OmegaPlane, Double> resultingImageAverageSNR,
+			final Map<OmegaPlane, Double> resultingImageMinimumSNR,
+			final Map<OmegaPlane, Double> resultingImageMaximumSNR,
+			final Map<OmegaPlane, Double> resultingImageAverageErrorIndexSNR,
+			final Map<OmegaPlane, Double> resultingImageMinimumErrorIndexSNR,
+			final Map<OmegaPlane, Double> resultingImageMaximumErrorIndexSNR,
+			final Map<OmegaROI, Integer> resultingLocalCenterSignal,
+			final Map<OmegaROI, Double> resultingLocalMeanSignal,
+			final Map<OmegaROI, Integer> resultingLocalParticleArea,
+			final Map<OmegaROI, Integer> resultingLocalPeakSignal,
+			final Map<OmegaROI, Double> resultingLocalNoise,
+			final Map<OmegaROI, Double> resultingLocalSNR,
+	        final Map<OmegaROI, Double> resultingLocalErrorIndexSNR) {
+		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun, timeStamps,
+				name);
 
 		this.resultingImageBGR = resultingImageBGR;
 		this.resultingImageNoise = resultingImageNoise;
 		this.resultingImageAvgSNR = resultingImageAverageSNR;
 		this.resultingImageMinSNR = resultingImageMinimumSNR;
 		this.resultingImageMaxSNR = resultingImageMaximumSNR;
-		this.resultingLocalCenterSignals = resultingLocalCenterSignals;
-		this.resultingLocalMeanSignals = resultingLocalMeanSignals;
-		this.resultingLocalSignalSizes = resultingLocalSignalSizes;
-		this.resultingLocalPeakSignals = resultingLocalPeakSignals;
-		this.resultingLocalNoises = resultingLocalNoises;
-		this.resultingLocalSNRs = resultingLocalSNRs;
-		this.resultingLocalBhattacharyyaPoissonSNRs = resultingLocalBhattacharyyaPoissonSNRs;
+		this.resultingImageAvgErrorIndexSNR = resultingImageAverageErrorIndexSNR;
+		this.resultingImageMinErrorIndexSNR = resultingImageMinimumErrorIndexSNR;
+		this.resultingImageMaxErrorIndexSNR = resultingImageMaximumErrorIndexSNR;
+		this.resultingLocalCenterSignal = resultingLocalCenterSignal;
+		this.resultingLocalMeanSignal = resultingLocalMeanSignal;
+		this.resultingLocalParticleArea = resultingLocalParticleArea;
+		this.resultingLocalPeakSignal = resultingLocalPeakSignal;
+		this.resultingLocalNoise = resultingLocalNoise;
+		this.resultingLocalSNR = resultingLocalSNR;
+		this.resultingLocalErrorIndexSNR = resultingLocalErrorIndexSNR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageBGR() {
+	public Map<OmegaPlane, Double> getResultingImageBGR() {
 		return this.resultingImageBGR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageNoise() {
+	public Map<OmegaPlane, Double> getResultingImageNoise() {
 		return this.resultingImageNoise;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageAverageSNR() {
+	public Map<OmegaPlane, Double> getResultingImageAverageSNR() {
 		return this.resultingImageAvgSNR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageMinimumSNR() {
+	public Map<OmegaPlane, Double> getResultingImageMinimumSNR() {
 		return this.resultingImageMinSNR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageMaximumSNR() {
+	public Map<OmegaPlane, Double> getResultingImageMaximumSNR() {
 		return this.resultingImageMaxSNR;
 	}
 
+	public Map<OmegaPlane, Double> getResultingImageAverageErrorIndexSNR() {
+		return this.resultingImageAvgErrorIndexSNR;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageMinimumErrorIndexSNR() {
+		return this.resultingImageMinErrorIndexSNR;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageMaximumErrorIndexSNR() {
+		return this.resultingImageMaxErrorIndexSNR;
+	}
+
 	public Map<OmegaROI, Integer> getResultingLocalCenterSignals() {
-		return this.resultingLocalCenterSignals;
+		return this.resultingLocalCenterSignal;
 	}
 
 	public Map<OmegaROI, Double> getResultingLocalMeanSignals() {
-		return this.resultingLocalMeanSignals;
+		return this.resultingLocalMeanSignal;
 	}
 
-	public Map<OmegaROI, Integer> getResultingLocalSignalSizes() {
-		return this.resultingLocalSignalSizes;
+	public Map<OmegaROI, Integer> getResultingLocalParticleArea() {
+		return this.resultingLocalParticleArea;
 	}
 
 	public Map<OmegaROI, Integer> getResultingLocalPeakSignals() {
-		return this.resultingLocalPeakSignals;
+		return this.resultingLocalPeakSignal;
 	}
 
 	public Map<OmegaROI, Double> getResultingLocalNoises() {
-		return this.resultingLocalNoises;
+		return this.resultingLocalNoise;
 	}
 
 	public Map<OmegaROI, Double> getResultingLocalSNRs() {
-		return this.resultingLocalSNRs;
+		return this.resultingLocalSNR;
 	}
 
-	public Map<OmegaROI, Double> getResultingLocalBhattacharyyaPoissonSNRs() {
-		return this.resultingLocalBhattacharyyaPoissonSNRs;
+	public Map<OmegaROI, Double> getResultingLocalErrorIndexSNRs() {
+		return this.resultingLocalErrorIndexSNR;
 	}
 }

@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,7 +8,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
+import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericTrajectoriesBrowserLabelsPanel extends GenericPanel {
 

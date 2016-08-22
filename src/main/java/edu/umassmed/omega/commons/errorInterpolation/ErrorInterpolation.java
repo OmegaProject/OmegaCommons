@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.errorInterpolation;
+package edu.umassmed.omega.commons.errorInterpolation;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,13 +7,13 @@ import java.util.List;
 public class ErrorInterpolation {
 
 	public static final File DEFAULT_D_FILE = new File(
-			".//resources//D_interpolation_data_old.csv");
+	        ".//src/main/resources//D_interpolation_data_old.csv");
 	public static final File DEFAULT_SMSS_FILE = new File(
-			".//resources//SMSS_interpolation_data_old.csv");
+	        ".//src/main/resources//SMSS_interpolation_data_old.csv");
 	private final InterpolationFileLoader ifl;
 
 	public ErrorInterpolation(final String path)
-			throws IllegalArgumentException {
+	        throws IllegalArgumentException {
 		this(new File(path));
 	}
 
@@ -60,11 +60,11 @@ public class ErrorInterpolation {
 	}
 
 	public Double interpolate(final double snr, final double length,
-	        final double smss, final double d) throws IllegalArgumentException {
+			final double smss, final double d) throws IllegalArgumentException {
 		if ((snr < this.ifl.getSNRMin()) || (snr > this.ifl.getSNRMax()))
 			throw new IllegalArgumentException("SNR out of range");
 		if ((length < this.ifl.getLengthMin())
-		        || (length > this.ifl.getLengthMax()))
+				|| (length > this.ifl.getLengthMax()))
 			throw new IllegalArgumentException("L out of range");
 		if ((smss < this.ifl.getSMSSMin()) || (smss > this.ifl.getSMSSMax()))
 			throw new IllegalArgumentException("SMSS out of range");
@@ -72,11 +72,11 @@ public class ErrorInterpolation {
 			throw new IllegalArgumentException("D out of range");
 
 		final Double[] SNRs = this
-		        .getClosestPoint(this.ifl.getSNRValues(), snr);
+				.getClosestPoint(this.ifl.getSNRValues(), snr);
 		final Double[] Ls = this.getClosestPoint(this.ifl.getLengthValues(),
-		        length);
+				length);
 		final Double[] SMSSs = this.getClosestPoint(this.ifl.getSMSSValues(),
-		        smss);
+				smss);
 		final Double[] Ds = this.getClosestPoint(this.ifl.getDValues(), d);
 
 		final Double X_SNR = this.normalizeValue(snr, SNRs);
@@ -95,7 +95,7 @@ public class ErrorInterpolation {
 						final double ZM = (iZ == 0) ? (1 - Z_SMSS) : Z_SMSS;
 						final double WM = (iW == 0) ? (1 - W_D) : W_D;
 						final InterpolationPoint ip = this.ifl.getPoint(
-						        SNRs[iX], Ls[iY], SMSSs[iZ], Ds[iW]);
+								SNRs[iX], Ls[iY], SMSSs[iZ], Ds[iW]);
 						result = result + (ip.getValue() * XM * YM * ZM * WM);
 					}
 				}
@@ -105,7 +105,7 @@ public class ErrorInterpolation {
 	}
 
 	public Double[] getClosestPoint(final List<Double> values,
-	        final double value) {
+			final double value) {
 		double minDist1 = Double.MAX_VALUE;
 		double minDist2 = Double.MAX_VALUE;
 		Double point1 = null;
@@ -135,7 +135,7 @@ public class ErrorInterpolation {
 
 	public static void main(final String[] args) {
 		final ErrorInterpolation ei = new ErrorInterpolation(
-		        ".//resources//D_interpolation_data_old.csv");
+				".//resources//D_interpolation_data_old.csv");
 		ei.interpolate(3.0, 100.0, 0.0, 0.005);
 	}
 }

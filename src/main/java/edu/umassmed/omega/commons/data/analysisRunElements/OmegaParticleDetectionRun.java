@@ -25,43 +25,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 
 public class OmegaParticleDetectionRun extends OmegaAnalysisRun {
 
-	private final Map<OmegaFrame, List<OmegaROI>> resultingParticles;
+	private final Map<OmegaPlane, List<OmegaROI>> resultingParticles;
 	private final Map<OmegaROI, Map<String, Object>> resultingParticlesValues;
 
 	public OmegaParticleDetectionRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Map<OmegaFrame, List<OmegaROI>> resultingParticles,
+	        final OmegaRunDefinition algorithmSpec,
+	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
 			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
-		super(owner, algorithmSpec);
+		super(owner, algorithmSpec, AnalysisRunType.OmegaParticleDetectionRun);
 
 		this.resultingParticles = resultingParticles;
 		this.resultingParticlesValues = resultingParticlesValues;
 	}
 
 	public OmegaParticleDetectionRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
+	        final OmegaRunDefinition algorithmSpec,
 	        final Date timeStamps, final String name,
-	        final Map<OmegaFrame, List<OmegaROI>> resultingParticles,
+	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
 			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
-		super(owner, algorithmSpec, timeStamps, name);
+		super(owner, algorithmSpec, AnalysisRunType.OmegaParticleDetectionRun,
+				timeStamps, name);
 
 		this.resultingParticles = resultingParticles;
 		this.resultingParticlesValues = resultingParticlesValues;
 	}
 
-	public Map<OmegaFrame, List<OmegaROI>> getResultingParticles() {
+	public Map<OmegaPlane, List<OmegaROI>> getResultingParticles() {
 		return this.resultingParticles;
 	}
 

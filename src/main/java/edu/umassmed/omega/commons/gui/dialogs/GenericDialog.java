@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui.dialogs;
+package edu.umassmed.omega.commons.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

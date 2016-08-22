@@ -1,7 +1,7 @@
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventSelectionAnalysisRun extends OmegaPluginEvent {
 

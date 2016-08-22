@@ -1,6 +1,6 @@
-package main.java.edu.umassmed.omega.commons.exceptions;
+package edu.umassmed.omega.commons.exceptions;
 
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaCoreExceptionPlugin extends OmegaCoreException {
 	private static final long serialVersionUID = 4298107617349997503L;

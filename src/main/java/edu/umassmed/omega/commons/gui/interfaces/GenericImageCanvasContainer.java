@@ -1,11 +1,11 @@
-package main.java.edu.umassmed.omega.commons.gui.interfaces;
+package edu.umassmed.omega.commons.gui.interfaces;
 
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public interface GenericImageCanvasContainer {
 

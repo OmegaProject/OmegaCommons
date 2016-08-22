@@ -1,40 +1,55 @@
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresRun extends OmegaAnalysisRun {
 
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 
+	private final TrackingMeasuresType measuresType;
+
 	public OmegaTrackingMeasuresRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		super(owner, algorithmSpec);
+			final OmegaRunDefinition algorithmSpec,
+	        final AnalysisRunType type,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+	        final TrackingMeasuresType measuresType) {
+		super(owner, algorithmSpec, type);
 		this.segments = segments;
+		this.measuresType = measuresType;
 	}
 
 	public OmegaTrackingMeasuresRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec, final String name,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		super(owner, algorithmSpec, name);
+			final OmegaRunDefinition algorithmSpec,
+	        final AnalysisRunType type, final String name,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+	        final TrackingMeasuresType measuresType) {
+		super(owner, algorithmSpec, type, name);
 		this.segments = segments;
+		this.measuresType = measuresType;
 	}
 
 	public OmegaTrackingMeasuresRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Date timeStamps, final String name,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		super(owner, algorithmSpec, timeStamps, name);
+			final OmegaRunDefinition algorithmSpec,
+	        final AnalysisRunType type, final Date timeStamps,
+	        final String name,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+	        final TrackingMeasuresType measuresType) {
+		super(owner, algorithmSpec, type, timeStamps, name);
 		this.segments = segments;
+		this.measuresType = measuresType;
 	}
 
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegments() {
 		return this.segments;
+	}
+
+	public TrackingMeasuresType getMeasureType() {
+		return this.measuresType;
 	}
 }

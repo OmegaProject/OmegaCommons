@@ -1,13 +1,13 @@
-package main.java.edu.umassmed.omega.commons.data.trajectoryElements;
+package edu.umassmed.omega.commons.data.trajectoryElements;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 
 public class OmegaSegment extends OmegaElement {
 	private final OmegaROI from, to;
 	private int segmentationType;
 
 	public OmegaSegment(final OmegaROI startingROI, final OmegaROI endingROI) {
-		super((long) -1);
+		super(-1L);
 		this.from = startingROI;
 		this.to = endingROI;
 	}
@@ -30,8 +30,8 @@ public class OmegaSegment extends OmegaElement {
 
 	public boolean isEqual(final OmegaSegment segment) {
 		if ((this.from.getFrameIndex() == segment.from.getFrameIndex())
-		        && (this.to.getFrameIndex() == segment.to.getFrameIndex())
-		        && (this.segmentationType == segment.segmentationType))
+				&& (this.to.getFrameIndex() == segment.to.getFrameIndex())
+				&& (this.segmentationType == segment.segmentationType))
 			return true;
 		return false;
 	}

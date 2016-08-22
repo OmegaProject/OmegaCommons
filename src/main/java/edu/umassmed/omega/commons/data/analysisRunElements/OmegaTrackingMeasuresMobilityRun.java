@@ -1,12 +1,12 @@
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 
@@ -20,7 +20,7 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 
 	public OmegaTrackingMeasuresMobilityRun(
 	        final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
+	        final OmegaRunDefinition algorithmSpec,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 	        final Map<OmegaSegment, List<Double>> distancesMap,
 	        final Map<OmegaSegment, List<Double>> displacementsMap,
@@ -28,7 +28,9 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 	        final Map<OmegaSegment, Integer> totalTimeTraveledMap,
 	        final Map<OmegaSegment, List<Double>> confinementRatioMap,
 	        final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap) {
-		super(owner, algorithmSpec, segments);
+		super(owner, algorithmSpec,
+				AnalysisRunType.OmegaTrackingMeasuresMobilityRun, segments,
+		        TrackingMeasuresType.Mobility);
 		this.distancesMap = distancesMap;
 		this.displacementsMap = displacementsMap;
 		this.maxDisplacementesMap = maxDisplacementesMap;
@@ -39,7 +41,7 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 
 	public OmegaTrackingMeasuresMobilityRun(
 	        final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
+	        final OmegaRunDefinition algorithmSpec,
 	        final String name,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 	        final Map<OmegaSegment, List<Double>> distancesMap,
@@ -48,7 +50,9 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 	        final Map<OmegaSegment, Integer> totalTimeTraveledMap,
 	        final Map<OmegaSegment, List<Double>> confinementRatioMap,
 	        final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap) {
-		super(owner, algorithmSpec, name, segments);
+		super(owner, algorithmSpec,
+				AnalysisRunType.OmegaTrackingMeasuresMobilityRun, name,
+				segments, TrackingMeasuresType.Mobility);
 		this.distancesMap = distancesMap;
 		this.displacementsMap = displacementsMap;
 		this.maxDisplacementesMap = maxDisplacementesMap;
@@ -59,7 +63,7 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 
 	public OmegaTrackingMeasuresMobilityRun(
 	        final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
+	        final OmegaRunDefinition algorithmSpec,
 	        final Date timeStamps,
 	        final String name,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
@@ -69,7 +73,9 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 	        final Map<OmegaSegment, Integer> totalTimeTraveledMap,
 	        final Map<OmegaSegment, List<Double>> confinementRatioMap,
 	        final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap) {
-		super(owner, algorithmSpec, timeStamps, name, segments);
+		super(owner, algorithmSpec,
+				AnalysisRunType.OmegaTrackingMeasuresMobilityRun, timeStamps,
+				name, segments, TrackingMeasuresType.Mobility);
 		this.distancesMap = distancesMap;
 		this.displacementsMap = displacementsMap;
 		this.maxDisplacementesMap = maxDisplacementesMap;

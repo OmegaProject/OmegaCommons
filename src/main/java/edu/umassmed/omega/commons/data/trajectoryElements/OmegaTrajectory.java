@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,13 +25,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.trajectoryElements;
+package edu.umassmed.omega.commons.data.trajectoryElements;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 
 public class OmegaTrajectory extends OmegaElement implements
         Comparable<OmegaTrajectory> {
@@ -53,7 +53,7 @@ public class OmegaTrajectory extends OmegaElement implements
 	private String annotations;
 
 	public OmegaTrajectory(final int length) {
-		super((long) -1);
+		super(-1L);
 
 		this.trajName = OmegaTrajectory.DEFAULT_TRAJ_NAME;
 
@@ -70,13 +70,13 @@ public class OmegaTrajectory extends OmegaElement implements
 		this.isColorChanged = false;
 		this.isNameChanged = false;
 
-		this.annotations = null;
+		this.annotations = "";
 		this.isAnnotationChanged = false;
 	}
 
 	public OmegaTrajectory(final OmegaROI startingROI,
 	        final OmegaROI endingROI, final int length) {
-		super((long) -1);
+		super(-1L);
 
 		this.trajName = OmegaTrajectory.DEFAULT_TRAJ_NAME;
 
@@ -93,14 +93,14 @@ public class OmegaTrajectory extends OmegaElement implements
 		this.isColorChanged = false;
 		this.isNameChanged = false;
 
-		this.annotations = null;
+		this.annotations = "";
 		this.isAnnotationChanged = false;
 	}
 
 	public OmegaTrajectory(final OmegaROI startingROI,
 	        final OmegaROI endingROI, final int length,
 	        final List<OmegaROI> ROIs, final List<OmegaLink> links) {
-		super((long) -1);
+		super(-1L);
 
 		this.trajName = OmegaTrajectory.DEFAULT_TRAJ_NAME;
 
@@ -117,7 +117,7 @@ public class OmegaTrajectory extends OmegaElement implements
 		this.isColorChanged = false;
 		this.isNameChanged = false;
 
-		this.annotations = null;
+		this.annotations = "";
 		this.isAnnotationChanged = false;
 	}
 

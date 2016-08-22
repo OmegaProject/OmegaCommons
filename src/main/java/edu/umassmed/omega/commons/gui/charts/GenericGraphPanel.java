@@ -1,13 +1,10 @@
-package main.java.edu.umassmed.omega.commons.gui.charts;
+package edu.umassmed.omega.commons.gui.charts;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 
 import javax.swing.RootPaneContainer;
-
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.gui.GenericPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -24,6 +21,9 @@ import org.jfree.data.general.Dataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
+
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.gui.GenericPanel;
 
 public class GenericGraphPanel extends GenericPanel {
 	private static final long serialVersionUID = 86454989469526860L;

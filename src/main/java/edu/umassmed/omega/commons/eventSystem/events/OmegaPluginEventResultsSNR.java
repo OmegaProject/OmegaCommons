@@ -6,7 +6,7 @@
  * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
  * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
  * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
- * Ivo Sbalzarini and Mario Valle.
+ * Ivo ErrorIndex and Mario Valle.
  *
  * Key contacts:
  * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
@@ -25,68 +25,79 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 
-	private final Map<OmegaFrame, Double> resultingImageBGR;
-	private final Map<OmegaFrame, Double> resultingImageNoise;
-	private final Map<OmegaFrame, Double> resultingImageAvgSNR;
-	private final Map<OmegaFrame, Double> resultingImageMinSNR;
-	private final Map<OmegaFrame, Double> resultingImageMaxSNR;
+	private final Map<OmegaPlane, Double> resultingImageBGR;
+	private final Map<OmegaPlane, Double> resultingImageNoise;
+	private final Map<OmegaPlane, Double> resultingImageAvgSNR;
+	private final Map<OmegaPlane, Double> resultingImageMinSNR;
+	private final Map<OmegaPlane, Double> resultingImageMaxSNR;
+	private final Map<OmegaPlane, Double> resultingImageAvgErrorIndexSNR;
+	private final Map<OmegaPlane, Double> resultingImageMinErrorIndexSNR;
+	private final Map<OmegaPlane, Double> resultingImageMaxErrorIndexSNR;
 	private final Map<OmegaROI, Integer> resultingLocalCenterSignals;
 	private final Map<OmegaROI, Double> resultingLocalMeanSignals;
 	private final Map<OmegaROI, Integer> resultingLocalSignalSizes;
 	private final Map<OmegaROI, Integer> resultingLocalPeakSignals;
 	private final Map<OmegaROI, Double> resultingLocalNoises;
 	private final Map<OmegaROI, Double> resultingLocalSNRs;
-	private final Map<OmegaROI, Double> resultingLocalBhattacharyyaPoissonSNRs;
+	private final Map<OmegaROI, Double> resultingLocalErrorIndexSNRs;
 
 	public OmegaPluginEventResultsSNR(final OmegaElement element,
 	        final List<OmegaParameter> params,
-	        final Map<OmegaFrame, Double> resultingImageBGR,
-	        final Map<OmegaFrame, Double> resultingImageNoise,
-	        final Map<OmegaFrame, Double> resultingImageAverageSNR,
-	        final Map<OmegaFrame, Double> resultingImageMinimumSNR,
-	        final Map<OmegaFrame, Double> resultingImageMaximumSNR,
+	        final Map<OmegaPlane, Double> resultingImageBGR,
+	        final Map<OmegaPlane, Double> resultingImageNoise,
+	        final Map<OmegaPlane, Double> resultingImageAverageSNR,
+	        final Map<OmegaPlane, Double> resultingImageMinimumSNR,
+	        final Map<OmegaPlane, Double> resultingImageMaximumSNR,
+	        final Map<OmegaPlane, Double> resultingImageAverageErrorIndexSNR,
+	        final Map<OmegaPlane, Double> resultingImageMinimumErrorIndexSNR,
+	        final Map<OmegaPlane, Double> resultingImageMaximumErrorIndexSNR,
 	        final Map<OmegaROI, Integer> resultingLocalCenterSignal,
 	        final Map<OmegaROI, Double> resultingLocalMeanSignals,
 	        final Map<OmegaROI, Integer> resultingLocalSignalSizes,
 	        final Map<OmegaROI, Integer> resultingLocalPeakSignals,
 	        final Map<OmegaROI, Double> resultingLocalNoises,
 	        final Map<OmegaROI, Double> resultingLocalSNRs,
-			final Map<OmegaROI, Double> resultingLocalBhattacharyyaPoissonSNRs) {
+	        final Map<OmegaROI, Double> resultingLocalErrorIndexSNRs) {
 		this(null, element, params, resultingImageBGR, resultingImageNoise,
 		        resultingImageAverageSNR, resultingImageMinimumSNR,
-		        resultingImageMaximumSNR, resultingLocalCenterSignal,
-		        resultingLocalMeanSignals, resultingLocalSignalSizes,
-		        resultingLocalPeakSignals, resultingLocalNoises,
-		        resultingLocalSNRs, resultingLocalBhattacharyyaPoissonSNRs);
+		        resultingImageMaximumSNR, resultingImageAverageErrorIndexSNR,
+		        resultingImageMinimumErrorIndexSNR,
+				resultingImageMaximumErrorIndexSNR, resultingLocalCenterSignal,
+				resultingLocalMeanSignals, resultingLocalSignalSizes,
+				resultingLocalPeakSignals, resultingLocalNoises,
+				resultingLocalSNRs, resultingLocalErrorIndexSNRs);
 	}
 
 	public OmegaPluginEventResultsSNR(final OmegaPlugin source,
 	        final OmegaElement element, final List<OmegaParameter> params,
-	        final Map<OmegaFrame, Double> resultingImageBGR,
-	        final Map<OmegaFrame, Double> resultingImageNoise,
-	        final Map<OmegaFrame, Double> resultingImageAverageSNR,
-	        final Map<OmegaFrame, Double> resultingImageMinimumSNR,
-	        final Map<OmegaFrame, Double> resultingImageMaximumSNR,
+	        final Map<OmegaPlane, Double> resultingImageBGR,
+	        final Map<OmegaPlane, Double> resultingImageNoise,
+	        final Map<OmegaPlane, Double> resultingImageAverageSNR,
+	        final Map<OmegaPlane, Double> resultingImageMinimumSNR,
+	        final Map<OmegaPlane, Double> resultingImageMaximumSNR,
+	        final Map<OmegaPlane, Double> resultingImageAverageErrorIndexSNR,
+	        final Map<OmegaPlane, Double> resultingImageMinimumErrorIndexSNR,
+	        final Map<OmegaPlane, Double> resultingImageMaximumErrorIndexSNR,
 	        final Map<OmegaROI, Integer> resultingLocalCenterSignal,
 	        final Map<OmegaROI, Double> resultingLocalMeanSignals,
 	        final Map<OmegaROI, Integer> resultingLocalSignalSizes,
 	        final Map<OmegaROI, Integer> resultingLocalPeakSignals,
 	        final Map<OmegaROI, Double> resultingLocalNoises,
 	        final Map<OmegaROI, Double> resultingLocalSNRs,
-			final Map<OmegaROI, Double> resultingLocalBhattacharyyaPoissonSNRs) {
+			final Map<OmegaROI, Double> resultingLocalErrorIndexSNRs) {
 		super(source, element, params);
 
 		this.resultingImageBGR = resultingImageBGR;
@@ -94,33 +105,48 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 		this.resultingImageAvgSNR = resultingImageAverageSNR;
 		this.resultingImageMinSNR = resultingImageMinimumSNR;
 		this.resultingImageMaxSNR = resultingImageMaximumSNR;
+		this.resultingImageAvgErrorIndexSNR = resultingImageAverageErrorIndexSNR;
+		this.resultingImageMinErrorIndexSNR = resultingImageMinimumErrorIndexSNR;
+		this.resultingImageMaxErrorIndexSNR = resultingImageMaximumErrorIndexSNR;
 		this.resultingLocalCenterSignals = resultingLocalCenterSignal;
 		this.resultingLocalMeanSignals = resultingLocalMeanSignals;
 		this.resultingLocalSignalSizes = resultingLocalSignalSizes;
 		this.resultingLocalPeakSignals = resultingLocalPeakSignals;
 		this.resultingLocalNoises = resultingLocalNoises;
 		this.resultingLocalSNRs = resultingLocalSNRs;
-		this.resultingLocalBhattacharyyaPoissonSNRs = resultingLocalBhattacharyyaPoissonSNRs;
+		this.resultingLocalErrorIndexSNRs = resultingLocalErrorIndexSNRs;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageBGR() {
+	public Map<OmegaPlane, Double> getResultingImageBGR() {
 		return this.resultingImageBGR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageNoise() {
+	public Map<OmegaPlane, Double> getResultingImageNoise() {
 		return this.resultingImageNoise;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageAverageSNR() {
+	public Map<OmegaPlane, Double> getResultingImageAverageSNR() {
 		return this.resultingImageAvgSNR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageMinimumSNR() {
+	public Map<OmegaPlane, Double> getResultingImageMinimumSNR() {
 		return this.resultingImageMinSNR;
 	}
 
-	public Map<OmegaFrame, Double> getResultingImageMaximumSNR() {
+	public Map<OmegaPlane, Double> getResultingImageMaximumSNR() {
 		return this.resultingImageMaxSNR;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageAverageErrorIndexSNR() {
+		return this.resultingImageAvgErrorIndexSNR;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageMinimumErrorIndexSNR() {
+		return this.resultingImageMinErrorIndexSNR;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageMaximumErrorIndexSNR() {
+		return this.resultingImageMaxErrorIndexSNR;
 	}
 
 	public Map<OmegaROI, Integer> getResultingLocalCenterSignals() {
@@ -147,7 +173,7 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 		return this.resultingLocalSNRs;
 	}
 
-	public Map<OmegaROI, Double> getResultingLocalBhattacharyyaPoissonSNRs() {
-		return this.resultingLocalBhattacharyyaPoissonSNRs;
+	public Map<OmegaROI, Double> getResultingLocalErrorIndexSNRs() {
+		return this.resultingLocalErrorIndexSNRs;
 	}
 }

@@ -25,29 +25,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
 
 public class OmegaImporterEventResultsParticleTracking extends
         OmegaTrajectoryIOEvent {
 
 	private final OmegaAnalysisRunContainer container;
-	private final Map<OmegaFrame, List<OmegaROI>> resultingParticles;
+	private final Map<OmegaPlane, List<OmegaROI>> resultingParticles;
 	private final Map<OmegaROI, Map<String, Object>> resultingParticlesValues;
 	private final List<OmegaTrajectory> resultingTrajectories;
 
 	public OmegaImporterEventResultsParticleTracking(
 			final OmegaTrajectoryIOUtility source,
 	        final OmegaAnalysisRunContainer container,
-			final Map<OmegaFrame, List<OmegaROI>> resultingParticles,
+			final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
 	        final List<OmegaTrajectory> resultingTrajectories,
 			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
 		super(source, OmegaTrajectoryIOEvent.INPUT);
@@ -61,7 +61,7 @@ public class OmegaImporterEventResultsParticleTracking extends
 		return this.container;
 	}
 
-	public Map<OmegaFrame, List<OmegaROI>> getResultingParticles() {
+	public Map<OmegaPlane, List<OmegaROI>> getResultingParticles() {
 		return this.resultingParticles;
 	}
 

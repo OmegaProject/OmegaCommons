@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.trajectoryTool;
+package edu.umassmed.omega.commons.trajectoryTool;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,12 +11,12 @@ import java.util.Map;
 
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.trajectoryTool.gui.OmegaTracksToolDialog;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.trajectoryTool.gui.OmegaTracksToolDialog;
+import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
+import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
 
 public class OmegaTracksExporter extends OmegaTrajectoryIOUtility {
 	public static final String PARTICLE_FRAMEINDEX = "identifier";
@@ -26,14 +26,14 @@ public class OmegaTracksExporter extends OmegaTrajectoryIOUtility {
 	public static final String PARTICLE_PROBABILITY = "probability";
 	public static final String PARTICLE_SEPARATOR = "separator";
 
-	private final Map<OmegaFrame, List<OmegaROI>> particles;
+	private final Map<OmegaPlane, List<OmegaROI>> particles;
 	private final Map<OmegaROI, Map<String, Object>> particlesValues;
 	private final List<OmegaTrajectory> tracks;
 
 	private OmegaTracksToolDialog dialog;
 
 	public OmegaTracksExporter(final RootPaneContainer parent) {
-		this.particles = new LinkedHashMap<OmegaFrame, List<OmegaROI>>();
+		this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		this.particlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>();
 		this.tracks = new ArrayList<OmegaTrajectory>();
 
@@ -41,7 +41,7 @@ public class OmegaTracksExporter extends OmegaTrajectoryIOUtility {
 	}
 
 	public OmegaTracksExporter() {
-		this.particles = new LinkedHashMap<OmegaFrame, List<OmegaROI>>();
+		this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		this.particlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>();
 		this.tracks = new ArrayList<OmegaTrajectory>();
 
@@ -179,7 +179,7 @@ public class OmegaTracksExporter extends OmegaTrajectoryIOUtility {
 		bw.write(buf.toString());
 	}
 
-	public void setParticles(final Map<OmegaFrame, List<OmegaROI>> particles) {
+	public void setParticles(final Map<OmegaPlane, List<OmegaROI>> particles) {
 		this.particles.putAll(particles);
 	}
 

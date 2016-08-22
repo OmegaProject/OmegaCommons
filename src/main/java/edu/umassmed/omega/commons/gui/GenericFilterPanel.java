@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
 
 public class GenericFilterPanel extends GenericPanel {
 

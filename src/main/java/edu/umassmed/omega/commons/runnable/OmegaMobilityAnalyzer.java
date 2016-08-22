@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.runnable;
+package edu.umassmed.omega.commons.runnable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -8,11 +8,11 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
-import main.java.edu.umassmed.omega.commons.libraries.OmegaMobilityLibrary;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
+import edu.umassmed.omega.commons.libraries.OmegaMobilityLibrary;
 
 public class OmegaMobilityAnalyzer implements Runnable {
 

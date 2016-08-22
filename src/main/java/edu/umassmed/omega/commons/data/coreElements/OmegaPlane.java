@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,18 +25,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.coreElements;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
 
-public class OmegaFrame extends OmegaElement implements
-        OmegaAnalysisRunContainer {
+public class OmegaPlane extends OmegaElement implements
+OmegaAnalysisRunContainer {
 
 	private OmegaImagePixels pixels;
 
@@ -48,8 +48,8 @@ public class OmegaFrame extends OmegaElement implements
 	// TODO needed?
 	private final Date timeStamps;
 
-	public OmegaFrame(final Integer index) {
-		super((long) -1);
+	public OmegaPlane(final Integer index) {
+		super(-1L);
 
 		this.pixels = null;
 
@@ -63,9 +63,9 @@ public class OmegaFrame extends OmegaElement implements
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
 
-	public OmegaFrame(final Integer index, final Integer channel,
-	        final Integer zPlane) {
-		super((long) -1);
+	public OmegaPlane(final Integer index, final Integer channel,
+			final Integer zPlane) {
+		super(-1L);
 
 		this.pixels = null;
 
@@ -79,8 +79,8 @@ public class OmegaFrame extends OmegaElement implements
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
 
-	public OmegaFrame(final Long elementID, final Integer index,
-	        final Integer channel, final List<OmegaAnalysisRun> analysisRuns) {
+	public OmegaPlane(final Long elementID, final Integer index,
+			final Integer channel, final List<OmegaAnalysisRun> analysisRuns) {
 		super(elementID);
 
 		this.pixels = null;

@@ -25,18 +25,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.coreElements;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
 
-public class OmegaImagePixels extends OmegaElement implements
-        OmegaAnalysisRunContainer {
+public class OmegaImagePixels extends OmegaElement implements OmeroElement,
+OmegaAnalysisRunContainer {
 
 	private OmegaImage image;
 
@@ -50,16 +50,18 @@ public class OmegaImagePixels extends OmegaElement implements
 
 	private final boolean[] selectedC;
 
-	private final Map<Integer, Map<Integer, List<OmegaFrame>>> frames;
+	private final Map<Integer, Map<Integer, List<OmegaPlane>>> frames;
 
 	private final List<OmegaAnalysisRun> analysisRuns;
 
-	public OmegaImagePixels(final Long elementID, final String pixelsType,
-	        final int sizeX, final int sizeY, final int sizeZ, final int sizeC,
-	        final int sizeT, final double pixelSizeX, final double pixelSizeY,
-	        final double pixelSizeZ) {
-		super(elementID);
+	private Long omeroId;
 
+	public OmegaImagePixels(final String pixelsType, final int sizeX,
+	        final int sizeY, final int sizeZ, final int sizeC, final int sizeT,
+	        final double pixelSizeX, final double pixelSizeY,
+	        final double pixelSizeZ) {
+		super(-1L);
+		this.omeroId = -1L;
 		this.image = null;
 
 		this.pixelsType = pixelsType;
@@ -161,10 +163,14 @@ public class OmegaImagePixels extends OmegaElement implements
 		this.physicalSizeT = sizeT;
 	}
 
-	public List<OmegaFrame> getFrames(final Integer c, final Integer z) {
-		List<OmegaFrame> frameList = null;
+	public Map<Integer, Map<Integer, List<OmegaPlane>>> getAllFrames() {
+		return this.frames;
+	}
+
+	public List<OmegaPlane> getFrames(final Integer c, final Integer z) {
+		List<OmegaPlane> frameList = null;
 		if (this.frames.containsKey(c)) {
-			final Map<Integer, List<OmegaFrame>> subMap = this.frames.get(c);
+			final Map<Integer, List<OmegaPlane>> subMap = this.frames.get(c);
 			if (subMap.containsKey(z)) {
 				frameList = subMap.get(z);
 			} else {
@@ -177,9 +183,9 @@ public class OmegaImagePixels extends OmegaElement implements
 	}
 
 	public void addFrames(final Integer c, final Integer z,
-	        final List<OmegaFrame> frames) {
-		List<OmegaFrame> frameList = null;
-		Map<Integer, List<OmegaFrame>> subMap = null;
+	        final List<OmegaPlane> frames) {
+		List<OmegaPlane> frameList = null;
+		Map<Integer, List<OmegaPlane>> subMap = null;
 		if (this.frames.containsKey(c)) {
 			subMap = this.frames.get(c);
 			if (subMap.containsKey(z)) {
@@ -198,9 +204,9 @@ public class OmegaImagePixels extends OmegaElement implements
 	}
 
 	public void addFrame(final Integer c, final Integer z,
-	        final OmegaFrame frame) {
-		List<OmegaFrame> frameList = null;
-		Map<Integer, List<OmegaFrame>> subMap = null;
+	        final OmegaPlane frame) {
+		List<OmegaPlane> frameList = null;
+		Map<Integer, List<OmegaPlane>> subMap = null;
 		if (this.frames.containsKey(c)) {
 			subMap = this.frames.get(c);
 			if (subMap.containsKey(z)) {
@@ -218,10 +224,10 @@ public class OmegaImagePixels extends OmegaElement implements
 		this.frames.put(c, subMap);
 	}
 
-	public OmegaFrame getFrame(final Integer c, final Integer z, final long id) {
-		List<OmegaFrame> frameList = null;
+	public OmegaPlane getFrame(final Integer c, final Integer z, final long id) {
+		List<OmegaPlane> frameList = null;
 		if (this.frames.containsKey(c)) {
-			final Map<Integer, List<OmegaFrame>> subMap = this.frames.get(c);
+			final Map<Integer, List<OmegaPlane>> subMap = this.frames.get(c);
 			if (subMap.containsKey(z)) {
 				frameList = subMap.get(z);
 			} else {
@@ -231,7 +237,7 @@ public class OmegaImagePixels extends OmegaElement implements
 			frameList = new ArrayList<>();
 		}
 
-		for (final OmegaFrame frame : frameList) {
+		for (final OmegaPlane frame : frameList) {
 			if (frame.getElementID() == id)
 				return frame;
 		}
@@ -239,9 +245,9 @@ public class OmegaImagePixels extends OmegaElement implements
 	}
 
 	public boolean containsFrame(final Integer c, final Integer z, final long id) {
-		List<OmegaFrame> frameList = null;
+		List<OmegaPlane> frameList = null;
 		if (this.frames.containsKey(c)) {
-			final Map<Integer, List<OmegaFrame>> subMap = this.frames.get(c);
+			final Map<Integer, List<OmegaPlane>> subMap = this.frames.get(c);
 			if (subMap.containsKey(z)) {
 				frameList = subMap.get(z);
 			} else {
@@ -251,7 +257,7 @@ public class OmegaImagePixels extends OmegaElement implements
 			frameList = new ArrayList<>();
 		}
 
-		for (final OmegaFrame frame : frameList) {
+		for (final OmegaPlane frame : frameList) {
 			if (frame.getElementID() == id)
 				return true;
 		}
@@ -296,5 +302,15 @@ public class OmegaImagePixels extends OmegaElement implements
 
 	public void setSelectedC(final int index, final boolean isActive) {
 		this.selectedC[index] = isActive;
+	}
+
+	@Override
+	public void setOmeroId(final Long omeroId) {
+		this.omeroId = omeroId;
+	}
+
+	@Override
+	public Long getOmeroId() {
+		return this.omeroId;
 	}
 }

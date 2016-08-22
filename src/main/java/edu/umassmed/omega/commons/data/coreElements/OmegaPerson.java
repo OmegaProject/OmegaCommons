@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,14 +25,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.coreElements;
 
 public class OmegaPerson extends OmegaElement {
 
 	private final String firstName, lastName;
 
 	public OmegaPerson(final String firstName, final String lastName) {
-		super((long) -1);
+		super(-1L);
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
@@ -43,6 +43,10 @@ public class OmegaPerson extends OmegaElement {
 
 	public String getLastName() {
 		return this.lastName;
+	}
+
+	public String printName() {
+		return this.firstName + " " + this.lastName;
 	}
 
 	public boolean isSamePersonAs(final OmegaPerson anotherPerson) {

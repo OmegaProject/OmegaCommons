@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,24 +25,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaParticleLinkingRun extends OmegaAnalysisRun {
 	private final List<OmegaTrajectory> resultingTrajectories;
 
 	public OmegaParticleLinkingRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
+	        final OmegaRunDefinition algorithmSpec,
 	        final List<OmegaTrajectory> resultingTrajectory) {
-		super(owner, algorithmSpec);
+		super(owner, algorithmSpec, AnalysisRunType.OmegaParticleLinkingRun);
+
+		this.resultingTrajectories = resultingTrajectory;
+
+		this.reorderParticles();
+	}
+
+	protected OmegaParticleLinkingRun(final OmegaExperimenter owner,
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
+	        final List<OmegaTrajectory> resultingTrajectory) {
+		super(owner, algorithmSpec, type);
 
 		this.resultingTrajectories = resultingTrajectory;
 
@@ -50,9 +60,20 @@ public class OmegaParticleLinkingRun extends OmegaAnalysisRun {
 	}
 
 	public OmegaParticleLinkingRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec, final String name,
+	        final OmegaRunDefinition algorithmSpec, final String name,
 	        final List<OmegaTrajectory> resultingTrajectories) {
-		super(owner, algorithmSpec, name);
+		super(owner, algorithmSpec, AnalysisRunType.OmegaParticleLinkingRun,
+				name);
+
+		this.resultingTrajectories = resultingTrajectories;
+
+		this.reorderParticles();
+	}
+
+	protected OmegaParticleLinkingRun(final OmegaExperimenter owner,
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
+			final String name, final List<OmegaTrajectory> resultingTrajectories) {
+		super(owner, algorithmSpec, type, name);
 
 		this.resultingTrajectories = resultingTrajectories;
 
@@ -60,10 +81,21 @@ public class OmegaParticleLinkingRun extends OmegaAnalysisRun {
 	}
 
 	public OmegaParticleLinkingRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Date timeStamps, final String name,
-	        final List<OmegaTrajectory> resultingTrajectories) {
-		super(owner, algorithmSpec, timeStamps, name);
+	        final OmegaRunDefinition algorithmSpec, final Date timeStamps,
+			final String name, final List<OmegaTrajectory> resultingTrajectories) {
+		super(owner, algorithmSpec, AnalysisRunType.OmegaParticleLinkingRun,
+				timeStamps, name);
+
+		this.resultingTrajectories = resultingTrajectories;
+
+		this.reorderParticles();
+	}
+
+	protected OmegaParticleLinkingRun(final OmegaExperimenter owner,
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
+			final Date timeStamps, final String name,
+			final List<OmegaTrajectory> resultingTrajectories) {
+		super(owner, algorithmSpec, type, timeStamps, name);
 
 		this.resultingTrajectories = resultingTrajectories;
 

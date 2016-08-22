@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.algorithmsElements;
+package edu.umassmed.omega.commons.algorithmsElements;
 
 public class OmegaAlgorithmSegment {
 	private final OmegaAlgorithmPoint from, to;

@@ -1,6 +1,6 @@
-package main.java.edu.umassmed.omega.commons.plugins.interfaces;
+package edu.umassmed.omega.commons.plugins.interfaces;
 
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
 
 public interface OmegaLoaderPluginInterface {
 	public OmegaGateway getGateway();

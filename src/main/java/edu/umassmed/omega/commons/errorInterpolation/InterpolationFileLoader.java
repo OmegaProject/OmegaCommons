@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.errorInterpolation;
+package edu.umassmed.omega.commons.errorInterpolation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.utilities.CSVFileLoader;
+import edu.umassmed.omega.commons.utilities.CSVFileLoader;
 
 public class InterpolationFileLoader extends CSVFileLoader {
 

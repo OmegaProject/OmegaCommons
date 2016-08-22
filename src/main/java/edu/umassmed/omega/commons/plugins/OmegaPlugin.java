@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.plugins;
+package edu.umassmed.omega.commons.plugins;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,10 +37,10 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.eventSystem.OmegaPluginEventListener;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaPluginEvent;
-import main.java.edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionPluginMissingData;
-import main.java.edu.umassmed.omega.commons.gui.GenericPluginPanel;
+import edu.umassmed.omega.commons.eventSystem.OmegaPluginEventListener;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaPluginEvent;
+import edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionPluginMissingData;
+import edu.umassmed.omega.commons.gui.GenericPluginPanel;
 
 public abstract class OmegaPlugin {
 	private final List<OmegaPluginEventListener> listeners = new ArrayList<OmegaPluginEventListener>();

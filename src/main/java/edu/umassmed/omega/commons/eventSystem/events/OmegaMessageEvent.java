@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 
 public class OmegaMessageEvent {

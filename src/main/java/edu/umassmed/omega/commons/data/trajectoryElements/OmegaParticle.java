@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,13 +25,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.trajectoryElements;
+package edu.umassmed.omega.commons.data.trajectoryElements;
 
 public class OmegaParticle extends OmegaROI {
 
 	private final Double intensity;
 	private final Double probability;
 
+	// ************ RETRO COMPATIBILITY ************//
+	// ************ TO BE REMOVED ASAP ************//
 	private final Double totalSignal;
 	private final Integer numOfSignals;
 	private final Double meanSignal;
@@ -39,8 +41,9 @@ public class OmegaParticle extends OmegaROI {
 	private final Double snr;
 	private final Double meanBackground;
 	private final Double meanNoise;
-	private final Double m0;
-	private final Double m2;
+	private Double m0, m2;
+
+	// ************ END COMPATIBILITY ************//
 
 	public OmegaParticle(final int frameIndex, final double x, final double y) {
 		super(frameIndex, x, y);
@@ -48,6 +51,8 @@ public class OmegaParticle extends OmegaROI {
 		this.intensity = null;
 		this.probability = null;
 
+		// ************ RETRO COMPATIBILITY ************//
+		// ************ TO BE REMOVED ASAP ************//
 		this.totalSignal = null;
 		this.numOfSignals = null;
 		this.meanSignal = null;
@@ -57,6 +62,7 @@ public class OmegaParticle extends OmegaROI {
 		this.meanNoise = null;
 		this.m0 = null;
 		this.m2 = null;
+		// ************ END COMPATIBILITY ************//
 	}
 
 	public OmegaParticle(final int frameIndex, final double x, final double y,
@@ -66,6 +72,8 @@ public class OmegaParticle extends OmegaROI {
 		this.intensity = intensity;
 		this.probability = null;
 
+		// ************ RETRO COMPATIBILITY ************//
+		// ************ TO BE REMOVED ASAP ************//
 		this.totalSignal = null;
 		this.numOfSignals = null;
 		this.meanSignal = null;
@@ -75,6 +83,7 @@ public class OmegaParticle extends OmegaROI {
 		this.meanNoise = null;
 		this.m0 = null;
 		this.m2 = null;
+		// ************ END COMPATIBILITY ************//
 	}
 
 	public OmegaParticle(final int frameIndex, final double x, final double y,
@@ -84,6 +93,8 @@ public class OmegaParticle extends OmegaROI {
 		this.intensity = intensity;
 		this.probability = probability;
 
+		// ************ RETRO COMPATIBILITY ************//
+		// ************ TO BE REMOVED ASAP ************//
 		this.totalSignal = null;
 		this.numOfSignals = null;
 		this.meanSignal = null;
@@ -93,8 +104,11 @@ public class OmegaParticle extends OmegaROI {
 		this.meanNoise = null;
 		this.m0 = null;
 		this.m2 = null;
+		// ************ END COMPATIBILITY ************//
 	}
 
+	// ************ RETRO COMPATIBILITY ************//
+	// ************ TO BE REMOVED ASAP ************//
 	public OmegaParticle(final int frameIndex, final double x, final double y,
 	        final double totalSignal, final int numOfSignals,
 	        final double meanSignal, final double peakSignal, final double snr,
@@ -116,6 +130,8 @@ public class OmegaParticle extends OmegaROI {
 		this.m2 = m2;
 	}
 
+	// ************ END COMPATIBILITY ************//
+
 	public Double getIntensity() {
 		return this.intensity;
 	}
@@ -123,6 +139,9 @@ public class OmegaParticle extends OmegaROI {
 	public Double getProbability() {
 		return this.probability;
 	}
+
+	// ************ RETRO COMPATIBILITY ************//
+	// ************ TO BE REMOVED ASAP ************//
 
 	public Double getTotalSignal() {
 		return this.totalSignal;
@@ -159,4 +178,13 @@ public class OmegaParticle extends OmegaROI {
 	public Double getM2() {
 		return this.m2;
 	}
+
+	public void setM0(final double m0) {
+		this.m0 = m0;
+	}
+
+	public void setM2(final double m2) {
+		this.m2 = m2;
+	}
+	// ************ END COMPATIBILITY ************//
 }

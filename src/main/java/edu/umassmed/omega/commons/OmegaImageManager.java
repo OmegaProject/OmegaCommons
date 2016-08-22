@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons;
+package edu.umassmed.omega.commons;
 
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;

@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,15 +14,15 @@ import java.util.Map;
 
 import javax.swing.RootPaneContainer;
 
-import main.java.edu.umassmed.omega.commons.OmegaImageManager;
-import main.java.edu.umassmed.omega.commons.OmegaLogFileManager;
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import main.java.edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
-import main.java.edu.umassmed.omega.commons.runnable.TBROIThumbnailLoader;
+import edu.umassmed.omega.commons.OmegaImageManager;
+import edu.umassmed.omega.commons.OmegaLogFileManager;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
+import edu.umassmed.omega.commons.runnable.TBROIThumbnailLoader;
 
 public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 
@@ -44,8 +44,8 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 	private final boolean isSelectionEnabled;
 
 	public GenericTrajectoriesBrowserTrajectoriesPanel(
-			final RootPaneContainer parent, final GenericBrowserPanel tbPanel,
-			final OmegaGateway gateway, final boolean isSelectionEnabled) {
+	        final RootPaneContainer parent, final GenericBrowserPanel tbPanel,
+	        final OmegaGateway gateway, final boolean isSelectionEnabled) {
 		super(parent);
 		this.tbPanel = tbPanel;
 
@@ -127,14 +127,14 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 	private void drawSelectedTrajectoryBackground(final Graphics2D g2D) {
 		for (int y = 0; y < this.tbPanel.getNumberOfTrajectories(); y++) {
 			final OmegaTrajectory traj = this.tbPanel.getShownTrajectories()
-			        .get(y);
+					.get(y);
 			final int yPos = GenericBrowserPanel.SPOT_SPACE_DEFAULT * y;
 			final int adjY = yPos;
 			if (this.tbPanel.getSelectedTrajectories().contains(traj)) {
 				g2D.setBackground(OmegaConstants
-						.getDefaultSelectionBackgroundColor());
+				        .getDefaultSelectionBackgroundColor());
 				g2D.clearRect(0, adjY, this.getWidth(),
-						GenericBrowserPanel.SPOT_SPACE_DEFAULT);
+				        GenericBrowserPanel.SPOT_SPACE_DEFAULT);
 				g2D.setBackground(Color.white);
 			}
 		}
@@ -148,7 +148,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 		this.particlesMap.clear();
 		for (int y = 0; y < this.tbPanel.getNumberOfTrajectories(); y++) {
 			final OmegaTrajectory traj = this.tbPanel.getShownTrajectories()
-			        .get(y);
+					.get(y);
 			final List<OmegaROI> rois = traj.getROIs();
 			final int yPos = ((space * y) + (space / 4)) - border;
 			if (!this.trajectoriesMap.containsKey(yPos)) {
@@ -159,7 +159,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 				final int roiIndex = roi.getFrameIndex();
 				BufferedImage bufferedImage = null;
 				final List<BufferedImage> buffImages = OmegaImageManager
-						.getImages(this.img.getElementID());
+				        .getImages(this.img.getOmeroId());
 				// if (this.buffImages.size() > roiIndex) {
 				// bufferedImage = this.buffImages.get(roiIndex);
 				// }
@@ -167,7 +167,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 					bufferedImage = buffImages.get(roiIndex);
 				}
 				final int xPos = ((space * roiIndex) - (size / 2) - border)
-						+ (space / 2);
+				        + (space / 2);
 				final Point p = new Point(xPos, yPos);
 				this.particlesMap.put(p, roi);
 				if (traj.getColor() == null) {
@@ -177,7 +177,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 					final OmegaROI nextROI = rois.get(x + 1);
 					final int nextROIIndex = nextROI.getFrameIndex();
 					final int xNextPos = ((space * nextROIIndex) - (size / 2) - border)
-							+ (space / 2);
+					        + (space / 2);
 					final Point p2 = new Point(xNextPos, yPos);
 					this.drawConnection(g2D, p, p2, traj.getColor());
 				}
@@ -185,7 +185,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 					this.drawParticleSquare(g2D, p, traj.getColor());
 				} else {
 					this.drawParticleImage(g2D, p, traj.getColor(),
-							bufferedImage, roi);
+					        bufferedImage, roi);
 				}
 			}
 
@@ -240,7 +240,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 	}
 
 	private void drawConnection(final Graphics2D g2D, final Point p,
-			final Point p2, final Color c) {
+	        final Point p2, final Color c) {
 		final int size = GenericBrowserPanel.SPOT_SIZE_DEFAULT;
 		g2D.setColor(c);
 		final int width = p2.x - p.x;
@@ -250,28 +250,28 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 	}
 
 	private void drawParticleSquare(final Graphics2D g2D, final Point p,
-			final Color color) {
+	        final Color color) {
 		final int border = GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER;
 		final int spotSize = GenericBrowserPanel.SPOT_SIZE_DEFAULT
-				+ (GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER * 2);
+		        + (GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER * 2);
 		g2D.setColor(color);
 		g2D.fillRect(p.x - border, p.y - border, spotSize, spotSize);
 		g2D.setColor(Color.black);
 	}
 
 	private void drawParticleImage(final Graphics2D g2D, final Point p,
-			final Color color, final BufferedImage bufferedImage,
-			final OmegaROI roi) {
+	        final Color color, final BufferedImage bufferedImage,
+	        final OmegaROI roi) {
 		final int radius = this.tbPanel.getRadius();
 		final int border = GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER;
 		final int spotSize = GenericBrowserPanel.SPOT_SIZE_DEFAULT
-				+ (GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER * 2);
+		        + (GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER * 2);
 		final double xD = roi.getX();
 		final double yD = roi.getY();
 		final int x1 = new BigDecimal(String.valueOf(xD)).setScale(0,
-				BigDecimal.ROUND_HALF_UP).intValue();
+		        BigDecimal.ROUND_HALF_UP).intValue();
 		final int y1 = new BigDecimal(String.valueOf(yD)).setScale(0,
-				BigDecimal.ROUND_HALF_UP).intValue();
+		        BigDecimal.ROUND_HALF_UP).intValue();
 		g2D.setColor(color);
 		g2D.fillRect(p.x - border, p.y - border, spotSize, spotSize);
 		g2D.setColor(Color.black);
@@ -280,9 +280,9 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 		final int xS2 = x1 + radius;
 		final int yS2 = y1 + radius;
 		g2D.drawImage(bufferedImage, p.x, p.y, p.x
-				+ (GenericBrowserPanel.SPOT_SIZE_DEFAULT), p.y
-				+ (GenericBrowserPanel.SPOT_SIZE_DEFAULT), xS1, yS1, xS2, yS2,
-				this);
+		        + (GenericBrowserPanel.SPOT_SIZE_DEFAULT), p.y
+		        + (GenericBrowserPanel.SPOT_SIZE_DEFAULT), xS1, yS1, xS2, yS2,
+		        this);
 	}
 
 	@Override
@@ -294,11 +294,11 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 		final Graphics2D g2D = (Graphics2D) g;
 		g2D.setBackground(Color.white);
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		        RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+		        RenderingHints.VALUE_RENDER_QUALITY);
 		g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g2D.clearRect(0, 0, this.getWidth(), this.getHeight());
 
 		this.drawAlternateTimeframeBackground(g2D);
@@ -321,28 +321,28 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 		this.img = img;
 		// this.buffImages.clear();
 		if ((img == null)
-				|| ((this.frameLoaderThread != null) && this.frameLoaderThread
-						.isAlive())) {
+		        || ((this.frameLoaderThread != null) && this.frameLoaderThread
+		                .isAlive())) {
 			this.frameLoader.kill();
 			// try {
-				// this.frameLoaderThread.join();
+			// this.frameLoaderThread.join();
 			// } catch (final InterruptedException ex) {
 			// OmegaLogFileManager.handleCoreException(ex);
 			// }
 		}
-		if (OmegaImageManager.getImages(img.getElementID()) != null) {
+		if (OmegaImageManager.getImages(img.getOmeroId()) != null) {
 			this.tbPanel.updateMessageStatus(new OmegaMessageEventTBLoader(
-			        "All frames loaded", true));
+					"All frames loaded", true));
 			this.frameLoader = null;
 			return;
 		}
 		this.frameLoader = new TBROIThumbnailLoader(this.tbPanel, this.gateway,
-				this.img);
+		        this.img);
 		this.frameLoaderThread = new Thread(this.frameLoader);
 		this.frameLoaderThread.setName(this.frameLoader.getClass()
-				.getSimpleName());
+		        .getSimpleName());
 		OmegaLogFileManager
-		.registerAsExceptionHandlerOnThread(this.frameLoaderThread);
+		        .registerAsExceptionHandlerOnThread(this.frameLoaderThread);
 		this.frameLoaderThread.start();
 	}
 
@@ -352,7 +352,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 		if (this.frameLoader != null) {
 			final List<BufferedImage> images = this.frameLoader.getImages();
 			OmegaImageManager.clearImages();
-			OmegaImageManager.saveImages(this.img.getElementID(), images);
+			OmegaImageManager.saveImages(this.img.getOmeroId(), images);
 		}
 		// this.buffImages.addAll(this.frameLoader.getImages());
 		this.repaint();

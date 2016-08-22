@@ -25,9 +25,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.exceptions;
+package edu.umassmed.omega.commons.exceptions;
 
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaCoreExceptionPluginMissingData extends OmegaCoreExceptionPlugin {
 

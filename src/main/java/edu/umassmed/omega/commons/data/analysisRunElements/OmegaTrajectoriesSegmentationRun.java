@@ -25,7 +25,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,10 +33,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrajectoriesSegmentationRun extends OmegaAnalysisRun {
 
@@ -44,10 +44,11 @@ public class OmegaTrajectoriesSegmentationRun extends OmegaAnalysisRun {
 	private final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments;
 
 	public OmegaTrajectoriesSegmentationRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
-	        final OmegaSegmentationTypes segmentationTypes) {
-		super(owner, algorithmSpec);
+			final OmegaRunDefinition algorithmSpec,
+			final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
+			final OmegaSegmentationTypes segmentationTypes) {
+		super(owner, algorithmSpec,
+		        AnalysisRunType.OmegaTrajectoriesSegmentationRun);
 		this.resultingSegments = resultingSegments;
 		this.segmentationTypes = segmentationTypes;
 
@@ -55,10 +56,11 @@ public class OmegaTrajectoriesSegmentationRun extends OmegaAnalysisRun {
 	}
 
 	public OmegaTrajectoriesSegmentationRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec, final String name,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
-	        final OmegaSegmentationTypes segmentationTypes) {
-		super(owner, algorithmSpec, name);
+			final OmegaRunDefinition algorithmSpec, final String name,
+			final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
+			final OmegaSegmentationTypes segmentationTypes) {
+		super(owner, algorithmSpec,
+		        AnalysisRunType.OmegaTrajectoriesSegmentationRun, name);
 		this.resultingSegments = resultingSegments;
 		this.segmentationTypes = segmentationTypes;
 
@@ -66,11 +68,13 @@ public class OmegaTrajectoriesSegmentationRun extends OmegaAnalysisRun {
 	}
 
 	public OmegaTrajectoriesSegmentationRun(final OmegaExperimenter owner,
-	        final OmegaAlgorithmSpecification algorithmSpec,
-	        final Date timeStamps, final String name,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
-	        final OmegaSegmentationTypes segmentationTypes) {
-		super(owner, algorithmSpec, timeStamps, name);
+			final OmegaRunDefinition algorithmSpec,
+			final Date timeStamps, final String name,
+			final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
+			final OmegaSegmentationTypes segmentationTypes) {
+		super(owner, algorithmSpec,
+		        AnalysisRunType.OmegaTrajectoriesSegmentationRun, timeStamps,
+		        name);
 		this.resultingSegments = resultingSegments;
 		this.segmentationTypes = segmentationTypes;
 
@@ -80,21 +84,21 @@ public class OmegaTrajectoriesSegmentationRun extends OmegaAnalysisRun {
 	private void reorderSegments() {
 		for (final OmegaTrajectory traj : this.resultingSegments.keySet()) {
 			Collections.sort(this.resultingSegments.get(traj),
-					new Comparator<OmegaSegment>() {
-				@Override
-				public int compare(final OmegaSegment o1,
-						final OmegaSegment o2) {
-					final int o1Start = o1.getStartingROI()
-							.getFrameIndex();
-					final int o2Start = o2.getStartingROI()
-							.getFrameIndex();
-					if (o1Start == o2Start)
-						return 0;
-					else if (o1Start < o2Start)
-						return -1;
-					return 1;
-				};
-			});
+			        new Comparator<OmegaSegment>() {
+				        @Override
+				        public int compare(final OmegaSegment o1,
+				                final OmegaSegment o2) {
+					        final int o1Start = o1.getStartingROI()
+					                .getFrameIndex();
+					        final int o2Start = o2.getStartingROI()
+					                .getFrameIndex();
+					        if (o1Start == o2Start)
+						        return 0;
+					        else if (o1Start < o2Start)
+						        return -1;
+					        return 1;
+				        };
+			        });
 		}
 	}
 

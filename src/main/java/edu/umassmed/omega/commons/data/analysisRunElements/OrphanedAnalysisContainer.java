@@ -1,9 +1,9 @@
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 
 public class OrphanedAnalysisContainer extends OmegaElement implements
         OmegaAnalysisRunContainer {

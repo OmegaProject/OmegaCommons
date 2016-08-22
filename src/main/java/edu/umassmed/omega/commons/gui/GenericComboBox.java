@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.awt.Rectangle;
 
@@ -13,11 +13,11 @@ import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 import javax.swing.plaf.synth.SynthComboBoxUI;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
-
 import com.sun.java.swing.plaf.motif.MotifComboBoxUI;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
+
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericComboBox<T> extends JComboBox<T> {
 	private static final long serialVersionUID = -4643314968663559081L;

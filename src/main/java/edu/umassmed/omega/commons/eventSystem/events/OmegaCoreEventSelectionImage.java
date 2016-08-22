@@ -1,6 +1,6 @@
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 
 public class OmegaCoreEventSelectionImage extends OmegaCoreEvent {
 	private final OmegaImage image;

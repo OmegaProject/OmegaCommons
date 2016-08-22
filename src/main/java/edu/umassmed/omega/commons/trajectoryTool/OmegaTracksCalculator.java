@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.trajectoryTool;
+package edu.umassmed.omega.commons.trajectoryTool;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,19 +6,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaConstants;
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import main.java.edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEvent;
-import main.java.edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
-import main.java.edu.umassmed.omega.commons.runnable.OmegaDiffusivityAnalyzer;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaAlgorithmsUtilities;
-import main.java.edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEvent;
+import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInterface;
+import edu.umassmed.omega.commons.runnable.OmegaDiffusivityAnalyzer;
+import edu.umassmed.omega.commons.utilities.OmegaAlgorithmsUtilities;
+import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
 
 public class OmegaTracksCalculator extends OmegaTrajectoryIOUtility implements
 OmegaMessageDisplayerPanelInterface {
@@ -44,7 +45,7 @@ OmegaMessageDisplayerPanelInterface {
 		this.logOption = OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY;
 		this.computeError = OmegaConstants.PARAMETER_ERROR_OPTION_DISABLED;
 		this.readDirName = "E:\\2014-10-06_TrajectoryGeneratorValidation_NoNoise";
-		this.writeDirName = "E:\\2015-10-16_OmegaSMSSAndDValidation_NoNoise_WD3";
+		this.writeDirName = "E:\\2016-01-15_OmegaSMSSAndDValidation_NoNoise_WD3_Fixed_FullSim";
 		this.dir = new File(this.readDirName);
 		final String omegaSMSSDirName = this.writeDirName + "\\omegaSMSS";
 		final String omegaDDirName = this.writeDirName + "\\omegaD";
@@ -53,8 +54,8 @@ OmegaMessageDisplayerPanelInterface {
 		this.omegaDDir = new File(omegaDDirName);
 		this.omegaDDir.mkdir();
 		this.subDirName1 = "tracks_[\\d-]+";
-		this.subDirName2 = "L_20_SMSS_[\\d-]+_D_[\\d-]+";
-		// this.subDirName2 = "L_[\\d]+_SMSS_[\\d-]+_D_[\\d-]+";
+		// this.subDirName2 = "L_30_SMSS_[\\d-]+_D_[\\d-]+";
+		this.subDirName2 = "L_[\\d]+_SMSS_[\\d-]+_D_[\\d-]+";
 		this.dataOrder = new ArrayList<String>();
 		this.dataOrder.add(OmegaTracksImporter.PARTICLE_FRAMEINDEX);
 		this.dataOrder.add(OmegaTracksImporter.PARTICLE_XCOORD);
@@ -96,6 +97,10 @@ OmegaMessageDisplayerPanelInterface {
 					}
 					final String[] vals2 = fName2.split("_");
 					final Integer L = Integer.valueOf(vals2[1]);
+					// if ((L != 20) && (L != 30)) {
+					// System.out.println("not selected L, skip");
+					// continue;
+					// }
 					final Double SMSS = Double.valueOf(vals2[3].replace("-",
 							"."));
 					final Double D = Double.valueOf(vals2[5].replace("-", "."));
@@ -181,6 +186,8 @@ OmegaMessageDisplayerPanelInterface {
 							this.computeError));
 					final OmegaDiffusivityAnalyzer analyzer = new OmegaDiffusivityAnalyzer(
 							this, segments, params);
+					analyzer.setFileOutput("L_" + L + "_D_" + D + "_SMSS_"
+							+ SMSS);
 					final Thread t = new Thread(analyzer);
 					t.start();
 					t.setName("analyzer_SNR_" + snr + "_L_" + L + "_SMSS_"
@@ -204,11 +211,11 @@ OmegaMessageDisplayerPanelInterface {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println();
 					System.out
 					.println(Calendar.getInstance().getTime()
 							+ " analyzer finished, lasted " + counter
 							+ " mins");
+					System.out.println();
 
 					final Map<OmegaSegment, Double[][]> segmentD = analyzer
 							.getGammaDFromLogResults();
@@ -244,7 +251,10 @@ OmegaMessageDisplayerPanelInterface {
 	private void writeValues() {
 		int snrCounter = 0, lCounter = 0;
 		String snrString = "", lString = "";
-		for (final Double snr : this.smssOutput.keySet()) {
+		final List<Double> snrs = new ArrayList<Double>(
+		        this.smssOutput.keySet());
+		Collections.sort(snrs);
+		for (final Double snr : snrs) {
 			snrCounter++;
 			if (snrCounter < 10) {
 				snrString = "0" + String.valueOf(snrCounter);
@@ -254,8 +264,11 @@ OmegaMessageDisplayerPanelInterface {
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap = this.smssOutput
 					.get(snr);
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap = this.dOutput
-					.get(snr);
-			for (final Integer l : lSMSSMap.keySet()) {
+			        .get(snr);
+			final List<Integer> ls = new ArrayList<Integer>(this.smssOutput
+			        .get(snr).keySet());
+			Collections.sort(ls);
+			for (final Integer l : ls) {
 				lCounter++;
 				if (lCounter < 10) {
 					lString = "0" + String.valueOf(lCounter);
@@ -266,12 +279,18 @@ OmegaMessageDisplayerPanelInterface {
 				final Map<Double, Map<Double, List<Double>>> smssSMSSMap = lSMSSMap
 						.get(l);
 				final Map<Double, Map<Double, List<Double>>> smssDMap = lDMap
-						.get(l);
-				for (final Double smss : smssSMSSMap.keySet()) {
+				        .get(l);
+				final List<Double> smsss = new ArrayList<Double>(lSMSSMap
+				        .get(l).keySet());
+				Collections.sort(smsss);
+				for (final Double smss : smsss) {
 					final Map<Double, List<Double>> dSMSSMap = smssSMSSMap
 							.get(smss);
 					final Map<Double, List<Double>> dDMap = smssDMap.get(smss);
-					for (final Double d : dSMSSMap.keySet()) {
+					final List<Double> ds = new ArrayList<Double>(smssSMSSMap
+					        .get(smss).keySet());
+					Collections.sort(ds);
+					for (final Double d : ds) {
 						rowCounter++;
 						System.out.println("Computing SNR " + snr + " L " + l
 								+ " SMSS " + smss + " D " + d);

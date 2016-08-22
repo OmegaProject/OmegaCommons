@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -25,23 +25,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.data.analysisRunElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaParameter extends OmegaNamedElement {
 
 	private final Object value;
+	private final String unit;
 
 	public OmegaParameter(final String name, final String clazz,
-	        final String value) {
+			final String value, final String unit) {
+		this(name, OmegaParameter.getObjectValue(value, clazz), unit);
+	}
+
+	public OmegaParameter(final String name, final String clazz,
+			final String value) {
 		this(name, OmegaParameter.getObjectValue(value, clazz));
 	}
 
-	public OmegaParameter(final String name, final Object value) {
-		super(-1, name);
+	public OmegaParameter(final String name, final Object value,
+	        final String unit) {
+		super(-1L, name);
 
 		this.value = value;
+
+		this.unit = unit;
+	}
+
+	public OmegaParameter(final String name, final Object value) {
+		super(-1L, name);
+
+		this.value = value;
+
+		this.unit = null;
 	}
 
 	public Object getValue() {
@@ -74,4 +91,9 @@ public class OmegaParameter extends OmegaNamedElement {
 			return this.value.toString();
 	}
 
+	public String getUnit() {
+		if ((this.unit != null) && this.unit.isEmpty())
+			return null;
+		return this.unit;
+	}
 }

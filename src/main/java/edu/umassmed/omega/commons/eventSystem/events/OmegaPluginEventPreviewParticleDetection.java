@@ -25,38 +25,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package main.java.edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.eventSystem.events;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventPreviewParticleDetection extends
         OmegaPluginEventAlgorithm {
 
-	private final OmegaFrame frame;
+	private final OmegaPlane frame;
 	private final List<OmegaROI> resultingParticles;
 
 	public OmegaPluginEventPreviewParticleDetection(final OmegaElement element,
-	        final List<OmegaParameter> params, final OmegaFrame frame,
+	        final List<OmegaParameter> params, final OmegaPlane frame,
 	        final List<OmegaROI> resultingParticles) {
 		this(null, element, params, frame, resultingParticles);
 	}
 
 	public OmegaPluginEventPreviewParticleDetection(final OmegaPlugin source,
 	        final OmegaElement element, final List<OmegaParameter> params,
-	        final OmegaFrame frame, final List<OmegaROI> resultingParticles) {
+	        final OmegaPlane frame, final List<OmegaROI> resultingParticles) {
 		super(source, element, params);
 
 		this.frame = frame;
 		this.resultingParticles = resultingParticles;
 	}
 
-	public OmegaFrame getFrame() {
+	public OmegaPlane getFrame() {
 		return this.frame;
 	}
 

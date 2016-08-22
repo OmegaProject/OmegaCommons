@@ -1,12 +1,12 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import java.util.List;
 
-import main.java.edu.umassmed.omega.commons.constants.OmegaGUIConstants;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import main.java.edu.umassmed.omega.commons.data.coreElements.OmegaFrame;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import javafx.geometry.Insets;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
@@ -22,8 +22,8 @@ public class GenericTrackingSingleResultsFXPanel extends TitledPane {
 		if (element instanceof OmegaTrajectory) {
 			final OmegaTrajectory t = (OmegaTrajectory) element;
 			this.setText(t.getName());
-		} else if (element instanceof OmegaFrame) {
-			final OmegaFrame f = (OmegaFrame) element;
+		} else if (element instanceof OmegaPlane) {
+			final OmegaPlane f = (OmegaPlane) element;
 			this.setText("Frame " + f.getIndex());
 		}
 

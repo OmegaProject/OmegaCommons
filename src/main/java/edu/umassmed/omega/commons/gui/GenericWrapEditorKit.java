@@ -1,4 +1,4 @@
-package main.java.edu.umassmed.omega.commons.gui;
+package edu.umassmed.omega.commons.gui;
 
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BoxView;
