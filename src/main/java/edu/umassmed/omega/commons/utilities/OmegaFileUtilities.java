@@ -41,24 +41,24 @@ public class OmegaFileUtilities {
 
 	public static String getSptDllFilename(final String fileName) {
 		final String s = "." + File.separator + OmegaConstants.OMEGA_SPT_FOLDER
-				+ File.separator + fileName;
-		// return s;
-		return System.class.getResource(s).toString();
+		        + File.separator + fileName;
+		return s;
+		// return System.class.getResource(s).toString();
 	}
 
 	public static String getErrorInterpolationFilename(final String fileName) {
 		final String s = "." + File.separator
-		        + OmegaConstants.OMEGA_ERROR_INTERPOLATION_FOLDER
-		        + File.separator + fileName;
-		// return s;
-		return System.class.getResource(s).toString();
+				+ OmegaConstants.OMEGA_ERROR_INTERPOLATION_FOLDER
+				+ File.separator + fileName;
+		return s;
+		// return System.class.getResource(s).toString();
 	}
 
 	public static String getImageFilename(final String imageName) {
 		final String s = "." + File.separator
-				+ OmegaConstants.OMEGA_IMGS_FOLDER + File.separator + imageName;
-		// return s;
-		return System.class.getResource(s).toString();
+		        + OmegaConstants.OMEGA_IMGS_FOLDER + File.separator + imageName;
+		return s;
+		// return System.class.getResource(s).toString();
 	}
 
 	public static String getFilename(final String pathAndFileName) {
@@ -69,7 +69,7 @@ public class OmegaFileUtilities {
 	}
 
 	private static void copyFile(final File f1, final File f2,
-			final boolean append) throws IOException {
+	        final boolean append) throws IOException {
 		final FileWriter fw = new FileWriter(f2, append);
 		final BufferedWriter bw = new BufferedWriter(fw);
 		final FileReader fr = new FileReader(f1);
@@ -89,12 +89,12 @@ public class OmegaFileUtilities {
 	}
 
 	public static void copyFile(final File f1, final File f2)
-			throws IOException {
+	        throws IOException {
 		OmegaFileUtilities.copyFile(f1, f2, false);
 	}
 
 	public static void appendFile(final File f1, final File f2)
-			throws IOException {
+	        throws IOException {
 		OmegaFileUtilities.copyFile(f1, f2, true);
 	}
 
@@ -104,21 +104,21 @@ public class OmegaFileUtilities {
 	}
 
 	public static void createDirectory(final String dirName)
-			throws OmegaCoreExceptionFileManager {
+	        throws OmegaCoreExceptionFileManager {
 		final File dir = new File(dirName);
 		if (!dir.exists()) {
 			dir.mkdir();
 		} else
 			throw new OmegaCoreExceptionFileManager(
-					"createDirectory: directory " + dirName + " already exists");
+			        "createDirectory: directory " + dirName + " already exists");
 	}
 
 	public static void emptyDirectory(final String dirName)
-			throws OmegaCoreExceptionFileManager {
+	        throws OmegaCoreExceptionFileManager {
 		final File dir = new File(dirName);
 		if (!dir.exists())
 			throw new OmegaCoreExceptionFileManager(
-					"emptyDirectory: directory " + dirName + " doesn't exist");
+			        "emptyDirectory: directory " + dirName + " doesn't exist");
 		final String[] info = dir.list();
 		for (final String element : info) {
 			final File n = new File(dirName + File.separator + element);
@@ -131,7 +131,7 @@ public class OmegaFileUtilities {
 	}
 
 	private static void deleteDirectory(final String dirName)
-			throws OmegaCoreExceptionFileManager {
+	        throws OmegaCoreExceptionFileManager {
 		final File dir = new File(dirName);
 		final String[] children = dir.list();
 		for (final String element : children) {
@@ -140,6 +140,6 @@ public class OmegaFileUtilities {
 		final boolean deleted = dir.delete();
 		if (!deleted)
 			throw new OmegaCoreExceptionFileManager(
-					"deleteDirectory: it was not possible to delete " + dirName);
+			        "deleteDirectory: it was not possible to delete " + dirName);
 	}
 }
