@@ -73,6 +73,7 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.gui.dialogs.GenericConfirmationDialog;
 import edu.umassmed.omega.commons.gui.interfaces.GenericImageCanvasContainer;
 import edu.umassmed.omega.commons.utilities.OmegaColorManagerUtilities;
+import edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaImageRenderingUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
@@ -644,11 +645,11 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	private void renderNoImage() {
-		final String fileName = OmegaConstants.OMEGA_IMGS_FOLDER
-				+ File.separator + "noImage.jpg";
+		final String s = OmegaFileUtilities.getImageFilename("noImage.jpg");
 		BufferedImage img = null;
+		final File f = new File(s);
 		try {
-			img = ImageIO.read(new File(fileName));
+			img = ImageIO.read(f);
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return;

@@ -48,19 +48,19 @@ public class OmegaConstants {
 	public final static String OMEGA_DESCRIPTION = "<html>Open Microscopy Environment inteGrated Analysis</html>";
 
 	// ***PATHS AND FILENAMES
-	public final static String OMEGA_IMGS_FOLDER = File.separatorChar + "src"
-			+ File.separatorChar + "main" + File.separatorChar + "resources"
-			+ File.separatorChar + "images";
-	public final static String OMEGA_SPT_FOLDER = File.separatorChar + "src"
-			+ File.separatorChar + "main" + File.separatorChar + "resources"
-			+ File.separatorChar + "sptWinPlugin";
+	public final static String OMEGA_IMGS_FOLDER_2 = "." + File.separator
+	        + "src" + File.separator + "main" + File.separator + "resources"
+	        + File.separator + "images";
+	public final static String OMEGA_SPT_FOLDER_2 = "." + File.separator
+	        + "src" + File.separator + "main" + File.separator + "resources"
+	        + File.separator + "sptWinPlugin";
+	public final static String OMEGA_IMGS_FOLDER = "images";
+	public final static String OMEGA_SPT_FOLDER = "sptWinPlugin";
 	public final static String OMEGA_SPT_DLL = "omega-spt-stats";
-	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER = File.separatorChar
-	        + "src"
-	        + File.separatorChar
-	        + "main"
-	        + File.separatorChar
-	        + "resources" + File.separatorChar + "errorInterpolation";
+	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER_2 = "."
+	        + File.separator + "src" + File.separator + "main" + File.separator
+	        + "resources" + File.separator + "errorInterpolation";
+	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER = "errorInterpolation";
 	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE = "D_interpolation_data_old.csv";
 	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE = "SMSS_interpolation_data_old.csv";
 
