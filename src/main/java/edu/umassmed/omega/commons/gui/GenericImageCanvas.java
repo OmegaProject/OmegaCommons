@@ -43,8 +43,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -105,7 +105,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	/** Trajectories to be drawed, scaled. **/
 	private final List<OmegaTrajectory> selectedTrajectories, trajectories;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> selectedSegments,
-	segments;
+	        segments;
 
 	private int selectedTrajectoryIndex;
 
@@ -117,7 +117,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	private int radius;
 
 	private boolean isCompressed, showTrajectoriesOnlyUpToT,
-	showTrajectoriesOnlyActive, showTrajectoriesOnlyStartingAtT;
+	        showTrajectoriesOnlyActive, showTrajectoriesOnlyStartingAtT;
 
 	private JPopupMenu canvasMenu;
 	private JMenuItem canvasZoomIn, canvasZoomOut;
@@ -130,7 +130,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	 */
 	// final JPanelViewer jPanelViewer
 	public GenericImageCanvas(final RootPaneContainer parent,
-			final GenericImageCanvasContainer canvasContainer) {
+	        final GenericImageCanvasContainer canvasContainer) {
 		super(parent);
 
 		this.canvasContainer = canvasContainer;
@@ -176,7 +176,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 		this.canvasMenu.add(new JSeparator());
 
 		this.generateRandomColors = new JMenuItem(
-		        OmegaGUIConstants.RANDOM_COLORS);
+				OmegaGUIConstants.RANDOM_COLORS);
 		this.chooseColor = new JMenuItem(OmegaGUIConstants.CHOSE_COLOR);
 		this.canvasMenu.add(this.generateRandomColors);
 		// this.canvasMenu.add(new JSeparator());
@@ -188,8 +188,8 @@ public class GenericImageCanvas extends GenericScrollPane {
 			public void mouseClicked(final MouseEvent evt) {
 				final Point clickP = evt.getPoint();
 				GenericImageCanvas.this.handleMouseClick(clickP,
-						SwingUtilities.isRightMouseButton(evt),
-						evt.isControlDown());
+				        SwingUtilities.isRightMouseButton(evt),
+				        evt.isControlDown());
 			}
 
 			@Override
@@ -200,14 +200,14 @@ public class GenericImageCanvas extends GenericScrollPane {
 			@Override
 			public void mouseReleased(final MouseEvent evt) {
 				GenericImageCanvas.this.handleMouseReleased(evt.getPoint(),
-						SwingUtilities.isRightMouseButton(evt));
+				        SwingUtilities.isRightMouseButton(evt));
 			}
 		});
 		this.canvasPanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(final MouseEvent evt) {
 				GenericImageCanvas.this.handleMouseDragged(evt.getPoint(),
-						SwingUtilities.isRightMouseButton(evt));
+				        SwingUtilities.isRightMouseButton(evt));
 			}
 		});
 		this.canvasZoomOut.addActionListener(new ActionListener() {
@@ -247,14 +247,14 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	private void handleMouseReleased(final Point pos,
-			final boolean isRightButton) {
+	        final boolean isRightButton) {
 		if (isRightButton)
 			return;
 		this.computeScrollBarPositionOnDrag(this.mousePosition, pos);
 	}
 
 	private void computeScrollBarPositionOnDrag(final Point startP,
-			final Point endP) {
+	        final Point endP) {
 		final int diffX = startP.x - endP.x;
 		final int diffY = startP.y - endP.y;
 		final int hVal = this.getHorizontalScrollBar().getValue() + diffX;
@@ -266,7 +266,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	private void handleMouseClick(final Point clickP,
-			final boolean isRightButton, final boolean isControlDown) {
+	        final boolean isRightButton, final boolean isControlDown) {
 		this.findTrajectoryIndex(clickP);
 		this.canvasMenu.remove(this.chooseColor);
 		final int index = this.selectedTrajectoryIndex;
@@ -278,7 +278,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 			this.selectedTrajectories.clear();
 			if (traj != null) {
 				this.canvasMenu.add(this.chooseColor,
-				        this.canvasMenu.getComponentCount());
+						this.canvasMenu.getComponentCount());
 			}
 			this.canvasMenu.show(this.canvasPanel, clickP.x, clickP.y);
 		} else {
@@ -309,14 +309,14 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 	private void handleGenerateRandomColors() {
 		final GenericConfirmationDialog dialog = new GenericConfirmationDialog(
-				this.getParentContainer(),
-		        OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM,
-				OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM_MSG, true);
+		        this.getParentContainer(),
+				OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM,
+		        OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM_MSG, true);
 		dialog.setVisible(true);
 		if (!dialog.getConfirmation())
 			return;
 		final List<Color> colors = OmegaColorManagerUtilities
-				.generateRandomColors(this.trajectories.size());
+		        .generateRandomColors(this.trajectories.size());
 		for (int i = 0; i < this.trajectories.size(); i++) {
 			final OmegaTrajectory traj = this.trajectories.get(i);
 			final Color c = colors.get(i);
@@ -329,13 +329,13 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 	private void handlePickSingleColor() {
 		final OmegaTrajectory traj = this.trajectories
-				.get(this.selectedTrajectoryIndex);
+		        .get(this.selectedTrajectoryIndex);
 		final StringBuffer buf1 = new StringBuffer();
 		buf1.append(OmegaGUIConstants.TRACK_CHOSE_COLOR_DIALOG_MSG);
 		buf1.append(traj.getName());
 
 		final Color c = OmegaColorManagerUtilities.openPaletteColor(this,
-				buf1.toString(), traj.getColor());
+		        buf1.toString(), traj.getColor());
 
 		final StringBuffer buf2 = new StringBuffer();
 		buf2.append(OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM_MSG);
@@ -343,9 +343,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 		buf2.append("?");
 
 		final GenericConfirmationDialog dialog = new GenericConfirmationDialog(
-				this.getParentContainer(),
-		        OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM, buf2.toString(),
-		        true);
+		        this.getParentContainer(),
+				OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM, buf2.toString(),
+				true);
 		dialog.setVisible(true);
 		if (!dialog.getConfirmation())
 			return;
@@ -359,15 +359,15 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	private void sendCoreEventTrajectories(
-			final List<OmegaTrajectory> trajectories, final boolean selection) {
+	        final List<OmegaTrajectory> trajectories, final boolean selection) {
 		this.canvasContainer.sendCoreEventTrajectories(trajectories, selection);
 	}
 
 	private void sendCoreEventSegments(
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-	        final OmegaSegmentationTypes segmTypes, final boolean selection) {
+	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final OmegaSegmentationTypes segmTypes, final boolean selection) {
 		this.canvasContainer.sendCoreEventSegments(segments, segmTypes,
-		        selection);
+				selection);
 	}
 
 	private void findTrajectoryIndex(final Point clickP) {
@@ -380,9 +380,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 				final int roiX = (int) roi.getX();
 				final int roiY = (int) roi.getY();
 				if ((x < (roiX + 2)) && (x > (roiX - 2)) && (y < (roiY + 2))
-						&& (y > (roiY - 2))) {
+				        && (y > (roiY - 2))) {
 					trajIndex = GenericImageCanvas.this.trajectories
-							.indexOf(traj);
+					        .indexOf(traj);
 					break;
 				}
 			}
@@ -408,13 +408,13 @@ public class GenericImageCanvas extends GenericScrollPane {
 			final int scaledWidth = (int) (image.getWidth() * this.scale);
 			final int scaledHeight = (int) (image.getHeight() * this.scale);
 			dim = new Dimension(scaledWidth/*
-											 * + GenericImageCanvas.AXISSPACE +
-											 * 5
-											 */, scaledHeight /*
-															 * +
-															 * GenericImageCanvas
-															 * .AXISSPACE + 5
-															 */);
+			 * + GenericImageCanvas.AXISSPACE +
+			 * 5
+			 */, scaledHeight /*
+			 * +
+			 * GenericImageCanvas
+			 * .AXISSPACE + 5
+			 */);
 		}
 		this.canvasPanel.setPreferredSize(dim);
 		this.canvasPanel.setSize(dim);
@@ -452,7 +452,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 			final AffineTransform tx = new AffineTransform();
 			tx.scale(this.scale, this.scale);
 			final AffineTransformOp op = new AffineTransformOp(tx,
-					AffineTransformOp.TYPE_BILINEAR);
+			        AffineTransformOp.TYPE_BILINEAR);
 			scaledImage = op.filter(image, null);
 		} catch (final OutOfMemoryError ex) {
 			OmegaLogFileManager.handleCoreException(ex);
@@ -516,11 +516,11 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	public void setSegments(
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this.segments.clear();
 		if (segments != null) {
 			this.setTrajectories(new ArrayList<OmegaTrajectory>(segments
-			        .keySet()));
+					.keySet()));
 			this.segments.putAll(segments);
 		} else {
 			this.setTrajectories(null);
@@ -559,7 +559,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	public void updateTrajectories(final List<OmegaTrajectory> trajectories,
-			final boolean selection) {
+	        final boolean selection) {
 		// TODO check if this can be done smarter, maybe just repainting
 		// trajectories instead of everything
 		if (selection) {
@@ -578,8 +578,8 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	public void updateSegments(
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-	        final boolean selection) {
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final boolean selection) {
 		// TODO check if this can be done smarter, maybe just repainting
 		// trajectories instead of everything
 		if (selection) {
@@ -602,9 +602,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 		final double xD = traj.getROIs().get(0).getX() * this.scale;
 		final double yD = traj.getROIs().get(0).getY() * this.scale;
 		final int x = new BigDecimal(String.valueOf(xD)).setScale(2,
-				RoundingMode.HALF_UP).intValue();
+		        RoundingMode.HALF_UP).intValue();
 		final int y = new BigDecimal(String.valueOf(yD)).setScale(2,
-				RoundingMode.HALF_UP).intValue();
+		        RoundingMode.HALF_UP).intValue();
 		final int xPos = x - (this.getWidth() / 2);
 		final int yPos = y - (this.getHeight() / 2);
 		this.getVerticalScrollBar().setValue(yPos);
@@ -615,9 +615,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 		final double xD = segment.getStartingROI().getX() * this.scale;
 		final double yD = segment.getEndingROI().getY() * this.scale;
 		final int x = new BigDecimal(String.valueOf(xD)).setScale(2,
-				RoundingMode.HALF_UP).intValue();
+		        RoundingMode.HALF_UP).intValue();
 		final int y = new BigDecimal(String.valueOf(yD)).setScale(2,
-				RoundingMode.HALF_UP).intValue();
+		        RoundingMode.HALF_UP).intValue();
 		final int xPos = x - (this.getWidth() / 2);
 		final int yPos = y - (this.getHeight() / 2);
 		this.getVerticalScrollBar().setValue(yPos);
@@ -645,11 +645,13 @@ public class GenericImageCanvas extends GenericScrollPane {
 	}
 
 	private void renderNoImage() {
-		final String s = OmegaFileUtilities.getImageFilename("noImage.jpg");
+		final InputStream is = OmegaFileUtilities
+		        .getImageFilename("noImage.jpg");
 		BufferedImage img = null;
-		final File f = new File(s);
+		// final File f = new File(s);
+		// final File f = new File(s);
 		try {
-			img = ImageIO.read(f);
+			img = ImageIO.read(is);
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return;
@@ -668,14 +670,14 @@ public class GenericImageCanvas extends GenericScrollPane {
 			final int sizeY = this.pixels.getSizeY();
 			if (this.isCompressed) {
 				final int[] buf = this.gateway.renderAsPackedInt(id,
-						this.currentT, this.currentZ);
+				        this.currentT, this.currentZ);
 				img = OmegaImageRenderingUtilities.createImage(buf, 32, sizeX,
-						sizeY);
+				        sizeY);
 			} else {
 				final byte[] values = this.gateway.renderCompressed(id,
-						this.currentT, this.currentZ);
+				        this.currentT, this.currentZ);
 				final ByteArrayInputStream stream = new ByteArrayInputStream(
-						values);
+				        values);
 				img = ImageIO.read(stream);
 				img.setAccelerationPriority(1f);
 			}
@@ -695,7 +697,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 		private final GenericImageCanvas imagePanel;
 
 		public GenericCanvas(final RootPaneContainer parent,
-				final GenericImageCanvas imagePanel) {
+		        final GenericImageCanvas imagePanel) {
 			super(parent);
 			this.imagePanel = imagePanel;
 			this.setDoubleBuffered(true);
@@ -720,7 +722,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 					// TODO WARNING ERROR!
 					this.imagePanel.scale *= 0.5;
 					scaledImage = this.imagePanel
-							.imageZoom(this.imagePanel.image);
+					        .imageZoom(this.imagePanel.image);
 				}
 			} else {
 				scaledImage = this.imagePanel.image;
@@ -728,11 +730,11 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 			final Graphics2D g2D = (Graphics2D) g;
 			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+			        RenderingHints.VALUE_ANTIALIAS_ON);
 			g2D.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
+			        RenderingHints.VALUE_RENDER_QUALITY);
 			g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			final int width = scaledImage.getWidth();
 			final int height = scaledImage.getHeight();
 			final int scaledWidth = width;// (int) (width * this.scale);
@@ -764,18 +766,18 @@ public class GenericImageCanvas extends GenericScrollPane {
 				return;
 			if (this.imagePanel.scale != 1.0) {
 				this.imagePanel.scaledImage = this.imagePanel
-						.imageZoom(this.imagePanel.image);
+				        .imageZoom(this.imagePanel.image);
 			} else {
 				this.imagePanel.scaledImage = this.imagePanel.image;
 			}
 
 			final Graphics2D g2D = (Graphics2D) g;
 			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+			        RenderingHints.VALUE_ANTIALIAS_ON);
 			g2D.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
+			        RenderingHints.VALUE_RENDER_QUALITY);
 			g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			final int width = this.imagePanel.scaledImage.getWidth();
 			final int height = this.imagePanel.scaledImage.getHeight();
 			final int scaledWidth = width;// (int) (width * this.scale);
@@ -803,12 +805,12 @@ public class GenericImageCanvas extends GenericScrollPane {
 		}
 
 		private void drawSegments(final Graphics2D g2D, final int width,
-				final int height) {
+		        final int height) {
 
 		}
 
 		private void drawTrajectories(final Graphics2D g2D, final int width,
-				final int height) {
+		        final int height) {
 			final MathContext mc = new MathContext(4, RoundingMode.HALF_UP);
 			final double adjusterD = this.imagePanel.scale / 2;
 			final int adjuster = new BigDecimal(adjusterD, mc).intValue();
@@ -822,7 +824,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 					continue;
 				}
 				if (GenericImageCanvas.this.showTrajectoriesOnlyStartingAtT
-				        && (trajectory.getROIs().get(0).getFrameIndex() != GenericImageCanvas.this.currentT)) {
+						&& (trajectory.getROIs().get(0).getFrameIndex() != GenericImageCanvas.this.currentT)) {
 					continue;
 				}
 				final List<OmegaROI> rois = trajectory.getROIs();
@@ -830,7 +832,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				final OmegaROI lastROI = rois.get(rois.size() - 1);
 				if (GenericImageCanvas.this.showTrajectoriesOnlyActive) {
 					if ((lastROI.getFrameIndex() < GenericImageCanvas.this.currentT)
-							|| (firstROI.getFrameIndex() > GenericImageCanvas.this.currentT)) {
+					        || (firstROI.getFrameIndex() > GenericImageCanvas.this.currentT)) {
 						continue;
 					}
 				}
@@ -849,13 +851,13 @@ public class GenericImageCanvas extends GenericScrollPane {
 					final double x2D = two.getX() * this.imagePanel.scale;
 					final double y2D = two.getY() * this.imagePanel.scale;
 					final int x1 = new BigDecimal(x1D, mc).intValue()
-							+ adjuster;
+					        + adjuster;
 					final int y1 = new BigDecimal(y1D, mc).intValue()
-							+ adjuster;
+					        + adjuster;
 					final int x2 = new BigDecimal(x2D, mc).intValue()
-							+ adjuster;
+					        + adjuster;
 					final int y2 = new BigDecimal(y2D, mc).intValue()
-							+ adjuster;
+					        + adjuster;
 					if (minX > x1) {
 						minX = x1;
 					}
@@ -871,7 +873,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 					if (GenericImageCanvas.this.showTrajectoriesOnlyUpToT) {
 						if (GenericImageCanvas.this.currentT < two
-								.getFrameIndex()) {
+						        .getFrameIndex()) {
 							break;
 						}
 					}
@@ -880,7 +882,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				}
 				if (this.imagePanel.selectedTrajectories.contains(trajectory)) {
 					g2D.setColor(OmegaConstants
-							.getDefaultSelectionBackgroundColor());
+					        .getDefaultSelectionBackgroundColor());
 					minX -= 3;
 					maxX += 3;
 					minY -= 3;
@@ -897,7 +899,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 			final double adjusterD = this.imagePanel.scale / 2;
 			final int adjuster = new BigDecimal(adjusterD, mc).intValue();
 			final double pointSizeD = this.imagePanel.radius
-					* this.imagePanel.scale;
+			        * this.imagePanel.scale;
 			final int pointSize = new BigDecimal(pointSizeD, mc).intValue();
 			final double offsetD = pointSizeD / 2;
 			final int offset = new BigDecimal(offsetD, mc).intValue();
@@ -919,12 +921,12 @@ public class GenericImageCanvas extends GenericScrollPane {
 		}
 
 		private void drawInformations(final Graphics2D g2D, final int width,
-				final int height) {
+		        final int height) {
 			final int halfSpace = GenericImageCanvas.AXISSPACE / 2;
 			final Double physicalSizeX = GenericImageCanvas.this.pixels
-					.getPhysicalSizeX();
+			        .getPhysicalSizeX();
 			final Double physicalSizeY = GenericImageCanvas.this.pixels
-					.getPhysicalSizeY();
+			        .getPhysicalSizeY();
 			final int imgWidth = this.imagePanel.image.getWidth();
 			final int imgHeight = this.imagePanel.image.getHeight();
 			g2D.setColor(Color.BLACK);
@@ -933,19 +935,19 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 			// X
 			this.drawArrow(g2D, 0, height + halfSpace, width, height
-					+ halfSpace);
+			        + halfSpace);
 			// Y
 			g2D.drawLine(width + halfSpace, 0, width + halfSpace, 10);
 			this.drawArrow(g2D, width + halfSpace, 30, width + halfSpace,
-					height);
+			        height);
 
 			// information on X pixels
 			if ((physicalSizeX != null) && (physicalSizeX > 0.0)) {
 				final String micron = OmegaStringUtilities.doubleToString(
-						physicalSizeX * imgWidth, 2);
+				        physicalSizeX * imgWidth, 2);
 				g2D.drawString(micron, 0, height + 15);
 				g2D.drawString(OmegaConstantsMathSymbols.MU + "m", 0,
-						height + 30);
+				        height + 30);
 			} else {
 				g2D.drawString(String.valueOf(imgWidth), 0, height + 15);
 				g2D.drawString("px", 0, height + 30);
@@ -954,7 +956,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 			// information on Y pixels
 			if ((physicalSizeY != null) && (physicalSizeY > 0.0)) {
 				final String micron = OmegaStringUtilities.doubleToString(
-						physicalSizeY * imgHeight, 2);
+				        physicalSizeY * imgHeight, 2);
 				g2D.drawString(micron, width, 25);
 				g2D.drawString(OmegaConstantsMathSymbols.MU + "m", width, 35);
 			} else {
@@ -964,7 +966,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 		}
 
 		private void drawArrow(final Graphics2D g2D, final int x1,
-				final int y1, final int x2, final int y2) {
+		        final int y1, final int x2, final int y2) {
 			final float arrowWidth = 6.0f;
 			final float theta = 0.423f;
 			final int[] xPoints = new int[3];
@@ -989,10 +991,10 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 			// setup length parameters
 			fLength = (float) Math.sqrt((vecLine[0] * vecLine[0])
-					+ (vecLine[1] * vecLine[1]));
+			        + (vecLine[1] * vecLine[1]));
 			th = arrowWidth / (2.0f * fLength);
 			ta = arrowWidth
-					/ (2.0f * ((float) Math.tan(theta) / 2.0f) * fLength);
+			        / (2.0f * ((float) Math.tan(theta) / 2.0f) * fLength);
 
 			// find the base of the arrow
 			baseX = (xPoints[0] - (ta * vecLine[0]));
@@ -1016,7 +1018,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 	public void setActiveChannel(final int channel, final boolean isActive) {
 		this.gateway.setActiveChannel(this.pixels.getElementID(), channel,
-				isActive);
+		        isActive);
 		this.pixels.setSelectedC(channel, isActive);
 	}
 

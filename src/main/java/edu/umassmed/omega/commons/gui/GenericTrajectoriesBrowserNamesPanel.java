@@ -6,9 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -30,19 +33,29 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 	private final boolean isSelectionEnabled, isShowEnabled;
 
 	public GenericTrajectoriesBrowserNamesPanel(final RootPaneContainer parent,
-	        final GenericBrowserPanel bPanel, final boolean isSelectionEnabled,
-			final boolean isShowEnabled) {
+			final GenericBrowserPanel bPanel, final boolean isSelectionEnabled,
+	        final boolean isShowEnabled) {
 		super(parent);
 		this.bPanel = bPanel;
 
 		this.checkboxes = new ArrayList<Point>();
 		this.cb = new JCheckBox();
-		final String s1 = OmegaFileUtilities
-				.getImageFilename("checkbox_selected.png");
-		this.cb.setSelectedIcon(new ImageIcon(s1));
-		final String s2 = OmegaFileUtilities
-				.getImageFilename("checkbox_deselected.png");
-		this.cb.setIcon(new ImageIcon(s2));
+		final InputStream s1 = OmegaFileUtilities
+		        .getImageFilename("checkbox_selected.png");
+		try {
+			this.cb.setSelectedIcon(new ImageIcon(ImageIO.read(s1)));
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		final InputStream s2 = OmegaFileUtilities
+		        .getImageFilename("checkbox_deselected.png");
+		try {
+			this.cb.setIcon(new ImageIcon(ImageIO.read(s2)));
+		} catch (final IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		this.isSelectionEnabled = isSelectionEnabled;
 		this.isShowEnabled = isShowEnabled;
@@ -50,12 +63,12 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 
 	protected void checkIfCheckboxAndSelect(final Point clickP) {
 		final OmegaTrajectory selectedTraj = this.bPanel
-		        .getSelectedTrajectory();
+				.getSelectedTrajectory();
 		final int adjX = this.cb.getSelectedIcon().getIconWidth();
 		final int adjY = this.cb.getSelectedIcon().getIconHeight();
 		for (final Point p : this.checkboxes) {
 			if ((clickP.x < (p.x + adjX)) && (clickP.x > p.x)
-			        && (clickP.y < (p.y + adjY)) && (clickP.y > p.y)) {
+					&& (clickP.y < (p.y + adjY)) && (clickP.y > p.y)) {
 				selectedTraj.setVisible(!selectedTraj.isVisible());
 				return;
 			}
@@ -68,7 +81,7 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 		for (int y = 0; y < this.bPanel.getNumberOfTrajectories(); y++) {
 			final int yPos = (space * y) + 5 + (space / 2);
 			final OmegaTrajectory traj = this.bPanel.getShownTrajectories()
-					.get(y);
+			        .get(y);
 			Icon icon;
 			if (traj.isVisible()) {
 				icon = this.cb.getSelectedIcon();
@@ -89,7 +102,7 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			final int xPos = space;
 			final int yPos = (space * y) + 5 + (space / 2);
 			final OmegaTrajectory traj = this.bPanel.getShownTrajectories()
-					.get(y);
+			        .get(y);
 			final long id = traj.getElementID();
 			String idS = String.valueOf(id);
 			if (id == -1) {
@@ -103,14 +116,14 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 	protected void drawSelectedTrajectoryBackground(final Graphics2D g2D) {
 		for (int y = 0; y < this.bPanel.getNumberOfTrajectories(); y++) {
 			final OmegaTrajectory traj = this.bPanel.getShownTrajectories()
-					.get(y);
+			        .get(y);
 			final int yPos = GenericBrowserPanel.SPOT_SPACE_DEFAULT * y;
 			final int adjY = yPos;
 			if (this.bPanel.getSelectedTrajectories().contains(traj)) {
 				g2D.setBackground(OmegaConstants
-				        .getDefaultSelectionBackgroundColor());
+						.getDefaultSelectionBackgroundColor());
 				g2D.clearRect(0, adjY, this.getWidth(),
-				        GenericBrowserPanel.SPOT_SPACE_DEFAULT);
+						GenericBrowserPanel.SPOT_SPACE_DEFAULT);
 				g2D.setBackground(Color.white);
 			}
 		}
@@ -122,11 +135,11 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 		final Graphics2D g2D = (Graphics2D) g;
 		g2D.setBackground(Color.white);
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		        RenderingHints.VALUE_ANTIALIAS_ON);
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.setRenderingHint(RenderingHints.KEY_RENDERING,
-		        RenderingHints.VALUE_RENDER_QUALITY);
+				RenderingHints.VALUE_RENDER_QUALITY);
 		g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-		        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g2D.clearRect(0, 0, this.getWidth(), this.getHeight());
 
 		if (this.isSelectionEnabled) {
@@ -151,7 +164,7 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			}
 		}
 		final int width = (GenericBrowserPanel.TRAJECTORY_NAME_SPACE_MODIFIER + 1)
-		        * GenericBrowserPanel.SPOT_SPACE_DEFAULT;
+				* GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		final Dimension dim = new Dimension(width, height);
 		this.setPreferredSize(dim);
 		this.setSize(dim);

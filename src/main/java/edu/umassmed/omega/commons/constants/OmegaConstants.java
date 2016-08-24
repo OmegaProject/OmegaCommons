@@ -38,7 +38,7 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 public class OmegaConstants {
 
 	public final static OmegaExperimenter OMEGA_DEFAULT_EXPERIMENTER = new OmegaExperimenter(
-	        "Default", "Experimenter");
+			"Default", "Experimenter");
 
 	// ***BUILD AND INFO
 	public final static String OMEGA_TITLE = "OMEGA pre beta release";
@@ -49,17 +49,17 @@ public class OmegaConstants {
 
 	// ***PATHS AND FILENAMES
 	public final static String OMEGA_IMGS_FOLDER_2 = "." + File.separator
-	        + "src" + File.separator + "main" + File.separator + "resources"
-	        + File.separator + "images";
-	public final static String OMEGA_SPT_FOLDER_2 = "." + File.separator
-	        + "src" + File.separator + "main" + File.separator + "resources"
-	        + File.separator + "sptWinPlugin";
+			+ "src" + File.separator + "main" + File.separator + "resources"
+			+ File.separator + "images";
 	public final static String OMEGA_IMGS_FOLDER = "images";
+	public final static String OMEGA_SPT_FOLDER_2 = "." + File.separator
+			+ "src" + File.separator + "main" + File.separator + "resources"
+			+ File.separator + "sptWinPlugin";
 	public final static String OMEGA_SPT_FOLDER = "sptWinPlugin";
 	public final static String OMEGA_SPT_DLL = "omega-spt-stats";
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER_2 = "."
-	        + File.separator + "src" + File.separator + "main" + File.separator
-	        + "resources" + File.separator + "errorInterpolation";
+			+ File.separator + "src" + File.separator + "main" + File.separator
+			+ "resources" + File.separator + "errorInterpolation";
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER = "errorInterpolation";
 	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE = "D_interpolation_data_old.csv";
 	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE = "SMSS_interpolation_data_old.csv";
@@ -76,7 +76,7 @@ public class OmegaConstants {
 	public final static Dimension BUTTON_SIZE = new Dimension(120, 20);
 	public final static Dimension BUTTON_SIZE_LARGE = new Dimension(180, 20);
 	public final static Dimension BUTTON_SIZE_LARGE_DOUBLE_HEIGHT = new Dimension(
-	        180, 40);
+			180, 40);
 	public final static Dimension TEXT_SIZE = new Dimension(200, 20);
 	public final static Dimension LARGE_TEXT_SIZE = new Dimension(300, 20);
 

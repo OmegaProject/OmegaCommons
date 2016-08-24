@@ -1,8 +1,9 @@
 package edu.umassmed.omega.commons.errorInterpolation;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +23,13 @@ public class InterpolationFileLoader extends CSVFileLoader {
 	private Double dMin, dMax;
 
 	public InterpolationFileLoader(final String path)
-	        throws IllegalArgumentException {
-		this(new File(path));
+			throws IllegalArgumentException, FileNotFoundException {
+		this(new FileInputStream(path));
 	}
 
-	public InterpolationFileLoader(final File file)
-	        throws IllegalArgumentException {
-		super(file);
+	public InterpolationFileLoader(final InputStream is)
+			throws IllegalArgumentException {
+		super(is);
 		this.interpolationPoints = new ArrayList<InterpolationPoint>();
 		this.snrValues = new ArrayList<Double>();
 		this.lengthValues = new ArrayList<Double>();
@@ -56,7 +57,7 @@ public class InterpolationFileLoader extends CSVFileLoader {
 			final Double d = Double.valueOf(content[3]);
 			final Double val = Double.valueOf(content[4]);
 			final InterpolationPoint ip = new InterpolationPoint(snr, l, smss,
-			        d, val);
+					d, val);
 			this.adjustSNRMinMax(snr);
 			this.adjustLMinMax(l);
 			this.adjustSMSSMinMax(smss);
@@ -106,10 +107,10 @@ public class InterpolationFileLoader extends CSVFileLoader {
 	}
 
 	public InterpolationPoint getPoint(final double snr, final double length,
-			final double smss, final double d) {
+	        final double smss, final double d) {
 		for (final InterpolationPoint ip : this.interpolationPoints) {
 			if ((ip.getSNR() == snr) && (ip.getLength() == length)
-			        && (ip.getSMSS() == smss) && (ip.getD() == d))
+					&& (ip.getSMSS() == smss) && (ip.getD() == d))
 				return ip;
 		}
 		return null;
