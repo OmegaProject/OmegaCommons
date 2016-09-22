@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 
 	private OmegaGenericApplication app;
 
-	private static boolean debug = true;
+	private static boolean debug = false;
 	private static OmegaLogFileManager instance = null;
 
 	private static final String GENERAL_LOG_NAME = "OmegaLog_";
@@ -35,9 +37,17 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 
 	static {
 		OmegaLogFileManager.instance = new OmegaLogFileManager();
-		if (OmegaLogFileManager.debug == false) {
-			System.out.println("DEBUG disable");
-		}
+		// if (OmegaLogFileManager.debug == false) {
+		// System.out.println("DEBUG disable");
+		// }
+	}
+
+	public static void setDebug() {
+		OmegaLogFileManager.debug = true;
+	}
+
+	public static boolean isDebug() {
+		return OmegaLogFileManager.debug;
 	}
 
 	public static void createNewOmegaFileManager(
@@ -103,6 +113,13 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 		for (final File f : files) {
 			OmegaLogFileManager.instance.appendToLog(f, messages);
 		}
+		final RuntimeMXBean runtimeMxBean = ManagementFactory
+				.getRuntimeMXBean();
+		final List<String> arguments = new ArrayList<String>();
+		arguments.add("VM options: ");
+		arguments.addAll(runtimeMxBean.getInputArguments());
+		OmegaLogFileManager.instance.appendToLog(
+				OmegaLogFileManager.instance.generalLogFile, arguments);
 	}
 
 	public static void registerAsExceptionHandlerOnThread(final Thread th) {
@@ -294,7 +311,7 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 			final BufferedWriter bw = new BufferedWriter(fw);
 			bw.write("# ");
 			bw.write(timestamp);
-			bw.write("\n");
+			bw.write("\t");
 			for (int i = 0; i < messages.size(); i++) {
 				final String message = messages.get(i);
 				bw.write(message);
