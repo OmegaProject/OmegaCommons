@@ -115,7 +115,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		try {
 			this.appendString(OmegaGUIConstants.SIDEPANEL_NO_DETAILS, this.bold);
 		} catch (final BadLocationException ex) {
-			OmegaLogFileManager.handleCoreException(ex);
+			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		mainPanel.add(this.info_txt, BorderLayout.CENTER);
 
@@ -207,7 +207,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 						this.bold);
 			}
 		} catch (final BadLocationException ex) {
-			OmegaLogFileManager.handleCoreException(ex);
+			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 
 		this.resizePanel(this.getWidth(), this.getHeight());
@@ -236,8 +236,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		// this.normal);
 		// this.appendNewline();
 		this.appendString("Algorithm: ", this.bold);
-		final OmegaRunDefinition algoSpec = analysisRun
-				.getAlgorithmSpec();
+		final OmegaRunDefinition algoSpec = analysisRun.getAlgorithmSpec();
 		final String algoName = algoSpec.getAlgorithmInfo().getName();
 		this.appendString(algoName, this.normal);
 		this.appendNewline();

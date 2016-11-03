@@ -98,7 +98,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		try {
 			this.appendString(OmegaGUIConstants.SIDEPANEL_NO_DETAILS, this.bold);
 		} catch (final BadLocationException ex) {
-			OmegaLogFileManager.handleCoreException(ex);
+			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		mainPanel.add(this.info_txt, BorderLayout.CENTER);
 
@@ -129,7 +129,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 
 	public void resizePanel(final int width, final int height) {
 		final int lines = OmegaStringUtilities.countLines(this.info_txt,
-				this.info_txt.getDocument().getLength());
+		        this.info_txt.getDocument().getLength());
 		int neededHeight = lines * 18;
 		final int neededWidth = width - 30;
 		final int adjHeight = height - 60;
@@ -150,7 +150,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 	}
 
 	private void appendString(final String s, final AttributeSet style)
-			throws BadLocationException {
+	        throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, s, style);
@@ -174,16 +174,16 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		try {
 			this.reset();
 			if ((element != null)
-					&& !(element instanceof OrphanedAnalysisContainer)) {
+			        && !(element instanceof OrphanedAnalysisContainer)) {
 				this.getGenericElementInformation(element);
 				this.appendNewline();
 				this.getSpecificElementInformation(element);
 			} else {
 				this.appendString(OmegaGUIConstants.SIDEPANEL_NO_DETAILS,
-						this.bold);
+				        this.bold);
 			}
 		} catch (final BadLocationException ex) {
-			OmegaLogFileManager.handleCoreException(ex);
+			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		final int w = this.getWidth();
 		final int h = this.getHeight();
@@ -193,10 +193,10 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 	}
 
 	private void getGenericElementInformation(final OmegaElement element)
-			throws BadLocationException {
+	        throws BadLocationException {
 		final long id = element.getElementID();
 		final String clazz = element.getClass().getSimpleName()
-				.replace("Omega", "");
+		        .replace("Omega", "");
 		this.appendString(clazz, this.bold);
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ID, this.bold);
 		this.appendString(String.valueOf(id), this.normal);
@@ -207,15 +207,15 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NAME, this.bold);
 		if (element instanceof OmegaNamedElement) {
 			this.appendString(((OmegaNamedElement) element).getName(),
-					this.normal);
+			        this.normal);
 		} else {
 			this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NOT_NAMED,
-			        this.normal);
+					this.normal);
 		}
 	}
 
 	private void getSpecificElementInformation(final OmegaElement element)
-			throws BadLocationException {
+	        throws BadLocationException {
 		if (element instanceof OmegaProject) {
 			this.addAdditionalProjectInformation((OmegaProject) element);
 		} else if (element instanceof OmegaDataset) {
@@ -229,40 +229,40 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 	}
 
 	private void addAdditionalProjectInformation(final OmegaProject project)
-			throws BadLocationException {
+	        throws BadLocationException {
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_DATASET,
-		        this.bold);
+				this.bold);
 		this.appendString(String.valueOf(project.getDatasets().size()),
-				this.normal);
+		        this.normal);
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		        this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
-				.getAnalysisCount(project)), this.normal);
+		        .getAnalysisCount(project)), this.normal);
 	}
 
 	private void addAdditionalDatasetInformation(final OmegaDataset dataset)
-			throws BadLocationException {
+	        throws BadLocationException {
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_IMAGES,
-		        this.bold);
+				this.bold);
 		this.appendString(String.valueOf(dataset.getImages().size()),
-				this.normal);
+		        this.normal);
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		        this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
-				.getAnalysisCount(dataset)), this.normal);
+		        .getAnalysisCount(dataset)), this.normal);
 	}
 
 	private void addAdditionalImageInformation(final OmegaImage image)
-			throws BadLocationException {
+	        throws BadLocationException {
 		final SimpleDateFormat format = new SimpleDateFormat(
-				OmegaConstants.OMEGA_DATE_FORMAT);
+		        OmegaConstants.OMEGA_DATE_FORMAT);
 		final OmegaImagePixels pixels = image.getDefaultPixels();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		        this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
-				.getAnalysisCount(image)), this.normal);
+		        .getAnalysisCount(image)), this.normal);
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ACQUIRED, this.bold);
 		final String acquiredDate = format.format(image.getAcquisitionDate());
@@ -286,25 +286,25 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		if ((pixelsSizeX != -1) && (pixelsSizeY != -1)) {
 			if (pixelsSizeZ != -1) {
 				this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES,
-				        this.bold);
+						this.bold);
 			} else {
 				this.appendString(
-				        OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES_Z,
-				        this.bold);
+						OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES_Z,
+						this.bold);
 			}
 			final BigDecimal bigX = new BigDecimal(pixelsSizeX).setScale(2,
-			        RoundingMode.HALF_UP);
+					RoundingMode.HALF_UP);
 			final String pixelsSizeXs = bigX.toString();
 			this.appendString(pixelsSizeXs, this.normal);
 			this.appendString(" x ", this.normal);
 			final BigDecimal bigY = new BigDecimal(pixelsSizeY).setScale(2,
-			        RoundingMode.HALF_UP);
+					RoundingMode.HALF_UP);
 			final String pixelsSizeYs = bigY.toString();
 			this.appendString(pixelsSizeYs, this.normal);
 			if (pixelsSizeZ != -1) {
 				this.appendString(" x ", this.normal);
 				final BigDecimal bigZ = new BigDecimal(pixelsSizeZ).setScale(2,
-						RoundingMode.HALF_UP);
+				        RoundingMode.HALF_UP);
 				final String pixelsSizeZs = bigZ.toString();
 				this.appendString(pixelsSizeZs, this.normal);
 			}

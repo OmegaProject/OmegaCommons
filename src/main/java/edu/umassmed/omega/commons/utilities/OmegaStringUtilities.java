@@ -44,7 +44,7 @@ import edu.umassmed.omega.commons.OmegaLogFileManager;
 public class OmegaStringUtilities {
 
 	public static String getMultiDigitsCounter(final int val,
-			final int maxDigits) {
+	        final int maxDigits) {
 		final StringBuffer buf = new StringBuffer();
 		final String valDig = String.valueOf(val);
 		int digits = valDig.length();
@@ -57,7 +57,7 @@ public class OmegaStringUtilities {
 	}
 
 	public static int countLines(final JTextComponent comp,
-			final int totalCharacters) {
+	        final int totalCharacters) {
 		int lineCount = (totalCharacters == 0) ? 1 : 0;
 		try {
 			int offset = totalCharacters;
@@ -66,7 +66,7 @@ public class OmegaStringUtilities {
 				lineCount++;
 			}
 		} catch (final BadLocationException ex) {
-			OmegaLogFileManager.handleCoreException(ex);
+			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		return lineCount;
 	}
@@ -77,7 +77,7 @@ public class OmegaStringUtilities {
 	}
 
 	public static Dimension getStringSize(final Graphics g, final Font font,
-			final String text) {
+	        final String text) {
 		// get metrics from the graphics
 		final FontMetrics metrics = g.getFontMetrics(font);
 		// get the height of a line of text in this
@@ -100,7 +100,7 @@ public class OmegaStringUtilities {
 	}
 
 	public static String replaceWhitespaces(final String s,
-			final String replacement) {
+	        final String replacement) {
 		return s.replace(" ", replacement);
 	}
 
@@ -156,7 +156,7 @@ public class OmegaStringUtilities {
 	}
 
 	public static String getHtmlString(final String text,
-			final String separator, final int align) {
+	        final String separator, final int align) {
 		final StringBuffer buf = new StringBuffer();
 		buf.append("<html><div style=\"text-align:");
 		if (align == SwingConstants.TRAILING) {
@@ -181,7 +181,7 @@ public class OmegaStringUtilities {
 	}
 
 	public static String getHtmlMultiLineString(final String text,
-			final String separator, final JComponent comp) {
+	        final String separator, final JComponent comp) {
 		final StringBuffer buf = new StringBuffer();
 		buf.append("<html><div style=\"text-align:center\">");
 		final Dimension dim = comp.getSize();
@@ -191,7 +191,7 @@ public class OmegaStringUtilities {
 		int prev = -1, now = -1;
 		for (int i = 0; i < tokens.length; i++) {
 			final Dimension stringSize = OmegaStringUtilities.getStringSize(
-					comp.getGraphics(), comp.getFont(), tokens[i]);
+			        comp.getGraphics(), comp.getFont(), tokens[i]);
 			final int neededWidth = stringSize.width;
 			final StringBuffer currentBuf = new StringBuffer();
 			if (restWidth > neededWidth) {
@@ -201,7 +201,7 @@ public class OmegaStringUtilities {
 			} else {
 				restWidth = usableWidth;
 				currentBuf
-				.append("</div><br><div style=\"text-align:center\">");
+				        .append("</div><br><div style=\"text-align:center\">");
 				currentBuf.append(tokens[i]);
 				restWidth -= neededWidth;
 				now = 1;

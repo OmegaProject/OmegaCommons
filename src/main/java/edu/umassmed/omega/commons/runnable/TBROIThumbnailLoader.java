@@ -28,8 +28,8 @@ public class TBROIThumbnailLoader implements Runnable {
 	private boolean killed;
 
 	public TBROIThumbnailLoader(
-			final OmegaMessageDisplayerPanelInterface displayerPanel,
-			final OmegaGateway gateway, final OmegaImage img) {
+	        final OmegaMessageDisplayerPanelInterface displayerPanel,
+	        final OmegaGateway gateway, final OmegaImage img) {
 		this.displayerPanel = displayerPanel;
 		this.gateway = gateway;
 		this.img = img;
@@ -54,9 +54,9 @@ public class TBROIThumbnailLoader implements Runnable {
 			}
 			try {
 				final byte[] values = gateway.renderCompressed(
-						pixels.getOmeroId(), x, pixels.getSelectedZ());
+				        pixels.getOmeroId(), x, pixels.getSelectedZ());
 				final ByteArrayInputStream stream = new ByteArrayInputStream(
-						values);
+				        values);
 				final BufferedImage bufferedImage = ImageIO.read(stream);
 				bufferedImage.setAccelerationPriority(1f);
 				this.buffImages.add(bufferedImage);
@@ -68,7 +68,7 @@ public class TBROIThumbnailLoader implements Runnable {
 				buffer.append(" loaded");
 				this.updateStatus(buffer.toString(), (x % 5) == 0);
 			} catch (final IOException ex) {
-				OmegaLogFileManager.handleUncaughtException(ex);
+				OmegaLogFileManager.handleUncaughtException(ex, true);
 			}
 		}
 		if (this.killed)
@@ -86,12 +86,12 @@ public class TBROIThumbnailLoader implements Runnable {
 				@Override
 				public void run() {
 					TBROIThumbnailLoader.this.displayerPanel
-					.updateMessageStatus(new OmegaMessageEventTBLoader(
-							status, repaint));
+					        .updateMessageStatus(new OmegaMessageEventTBLoader(
+					                status, repaint));
 				}
 			});
 		} catch (final InvocationTargetException | InterruptedException ex) {
-			OmegaLogFileManager.handleUncaughtException(ex);
+			OmegaLogFileManager.handleUncaughtException(ex, true);
 		}
 	}
 
