@@ -49,6 +49,7 @@ OmegaAnalysisRunContainer {
 	private int selectedZ;
 
 	private final boolean[] selectedC;
+	/* private final List<String> channelNames; */
 
 	private final Map<Integer, Map<Integer, List<OmegaPlane>>> frames;
 
@@ -59,7 +60,7 @@ OmegaAnalysisRunContainer {
 	public OmegaImagePixels(final String pixelsType, final int sizeX,
 	        final int sizeY, final int sizeZ, final int sizeC, final int sizeT,
 	        final double pixelSizeX, final double pixelSizeY,
-	        final double pixelSizeZ) {
+	        final double pixelSizeZ/* , final List<String> channelNames */) {
 		super(-1L);
 		this.omeroId = -1L;
 		this.image = null;
@@ -72,6 +73,7 @@ OmegaAnalysisRunContainer {
 
 		this.sizeC = sizeC;
 		this.selectedC = new boolean[sizeC];
+		/* this.channelNames = channelNames; */
 		this.sizeT = sizeT;
 
 		if (pixelSizeX == 0) {
