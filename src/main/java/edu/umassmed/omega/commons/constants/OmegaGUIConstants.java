@@ -32,9 +32,9 @@ public class OmegaGUIConstants {
 	public static final String SIDEPANEL_INFO_DIM_ZTC = "Dimensions (ZTC): ";
 	public static final String SIDEPANEL_INFO_PIXELTYPE = "Pixel Type: ";
 	public static final String SIDEPANEL_INFO_PIXELSIZES = "Pixel Sizes (XY) "
-			+ OmegaConstantsMathSymbols.MU + "m :";
+	        + OmegaConstantsMathSymbols.MU + "m :";
 	public static final String SIDEPANEL_INFO_PIXELSIZES_Z = "Pixel Sizes (XYZ) "
-			+ OmegaConstantsMathSymbols.MU + "m :";
+	        + OmegaConstantsMathSymbols.MU + "m :";
 
 	public static final String INFO_EXECUTED = "Executed: ";
 
@@ -146,6 +146,8 @@ public class OmegaGUIConstants {
 	public static final String PREFERENCES = "Preferences";
 
 	public static final String EDIT_DETAILS = "Edit Details";
+
+	public static final String NOT_ASSIGNED = "NA";
 
 	public static final int PADDING = 5;
 	public static final int GAP = 10;

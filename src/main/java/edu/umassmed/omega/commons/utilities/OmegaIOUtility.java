@@ -7,7 +7,7 @@ import java.util.List;
 import edu.umassmed.omega.commons.eventSystem.OmegaTrajectoryIOEventListener;
 import edu.umassmed.omega.commons.eventSystem.events.OmegaTrajectoryIOEvent;
 
-public class OmegaTrajectoryIOUtility {
+public class OmegaIOUtility {
 	private final List<OmegaTrajectoryIOEventListener> listeners = new ArrayList<OmegaTrajectoryIOEventListener>();
 
 	public synchronized void addOmegaImporterListener(

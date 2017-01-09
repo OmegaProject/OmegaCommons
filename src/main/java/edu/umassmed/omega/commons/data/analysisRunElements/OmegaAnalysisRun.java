@@ -39,7 +39,7 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 
 public abstract class OmegaAnalysisRun extends OmegaElement implements
-OmegaAnalysisRunContainer {
+        OmegaAnalysisRunContainer {
 
 	private final String name;
 
@@ -56,8 +56,7 @@ OmegaAnalysisRunContainer {
 	private final AnalysisRunType type;
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaRunDefinition algorithmSpec,
-	        final AnalysisRunType type) {
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type) {
 		super(-1L);
 
 		this.timeStamps = Calendar.getInstance().getTime();
@@ -72,7 +71,7 @@ OmegaAnalysisRunContainer {
 
 		final StringBuffer nameBuf = new StringBuffer();
 		final DateFormat format = new SimpleDateFormat(
-				OmegaConstants.OMEGA_DATE_FORMAT);
+		        OmegaConstants.OMEGA_DATE_FORMAT);
 		nameBuf.append(format.format(this.timeStamps));
 		nameBuf.append("_");
 		nameBuf.append(algorithmSpec.getAlgorithmInfo().getName());
@@ -80,8 +79,8 @@ OmegaAnalysisRunContainer {
 	}
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaRunDefinition algorithmSpec,
-	        final AnalysisRunType type, final String name) {
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
+	        final String name) {
 		super(-1L);
 
 		this.timeStamps = Calendar.getInstance().getTime();
@@ -96,7 +95,7 @@ OmegaAnalysisRunContainer {
 
 		final StringBuffer nameBuf = new StringBuffer();
 		final DateFormat format = new SimpleDateFormat(
-				OmegaConstants.OMEGA_DATE_FORMAT);
+		        OmegaConstants.OMEGA_DATE_FORMAT);
 		nameBuf.append(format.format(this.timeStamps));
 		nameBuf.append("_");
 		nameBuf.append(name);
@@ -104,8 +103,8 @@ OmegaAnalysisRunContainer {
 	}
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaRunDefinition algorithmSpec,
-			final AnalysisRunType type, final Date timeStamps, final String name) {
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
+	        final Date timeStamps, final String name) {
 		super(-1L);
 
 		this.timeStamps = timeStamps;
@@ -122,9 +121,8 @@ OmegaAnalysisRunContainer {
 	}
 
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
-			final OmegaRunDefinition algorithmSpec,
-			final AnalysisRunType type,
-			final List<OmegaAnalysisRun> analysisRuns) {
+	        final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
+	        final List<OmegaAnalysisRun> analysisRuns) {
 		this(owner, algorithmSpec, type);
 
 		this.analysisRuns = analysisRuns;

@@ -18,6 +18,8 @@ public class StatsConstants {
 	public static final String TAB_TRACK_BROWSER = "Browser";
 	public static final String TAB_GRAPH = "Graphs";
 	public static final String TAB_RESULTS = "Results";
+	public static final String TAB_RESULTS_LOCAL = "Local results";
+	public static final String TAB_RESULTS_GLOBAL = "Global results";
 	public static final String TAB_RUN = "Run";
 
 	// MOTION TYPE CLASSIFICATION

@@ -10,17 +10,18 @@ import javax.swing.Icon;
 import javax.swing.RootPaneContainer;
 
 import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class GenericSegmentsBrowserNamesPanel extends
-GenericTrajectoriesBrowserNamesPanel {
+        GenericTrajectoriesBrowserNamesPanel {
 
 	private static final long serialVersionUID = 313531450859107197L;
 
 	public GenericSegmentsBrowserNamesPanel(final RootPaneContainer parent,
-	        final GenericSegmentsBrowserPanel sbPanel,
-	        final boolean isSelectionEnabled, final boolean isShowEnabled) {
+			final GenericSegmentsBrowserPanel sbPanel,
+			final boolean isSelectionEnabled, final boolean isShowEnabled) {
 		super(parent, sbPanel, isSelectionEnabled, isShowEnabled);
 	}
 
@@ -29,7 +30,7 @@ GenericTrajectoriesBrowserNamesPanel {
 		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		this.getCheckboxes().clear();
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
-		        .getPanel());
+				.getPanel());
 		for (int y = 0; y < sbPanel.getNumberOfSegments(); y++) {
 			final int yPos = (space * y) + 5 + (space / 2);
 			final OmegaTrajectory track = this.findTrack(y);
@@ -51,7 +52,7 @@ GenericTrajectoriesBrowserNamesPanel {
 	protected void drawIDsAndNames(final Graphics2D g2D) {
 		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
-		        .getPanel());
+				.getPanel());
 		for (int y = 0; y < sbPanel.getNumberOfSegments(); y++) {
 			final int xPos = space;
 			final int yPos = (space * y) + 5 + (space / 2);
@@ -60,7 +61,7 @@ GenericTrajectoriesBrowserNamesPanel {
 			final long id = track.getElementID();
 			String idS = String.valueOf(id);
 			if (id == -1) {
-				idS = "NA";
+				idS = OmegaGUIConstants.NOT_ASSIGNED;
 			}
 			g2D.drawString(idS, xPos, yPos);
 			g2D.drawString(track.getName(), xPos * 2, yPos);
@@ -70,7 +71,7 @@ GenericTrajectoriesBrowserNamesPanel {
 	@Override
 	protected void drawSelectedTrajectoryBackground(final Graphics2D g2D) {
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
-		        .getPanel());
+				.getPanel());
 		for (int y = 0; y < sbPanel.getNumberOfSegments(); y++) {
 			final OmegaTrajectory track = this.findTrack(y);
 			final OmegaSegment segment = this.findSegment(y);
@@ -80,9 +81,9 @@ GenericTrajectoriesBrowserNamesPanel {
 			if (sbPanel.getSelectedSegments().containsKey(track)) {
 				if (sbPanel.getSelectedSegments().get(track).contains(segment)) {
 					g2D.setBackground(OmegaConstants
-					        .getDefaultSelectionBackgroundColor());
+							.getDefaultSelectionBackgroundColor());
 					g2D.clearRect(0, adjY, this.getWidth(),
-					        GenericBrowserPanel.SPOT_SPACE_DEFAULT);
+							GenericBrowserPanel.SPOT_SPACE_DEFAULT);
 					g2D.setBackground(Color.white);
 				}
 			}
@@ -92,19 +93,19 @@ GenericTrajectoriesBrowserNamesPanel {
 	@Override
 	protected void setPanelSize() {
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
-		        .getPanel());
+				.getPanel());
 		final int numOfSegments = sbPanel.getNumberOfSegments();
 		int height = this.getParent().getHeight();
 		if (numOfSegments > 0) {
 			int heightTmp = numOfSegments
-			        * GenericBrowserPanel.SPOT_SPACE_DEFAULT;
+					* GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 			heightTmp += 40;
 			if (height < heightTmp) {
 				height = heightTmp;
 			}
 		}
 		final int width = (GenericBrowserPanel.TRAJECTORY_NAME_SPACE_MODIFIER + 1)
-		        * GenericBrowserPanel.SPOT_SPACE_DEFAULT;
+				* GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		final Dimension dim = new Dimension(width, height);
 		this.setPreferredSize(dim);
 		this.setSize(dim);
@@ -112,10 +113,10 @@ GenericTrajectoriesBrowserNamesPanel {
 
 	private OmegaTrajectory findTrack(int index) {
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
-		        .getPanel());
+				.getPanel());
 		for (final OmegaTrajectory track : sbPanel.getShownSegments().keySet()) {
 			final List<OmegaSegment> segments = sbPanel.getShownSegments().get(
-			        track);
+					track);
 			if (index < segments.size())
 				return track;
 			index -= segments.size();
@@ -125,10 +126,10 @@ GenericTrajectoriesBrowserNamesPanel {
 
 	private OmegaSegment findSegment(int index) {
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
-		        .getPanel());
+				.getPanel());
 		for (final OmegaTrajectory track : sbPanel.getShownSegments().keySet()) {
 			final List<OmegaSegment> segments = sbPanel.getShownSegments().get(
-			        track);
+					track);
 			if (index < segments.size())
 				return segments.get(index);
 			index -= segments.size();

@@ -3,9 +3,9 @@
  * Alessandro Rigano (Program in Molecular Medicine)
  * Caterina Strambio De Castillia (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
  * Key contacts:
@@ -35,15 +35,24 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedAnalysisConsumerPluginInterface;
 import edu.umassmed.omega.commons.plugins.interfaces.OmegaLoadedDataConsumerPluginInterface;
 import edu.umassmed.omega.commons.plugins.interfaces.OmegaMainDataConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaTracksExporterConsumerPluginInterface;
+import edu.umassmed.omega.commons.plugins.interfaces.OmegaTracksImporterConsumerPluginInterface;
+import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksExporter;
+import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksImporter;
 
 public abstract class OmegaBrowserPlugin extends OmegaPlugin implements
-        OmegaMainDataConsumerPluginInterface,
-        OmegaLoadedDataConsumerPluginInterface,
-        OmegaLoadedAnalysisConsumerPluginInterface {
+OmegaMainDataConsumerPluginInterface,
+OmegaLoadedDataConsumerPluginInterface,
+OmegaLoadedAnalysisConsumerPluginInterface,
+OmegaTracksImporterConsumerPluginInterface,
+OmegaTracksExporterConsumerPluginInterface {
 
 	private OmegaData omegaData;
 	private OmegaLoadedData loadedData;
 	private List<OmegaAnalysisRun> loadedAnalysisRuns;
+
+	private OmegaTracksImporter tracksImporter;
+	private OmegaTracksExporter tracksExporter;
 
 	public OmegaBrowserPlugin() {
 		this(1);
@@ -69,7 +78,7 @@ public abstract class OmegaBrowserPlugin extends OmegaPlugin implements
 
 	@Override
 	public void setLoadedAnalysisRun(
-	        final List<OmegaAnalysisRun> loadedAnalysisRuns) {
+			final List<OmegaAnalysisRun> loadedAnalysisRuns) {
 		this.loadedAnalysisRuns = loadedAnalysisRuns;
 	}
 
@@ -86,5 +95,25 @@ public abstract class OmegaBrowserPlugin extends OmegaPlugin implements
 	@Override
 	public OmegaData getMainData() {
 		return this.omegaData;
+	}
+
+	@Override
+	public void setTracksImporter(final OmegaTracksImporter tracksImporter) {
+		this.tracksImporter = tracksImporter;
+	}
+
+	@Override
+	public OmegaTracksImporter getTracksImporter() {
+		return this.tracksImporter;
+	}
+
+	@Override
+	public void setTracksExporter(final OmegaTracksExporter tracksExporter) {
+		this.tracksExporter = tracksExporter;
+	}
+
+	@Override
+	public OmegaTracksExporter getTracksExporter() {
+		return this.tracksExporter;
 	}
 }

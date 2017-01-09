@@ -27,7 +27,7 @@
  *******************************************************************************/
 package edu.umassmed.omega.commons.eventSystem.events;
 
-import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 
 public class OmegaTrajectoryIOEvent {
 	public static int INPUT = 0;
@@ -35,19 +35,19 @@ public class OmegaTrajectoryIOEvent {
 
 	private final int eventType;
 
-	private final OmegaTrajectoryIOUtility source;
+	private final OmegaIOUtility source;
 
 	public OmegaTrajectoryIOEvent(final int eventType) {
 		this(null, eventType);
 	}
 
-	public OmegaTrajectoryIOEvent(final OmegaTrajectoryIOUtility source,
+	public OmegaTrajectoryIOEvent(final OmegaIOUtility source,
 	        final int eventType) {
 		this.source = source;
 		this.eventType = eventType;
 	}
 
-	public OmegaTrajectoryIOUtility getSource() {
+	public OmegaIOUtility getSource() {
 		return this.source;
 	}
 

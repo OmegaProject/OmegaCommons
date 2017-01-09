@@ -46,10 +46,10 @@ OmegaAnalysisRunContainer {
 
 	private double physicalSizeX, physicalSizeY, physicalSizeZ, physicalSizeT;
 
-	private int selectedZ;
-
+	private int selectedZ, selectedT;
 	private final boolean[] selectedC;
-	/* private final List<String> channelNames; */
+
+	private final Map<Integer, String> channelNames;
 
 	private final Map<Integer, Map<Integer, List<OmegaPlane>>> frames;
 
@@ -60,7 +60,7 @@ OmegaAnalysisRunContainer {
 	public OmegaImagePixels(final String pixelsType, final int sizeX,
 	        final int sizeY, final int sizeZ, final int sizeC, final int sizeT,
 	        final double pixelSizeX, final double pixelSizeY,
-	        final double pixelSizeZ/* , final List<String> channelNames */) {
+	        final double pixelSizeZ, final Map<Integer, String> channelNames) {
 		super(-1L);
 		this.omeroId = -1L;
 		this.image = null;
@@ -73,7 +73,7 @@ OmegaAnalysisRunContainer {
 
 		this.sizeC = sizeC;
 		this.selectedC = new boolean[sizeC];
-		/* this.channelNames = channelNames; */
+		this.channelNames = channelNames;
 		this.sizeT = sizeT;
 
 		if (pixelSizeX == 0) {
@@ -93,6 +93,7 @@ OmegaAnalysisRunContainer {
 		}
 
 		this.selectedZ = -1;
+		this.selectedT = -1;
 		for (int i = 0; i < sizeC; i++) {
 			this.selectedC[i] = false;
 		}
@@ -306,6 +307,14 @@ OmegaAnalysisRunContainer {
 		this.selectedC[index] = isActive;
 	}
 
+	public int getSelectedT() {
+		return this.selectedT;
+	}
+
+	public void setSelectedT(final int newT) {
+		this.selectedT = newT;
+	}
+
 	@Override
 	public void setOmeroId(final Long omeroId) {
 		this.omeroId = omeroId;
@@ -314,5 +323,9 @@ OmegaAnalysisRunContainer {
 	@Override
 	public Long getOmeroId() {
 		return this.omeroId;
+	}
+
+	public Map<Integer, String> getChannelNames() {
+		return this.channelNames;
 	}
 }

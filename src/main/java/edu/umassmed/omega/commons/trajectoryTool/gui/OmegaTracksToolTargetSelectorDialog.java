@@ -49,6 +49,8 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 	private GenericElementInformationPanel geip;
 	private GenericAnalysisInformationPanel gaip1, gaip2;
 
+	private boolean isImporter;
+
 	private JButton action_btt, close_btt;
 
 	public OmegaTracksToolTargetSelectorDialog(final RootPaneContainer parent,
@@ -65,6 +67,8 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		this.images = images;
 		this.orphanedAnalysis = orphanedAnalysis;
 		this.loadedAnalysisRuns = analysisRuns;
+
+		this.isImporter = false;
 
 		this.popImages = false;
 		this.popParticles = false;
@@ -127,10 +131,10 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		        this.getParentContainer());
 		centerPanel.add(this.geip);
 		this.gaip1 = new GenericAnalysisInformationPanel(
-		        this.getParentContainer());
+				this.getParentContainer());
 		centerPanel.add(this.gaip1);
 		this.gaip2 = new GenericAnalysisInformationPanel(
-		        this.getParentContainer());
+				this.getParentContainer());
 		centerPanel.add(this.gaip2);
 		this.add(centerPanel, BorderLayout.CENTER);
 		final JPanel buttPanel = new JPanel();
@@ -233,7 +237,8 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 			return;
 		final int index = this.particles_cmb.getSelectedIndex();
 		this.selectedParticleDetectionRun = null;
-		if (index == -1) {
+		this.gaip1.update(this.selectedParticleDetectionRun);
+		if ((index == -1) || this.isImporter) {
 			this.populateTrajectoriesCombo();
 			// this.runPanel.populateSNRCombo();
 			// this.resetTrajectories();
@@ -244,9 +249,7 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		// if (!this.isHandlingEvent) {
 		// this.fireEventSelectionPluginParticleDetectionRun();
 		// }
-		if (this.selectedParticleDetectionRun != null) {
-			this.gaip1.update(this.selectedParticleDetectionRun);
-		}
+		this.gaip1.update(this.selectedParticleDetectionRun);
 		this.populateTrajectoriesCombo();
 		// this.runPanel.populateSNRCombo();
 	}
@@ -256,7 +259,8 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 			return;
 		final int index = this.trajectories_cmb.getSelectedIndex();
 		this.selectedParticleLinkingRun = null;
-		if (index == -1)
+		this.gaip2.update(this.selectedParticleLinkingRun);
+		if ((index == -1) || this.isImporter)
 			// this.populateTrajectoriesRelinkingCombo();
 			// this.populateTrackingMeasuresCombo();
 			// this.resetTrajectories();
@@ -276,9 +280,7 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		// this.tbPanel.updateTrajectories(
 		// this.selectedParticleLinkingRun.getResultingTrajectories(),
 		// false);
-		if (this.selectedParticleLinkingRun != null) {
-			this.gaip2.update(this.selectedParticleLinkingRun);
-		}
+		this.gaip2.update(this.selectedParticleLinkingRun);
 	}
 
 	private void populateImagesCombo() {
@@ -309,8 +311,8 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		this.particleDetectionRuns.clear();
 		this.particles_cmb.setSelectedIndex(-1);
 		this.selectedParticleDetectionRun = null;
-
-		if ((this.selectedImage == null)) {
+		this.gaip1.update(this.selectedParticleDetectionRun);
+		if ((this.selectedImage == null) || this.isImporter) {
 			this.particles_cmb.setEnabled(false);
 			this.populateTrajectoriesCombo();
 			// this.runPanel.populateSNRCombo();
@@ -350,8 +352,8 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		this.particleLinkingRuns.clear();
 		this.trajectories_cmb.setSelectedIndex(-1);
 		this.selectedParticleLinkingRun = null;
-
-		if ((this.selectedParticleDetectionRun == null)) {
+		this.gaip2.update(this.selectedParticleLinkingRun);
+		if ((this.selectedParticleDetectionRun == null) || this.isImporter) {
 			this.trajectories_cmb.setEnabled(false);
 			// this.populateTrajectoriesRelinkingCombo();
 			// this.populateTrackingMeasuresCombo();
@@ -399,10 +401,16 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 	}
 
 	public void setImporter(final boolean isImporter) {
+		this.isImporter = isImporter;
 		this.particles_cmb.setEnabled(!isImporter);
-		this.particles_cmb.setSelectedIndex(-1);
 		this.trajectories_cmb.setEnabled(!isImporter);
-		this.trajectories_cmb.setSelectedIndex(-1);
+		if (isImporter) {
+			this.particles_cmb.setSelectedIndex(-1);
+			this.trajectories_cmb.setSelectedIndex(-1);
+		} else {
+			this.particles_cmb.setSelectedIndex(0);
+			this.trajectories_cmb.setSelectedIndex(0);
+		}
 	}
 
 	public OmegaAnalysisRunContainer getSelectedImage() {

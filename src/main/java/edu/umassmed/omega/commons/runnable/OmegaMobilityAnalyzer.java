@@ -28,19 +28,19 @@ public class OmegaMobilityAnalyzer implements Runnable {
 	private final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap;
 
 	public OmegaMobilityAnalyzer(final int tMax,
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this(null, tMax, segments);
 	}
 
 	public OmegaMobilityAnalyzer(
-			final OmegaMessageDisplayerPanelInterface displayerPanel,
-			final int tMax,
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+	        final OmegaMessageDisplayerPanelInterface displayerPanel,
+	        final int tMax,
+	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 
 		this.displayerPanel = displayerPanel;
 		this.tMax = tMax;
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
-				segments);
+		        segments);
 		this.distancesMap = new LinkedHashMap<>();
 		this.displacementsMap = new LinkedHashMap<>();
 		this.maxDisplacementesMap = new LinkedHashMap<>();
@@ -58,9 +58,9 @@ public class OmegaMobilityAnalyzer implements Runnable {
 			final List<OmegaROI> rois = track.getROIs();
 			if (this.displayerPanel != null) {
 				this.updateStatusAsync(
-						"Processing mobility analysis, trajectory "
-				                + track.getName() + " " + counter + "/" + max,
-				        false, false);
+				        "Processing mobility analysis, trajectory "
+								+ track.getName() + " " + counter + "/" + max,
+								false, false);
 			}
 			for (final OmegaSegment segment : this.segments.get(track)) {
 				double maxDisp = 0.0;
@@ -72,21 +72,21 @@ public class OmegaMobilityAnalyzer implements Runnable {
 				boolean counting = false;
 				Double prevAngle = null;
 				final int startFrameIndex = segment.getStartingROI()
-				        .getFrameIndex();
+						.getFrameIndex();
 				final int endFrameIndex = segment.getEndingROI()
-				        .getFrameIndex();
+						.getFrameIndex();
 				final int startROI = rois.indexOf(segment.getStartingROI());
 				final int endROI = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(startROI,
-				        endROI + 1);
-				for (int t = startFrameIndex; t < endFrameIndex; t++) {
+						endROI + 1);
+				for (int t = startFrameIndex; t <= endFrameIndex; t++) {
 					final Double distance = OmegaMobilityLibrary
-							.computeTotalDistanceTraveled(segmentROIs, t);
+					        .computeTotalDistanceTraveled(segmentROIs, t);
 					final Double displacement = OmegaMobilityLibrary
-							.computeTotalNetDisplacement(segmentROIs, t);
+					        .computeTotalNetDisplacement(segmentROIs, t);
 
 					final Double[] angleAndDirectionalChange = OmegaMobilityLibrary
-							.computeDirectionalChange(segmentROIs, prevAngle, t);
+					        .computeDirectionalChange(segmentROIs, prevAngle, t);
 					prevAngle = angleAndDirectionalChange[0];
 
 					Double confinementRatio = null;
@@ -101,7 +101,7 @@ public class OmegaMobilityAnalyzer implements Runnable {
 					}
 					if (counting && (displacement == null)) {
 						final int maxT = segmentROIs
-						        .get(segmentROIs.size() - 1).getFrameIndex();
+								.get(segmentROIs.size() - 1).getFrameIndex();
 						if (t > maxT) {
 							counting = false;
 						}
@@ -120,13 +120,13 @@ public class OmegaMobilityAnalyzer implements Runnable {
 				this.totalTimeTraveledMap.put(segment, totalTimeTraveled);
 				this.confinementRatioMap.put(segment, confinementRatios);
 				this.anglesAndDirectionalChangesMap.put(segment,
-						anglesAndDirectionalChanges);
+				        anglesAndDirectionalChanges);
 				counter++;
 			}
 		}
 		if (this.displayerPanel != null) {
 			this.updateStatusAsync("Processing mobility analysis ended", true,
-					false);
+			        false);
 		}
 	}
 
@@ -159,14 +159,14 @@ public class OmegaMobilityAnalyzer implements Runnable {
 	}
 
 	private void updateStatusSync(final String msg, final boolean ended,
-	        final boolean dialog) {
+			final boolean dialog) {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
 					OmegaMobilityAnalyzer.this.displayerPanel
-					.updateMessageStatus(new AnalyzerEvent(msg, ended,
-					                dialog));
+					        .updateMessageStatus(new AnalyzerEvent(msg, ended,
+							dialog));
 				}
 			});
 		} catch (final InvocationTargetException e) {
@@ -177,13 +177,13 @@ public class OmegaMobilityAnalyzer implements Runnable {
 	}
 
 	private void updateStatusAsync(final String msg, final boolean ended,
-	        final boolean dialog) {
+			final boolean dialog) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				OmegaMobilityAnalyzer.this.displayerPanel
-				.updateMessageStatus(new AnalyzerEvent(msg, ended,
-				                dialog));
+				        .updateMessageStatus(new AnalyzerEvent(msg, ended,
+						dialog));
 			}
 		});
 	}

@@ -35,16 +35,20 @@ import edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
 import edu.umassmed.omega.commons.gui.dialogs.GenericInsertDialog;
 import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksExporter;
 import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksImporter;
-import edu.umassmed.omega.commons.utilities.OmegaTrajectoryIOUtility;
+import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 
 public class OmegaTracksToolDialog extends GenericDialog {
 
 	private static final long serialVersionUID = -4689339679604912836L;
 
+	private static String EXTENSIONS_TXT = "txt";
+	private static String EXTENSIONS_XY = "xy";
+	private static String EXTENSIONS_CSV = "csv";
+
 	private JButton chooseFile_btt, action_btt, close_btt;
 	private JButton addData_btt, moveDataUp_btt, moveDataDown_btt,
 	removeData_btt;
-	private JTextField file_txt, fileIdentifier_txt, trackIdentifier_txt,
+	private JTextField file_txt, fileIdentifier_txt, dataIdentifier_txt,
 	particleIdentifier_txt, nonParticleIdentifier_txt,
 	particleSeparatordentifier_txt;
 	private JList<String> particleData_lst;
@@ -56,24 +60,24 @@ public class OmegaTracksToolDialog extends GenericDialog {
 
 	private String selectedVal;
 
-	private final OmegaTrajectoryIOUtility otio;
+	private final OmegaIOUtility otio;
 
 	private final boolean isImpExp, isImporter;
 
 	private JPanel fieldsPanel;
-
+	
 	public OmegaTracksToolDialog(final RootPaneContainer parentContainer,
 			final boolean isImpExp, final boolean isImporter,
-			final OmegaTrajectoryIOUtility otio) {
+			final OmegaIOUtility otio) {
 		super(parentContainer, "Omega Tracks Importer", false);
-		if (isImporter) {
+		if (!isImporter) {
 			this.setTitle("Omega Tracks Exporter");
 		}
 		this.isImporter = isImporter;
 		this.isImpExp = isImpExp;
 		this.otio = otio;
 		this.selectedVal = null;
-
+		
 		this.adjustWidgets();
 
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -97,8 +101,15 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			extensionPanel.add(extension_lbl);
 			this.extension_cmb = new JComboBox<String>();
 			this.extension_cmb.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
-			this.extension_cmb.addItem(".txt");
-			this.extension_cmb.addItem(".xy");
+			this.extension_cmb.addItem(OmegaTracksToolDialog.EXTENSIONS_TXT);
+			this.extension_cmb.addItem(OmegaTracksToolDialog.EXTENSIONS_XY);
+			this.extension_cmb.addItem(OmegaTracksToolDialog.EXTENSIONS_CSV);
+			this.extension_cmb.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					OmegaTracksToolDialog.this.handleExtensionSelection();
+				}
+			});
 			extensionPanel.add(this.extension_cmb);
 			this.fieldsPanel.add(extensionPanel, 4);
 		}
@@ -131,16 +142,18 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		folder_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		filePanel.add(folder_lbl);
 		this.file_txt = new JTextField();
+		this.file_txt.setText(this.fileChooser.getCurrentDirectory()
+		        .getAbsolutePath());
 		this.file_txt.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		filePanel.add(this.file_txt);
-		this.chooseFile_btt = new JButton("Choose file");
+		this.chooseFile_btt = new JButton("File browser");
 		this.chooseFile_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
 		filePanel.add(this.chooseFile_btt);
 		this.fieldsPanel.add(filePanel);
 
 		final JPanel multipleFilesPanel = new JPanel();
 		multipleFilesPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		final JLabel multipleFiles_lbl = new JLabel("Is multiple file: ");
+		final JLabel multipleFiles_lbl = new JLabel("Multiple files: ");
 		multipleFiles_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		multipleFilesPanel.add(multipleFiles_lbl);
 		this.multipleFiles_ckb = new JCheckBox();
@@ -161,13 +174,13 @@ public class OmegaTracksToolDialog extends GenericDialog {
 
 		final JPanel trackIdentifierPanel = new JPanel();
 		trackIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		final JLabel trackIdentifier_lbl = new JLabel("Track indentifier: ");
+		final JLabel trackIdentifier_lbl = new JLabel("Data indentifier: ");
 		trackIdentifier_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		trackIdentifierPanel.add(trackIdentifier_lbl);
-		this.trackIdentifier_txt = new JTextField();
-		this.trackIdentifier_txt
+		this.dataIdentifier_txt = new JTextField();
+		this.dataIdentifier_txt
 		.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
-		trackIdentifierPanel.add(this.trackIdentifier_txt);
+		trackIdentifierPanel.add(this.dataIdentifier_txt);
 		this.fieldsPanel.add(trackIdentifierPanel);
 
 		final JPanel particleIdentifierPanel = new JPanel();
@@ -348,6 +361,15 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		});
 	}
 
+	private void handleExtensionSelection() {
+		final String ext = (String) this.extension_cmb.getSelectedItem();
+		this.particleSeparatordentifier_txt.setEnabled(true);
+		if (ext.equals(OmegaTracksToolDialog.EXTENSIONS_CSV)) {
+			this.particleSeparatordentifier_txt.setText(",");
+			this.particleSeparatordentifier_txt.setEnabled(false);
+		}
+	}
+
 	private void handleAddData() {
 		this.insertDialog.reset();
 		this.insertDialog.setVisible(true);
@@ -407,11 +429,11 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	}
 
 	private void handleMultipleFilesSelection() {
-		if (this.multipleFiles_ckb.isSelected()) {
-			this.fileIdentifier_txt.setEnabled(true);
-		} else {
-			this.fileIdentifier_txt.setEnabled(false);
-		}
+		// if (this.multipleFiles_ckb.isSelected()) {
+		// this.fileIdentifier_txt.setEnabled(true);
+		// } else {
+		// this.fileIdentifier_txt.setEnabled(false);
+		// }
 	}
 
 	private void handleChooseFile() {
@@ -431,19 +453,19 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		}
 		String fileIdentifier = null;
 		File sourceFolder = null;
-		String trackIdentifier = null;
-		if (!this.trackIdentifier_txt.getText().isEmpty()) {
-			trackIdentifier = this.trackIdentifier_txt.getText();
+		String trackIdentifier = "";
+		if (!this.dataIdentifier_txt.getText().isEmpty()) {
+			trackIdentifier = this.dataIdentifier_txt.getText();
 		}
-		String particleIdentifier = null;
+		String particleIdentifier = "";
 		if (!this.particleIdentifier_txt.getText().isEmpty()) {
 			particleIdentifier = this.particleIdentifier_txt.getText();
 		}
-		String nonParticleIdentifier = null;
+		String nonParticleIdentifier = "";
 		if (!this.nonParticleIdentifier_txt.getText().isEmpty()) {
 			nonParticleIdentifier = this.nonParticleIdentifier_txt.getText();
 		}
-		String particleSeparator = null;
+		String particleSeparator = "\t";
 		if (!this.particleSeparatordentifier_txt.getText().isEmpty()) {
 			particleSeparator = this.particleSeparatordentifier_txt.getText();
 		}
@@ -459,39 +481,41 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			// TODO ERROR
 			return;
 		final File f = new File(fName);
-		if (this.multipleFiles_ckb.isSelected()) {
-			if (f.isFile())
-				// TODO ERROR
-				return;
-			if (!this.fileIdentifier_txt.getText().isEmpty()) {
-				fileIdentifier = this.fileIdentifier_txt.getText();
-			}
-			if (fileIdentifier == null)
-				// TODO ERROR
-				return;
-			sourceFolder = f;
-		} else {
-			if (f.isDirectory())
-				// TODO ERROR
-				return;
-			sourceFolder = f.getParentFile();
-			fileIdentifier = f.getName();
+		if (f.isFile())
+			// TODO ERROR
+			return;
+		sourceFolder = f;
+		if (!this.fileIdentifier_txt.getText().isEmpty()) {
+			fileIdentifier = this.fileIdentifier_txt.getText();
 		}
+		if (fileIdentifier == null)
+			// TODO ERROR
+			return;
+		// if (this.multipleFiles_ckb.isSelected()) {
+		// } else {
+		// if (f.isDirectory())
+		// // TODO ERROR
+		// return;
+		// sourceFolder = f.getParentFile();
+		// fileIdentifier = f.getName();
+		// }
+		final boolean multifile = this.multipleFiles_ckb.isSelected();
 		final boolean startAtOne = this.startAtOne_ckb.isSelected();
 		try {
 			if (this.isImporter) {
 				final OmegaTracksImporter oti = (OmegaTracksImporter) this.otio;
-				oti.importTrajectories(fileIdentifier, trackIdentifier,
+				oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
+				oti.importData(fileIdentifier, trackIdentifier,
 						particleIdentifier, startAtOne, nonParticleIdentifier,
 						particleSeparator, dataOrder, sourceFolder);
 			} else {
 				final String extension = (String) this.extension_cmb
 				        .getSelectedItem();
 				final OmegaTracksExporter ote = (OmegaTracksExporter) this.otio;
-				ote.exportTrajectories(fileIdentifier, extension,
-				        trackIdentifier, particleIdentifier, startAtOne,
-				        nonParticleIdentifier, particleSeparator, dataOrder,
-				        sourceFolder);
+				ote.export(multifile, fileIdentifier, extension,
+						trackIdentifier, particleIdentifier, startAtOne,
+						nonParticleIdentifier, particleSeparator, dataOrder,
+						sourceFolder);
 			}
 		} catch (final IllegalArgumentException e) {
 			// TODO MANAGE ERROR
@@ -509,5 +533,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 
 	private void handleClose() {
 		this.setVisible(false);
+	}
+	
+	public void setFileName(final String targetAnalysisName) {
+		this.fileIdentifier_txt.setText(targetAnalysisName);
 	}
 }

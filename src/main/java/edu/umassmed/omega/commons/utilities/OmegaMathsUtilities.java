@@ -356,7 +356,7 @@ public class OmegaMathsUtilities {
 	/**
 	 * Compute the linear fit of coordinates input array u and v, starting from
 	 * index from and ending at index to
-	 * 
+	 *
 	 * @param u
 	 * @param v
 	 * @param from
@@ -376,8 +376,11 @@ public class OmegaMathsUtilities {
 			SigmaU2 += StrictMath.pow(u[i] - u_bar, 2);
 			SigmaV2 += StrictMath.pow(v[i] - v_bar, 2);
 		}
+		// Slope
 		final double m = SigmaUV / SigmaU2;
+		// Intercept
 		final double q = v_bar - (m * u_bar);
+		// Goodness of fit
 		final double r = SigmaUV / StrictMath.sqrt(SigmaU2 * SigmaV2);
 		return new Double[] { m, q, r };
 	}
