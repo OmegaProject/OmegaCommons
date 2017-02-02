@@ -28,8 +28,10 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.gui.GenericAnalysisInformationPanel;
 import edu.umassmed.omega.commons.gui.GenericElementInformationPanel;
 import edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
+import edu.umassmed.omega.commons.gui.interfaces.GenericElementInformationContainerInterface;
 
-public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
+public class OmegaTracksToolTargetSelectorDialog extends GenericDialog
+implements GenericElementInformationContainerInterface {
 
 	private static final long serialVersionUID = 2617772428822487840L;
 
@@ -128,7 +130,7 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 		centerPanel.setLayout(new GridLayout(1, 3));
 
 		this.geip = new GenericElementInformationPanel(
-		        this.getParentContainer());
+		        this.getParentContainer(), this);
 		centerPanel.add(this.geip);
 		this.gaip1 = new GenericAnalysisInformationPanel(
 				this.getParentContainer());
@@ -423,5 +425,18 @@ public class OmegaTracksToolTargetSelectorDialog extends GenericDialog {
 
 	public OmegaParticleLinkingRun getSelectedParticleLinkingRun() {
 		return this.selectedParticleLinkingRun;
+	}
+
+	@Override
+	public void fireElementChanged() {
+		// this.geip.update((OmegaElement) this.selectedImage);
+	}
+
+	@Override
+	public void updateParentContainer(final RootPaneContainer parentContainer) {
+		super.updateParentContainer(parentContainer);
+		this.geip.updateParentContainer(parentContainer);
+		this.gaip1.updateParentContainer(parentContainer);
+		this.gaip2.updateParentContainer(parentContainer);
 	}
 }

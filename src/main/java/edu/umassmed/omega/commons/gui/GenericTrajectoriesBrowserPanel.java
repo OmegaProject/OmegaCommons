@@ -185,16 +185,16 @@ implements OmegaFilterEventListener {
 			@Override
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
-				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt),
-				        evt.isControlDown());
+				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
+						|| evt.isControlDown(), evt.isShiftDown());
 			}
 		});
 		this.tbNamesPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
-				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt),
-				        evt.isControlDown());
+				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
+						|| evt.isControlDown(), evt.isShiftDown());
 			}
 		});
 		this.showParticles_itm.addActionListener(new ActionListener() {
@@ -249,7 +249,7 @@ implements OmegaFilterEventListener {
 	}
 
 	protected void handleMouseClick(final Point clickP,
-	        final boolean isRightButton, final boolean isCtrlDown) {
+	        final boolean isRightButton, final boolean isShiftDown) {
 		final OmegaTrajectory oldTraj = this.getSelectedTrajectory();
 		this.resetClickReferences();
 		this.findSelectedTrajectory(clickP);
@@ -264,7 +264,7 @@ implements OmegaFilterEventListener {
 			if (this.getSelectedTrajectory() != null) {
 				this.checkIfCheckboxAndSelect(clickP);
 			}
-			if (!isCtrlDown) {
+			if (!isShiftDown) {
 				this.getSelectedTrajectories().clear();
 			}
 		}
@@ -418,14 +418,25 @@ implements OmegaFilterEventListener {
 			this.getSelectedTrajectories().clear();
 			if (trajectories != null) {
 				this.getSelectedTrajectories().addAll(trajectories);
-				if (!trajectories.isEmpty()) {
+				if (!this.getSelectedTrajectories().isEmpty()) {
+					this.centerOnTrajectory(this.getSelectedTrajectories().get(
+							0));
+				} else if (!trajectories.isEmpty()) {
 					this.centerOnTrajectory(trajectories.get(0));
 				}
 			}
 		} else {
 			this.getTrajectories().clear();
+			final List<OmegaTrajectory> preSelected = new ArrayList<OmegaTrajectory>(
+					this.getSelectedTrajectories());
+			this.getSelectedTrajectories().clear();
 			if (trajectories != null) {
 				this.getTrajectories().addAll(trajectories);
+				for (final OmegaTrajectory track : preSelected) {
+					if (trajectories.contains(track)) {
+						this.getSelectedTrajectories().add(track);
+					}
+				}
 				this.tbTrajectoriesPanel.setPanelSize();
 			}
 			this.getShownTrajectories().clear();
@@ -553,7 +564,7 @@ implements OmegaFilterEventListener {
 		final String key = event.getKey();
 		final String val = event.getValue();
 		final boolean isExact = event.isExact();
-		System.out.println(key + " " + val + " " + isExact);
+		// System.out.println(key + " " + val + " " + isExact);
 
 		this.getShownTrajectories().clear();
 		if ((val == null) || val.equals("")) {

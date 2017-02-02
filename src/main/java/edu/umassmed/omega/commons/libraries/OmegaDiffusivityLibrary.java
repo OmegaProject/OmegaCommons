@@ -36,11 +36,12 @@ public class OmegaDiffusivityLibrary {
 			// Martin's model
 			final double minD = ((sigma * sigma) + (bias * bias)) / (2 * 2);
 
-			System.out.println("min detectable D is: " + minD);
+			// System.out.println("min detectable D is: " + minD);
 			return minD;
 
 			// this.smsSvsDChart.drawMinimumDetectableDLine(minD);
 		} catch (final IllegalArgumentException e) {
+			// TODO The exception should be handled in plugin
 			OmegaLogFileManager.handleCoreException(e, true);
 			return null;
 		}
@@ -560,7 +561,7 @@ public class OmegaDiffusivityLibrary {
 		}
 		// final Double[] smss = OmegaMathsUtilities.linearFit(nu, gamma);
 		return new Double[][][] { { nu }, delta_t, mu, gammaAndD };// , { smss }
-		                                                           // };
+		// };
 }
 
 	public static Double[][][] computeNu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS(

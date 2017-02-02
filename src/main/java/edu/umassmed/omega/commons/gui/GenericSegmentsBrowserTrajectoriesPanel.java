@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
+import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.eventSystem.events.OmegaMessageEventTBLoader;
 import edu.umassmed.omega.commons.runnable.TBROIThumbnailLoader;
@@ -45,7 +47,8 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 	private TBROIThumbnailLoader frameLoader;
 
 	private Point clickPosition;
-	private final boolean isSelectionEnabled;
+	private final boolean invertTrackSegmColor;
+	private final boolean isSelectionEnabled, isDoubleColorEnabled;
 
 	public GenericSegmentsBrowserTrajectoriesPanel(
 			final RootPaneContainer parent,
@@ -71,6 +74,8 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 		this.clickPosition = null;
 
 		this.isSelectionEnabled = isSelectionEnabled;
+		this.isDoubleColorEnabled = true;
+		this.invertTrackSegmColor = false;
 	}
 
 	protected Point findTrajectoryLocation(final OmegaTrajectory trajectory) {
@@ -188,9 +193,10 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 		this.segmentsTracksMap.clear();
 		int y = 0;
 		for (final OmegaTrajectory track : this.sbPanel.getShownSegments()
-		        .keySet()) {
+				.keySet()) {
+			final Color trackColor = track.getColor();
 			for (final OmegaSegment segm : this.sbPanel.getShownSegments().get(
-			        track)) {
+					track)) {
 				final List<OmegaROI> rois = track.getROIs();
 				final int yPos = ((space * y) + (space / 4)) - border;
 				if (!this.trajectoriesMap.containsKey(yPos)) {
@@ -203,7 +209,7 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 				final int endROI = rois.indexOf(segm.getEndingROI());
 				for (int x = startROI; x <= endROI; x++) {
 					final OmegaROI roi = rois.get(x);
-					final int roiIndex = roi.getFrameIndex();
+					final int roiIndex = roi.getFrameIndex() - 1;
 					BufferedImage bufferedImage = null;
 					final List<BufferedImage> buffImages = OmegaImageManager
 							.getImages(this.img.getOmeroId());
@@ -214,30 +220,32 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 						bufferedImage = buffImages.get(roiIndex);
 					}
 					final int xPos = ((space * roiIndex) - (size / 2) - border)
-					        + (space / 2);
+							+ (space / 2);
 					final Point p = new Point(xPos, yPos);
 					this.particlesMap.put(p, roi);
 					if (this.sbPanel
-					        .getSegmentColor(segm.getSegmentationType()) == null) {
+							.getSegmentColor(segm.getSegmentationType()) == null) {
 						// TODO generate random colors
 					}
-					final Color color = this.sbPanel.getSegmentColor(segm
+					final Color segmColor = this.sbPanel.getSegmentColor(segm
 							.getSegmentationType());
-					if (roiIndex < segm.getEndingROI().getFrameIndex()) {
+					final int lastROIIndex = segm.getEndingROI()
+					        .getFrameIndex() - 1;
+					if (roiIndex < lastROIIndex) {
 						final OmegaROI nextROI = rois.get(x + 1);
-						final int nextROIIndex = nextROI.getFrameIndex();
+						final int nextROIIndex = nextROI.getFrameIndex() - 1;
 						final int xNextPos = ((space * nextROIIndex)
-						        - (size / 2) - border)
-						        + (space / 2);
+								- (size / 2) - border)
+								+ (space / 2);
 						final Point p2 = new Point(xNextPos, yPos);
-						this.drawConnection(g2D, p, p2, color);
+						this.drawConnection(g2D, p, p2, trackColor, segmColor);
 					}
 					if ((bufferedImage == null)
-					        || !this.sbPanel.isShowParticles()) {
-						this.drawParticleSquare(g2D, p, color);
+							|| !this.sbPanel.isShowParticles()) {
+						this.drawParticleSquare(g2D, p, trackColor, segmColor);
 					} else {
-						this.drawParticleImage(g2D, p, color, bufferedImage,
-								roi);
+						this.drawParticleImage(g2D, p, trackColor, segmColor,
+						        bufferedImage, roi);
 					}
 				}
 				y++;
@@ -246,9 +254,13 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 	}
 
 	private void drawConnection(final Graphics2D g2D, final Point p,
-			final Point p2, final Color c) {
+			final Point p2, final Color trackColor, final Color segmColor) {
 		final int size = GenericBrowserPanel.SPOT_SIZE_DEFAULT;
-		g2D.setColor(c);
+		if (this.invertTrackSegmColor) {
+			g2D.setColor(segmColor);
+		} else {
+			g2D.setColor(trackColor);
+		}
 		final int width = p2.x - p.x;
 		final int height = 3;
 		g2D.fillRect(p.x + size, (p.y + (size / 2)) - 3, width, height);
@@ -256,18 +268,34 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 	}
 
 	private void drawParticleSquare(final Graphics2D g2D, final Point p,
-			final Color color) {
+			final Color trackColor, final Color segmColor) {
 		final int border = GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER;
 		final int spotSize = GenericBrowserPanel.SPOT_SIZE_DEFAULT
 				+ (GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER * 2);
-		g2D.setColor(color);
+		// if (this.isDoubleColorEnabled
+		// && (segmColor != OmegaSegmentationTypes.NOT_ASSIGNED_COL)) {
+		//
+		// } else {
+		// g2D.setColor(segmColor);
+		// }
+		if (this.invertTrackSegmColor) {
+			g2D.setColor(segmColor);
+		} else {
+			g2D.setColor(trackColor);
+		}
 		g2D.fillRect(p.x - border, p.y - border, spotSize, spotSize);
+		g2D.setColor(Color.black);
+		if (this.isDoubleColorEnabled
+				&& (segmColor != OmegaSegmentationTypes.NOT_ASSIGNED_COL)) {
+			this.drawSegmentColorMarker(g2D, p, spotSize, border, trackColor,
+					segmColor);
+		}
 		g2D.setColor(Color.black);
 	}
 
 	private void drawParticleImage(final Graphics2D g2D, final Point p,
-			final Color color, final BufferedImage bufferedImage,
-			final OmegaROI roi) {
+			final Color trackColor, final Color segmColor,
+	        final BufferedImage bufferedImage, final OmegaROI roi) {
 		final int radius = this.sbPanel.getRadius();
 		final int border = GenericBrowserPanel.TRAJECTORY_SQUARE_BORDER;
 		final int spotSize = GenericBrowserPanel.SPOT_SIZE_DEFAULT
@@ -278,7 +306,11 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 				BigDecimal.ROUND_HALF_UP).intValue();
 		final int y1 = new BigDecimal(String.valueOf(yD)).setScale(0,
 				BigDecimal.ROUND_HALF_UP).intValue();
-		g2D.setColor(color);
+		if (this.invertTrackSegmColor) {
+			g2D.setColor(segmColor);
+		} else {
+			g2D.setColor(trackColor);
+		}
 		g2D.fillRect(p.x - border, p.y - border, spotSize, spotSize);
 		g2D.setColor(Color.black);
 		final int xS1 = x1 - radius;
@@ -289,6 +321,54 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 				+ (GenericBrowserPanel.SPOT_SIZE_DEFAULT), p.y
 				+ (GenericBrowserPanel.SPOT_SIZE_DEFAULT), xS1, yS1, xS2, yS2,
 		        this);
+		if (this.isDoubleColorEnabled
+				&& (segmColor != OmegaSegmentationTypes.NOT_ASSIGNED_COL)) {
+			this.drawSegmentColorMarker(g2D, p, spotSize, border, trackColor,
+					segmColor);
+		}
+		g2D.setColor(Color.black);
+	}
+	
+	private void drawSegmentColorMarker(final Graphics2D g2D, final Point p,
+	        final int spotSize, final int border, final Color trackColor,
+	        final Color segmColor) {
+		final int x = p.x - border;
+		final int y = p.y - border;
+		final int newX = x + spotSize;
+		final int newY = y + spotSize;
+		if (!this.invertTrackSegmColor) {
+			g2D.setColor(segmColor);
+		} else {
+			g2D.setColor(trackColor);
+		}
+		final int[] p1x = { x, x,
+				x + GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE };
+		final int[] p1y = { y,
+				y + GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE, y };
+		final Polygon triangle1 = new Polygon(p1x, p1y,
+				GenericBrowserPanel.TRAJECTORY_TRIANGLE_POINTS);
+		g2D.fillPolygon(triangle1);
+		final int[] p2x = { newX, newX,
+				newX - GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE };
+		final int[] p2y = { y,
+				y + GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE, y };
+		final Polygon triangle2 = new Polygon(p2x, p2y,
+				GenericBrowserPanel.TRAJECTORY_TRIANGLE_POINTS);
+		g2D.fillPolygon(triangle2);
+		final int[] p3x = { x, x,
+				x + GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE };
+		final int[] p3y = { newY,
+		        newY - GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE, newY };
+		final Polygon triangle3 = new Polygon(p3x, p3y,
+				GenericBrowserPanel.TRAJECTORY_TRIANGLE_POINTS);
+		g2D.fillPolygon(triangle3);
+		final int[] p4x = { newX, newX,
+				newX - GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE };
+		final int[] p4y = { newY,
+		        newY - GenericBrowserPanel.TRAJECTORY_TRIANGLE_SIZE, newY };
+		final Polygon triangle4 = new Polygon(p4x, p4y,
+				GenericBrowserPanel.TRAJECTORY_TRIANGLE_POINTS);
+		g2D.fillPolygon(triangle4);
 	}
 
 	@Override

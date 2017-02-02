@@ -61,18 +61,18 @@ public class OmegaTracksImporterTest {
 					final String[] vals2 = fName2.split("_");
 					final Integer L = Integer.valueOf(vals2[1]);
 					final Double SMSS = Double.valueOf(vals2[3].replace("-",
-							"."));
+					        "."));
 					final Double D = Double.valueOf(vals2[5].replace("-", "."));
-					System.out.println("Import SNR " + snr + " L " + L
-							+ " SMSS " + SMSS + " D " + D);
+					// System.out.println("Import SNR " + snr + " L " + L
+					// + " SMSS " + SMSS + " D " + D);
 					oti.reset();
 					oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
 					oti.importData(fileName, trajIdent, particleIdent, false,
-					        nonParticleIdent, particleSep, dataOrder, f2);
+							nonParticleIdent, particleSep, dataOrder, f2);
 					final List<OmegaTrajectory> tracks = oti.getTracks();
 					oti.getParticles();
 					oti.getParticlesValues();
-					
+
 					Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap;
 					if (smssOutput.containsKey(snr)) {
 						lSMSSMap = smssOutput.get(snr);
@@ -97,7 +97,7 @@ public class OmegaTracksImporterTest {
 					} else {
 						outputSMSS = new ArrayList<>();
 					}
-					
+
 					Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap;
 					if (dOutput.containsKey(snr)) {
 						lDMap = dOutput.get(snr);
@@ -122,24 +122,24 @@ public class OmegaTracksImporterTest {
 					} else {
 						outputD = new ArrayList<>();
 					}
-					
+
 					for (final OmegaTrajectory traj : tracks) {
 						final List<OmegaAlgorithmPoint> points = new ArrayList<>();
 						for (final OmegaROI roi : traj.getROIs()) {
 							points.add(new OmegaAlgorithmPoint(roi.getX(), roi
-									.getY(), roi.getFrameIndex()));
+							        .getY(), roi.getFrameIndex()));
 						}
 						final OmegaTrajectoryStatistics stats = new OmegaTrajectoryStatistics(
-								points, 1.0, 3);
+						        points, 1.0, 3);
 						stats.setOutputFile("L_" + L + "_D_" + D + "_SMMS_"
-						        + SMSS);
+								+ SMSS);
 						stats.setTrack(traj.getName());
 						final Double omegaD = stats.getGammaAndD(2)[3];
 						final Double omegaSMSS = stats.getSMSS()[0];
 						outputSMSS.add(omegaSMSS);
 						outputD.add(omegaD);
 					}
-					
+
 					dDMap.put(D, outputD);
 					dSMSSMap.put(D, outputSMSS);
 					smssDMap.put(SMSS, dDMap);
@@ -155,7 +155,7 @@ public class OmegaTracksImporterTest {
 		} catch (final IOException ex) {
 			// TODO should I do something here?
 		}
-		
+
 		int snrCounter = 0, lCounter = 0;
 		String snrString = "", lString = "";
 		for (final Double snr : smssOutput.keySet()) {
@@ -166,9 +166,9 @@ public class OmegaTracksImporterTest {
 				snrString = String.valueOf(snrCounter);
 			}
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap = smssOutput
-					.get(snr);
+			        .get(snr);
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap = dOutput
-					.get(snr);
+			        .get(snr);
 			for (final Integer l : lSMSSMap.keySet()) {
 				lCounter++;
 				if (lCounter < 10) {
@@ -178,24 +178,24 @@ public class OmegaTracksImporterTest {
 				}
 				int rowCounter = 0;
 				final Map<Double, Map<Double, List<Double>>> smssSMSSMap = lSMSSMap
-						.get(l);
+				        .get(l);
 				final Map<Double, Map<Double, List<Double>>> smssDMap = lDMap
-						.get(l);
+				        .get(l);
 				for (final Double smss : smssSMSSMap.keySet()) {
 					final Map<Double, List<Double>> dSMSSMap = smssSMSSMap
-							.get(smss);
+					        .get(smss);
 					final Map<Double, List<Double>> dDMap = smssDMap.get(smss);
 					for (final Double d : dSMSSMap.keySet()) {
 						rowCounter++;
-						System.out.println("Computing SNR " + snr + " L " + l
-								+ " SMSS " + smss + " D " + d);
+						// System.out.println("Computing SNR " + snr + " L " + l
+						// + " SMSS " + smss + " D " + d);
 						final List<Double> smssValues = dSMSSMap.get(d);
 						final List<Double> dValues = dDMap.get(d);
 						final String smssFileName = omegaSMSSDir
-								+ "\\SMSS_values_SNR_" + snrString + "_L_"
-								+ lString + ".csv";
+						        + "\\SMSS_values_SNR_" + snrString + "_L_"
+						        + lString + ".csv";
 						final String dFileName = omegaDDir + "\\D_values_SNR_"
-								+ snrString + "_L_" + lString + ".csv";
+						        + snrString + "_L_" + lString + ".csv";
 						final StringBuffer row = new StringBuffer();
 						row.append(String.valueOf(rowCounter));
 						row.append(" ");
@@ -210,10 +210,10 @@ public class OmegaTracksImporterTest {
 						row.append("***");
 						row.append(";");
 						final StringBuffer smssRow = new StringBuffer(
-								row.toString());
+						        row.toString());
 						final StringBuffer dRow = new StringBuffer(
-								row.toString());
-						
+						        row.toString());
+
 						for (final Double val : smssValues) {
 							smssRow.append(String.valueOf(val));
 							smssRow.append(";");
@@ -231,7 +231,7 @@ public class OmegaTracksImporterTest {
 							bw.write(smssRow.toString());
 							bw.close();
 							fw.close();
-							
+
 							final File dFile = new File(dFileName);
 							fw = new FileWriter(dFile, true);
 							bw = new BufferedWriter(fw);

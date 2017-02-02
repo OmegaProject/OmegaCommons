@@ -89,14 +89,14 @@ public abstract class StatsGraphProducer implements Runnable {
 	public CategoryItemRenderer getTracksRenderer() {
 		if (this.categoryItemRenderer == null) {
 			switch (this.graphType) {
-			case BAR_GRAPH:
-				this.createTracksBarRenderer();
-				break;
-			case HISTOGRAM_GRAPH:
-				this.createTracksHistogramBarRenderer();
-				break;
-			default:
-				this.createTracksLineRenderer();
+				case BAR_GRAPH:
+					this.createTracksBarRenderer();
+					break;
+				case HISTOGRAM_GRAPH:
+					this.createTracksHistogramBarRenderer();
+					break;
+				default:
+					this.createTracksLineRenderer();
 			}
 
 		}
@@ -172,14 +172,14 @@ public abstract class StatsGraphProducer implements Runnable {
 			final Map<String, Map<Integer, Boolean>> renderingMap) {
 		if (this.xyLineAndShapeRenderer == null) {
 			switch (this.graphType) {
-			case BAR_GRAPH:
-				this.createTimepointsBarRenderer(renderingMap);
-				break;
-			case HISTOGRAM_GRAPH:
-				this.createTimepointsHistogramBarRenderer();
-				break;
-			default:
-				this.createTimepointsLineRenderer(renderingMap);
+				case BAR_GRAPH:
+					this.createTimepointsBarRenderer(renderingMap);
+					break;
+				case HISTOGRAM_GRAPH:
+					this.createTimepointsHistogramBarRenderer();
+					break;
+				default:
+					this.createTimepointsLineRenderer(renderingMap);
 			}
 
 		}
@@ -343,8 +343,14 @@ public abstract class StatsGraphProducer implements Runnable {
 	protected Map<String, Map<Integer, Boolean>> createRenderingMap(
 			final DefaultCategoryDataset catDataset) {
 		final Map<String, Map<Integer, Boolean>> renderingMap = new LinkedHashMap<>();
-		for (final OmegaTrajectory track : this.getSegmentsMap().keySet()) {
-			for (final OmegaSegment segment : this.getSegmentsMap().get(track)) {
+		final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap = this
+				.getSegmentsMap();
+		for (final OmegaTrajectory track : segmentsMap.keySet()) {
+			final List<OmegaSegment> segments = segmentsMap.get(track);
+			if (segments == null) {
+				continue;
+			}
+			for (final OmegaSegment segment : segments) {
 				final String name = track.getName() + " "
 						+ segment.getStartingROI().getFrameIndex() + "-"
 						+ segment.getEndingROI().getFrameIndex();
@@ -479,22 +485,27 @@ public abstract class StatsGraphProducer implements Runnable {
 	protected JPanel prepareTimepointsGraph(final int maxT) {
 		final String title = this.getTitle();
 		Dataset dataset = null;
+		final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap = this
+				.getSegmentsMap();
 		if (this.getGraphType() == StatsGraphProducer.HISTOGRAM_GRAPH) {
 			dataset = new HistogramDataset();
 			((HistogramDataset) dataset).setType(HistogramType.FREQUENCY);
 		} else {
 			dataset = new DefaultCategoryDataset();
 		}
-		final double partial = 100.0 / (maxT * this.getSegmentsMap().keySet()
-				.size());
+		final double partial = 100.0 / (maxT * segmentsMap.keySet().size());
 		final double increase = new BigDecimal(partial).setScale(2,
 				RoundingMode.HALF_UP).doubleValue();
+
 		for (Integer t = 0; t < maxT; t++) {
 			final List<Double> histValues = new ArrayList<>();
-			for (final OmegaTrajectory track : this.getSegmentsMap().keySet()) {
+			for (final OmegaTrajectory track : segmentsMap.keySet()) {
 				final List<OmegaROI> rois = track.getROIs();
-				for (final OmegaSegment segment : this.getSegmentsMap().get(
-				        track)) {
+				final List<OmegaSegment> segments = segmentsMap.get(track);
+				if (segments == null) {
+					continue;
+				}
+				for (final OmegaSegment segment : segments) {
 					final String name = track.getName() + " "
 					        + segment.getStartingROI().getFrameIndex() + "-"
 					        + segment.getEndingROI().getFrameIndex();
@@ -775,8 +786,8 @@ public abstract class StatsGraphProducer implements Runnable {
 				final Double smss = values[1];
 				final double errorD = values[2];
 				final double errorSMSS = values[3];
-				System.out.println(track.getName() + " - " + errorD + " - "
-				        + errorSMSS);
+				// System.out.println(track.getName() + " - " + errorD + " - "
+				// + errorSMSS);
 				final double dMinus = d - errorD;
 				final double dPlus = d + errorD;
 				final double smssMinus = smss - errorSMSS;

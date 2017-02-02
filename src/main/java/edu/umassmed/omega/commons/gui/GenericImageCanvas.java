@@ -1,29 +1,28 @@
 /*******************************************************************************
- * Copyright (C) 2014 University of Massachusetts Medical School
- * Alessandro Rigano (Program in Molecular Medicine)
- * Caterina Strambio De Castillia (Program in Molecular Medicine)
+ * Copyright (C) 2014 University of Massachusetts Medical School Alessandro
+ * Rigano (Program in Molecular Medicine) Caterina Strambio De Castillia
+ * (Program in Molecular Medicine)
  *
  * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
  * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
  * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
- * Key contacts:
- * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
+ * Key contacts: Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
  * Alex Rigano: alex.rigano@umassmed.edu
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package edu.umassmed.omega.commons.gui;
 
@@ -106,8 +105,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 	private final List<OmegaTrajectory> selectedTrajectories, trajectories;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> selectedSegments,
 	segments;
+	private OmegaSegmentationTypes segmTypes;
 
-	private int selectedTrajectoryIndex;
+	private int selectedTrajectoryIndex, selectedSegmentIndex;
 
 	/** Graphics2D stroke used. **/
 	private final int currentStroke;
@@ -187,9 +187,10 @@ public class GenericImageCanvas extends GenericScrollPane {
 			@Override
 			public void mouseClicked(final MouseEvent evt) {
 				final Point clickP = evt.getPoint();
-				GenericImageCanvas.this.handleMouseClick(clickP,
-						SwingUtilities.isRightMouseButton(evt),
-						evt.isControlDown());
+				GenericImageCanvas.this.handleMouseClick(
+						clickP,
+						SwingUtilities.isRightMouseButton(evt)
+						|| evt.isControlDown(), evt.isShiftDown());
 			}
 
 			@Override
@@ -199,15 +200,19 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 			@Override
 			public void mouseReleased(final MouseEvent evt) {
-				GenericImageCanvas.this.handleMouseReleased(evt.getPoint(),
-						SwingUtilities.isRightMouseButton(evt));
+				GenericImageCanvas.this.handleMouseReleased(
+						evt.getPoint(),
+						SwingUtilities.isRightMouseButton(evt)
+						|| evt.isControlDown());
 			}
 		});
 		this.canvasPanel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(final MouseEvent evt) {
-				GenericImageCanvas.this.handleMouseDragged(evt.getPoint(),
-						SwingUtilities.isRightMouseButton(evt));
+				GenericImageCanvas.this.handleMouseDragged(
+						evt.getPoint(),
+						SwingUtilities.isRightMouseButton(evt)
+						|| evt.isControlDown());
 			}
 		});
 		this.canvasZoomOut.addActionListener(new ActionListener() {
@@ -270,12 +275,18 @@ public class GenericImageCanvas extends GenericScrollPane {
 		this.findTrajectoryIndex(clickP);
 		this.canvasMenu.remove(this.chooseColor);
 		final int index = this.selectedTrajectoryIndex;
+		final int segmIndex = this.selectedSegmentIndex;
 		OmegaTrajectory traj = null;
 		if (index > -1) {
 			traj = this.trajectories.get(index);
 		}
+		OmegaSegment segm = null;
+		if (!this.segments.isEmpty() && (traj != null) && (segmIndex != -1)) {
+			segm = this.segments.get(traj).get(segmIndex);
+		}
 		if (isRightButton) {
 			this.selectedTrajectories.clear();
+			this.selectedSegments.clear();
 			if (traj != null) {
 				this.canvasMenu.add(this.chooseColor,
 				        this.canvasMenu.getComponentCount());
@@ -284,12 +295,25 @@ public class GenericImageCanvas extends GenericScrollPane {
 		} else {
 			if (!isControlDown) {
 				this.selectedTrajectories.clear();
+				this.selectedSegments.clear();
 			}
 			this.canvasMenu.setVisible(false);
 		}
 		if (traj != null) {
-			this.selectedTrajectories.add(traj);
-			this.sendCoreEventTrajectories(this.selectedTrajectories, true);
+			if (segm != null) {
+				List<OmegaSegment> segmentList = null;
+				if (this.selectedSegments.containsKey(traj)) {
+					segmentList = this.selectedSegments.get(traj);
+				} else {
+					segmentList = new ArrayList<OmegaSegment>();
+				}
+				segmentList.add(segm);
+				this.selectedSegments.put(traj, segmentList);
+				this.sendCoreEventSegments(this.segments, this.segmTypes, true);
+			} else {
+				this.selectedTrajectories.add(traj);
+				this.sendCoreEventTrajectories(this.selectedTrajectories, true);
+			}
 			this.repaint();
 		}
 	}
@@ -374,6 +398,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 		final int x = (int) (clickP.x / this.scale);
 		final int y = (int) (clickP.y / this.scale);
 		int trajIndex = -1;
+		int segmIndex = -1;
 		for (final OmegaTrajectory traj : GenericImageCanvas.this.trajectories) {
 			final List<OmegaROI> rois = traj.getROIs();
 			for (final OmegaROI roi : rois) {
@@ -383,6 +408,19 @@ public class GenericImageCanvas extends GenericScrollPane {
 						&& (y > (roiY - 2))) {
 					trajIndex = GenericImageCanvas.this.trajectories
 							.indexOf(traj);
+					final int roiIndex = roi.getFrameIndex();
+					for (final OmegaSegment segm : this.segments.get(traj)) {
+						final int startIndex = segm.getStartingROI()
+						        .getFrameIndex();
+						final int endIndex = segm.getEndingROI()
+						        .getFrameIndex();
+						if ((roiIndex >= startIndex) && (roiIndex <= endIndex)) {
+							segmIndex = this.segments.get(traj).indexOf(segm);
+						}
+						if (segmIndex != -1) {
+							break;
+						}
+					}
 					break;
 				}
 			}
@@ -392,6 +430,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 		}
 
 		this.selectedTrajectoryIndex = trajIndex;
+		this.selectedSegmentIndex = segmIndex;
 	}
 
 	/**
@@ -421,12 +460,6 @@ public class GenericImageCanvas extends GenericScrollPane {
 		this.revalidate();
 		this.repaint();
 	}
-
-	// public void setTrajectoryToDraw(final int trajectoryToDraw) {
-	// this.trajectoryToDraw = trajectoryToDraw;
-	// }
-
-	// @formatter:on
 
 	/**
 	 * Set the size of the this JPanel accordingly to the image size and
@@ -459,53 +492,6 @@ public class GenericImageCanvas extends GenericScrollPane {
 		}
 		return scaledImage;
 	}
-
-	// public void saveImage() {
-	// final FileHelper fileChooserHelper = new FileHelper();
-	//
-	// final String imageDirectory = fileChooserHelper.selectFile(
-	// "explorationDir", OmegaConstants.INFO_SELECT_IMAGE_DIRECTOTY,
-	// JFileChooser.DIRECTORIES_ONLY);
-	//
-	// if (imageDirectory != null) {
-	// this.saveSingleImage(imageDirectory);
-	// }
-	// }
-
-	// public synchronized void saveMovie() {
-	// final FileHelper fileChooserHelper = new FileHelper();
-	//
-	// final String imageDirectory = fileChooserHelper.selectFile(
-	// "explorationDir", OmegaConstants.INFO_SELECT_IMAGE_DIRECTOTY,
-	// JFileChooser.DIRECTORIES_ONLY);
-	//
-	// if (imageDirectory != null) {
-	// synchronized (this) {
-	// for (int frame = 1; frame <= this.jPanelViewer.getImage()
-	// .getDefaultPixels().getSizeT(); frame++) {
-	// this.jPanelViewer.gettSlider().setValue(frame);
-	// this.saveSingleImage(imageDirectory);
-	// }
-	// }
-	// }
-	// }
-
-	// private void saveSingleImage(final String imageDirectory) {
-	// try {
-	// final String imageName = OmegaStringUtilities
-	// .removeFileExtension(OmegaStringUtilities
-	// .getImageName(this.jPanelViewer.getImage()
-	// .getName()));
-	// final String fileName = String.format("%s%s%s_frame_%d.png",
-	// imageDirectory, System.getProperty("file.separator"),
-	// imageName, this.currentT);
-	// ImageIO.write(this.imageScaled, "PNG", new File(fileName));
-	// } catch (final IOException e) {
-	// JOptionPane.showMessageDialog(null,
-	// OmegaConstants.ERROR_SAVE_IMAGE,
-	// OmegaConstants.OMEGA_TITLE, JOptionPane.ERROR_MESSAGE);
-	// }
-	// }
 
 	public double getScale() {
 		return this.scale;
@@ -579,9 +565,10 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 	public void updateSegments(
 	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-	        final boolean selection) {
+	        final OmegaSegmentationTypes segmTypes, final boolean selection) {
 		// TODO check if this can be done smarter, maybe just repainting
 		// trajectories instead of everything
+		this.segmTypes = segmTypes;
 		if (selection) {
 			this.selectedTrajectories.clear();
 			this.selectedSegments.clear();
@@ -806,11 +793,108 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 		private void drawSegments(final Graphics2D g2D, final int width,
 				final int height) {
+			final int currentT = GenericImageCanvas.this.currentT + 1;
+			final MathContext mc = new MathContext(4, RoundingMode.HALF_UP);
+			final double adjusterD = this.imagePanel.scale / 2;
+			final int adjuster = new BigDecimal(adjusterD, mc).intValue();
+			// set the stroke
+			g2D.setStroke(new BasicStroke(this.imagePanel.currentStroke));
+			for (final OmegaTrajectory trajectory : this.imagePanel.segments
+					.keySet()) {
+				if (!trajectory.isVisible()) {
+					continue;
+				}
+				final List<OmegaROI> rois = trajectory.getROIs();
+				for (final OmegaSegment segment : this.imagePanel.segments
+						.get(trajectory)) {
+					Color col = trajectory.getColor();
+					if (GenericImageCanvas.this.segmTypes != null) {
+						final Color tmpCol = GenericImageCanvas.this.segmTypes
+								.getSegmentationColor(segment
+										.getSegmentationType());
+						if (tmpCol != OmegaSegmentationTypes.NOT_ASSIGNED_COL) {
+							col = tmpCol;
+						}
+					}
+					final OmegaROI firstROI = segment.getStartingROI();
+					final OmegaROI lastROI = segment.getEndingROI();
+					if (GenericImageCanvas.this.showTrajectoriesOnlyStartingAtT
+							&& (firstROI.getFrameIndex() != currentT)) {
+						continue;
+					}
+					if (GenericImageCanvas.this.showTrajectoriesOnlyActive) {
+						if ((lastROI.getFrameIndex() < currentT)
+								|| (firstROI.getFrameIndex() > currentT)) {
+							continue;
+						}
+					}
+					int minX = width;
+					int maxX = 0;
+					int minY = height;
+					int maxY = 0;
+					for (int i = rois.indexOf(firstROI); i < rois
+							.indexOf(lastROI); i++) {
+						final OmegaROI one = rois.get(i);
+						final OmegaROI two = rois.get(i + 1);
+						// System.out.println("T: " +
+								// currentT
+						// + " VS " + two.getFrameIndex());
+						final double x1D = one.getX() * this.imagePanel.scale;
+						final double y1D = one.getY() * this.imagePanel.scale;
+						final double x2D = two.getX() * this.imagePanel.scale;
+						final double y2D = two.getY() * this.imagePanel.scale;
+						final int x1 = new BigDecimal(x1D, mc).intValue()
+								+ adjuster;
+						final int y1 = new BigDecimal(y1D, mc).intValue()
+								+ adjuster;
+						final int x2 = new BigDecimal(x2D, mc).intValue()
+								+ adjuster;
+						final int y2 = new BigDecimal(y2D, mc).intValue()
+								+ adjuster;
+						if (minX > x1) {
+							minX = x1;
+						}
+						if (maxX < x1) {
+							maxX = x1;
+						}
+						if (minY > y1) {
+							minY = y1;
+						}
+						if (maxY < y1) {
+							maxY = y1;
+						}
 
+						if (GenericImageCanvas.this.showTrajectoriesOnlyUpToT) {
+							if (currentT < two.getFrameIndex()) {
+								break;
+							}
+						}
+						g2D.setColor(col);
+						g2D.drawLine(x1, y1, x2, y2);
+					}
+					if (this.imagePanel.selectedSegments
+							.containsKey(trajectory)) {
+						final List<OmegaSegment> segments = GenericImageCanvas.this.selectedSegments
+								.get(trajectory);
+						if (segments.contains(segment)) {
+							g2D.setColor(OmegaConstants
+									.getDefaultSelectionBackgroundColor());
+							minX -= 3;
+							maxX += 3;
+							minY -= 3;
+							maxY += 3;
+							final int rectWidth = (maxX - minX);
+							final int rectHeight = (maxY - minY);
+							g2D.drawRect(minX, minY, rectWidth, rectHeight);
+						}
+					}
+				}
+			}
 		}
 
 		private void drawTrajectories(final Graphics2D g2D, final int width,
 				final int height) {
+			final int currentT = GenericImageCanvas.this.currentT + 1;
 			final MathContext mc = new MathContext(4, RoundingMode.HALF_UP);
 			final double adjusterD = this.imagePanel.scale / 2;
 			final int adjuster = new BigDecimal(adjusterD, mc).intValue();
@@ -824,15 +908,15 @@ public class GenericImageCanvas extends GenericScrollPane {
 					continue;
 				}
 				if (GenericImageCanvas.this.showTrajectoriesOnlyStartingAtT
-				        && (trajectory.getROIs().get(0).getFrameIndex() != GenericImageCanvas.this.currentT)) {
+				        && (trajectory.getROIs().get(0).getFrameIndex() != currentT)) {
 					continue;
 				}
 				final List<OmegaROI> rois = trajectory.getROIs();
 				final OmegaROI firstROI = rois.get(0);
 				final OmegaROI lastROI = rois.get(rois.size() - 1);
 				if (GenericImageCanvas.this.showTrajectoriesOnlyActive) {
-					if ((lastROI.getFrameIndex() < GenericImageCanvas.this.currentT)
-							|| (firstROI.getFrameIndex() > GenericImageCanvas.this.currentT)) {
+					if ((lastROI.getFrameIndex() < currentT)
+							|| (firstROI.getFrameIndex() > currentT)) {
 						continue;
 					}
 				}
@@ -844,7 +928,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 					final OmegaROI one = rois.get(i);
 					final OmegaROI two = rois.get(i + 1);
 					// System.out.println("T: " +
-					// GenericImageCanvas.this.currentT
+					// currentT
 					// + " VS " + two.getFrameIndex());
 					final double x1D = one.getX() * this.imagePanel.scale;
 					final double y1D = one.getY() * this.imagePanel.scale;
@@ -872,8 +956,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 					}
 
 					if (GenericImageCanvas.this.showTrajectoriesOnlyUpToT) {
-						if (GenericImageCanvas.this.currentT < two
-								.getFrameIndex()) {
+						if (currentT < two.getFrameIndex()) {
 							break;
 						}
 					}

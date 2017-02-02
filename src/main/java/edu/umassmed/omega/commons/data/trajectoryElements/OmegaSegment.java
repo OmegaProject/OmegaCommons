@@ -1,13 +1,18 @@
 package edu.umassmed.omega.commons.data.trajectoryElements;
 
-import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
+import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
-public class OmegaSegment extends OmegaElement {
+public class OmegaSegment extends OmegaNamedElement implements
+Comparable<OmegaSegment> {
+
+	public static final String DEFAULT_SEGM_NAME = "Segm";
+
 	private final OmegaROI from, to;
 	private int segmentationType;
 
-	public OmegaSegment(final OmegaROI startingROI, final OmegaROI endingROI) {
-		super(-1L);
+	public OmegaSegment(final OmegaROI startingROI, final OmegaROI endingROI,
+			final String name) {
+		super(-1L, name);
 		this.from = startingROI;
 		this.to = endingROI;
 	}
@@ -34,5 +39,10 @@ public class OmegaSegment extends OmegaElement {
 				&& (this.segmentationType == segment.segmentationType))
 			return true;
 		return false;
+	}
+
+	@Override
+	public int compareTo(final OmegaSegment segm) {
+		return (this.getName().compareTo(segm.getName()));
 	}
 }

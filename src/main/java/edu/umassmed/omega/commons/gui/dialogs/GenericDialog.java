@@ -2,6 +2,7 @@ package edu.umassmed.omega.commons.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 
 import javax.swing.JDialog;
@@ -41,14 +42,19 @@ public abstract class GenericDialog extends JDialog {
 	public void setPosition() {
 		Point parentLocOnScren = null;
 		Dimension parentSize = null;
-		if (this.parentContainer instanceof JInternalFrame) {
-			final JInternalFrame intFrame = (JInternalFrame) this.parentContainer;
-			parentLocOnScren = intFrame.getLocationOnScreen();
-			parentSize = intFrame.getSize();
-		} else {
-			final JFrame frame = (JFrame) this.parentContainer;
-			parentLocOnScren = frame.getLocationOnScreen();
-			parentSize = frame.getSize();
+		try {
+			if (this.parentContainer instanceof JInternalFrame) {
+				final JInternalFrame intFrame = (JInternalFrame) this.parentContainer;
+				parentLocOnScren = intFrame.getLocationOnScreen();
+				parentSize = intFrame.getSize();
+			} else {
+				final JFrame frame = (JFrame) this.parentContainer;
+				parentLocOnScren = frame.getLocationOnScreen();
+				parentSize = frame.getSize();
+			}
+		} catch (final IllegalComponentStateException ex) {
+			parentLocOnScren = new Point(0, 0);
+			parentSize = new Dimension(500, 500);
 		}
 
 		final int x = parentLocOnScren.x;

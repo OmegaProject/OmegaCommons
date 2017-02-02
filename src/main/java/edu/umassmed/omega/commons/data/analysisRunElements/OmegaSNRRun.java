@@ -1,29 +1,28 @@
 /*******************************************************************************
- * Copyright (C) 2014 University of Massachusetts Medical School
- * Alessandro Rigano (Program in Molecular Medicine)
- * Caterina Strambio De Castillia (Program in Molecular Medicine)
+ * Copyright (C) 2014 University of Massachusetts Medical School Alessandro
+ * Rigano (Program in Molecular Medicine) Caterina Strambio De Castillia
+ * (Program in Molecular Medicine)
  *
  * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
  * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
  * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo ErrorIndex and Mario Valle.
  *
- * Key contacts:
- * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
+ * Key contacts: Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
  * Alex Rigano: alex.rigano@umassmed.edu
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package edu.umassmed.omega.commons.data.analysisRunElements;
 
@@ -35,6 +34,15 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 
 public class OmegaSNRRun extends OmegaAnalysisRun {
+	
+	private final Double resultingBGR;
+	private final Double resultingNoise;
+	private final Double resultingAvgSNR;
+	private final Double resultingMinSNR;
+	private final Double resultingMaxSNR;
+	private final Double resultingAvgErrorIndexSNR;
+	private final Double resultingMinErrorIndexSNR;
+	private final Double resultingMaxErrorIndexSNR;
 
 	private final Map<OmegaPlane, Double> resultingImageBGR;
 	private final Map<OmegaPlane, Double> resultingImageNoise;
@@ -70,7 +78,13 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 			final Map<OmegaROI, Integer> resultingLocalPeakSignal,
 			final Map<OmegaROI, Double> resultingLocalNoise,
 			final Map<OmegaROI, Double> resultingLocalSNR,
-	        final Map<OmegaROI, Double> resultingLocalErrorIndexSNR) {
+			final Map<OmegaROI, Double> resultingLocalErrorIndexSNR,
+			final Double resultingBGR, final Double resultingNoise,
+			final Double resultingAvgSNR, final Double resultingMinSNR,
+			final Double resultingMaxSNR,
+			final Double resultingAvgErrorIndexSNR,
+			final Double resultingMinErrorIndexSNR,
+			final Double resultingMaxErrorIndexSNR) {
 		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun);
 
 		this.resultingImageBGR = resultingImageBGR;
@@ -88,11 +102,19 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingLocalNoise = resultingLocalNoise;
 		this.resultingLocalSNR = resultingLocalSNR;
 		this.resultingLocalErrorIndexSNR = resultingLocalErrorIndexSNR;
+		this.resultingBGR = resultingBGR;
+		this.resultingNoise = resultingNoise;
+		this.resultingAvgSNR = resultingAvgSNR;
+		this.resultingMinSNR = resultingMinSNR;
+		this.resultingMaxSNR = resultingMaxSNR;
+		this.resultingAvgErrorIndexSNR = resultingAvgErrorIndexSNR;
+		this.resultingMinErrorIndexSNR = resultingMinErrorIndexSNR;
+		this.resultingMaxErrorIndexSNR = resultingMaxErrorIndexSNR;
 	}
 
 	public OmegaSNRRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final Date timeStamps,
-	        final String name,
+			final String name,
 			final Map<OmegaPlane, Double> resultingImageNoise,
 			final Map<OmegaPlane, Double> resultingImageBGR,
 			final Map<OmegaPlane, Double> resultingImageAverageSNR,
@@ -107,7 +129,13 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 			final Map<OmegaROI, Integer> resultingLocalPeakSignal,
 			final Map<OmegaROI, Double> resultingLocalNoise,
 			final Map<OmegaROI, Double> resultingLocalSNR,
-	        final Map<OmegaROI, Double> resultingLocalErrorIndexSNR) {
+			final Map<OmegaROI, Double> resultingLocalErrorIndexSNR,
+			final Double resultingBGR, final Double resultingNoise,
+			final Double resultingAvgSNR, final Double resultingMinSNR,
+			final Double resultingMaxSNR,
+			final Double resultingAvgErrorIndexSNR,
+			final Double resultingMinErrorIndexSNR,
+			final Double resultingMaxErrorIndexSNR) {
 		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun, timeStamps,
 				name);
 
@@ -126,6 +154,46 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingLocalNoise = resultingLocalNoise;
 		this.resultingLocalSNR = resultingLocalSNR;
 		this.resultingLocalErrorIndexSNR = resultingLocalErrorIndexSNR;
+		this.resultingBGR = resultingBGR;
+		this.resultingNoise = resultingNoise;
+		this.resultingAvgSNR = resultingAvgSNR;
+		this.resultingMinSNR = resultingMinSNR;
+		this.resultingMaxSNR = resultingMaxSNR;
+		this.resultingAvgErrorIndexSNR = resultingAvgErrorIndexSNR;
+		this.resultingMinErrorIndexSNR = resultingMinErrorIndexSNR;
+		this.resultingMaxErrorIndexSNR = resultingMaxErrorIndexSNR;
+	}
+
+	public Double getResultingBackground() {
+		return this.resultingBGR;
+	}
+	
+	public Double getResultingNoise() {
+		return this.resultingNoise;
+	}
+	
+	public Double getResultingAvgSNR() {
+		return this.resultingAvgSNR;
+	}
+	
+	public Double getResultingMaxSNR() {
+		return this.resultingMaxSNR;
+	}
+	
+	public Double getResultingMinSNR() {
+		return this.resultingMinSNR;
+	}
+	
+	public Double getResultingAvgErrorIndexSNR() {
+		return this.resultingAvgErrorIndexSNR;
+	}
+	
+	public Double getResultingMaxErrorIndexSNR() {
+		return this.resultingMaxErrorIndexSNR;
+	}
+	
+	public Double getResultingMinErrorIndexSNR() {
+		return this.resultingMinErrorIndexSNR;
 	}
 
 	public Map<OmegaPlane, Double> getResultingImageBGR() {
