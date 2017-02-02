@@ -125,18 +125,17 @@ public abstract class StatsGraphProducer implements Runnable {
 		this.categoryItemRenderer = new BarRenderer() {
 			private static final long serialVersionUID = -1976632258511076322L;
 
-			// @Override
-			// public Paint getItemPaint(final int row, final int column) {
-			// final String name = (String) this.getPlot().getDataset()
-			// .getColumnKey(column);
-			// for (final OmegaTrajectory track :
-			// StatsGraphProducer.this.segmentsMap
-			// .keySet()) {
-			// if (track.getName().equals(name))
-			// return track.getColor();
-			// }
-			// return Color.black;
-			// }
+			@Override
+			public Paint getItemPaint(final int row, final int column) {
+				final String name = (String) this.getPlot().getDataset()
+						.getColumnKey(column);
+				for (final OmegaTrajectory track : StatsGraphProducer.this.segmentsMap
+						.keySet()) {
+					if (track.getName().equals(name))
+						return track.getColor();
+				}
+				return Color.black;
+			}
 
 		};
 	}
@@ -145,18 +144,17 @@ public abstract class StatsGraphProducer implements Runnable {
 		this.categoryItemRenderer = new DefaultCategoryItemRenderer() {
 			private static final long serialVersionUID = 3343456141507762482L;
 
-			// @Override
-			// public Paint getItemPaint(final int row, final int column) {
-			// final String name = (String) this.getPlot().getDataset()
-			// .getColumnKey(column);
-			// for (final OmegaTrajectory track :
-			// StatsGraphProducer.this.segmentsMap
-			// .keySet()) {
-			// if (track.getName().equals(name))
-			// return track.getColor();
-			// }
-			// return Color.black;
-			// }
+			@Override
+			public Paint getItemPaint(final int row, final int column) {
+				final String name = (String) this.getPlot().getDataset()
+						.getColumnKey(column);
+				for (final OmegaTrajectory track : StatsGraphProducer.this.segmentsMap
+						.keySet()) {
+					if (track.getName().equals(name))
+						return track.getColor();
+				}
+				return Color.black;
+			}
 		};
 	}
 
@@ -319,10 +317,14 @@ public abstract class StatsGraphProducer implements Runnable {
 						final String name = track.getName() + " "
 						        + segment.getStartingROI().getFrameIndex()
 								+ "-" + segment.getEndingROI().getFrameIndex();
-						if (name.equals(trackName))
-							return StatsGraphProducer.this.segmTypes
-							        .getSegmentationColor(segment
-							                .getSegmentationType());
+						if (name.equals(trackName)) {
+							if (segment.getSegmentationType() != OmegaSegmentationTypes.NOT_ASSIGNED_VAL)
+								return StatsGraphProducer.this.segmTypes
+								        .getSegmentationColor(segment
+								                .getSegmentationType());
+							else
+								return track.getColor();
+						}
 					}
 					if (track.getName().equals(trackName))
 						return track.getColor();
@@ -869,6 +871,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		Double maxX = 0.0, maxY = 0.0, minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
 		int counter = 0;
 		final Map<OmegaSegment, Integer> segmentSeriesMap = new LinkedHashMap<OmegaSegment, Integer>();
+		final Map<OmegaSegment, OmegaTrajectory> trackMap = new LinkedHashMap<OmegaSegment, OmegaTrajectory>();
 		final XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
 		for (final OmegaTrajectory track : this.getSegmentsMap().keySet()) {
 			final List<OmegaROI> rois = track.getROIs();
@@ -877,6 +880,7 @@ public abstract class StatsGraphProducer implements Runnable {
 			for (final OmegaSegment segment : this.getSegmentsMap().get(track)) {
 				if (this.isTerminated)
 					return null;
+				trackMap.put(segment, track);
 				final String serieName = track.getName() + " "
 						+ segment.getStartingROI().getFrameIndex() + "-"
 						+ segment.getEndingROI().getFrameIndex();
@@ -956,8 +960,14 @@ public abstract class StatsGraphProducer implements Runnable {
 
 		for (final OmegaSegment segment : segmentSeriesMap.keySet()) {
 			final int index = segmentSeriesMap.get(segment);
-			final Color c = this.segmTypes.getSegmentationColor(segment
-					.getSegmentationType());
+			Color c = null;
+			if (segment.getSegmentationType() != OmegaSegmentationTypes.NOT_ASSIGNED_VAL) {
+				c = this.segmTypes.getSegmentationColor(segment
+						.getSegmentationType());
+			} else {
+				c = trackMap.get(segment).getColor();
+			}
+
 			renderer.setSeriesPaint(index, c);
 		}
 		plot.setRenderer(renderer);
