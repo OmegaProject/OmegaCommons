@@ -56,9 +56,9 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 		// this.subDirName2 = "L_30_SMSS_[\\d-]+_D_[\\d-]+";
 		this.subDirName2 = "L_[\\d]+_SMSS_[\\d-]+_D_[\\d-]+";
 		this.dataOrder = new ArrayList<String>();
-		this.dataOrder.add(OmegaTracksImporter.PARTICLE_FRAMEINDEX);
-		this.dataOrder.add(OmegaTracksImporter.PARTICLE_XCOORD);
-		this.dataOrder.add(OmegaTracksImporter.PARTICLE_YCOORD);
+		this.dataOrder.add(OmegaDataToolConstants.PARTICLE_FRAMEINDEX);
+		this.dataOrder.add(OmegaDataToolConstants.PARTICLE_XCOORD);
+		this.dataOrder.add(OmegaDataToolConstants.PARTICLE_YCOORD);
 		this.fileName = "track_[\\d]+.out";
 		this.trajIdent = null;
 		this.particleIdent = null;
@@ -108,7 +108,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 					// + SMSS + " D " + D);
 					this.oti.reset();
 					this.oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
-					this.oti.importData(this.fileName, this.trajIdent,
+					this.oti.importData(false, this.fileName, this.trajIdent,
 					        this.particleIdent, false, this.nonParticleIdent,
 					        this.particleSep, this.dataOrder, f2);
 					final List<OmegaTrajectory> tracks = this.oti.getTracks();

@@ -32,21 +32,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.RootPaneContainer;
 
 import edu.umassmed.omega.commons.constants.OmegaConstants;
 
-public class GenericInsertDialog extends GenericDialog {
+public class GenericPickDialog extends GenericDialog {
 	
 	private static final long serialVersionUID = -9143470688994233600L;
 	
-	private JTextField field;
+	private JList<String> list;
 	private JButton confirm, cancel;
 	private boolean confirmation;
 	
-	public GenericInsertDialog(final RootPaneContainer parentContainer,
+	public GenericPickDialog(final RootPaneContainer parentContainer,
 	        final String title, final boolean modal) {
 		super(parentContainer, title, modal);
 		
@@ -58,9 +58,9 @@ public class GenericInsertDialog extends GenericDialog {
 	
 	@Override
 	protected void createAndAddWidgets() {
-		this.field = new JTextField();
-		this.field.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
-		this.add(this.field, BorderLayout.CENTER);
+		this.list = new JList<String>();
+		this.list.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		this.add(this.list, BorderLayout.CENTER);
 		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
@@ -83,15 +83,15 @@ public class GenericInsertDialog extends GenericDialog {
 		this.confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
-				GenericInsertDialog.this.confirmation = true;
-				GenericInsertDialog.this.setVisible(false);
+				GenericPickDialog.this.confirmation = true;
+				GenericPickDialog.this.setVisible(false);
 			}
 		});
 		this.cancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
-				GenericInsertDialog.this.confirmation = false;
-				GenericInsertDialog.this.setVisible(false);
+				GenericPickDialog.this.confirmation = false;
+				GenericPickDialog.this.setVisible(false);
 			}
 		});
 	}
@@ -99,12 +99,17 @@ public class GenericInsertDialog extends GenericDialog {
 	public boolean getConfirmation() {
 		return this.confirmation;
 	}
+
+	public void setContent(final String[] data) {
+		this.list.setListData(data);
+	}
 	
-	public String getContent() {
-		return this.field.getText();
+	public String getSelection() {
+		return this.list.getSelectedValue();
 	}
 	
 	public void reset() {
-		this.field.setText("");
+		final String[] data = {};
+		this.list.setListData(data);
 	}
 }

@@ -31,8 +31,11 @@ import javax.swing.event.ListSelectionListener;
 
 import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.gui.GenericStatusPanel;
 import edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
 import edu.umassmed.omega.commons.gui.dialogs.GenericInsertDialog;
+import edu.umassmed.omega.commons.gui.dialogs.GenericPickDialog;
+import edu.umassmed.omega.commons.trajectoryTool.OmegaDataToolConstants;
 import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksExporter;
 import edu.umassmed.omega.commons.trajectoryTool.OmegaTracksImporter;
 import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
@@ -46,8 +49,8 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	private static String EXTENSIONS_CSV = "csv";
 
 	private JButton chooseFile_btt, action_btt, close_btt;
-	private JButton addData_btt, moveDataUp_btt, moveDataDown_btt,
-	removeData_btt;
+	private JButton addData_btt, addStandardData_btt, moveDataUp_btt,
+	        moveDataDown_btt, removeData_btt;
 	private JTextField file_txt, fileIdentifier_txt, dataIdentifier_txt,
 	particleIdentifier_txt, nonParticleIdentifier_txt,
 	particleSeparatordentifier_txt;
@@ -56,6 +59,7 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	private JFileChooser fileChooser;
 	private JCheckBox multipleFiles_ckb, startAtOne_ckb;
 	private GenericInsertDialog insertDialog;
+	private GenericPickDialog pickDialog;
 	private JComboBox<String> extension_cmb;
 
 	private String selectedVal;
@@ -65,6 +69,8 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	private final boolean isImpExp, isImporter;
 
 	private JPanel fieldsPanel;
+
+	private GenericStatusPanel statusPanel;
 	
 	public OmegaTracksToolDialog(final RootPaneContainer parentContainer,
 			final boolean isImpExp, final boolean isImporter,
@@ -125,6 +131,8 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	protected void createAndAddWidgets() {
 		this.insertDialog = new GenericInsertDialog(this.getParentContainer(),
 				"Insert particle data", true);
+		this.pickDialog = new GenericPickDialog(this.getParentContainer(),
+				"Select particle data", true);
 		this.fileChooser = new JFileChooser(System.getProperty("user.dir"));
 		this.fileChooser
 		.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -247,10 +255,15 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		this.particleData_mdl = new DefaultListModel<String>();
 		this.particleData_lst = new JList<String>(this.particleData_mdl);
 		this.particleData_mdl
-		        .addElement(OmegaTracksExporter.PARTICLE_FRAMEINDEX);
-		this.particleData_mdl.addElement(OmegaTracksExporter.PARTICLE_XCOORD);
-		this.particleData_mdl.addElement(OmegaTracksExporter.PARTICLE_YCOORD);
-		// this.particleData_mdl.addElement("intensity");
+		        .addElement(OmegaDataToolConstants.PARTICLE_FRAMEINDEX);
+		this.particleData_mdl
+		        .addElement(OmegaDataToolConstants.PARTICLE_XCOORD);
+		this.particleData_mdl
+		        .addElement(OmegaDataToolConstants.PARTICLE_YCOORD);
+		// this.particleData_mdl
+		// .addElement(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY);
+		// this.particleData_mdl
+		// .addElement(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY);
 		this.particleData_lst
 		.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		final JScrollPane sp = new JScrollPane(this.particleData_lst);
@@ -260,10 +273,13 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel particleDataButtonPanelMain = new JPanel();
 		particleDataButtonPanelMain.setLayout(new BorderLayout());
 		final JPanel particleDataButtonPanel = new JPanel();
-		particleDataButtonPanel.setLayout(new GridLayout(4, 1));
+		particleDataButtonPanel.setLayout(new GridLayout(5, 1));
 		this.addData_btt = new JButton("Add");
 		this.addData_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
 		particleDataButtonPanel.add(this.addData_btt);
+		this.addStandardData_btt = new JButton("Add standard");
+		this.addStandardData_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
+		particleDataButtonPanel.add(this.addStandardData_btt);
 		this.moveDataUp_btt = new JButton("Move Up");
 		this.moveDataUp_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
 		this.moveDataUp_btt.setEnabled(false);
@@ -288,6 +304,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		mainPanel.add(new JLabel(), BorderLayout.CENTER);
 		this.add(mainPanel, BorderLayout.CENTER);
 
+		final JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BorderLayout());
+
 		final JPanel buttPanel = new JPanel();
 		buttPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
@@ -299,7 +318,13 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		this.close_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
 		buttPanel.add(this.close_btt);
 
-		this.add(buttPanel, BorderLayout.SOUTH);
+		bottomPanel.add(buttPanel, BorderLayout.NORTH);
+
+		this.statusPanel = new GenericStatusPanel(1);
+		this.updateStatus("Ready!");
+		bottomPanel.add(this.statusPanel, BorderLayout.SOUTH);
+
+		this.add(bottomPanel, BorderLayout.SOUTH);
 	}
 
 	@Override
@@ -327,6 +352,13 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				OmegaTracksToolDialog.this.handleAddData();
+			}
+		});
+		
+		this.addStandardData_btt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				OmegaTracksToolDialog.this.handleAddStandardData();
 			}
 		});
 		this.moveDataUp_btt.addActionListener(new ActionListener() {
@@ -370,6 +402,24 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		}
 	}
 
+	private void handleAddStandardData() {
+		this.pickDialog.reset();
+		this.pickDialog.setVisible(true);
+		final String[] data = { OmegaDataToolConstants.PARTICLE_CENT_INTENSITY,
+		        OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY };
+		this.pickDialog.setContent(data);
+		if (!this.pickDialog.getConfirmation())
+			return;
+		final String toInsert = this.pickDialog.getSelection().toLowerCase();
+		if (this.particleData_mdl.contains(toInsert)) {
+			this.updateStatus(toInsert + " is already present!");
+		} else if (toInsert.isEmpty()) {
+			this.updateStatus("This is not a valid option to add!");
+		} else {
+			this.particleData_mdl.addElement(toInsert);
+		}
+	}
+
 	private void handleAddData() {
 		this.insertDialog.reset();
 		this.insertDialog.setVisible(true);
@@ -377,9 +427,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			return;
 		final String toInsert = this.insertDialog.getContent().toLowerCase();
 		if (this.particleData_mdl.contains(toInsert)) {
-			// TODO ERROR
+			this.updateStatus(toInsert + " is already present!");
 		} else if (toInsert.isEmpty()) {
-			// TODO ERROR
+			this.updateStatus("This is not a valid option to add!");
 		} else {
 			this.particleData_mdl.addElement(toInsert);
 		}
@@ -413,11 +463,19 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		if (this.selectedVal == null)
 			return;
 		final int index = this.particleData_mdl.indexOf(this.selectedVal);
-		if (!this.selectedVal.equals("identifier")
-				&& !this.selectedVal.equals("x")
-				&& !this.selectedVal.equals("y")
-				&& !this.selectedVal.equals("intensity")) {
-			if (index == 3) {
+		if (!this.selectedVal
+				.equals(OmegaDataToolConstants.PARTICLE_FRAMEINDEX)
+				&& !this.selectedVal
+				.equals(OmegaDataToolConstants.PARTICLE_XCOORD)
+				&& !this.selectedVal
+				.equals(OmegaDataToolConstants.PARTICLE_YCOORD)
+		/*
+		 * && !this.selectedVal
+		 * .equals(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY) &&
+		 * !this.selectedVal
+		 * .equals(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY)
+		 */) {
+			if (index == 3 /* == 5 */) {
 				this.moveDataDown_btt.setEnabled(true);
 				this.removeData_btt.setEnabled(true);
 			} else {
@@ -477,20 +535,26 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		if (!this.file_txt.getText().isEmpty()) {
 			fName = this.file_txt.getText();
 		}
-		if (fName == null)
-			// TODO ERROR
+		if (fName == null) {
+			this.updateStatus("A directory is required to begin the process!");
 			return;
+		}
+		
 		final File f = new File(fName);
-		if (f.isFile())
-			// TODO ERROR
+		if (f.isFile()) {
+			this.updateStatus(f.getName()
+			        + " is a file, and is not a valid option to begin the process!");
 			return;
+		}
 		sourceFolder = f;
 		if (!this.fileIdentifier_txt.getText().isEmpty()) {
 			fileIdentifier = this.fileIdentifier_txt.getText();
 		}
-		if (fileIdentifier == null)
-			// TODO ERROR
+		if (fileIdentifier == null) {
+			this.updateStatus(f.getName()
+			        + "A data identifier and is required to begin the process!");
 			return;
+		}
 		// if (this.multipleFiles_ckb.isSelected()) {
 		// } else {
 		// if (f.isDirectory())
@@ -505,24 +569,26 @@ public class OmegaTracksToolDialog extends GenericDialog {
 			if (this.isImporter) {
 				final OmegaTracksImporter oti = (OmegaTracksImporter) this.otio;
 				oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
-				oti.importData(fileIdentifier, trackIdentifier,
-						particleIdentifier, startAtOne, nonParticleIdentifier,
-						particleSeparator, dataOrder, sourceFolder);
+				oti.importData(multifile, fileIdentifier, trackIdentifier,
+				        particleIdentifier, startAtOne, nonParticleIdentifier,
+				        particleSeparator, dataOrder, sourceFolder);
 			} else {
 				final String extension = (String) this.extension_cmb
 				        .getSelectedItem();
 				final OmegaTracksExporter ote = (OmegaTracksExporter) this.otio;
 				ote.export(multifile, fileIdentifier, extension,
-						trackIdentifier, particleIdentifier, startAtOne,
-						nonParticleIdentifier, particleSeparator, dataOrder,
-						sourceFolder);
+				        trackIdentifier, particleIdentifier, startAtOne,
+				        nonParticleIdentifier, particleSeparator, dataOrder,
+				        sourceFolder);
 			}
 		} catch (final IllegalArgumentException e) {
-			// TODO MANAGE ERROR
-			e.printStackTrace();
+			// TODO manage error better
+			this.updateStatus(e.getMessage());
+			// e.printStackTrace();
 		} catch (final IOException e) {
-			// TODO MANAGE ERROR
-			e.printStackTrace();
+			// TODO manage error better
+			this.updateStatus("There was a file problem in the process!");
+			// e.printStackTrace();
 		}
 		if (this.otio instanceof OmegaTracksExporter) {
 			final OmegaTracksExporter ote = (OmegaTracksExporter) this.otio;
@@ -537,5 +603,13 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	
 	public void setFileName(final String targetAnalysisName) {
 		this.fileIdentifier_txt.setText(targetAnalysisName);
+	}
+
+	public void updateStatus(final String s) {
+		try {
+			this.statusPanel.updateStatus(0, s);
+		} catch (final Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }

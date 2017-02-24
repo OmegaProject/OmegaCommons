@@ -28,9 +28,9 @@ public class OmegaTracksImporterTest {
 		final String subDirName2 = "L_30_SMSS_[\\d-]+_D_[\\d-]+";
 		// final String subDirName2 = "L_[\\d]+_SMSS_[\\d-]+_D_[\\d-]+";
 		final List<String> dataOrder = new ArrayList<String>();
-		dataOrder.add(OmegaTracksExporter.PARTICLE_FRAMEINDEX);
-		dataOrder.add(OmegaTracksExporter.PARTICLE_XCOORD);
-		dataOrder.add(OmegaTracksExporter.PARTICLE_YCOORD);
+		dataOrder.add(OmegaDataToolConstants.PARTICLE_FRAMEINDEX);
+		dataOrder.add(OmegaDataToolConstants.PARTICLE_XCOORD);
+		dataOrder.add(OmegaDataToolConstants.PARTICLE_YCOORD);
 		final String fileName = "track_[\\d]+.out";
 		final String trajIdent = null;
 		final String particleIdent = null;
@@ -67,8 +67,8 @@ public class OmegaTracksImporterTest {
 					// + " SMSS " + SMSS + " D " + D);
 					oti.reset();
 					oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
-					oti.importData(fileName, trajIdent, particleIdent, false,
-							nonParticleIdent, particleSep, dataOrder, f2);
+					oti.importData(false, fileName, trajIdent, particleIdent,
+							false, nonParticleIdent, particleSep, dataOrder, f2);
 					final List<OmegaTrajectory> tracks = oti.getTracks();
 					oti.getParticles();
 					oti.getParticlesValues();

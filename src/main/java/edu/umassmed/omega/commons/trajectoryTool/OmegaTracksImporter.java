@@ -25,13 +25,6 @@ import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 // TODO just copied from the importer, needs to be review to export a list of
 // tracks
 public class OmegaTracksImporter extends OmegaIOUtility {
-	
-	public static final String PARTICLE_FRAMEINDEX = "identifier";
-	public static final String PARTICLE_XCOORD = "x";
-	public static final String PARTICLE_YCOORD = "y";
-	public static final String PARTICLE_PEAK_INTENSITY = "peak intensity";
-	public static final String PARTICLE_CENTROID_INTENSITY = "centroid intensity";
-	public static final String PARTICLE_SEPARATOR = "separator";
 
 	private final Map<Integer, OmegaPlane> frames;
 	private final Map<OmegaPlane, List<OmegaROI>> particles;
@@ -101,10 +94,10 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		this.mode = mode;
 	}
 	
-	public void importData(final String fileNameIdentifier,
-	        final String dataIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
+	public void importData(final boolean multifile,
+			final String fileNameIdentifier, final String dataIdentifier,
+			final String particleIdentifier, final boolean startAtOne,
+			final String nonParticleIdentifier, final String particleSeparator,
 	        final List<String> particleDataOrder, final File sourceFolder)
 	        throws IllegalArgumentException, IOException {
 		if (this.mode == OmegaTracksImporter.IMPORTER_MODE_NOT_SET)
@@ -116,9 +109,10 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			        particleIdentifier, startAtOne, nonParticleIdentifier,
 			        particleSeparator, particleDataOrder, sourceFolder);
 		} else if (this.mode == OmegaTracksImporter.IMPORTER_MODE_TRACKS) {
-			this.importTrajectories(fileNameIdentifier, dataIdentifier,
-					particleIdentifier, startAtOne, nonParticleIdentifier,
-					particleSeparator, particleDataOrder, sourceFolder);
+			this.importTrajectories(multifile, fileNameIdentifier,
+					dataIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		}
 	}
 
@@ -172,10 +166,10 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	}
 
 	// TODO change IllegalArgumentException with a custom exception
-	private void importTrajectories(final String fileNameIdentifier,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
+	private void importTrajectories(final boolean multifile,
+			final String fileNameIdentifier, final String trajectoryIdentifier,
+			final String particleIdentifier, final boolean startAtOne,
+			final String nonParticleIdentifier, final String particleSeparator,
 	        final List<String> particleDataOrder, final File sourceFolder)
 	        throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
@@ -195,9 +189,10 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			isValid = true;
 			final FileReader fr = new FileReader(f);
 			final BufferedReader br = new BufferedReader(fr);
-			this.importTrajectories(f.getName(), trajectoryIdentifier,
-			        particleIdentifier, startAtOne, nonParticleIdentifier,
-			        particleSeparator, particleDataOrder, br);
+			this.importTrajectories(multifile, f.getName(),
+					trajectoryIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, br);
 			br.close();
 			fr.close();
 		}
@@ -297,15 +292,15 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 
 	}
 
-	private void importTrajectories(final String fileName,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
+	private void importTrajectories(final boolean multifile,
+			final String fileName, final String trajectoryIdentifier,
+			final String particleIdentifier, final boolean startAtOne,
+			final String nonParticleIdentifier, final String particleSeparator,
 	        final List<String> particleDataOrder, final BufferedReader br)
 	        throws IOException, IllegalArgumentException {
 		final String name1 = fileName.substring(0, fileName.lastIndexOf("."));
 		OmegaTrajectory trajectory = null;
-		if (trajectoryIdentifier == null) {
+		if (multifile) {
 			trajectory = new OmegaTrajectory(-1, name1);
 			// trajectory.setName(name1);
 			this.tracks.add(trajectory);
@@ -316,8 +311,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				line = br.readLine();
 				continue;
 			}
-			if ((trajectoryIdentifier != null)
-			        && line.startsWith(trajectoryIdentifier)) {
+			if (!multifile && line.startsWith(trajectoryIdentifier)) {
 				final String name = OmegaStringUtilities.removeSymbols(line);
 				String name2 = OmegaStringUtilities.replaceWhitespaces(name,
 				        "_");
@@ -359,22 +353,25 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		Integer frameIndex = null;
 		Double x = null, y = null, peakIntensity = null, centroidIntensity = null;
 		final Map<String, Object> particleValues = new LinkedHashMap<String, Object>();
+		if (particleData.length < particleDataOrder.size())
+			throw new IllegalArgumentException("The line: " + particleToImport
+					+ " doesn't contain the required information");
 		for (int i = 0; i < particleDataOrder.size(); i++) {
 			final String order = particleDataOrder.get(i);
 			final String data = particleData[i];
-			if (order.equals(OmegaTracksImporter.PARTICLE_SEPARATOR)) {
+			if (order.equals(OmegaDataToolConstants.PARTICLE_SEPARATOR)) {
 				continue;
-			} else if (order.equals(OmegaTracksImporter.PARTICLE_FRAMEINDEX)) {
+			} else if (order.equals(OmegaDataToolConstants.PARTICLE_FRAMEINDEX)) {
 				frameIndex = Integer.valueOf(data);
-			} else if (order.equals(OmegaTracksImporter.PARTICLE_XCOORD)) {
+			} else if (order.equals(OmegaDataToolConstants.PARTICLE_XCOORD)) {
 				x = Double.valueOf(data);
-			} else if (order.equals(OmegaTracksImporter.PARTICLE_YCOORD)) {
+			} else if (order.equals(OmegaDataToolConstants.PARTICLE_YCOORD)) {
 				y = Double.valueOf(data);
 			} else if (order
-					.equals(OmegaTracksImporter.PARTICLE_PEAK_INTENSITY)) {
+					.equals(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY)) {
 				peakIntensity = Double.valueOf(data);
 			} else if (order
-					.equals(OmegaTracksImporter.PARTICLE_CENTROID_INTENSITY)) {
+					.equals(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY)) {
 				centroidIntensity = Double.valueOf(data);
 			} else {
 				// TODO ADD CHOICE OF TYPE OF CONTENT IN GUI AND HERE
@@ -385,7 +382,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			throw new IllegalArgumentException(
 			        "The line: "
 			                + particleToImport
-			                + " doesn't contain enough information for identifying a particle");
+			                + " doesn't contain enough information for identifying an ROI");
 		OmegaParticle p = null;
 		if (startAtOne) {
 			frameIndex--;
