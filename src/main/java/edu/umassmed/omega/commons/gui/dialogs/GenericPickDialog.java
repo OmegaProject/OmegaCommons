@@ -59,7 +59,7 @@ public class GenericPickDialog extends GenericDialog {
 	@Override
 	protected void createAndAddWidgets() {
 		this.list = new JList<String>();
-		this.list.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		this.list.setPreferredSize(OmegaConstants.LARGE_LIST_SIZE);
 		this.add(this.list, BorderLayout.CENTER);
 		
 		final JPanel buttonPanel = new JPanel();

@@ -75,9 +75,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 	public OmegaTracksToolDialog(final RootPaneContainer parentContainer,
 			final boolean isImpExp, final boolean isImporter,
 			final OmegaIOUtility otio) {
-		super(parentContainer, "Omega Tracks Importer", false);
+		super(parentContainer, "Omega Data Importer", false);
 		if (!isImporter) {
-			this.setTitle("Omega Tracks Exporter");
+			this.setTitle("Omega Data Exporter");
 		}
 		this.isImporter = isImporter;
 		this.isImpExp = isImpExp;
@@ -151,7 +151,7 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		filePanel.add(folder_lbl);
 		this.file_txt = new JTextField();
 		this.file_txt.setText(this.fileChooser.getCurrentDirectory()
-		        .getAbsolutePath());
+				.getAbsolutePath());
 		this.file_txt.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
 		filePanel.add(this.file_txt);
 		this.chooseFile_btt = new JButton("File browser");
@@ -162,6 +162,8 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel multipleFilesPanel = new JPanel();
 		multipleFilesPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel multipleFiles_lbl = new JLabel("Multiple files: ");
+		multipleFiles_lbl.setToolTipText("<html><p width=\"500\">"
+		        + OmegaDataToolConstants.MULTIFILE_TT + "</p></html>");
 		multipleFiles_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		multipleFilesPanel.add(multipleFiles_lbl);
 		this.multipleFiles_ckb = new JCheckBox();
@@ -171,7 +173,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel fileIdentifierPanel = new JPanel();
 		fileIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel fileIdentifier_lbl = new JLabel(
-				"Insert file indentifier: ");
+				"Insert File indentifier: ");
+		fileIdentifier_lbl.setToolTipText("<html><p width=\"500\">"
+		        + OmegaDataToolConstants.FILE_IDENTIFIER_TT + "</p></html>");
 		fileIdentifier_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		fileIdentifierPanel.add(fileIdentifier_lbl);
 		this.fileIdentifier_txt = new JTextField();
@@ -182,7 +186,9 @@ public class OmegaTracksToolDialog extends GenericDialog {
 
 		final JPanel trackIdentifierPanel = new JPanel();
 		trackIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		final JLabel trackIdentifier_lbl = new JLabel("Data indentifier: ");
+		final JLabel trackIdentifier_lbl = new JLabel("Data type indentifier: ");
+		fileIdentifier_lbl.setToolTipText("<html><p width=\"500\">"
+		        + OmegaDataToolConstants.DATA_IDENTIFIER_TT + "</p></html>");
 		trackIdentifier_lbl.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		trackIdentifierPanel.add(trackIdentifier_lbl);
 		this.dataIdentifier_txt = new JTextField();
@@ -194,7 +200,11 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel particleIdentifierPanel = new JPanel();
 		particleIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel particleIdentifier_lbl = new JLabel(
-				"Particle indentifier: ");
+				"Particle line indentifier: ");
+		particleIdentifier_lbl
+		.setToolTipText("<html><p width=\"500\">"
+				+ OmegaDataToolConstants.PARTICLE_IDENTIFIER_TT
+				+ "</p></html>");
 		particleIdentifier_lbl
 		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleIdentifierPanel.add(particleIdentifier_lbl);
@@ -217,7 +227,10 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		final JPanel nonParticleIdentifierPanel = new JPanel();
 		nonParticleIdentifierPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		final JLabel nonParticleIdentifier_lbl = new JLabel(
-				"Non-particle indentifier: ");
+				"Comment line identifier: ");
+		nonParticleIdentifier_lbl.setToolTipText("<html><p width=\"500\">"
+		        + OmegaDataToolConstants.NON_PARTICLE_IDENTIFIER_TT
+				+ "</p></html>");
 		nonParticleIdentifier_lbl
 		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		nonParticleIdentifierPanel.add(nonParticleIdentifier_lbl);
@@ -231,7 +244,7 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		particleSeparatorIdentifierPanel.setLayout(new FlowLayout(
 				FlowLayout.LEFT));
 		final JLabel particleSeparatorIdentifier_lbl = new JLabel(
-				"Particle separator: ");
+				"Column separator: ");
 		particleSeparatorIdentifier_lbl
 		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleSeparatorIdentifierPanel.add(particleSeparatorIdentifier_lbl);
@@ -246,7 +259,7 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		particleDataPanel.setLayout(new BorderLayout(5, 5));
 		particleDataPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JLabel particleDataPanel_lbl = new JLabel(
-				"Particle data and order: ");
+				"Particle entry names and order: ");
 		particleDataPanel_lbl
 		.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		particleDataPanel_lbl.setHorizontalAlignment(SwingConstants.LEFT);
@@ -255,11 +268,11 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		this.particleData_mdl = new DefaultListModel<String>();
 		this.particleData_lst = new JList<String>(this.particleData_mdl);
 		this.particleData_mdl
-		        .addElement(OmegaDataToolConstants.PARTICLE_FRAMEINDEX);
+		.addElement(OmegaDataToolConstants.PARTICLE_FRAMEINDEX);
 		this.particleData_mdl
-		        .addElement(OmegaDataToolConstants.PARTICLE_XCOORD);
+		.addElement(OmegaDataToolConstants.PARTICLE_XCOORD);
 		this.particleData_mdl
-		        .addElement(OmegaDataToolConstants.PARTICLE_YCOORD);
+		.addElement(OmegaDataToolConstants.PARTICLE_YCOORD);
 		// this.particleData_mdl
 		// .addElement(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY);
 		// this.particleData_mdl
@@ -404,10 +417,10 @@ public class OmegaTracksToolDialog extends GenericDialog {
 
 	private void handleAddStandardData() {
 		this.pickDialog.reset();
-		this.pickDialog.setVisible(true);
 		final String[] data = { OmegaDataToolConstants.PARTICLE_CENT_INTENSITY,
 		        OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY };
 		this.pickDialog.setContent(data);
+		this.pickDialog.setVisible(true);
 		if (!this.pickDialog.getConfirmation())
 			return;
 		final String toInsert = this.pickDialog.getSelection().toLowerCase();
@@ -552,7 +565,7 @@ public class OmegaTracksToolDialog extends GenericDialog {
 		}
 		if (fileIdentifier == null) {
 			this.updateStatus(f.getName()
-			        + "A data identifier and is required to begin the process!");
+			        + "A file identifier and is required to begin the process!");
 			return;
 		}
 		// if (this.multipleFiles_ckb.isSelected()) {

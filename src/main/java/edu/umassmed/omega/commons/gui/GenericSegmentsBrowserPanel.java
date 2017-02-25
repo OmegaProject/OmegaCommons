@@ -480,8 +480,10 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 			}
 		} else {
 			this.getTrajectories().clear();
+			this.segments.clear();
 			if (segments != null) {
-				segments.putAll(segments);
+				this.segments.putAll(segments);
+				// segments.putAll(segments);
 				this.getTrajectories().addAll(segments.keySet());
 				this.sbTrajectoriesPanel.setPanelSize();
 			}
@@ -489,6 +491,7 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 			this.shownSegments.clear();
 			if (segments != null) {
 				this.getShownTrajectories().addAll(this.getTrajectories());
+				
 				this.shownSegments.putAll(segments);
 			}
 			this.setTrajectoriesValues();
