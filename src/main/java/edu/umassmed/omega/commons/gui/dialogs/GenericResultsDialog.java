@@ -27,13 +27,15 @@ import edu.umassmed.omega.commons.gui.GenericTrackingResultsPanel;
 
 public class GenericResultsDialog extends GenericDialog {
 
+	private static final long serialVersionUID = -3630569328100786646L;
+
 	private static final String TAB_SNR_ROI = "ROI results";
 	private static final String TAB_SNR_PLANE = "Plane results";
 	private static final String TAB_SNR_IMAGE = "Image results";
 	private static final String TAB_SE = "Segmentation results";
 	private static final String TAB_RL = "Relinking results";
 	private static final String TAB_PL = "Linking results";
-	private static final String TAB_PD = "Linking results";
+	private static final String TAB_PD = "Detection results";
 	
 	private JTabbedPane pane;
 	private GenericTrackingResultsPanel resPanel1, resPanel2, resPanel3;
