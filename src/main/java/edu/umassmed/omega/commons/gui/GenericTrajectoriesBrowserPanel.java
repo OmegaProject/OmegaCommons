@@ -334,6 +334,12 @@ implements OmegaFilterEventListener {
 		this.tbMenu.show(this.tbTrajectoriesPanel, clickP.x, clickP.y);
 	}
 
+	protected void disableShowSportsThumbnail() {
+		this.showParticles_itm
+		.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
+		this.setShowParticles(!this.isShowParticles());
+	}
+
 	private void handleShowSpotsThumbnail() {
 		if (this.isShowParticles()) {
 			this.showParticles_itm
@@ -510,6 +516,7 @@ implements OmegaFilterEventListener {
 
 	public void setImage(final OmegaImage image) {
 		if (image == null) {
+			this.img = null;
 			this.setSizeT(-1);
 			this.tbHeaderPanel.setPhysicalSizeT(null);
 		} else {

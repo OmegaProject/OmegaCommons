@@ -245,6 +245,10 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 					}
 					if ((bufferedImage == null)
 					        || !this.sbPanel.isShowParticles()) {
+						if ((bufferedImage == null)
+						        && this.sbPanel.isShowParticles()) {
+							this.sbPanel.disableShowSportsThumbnail();
+						}
 						this.drawParticleSquare(g2D, p, trackColor, segmColor);
 					} else {
 						this.drawParticleImage(g2D, p, trackColor, segmColor,
@@ -409,9 +413,8 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 			return;
 		this.img = img;
 		// this.buffImages.clear();
-		if ((img == null)
-		        || ((this.frameLoaderThread != null) && this.frameLoaderThread
-		                .isAlive())) {
+		if ((this.frameLoaderThread != null)
+				&& this.frameLoaderThread.isAlive()) {
 			this.frameLoader.kill();
 			// try {
 			// this.frameLoaderThread.join();
@@ -419,9 +422,10 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 			// OmegaLogFileManager.handleCoreException(ex);
 			// }
 		}
-		if (OmegaImageManager.getImages(img.getOmeroId()) != null) {
+		if ((img != null)
+				&& (OmegaImageManager.getImages(img.getOmeroId()) != null)) {
 			this.sbPanel.updateMessageStatus(new OmegaMessageEventTBLoader(
-					"All frames loaded", true));
+					"All frames loaded", false));
 			this.frameLoader = null;
 			return;
 		}

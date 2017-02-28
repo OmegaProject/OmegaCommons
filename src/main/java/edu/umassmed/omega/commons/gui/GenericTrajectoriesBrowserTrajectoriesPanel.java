@@ -28,7 +28,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 
 	private static final long serialVersionUID = 2744718217539154609L;
 
-	private final GenericBrowserPanel tbPanel;
+	private final GenericTrajectoriesBrowserPanel tbPanel;
 
 	private final Map<Point, OmegaROI> particlesMap;
 	private final Map<Integer, OmegaTrajectory> trajectoriesMap;
@@ -44,7 +44,8 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 	private final boolean isSelectionEnabled;
 
 	public GenericTrajectoriesBrowserTrajectoriesPanel(
-	        final RootPaneContainer parent, final GenericBrowserPanel tbPanel,
+	        final RootPaneContainer parent,
+			final GenericTrajectoriesBrowserPanel tbPanel,
 	        final OmegaGateway gateway, final boolean isSelectionEnabled) {
 		super(parent);
 		this.tbPanel = tbPanel;
@@ -148,7 +149,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 		this.particlesMap.clear();
 		for (int y = 0; y < this.tbPanel.getNumberOfTrajectories(); y++) {
 			final OmegaTrajectory traj = this.tbPanel.getShownTrajectories()
-					.get(y);
+			        .get(y);
 			final List<OmegaROI> rois = traj.getROIs();
 			final int yPos = ((space * y) + (space / 4)) - border;
 			if (!this.trajectoriesMap.containsKey(yPos)) {
@@ -177,7 +178,7 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 					// generate random colors
 				}
 				final int lastROIIndex = rois.get(rois.size() - 1)
-						.getFrameIndex() - 1;
+				        .getFrameIndex() - 1;
 				if (roiIndex < lastROIIndex) {
 					final OmegaROI nextROI = rois.get(x + 1);
 					final int nextROIIndex = nextROI.getFrameIndex() - 1;
@@ -187,6 +188,10 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 					this.drawConnection(g2D, p, p2, traj.getColor());
 				}
 				if ((bufferedImage == null) || !this.tbPanel.isShowParticles()) {
+					if ((bufferedImage == null)
+					        && this.tbPanel.isShowParticles()) {
+						this.tbPanel.disableShowSportsThumbnail();
+					}
 					this.drawParticleSquare(g2D, p, traj.getColor());
 				} else {
 					this.drawParticleImage(g2D, p, traj.getColor(),
@@ -325,9 +330,8 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 			return;
 		this.img = img;
 		// this.buffImages.clear();
-		if ((img == null)
-		        || ((this.frameLoaderThread != null) && this.frameLoaderThread
-		                .isAlive())) {
+		if ((this.frameLoaderThread != null)
+				&& this.frameLoaderThread.isAlive()) {
 			this.frameLoader.kill();
 			// try {
 			// this.frameLoaderThread.join();
@@ -335,9 +339,10 @@ public class GenericTrajectoriesBrowserTrajectoriesPanel extends GenericPanel {
 			// OmegaLogFileManager.handleCoreException(ex);
 			// }
 		}
-		if (OmegaImageManager.getImages(img.getOmeroId()) != null) {
+		if ((img != null)
+		        && (OmegaImageManager.getImages(img.getOmeroId()) != null)) {
 			this.tbPanel.updateMessageStatus(new OmegaMessageEventTBLoader(
-					"All frames loaded", true));
+					"All frames loaded", false));
 			this.frameLoader = null;
 			return;
 		}

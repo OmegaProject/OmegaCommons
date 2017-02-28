@@ -188,8 +188,10 @@ public class OmegaAlgorithmsUtilities {
 		final OmegaROI startingPoint = trajectory.getROIs().get(0);
 		final OmegaROI endingPoint = trajectory.getROIs().get(
 				trajectory.getLength() - 1);
-		final String name = trajectory.getName() + "-"
-				+ OmegaSegment.DEFAULT_SEGM_NAME + "_" + segments.size();
+		final String name = trajectory.getName() + "_"
+				+ OmegaSegment.DEFAULT_SEGM_NAME + "_"
+		        + startingPoint.getFrameIndex() + "-"
+		        + endingPoint.getFrameIndex();
 		final OmegaSegment edge = new OmegaSegment(startingPoint, endingPoint,
 				name);
 		edge.setSegmentationType(OmegaSegmentationTypes.NOT_ASSIGNED_VAL);
