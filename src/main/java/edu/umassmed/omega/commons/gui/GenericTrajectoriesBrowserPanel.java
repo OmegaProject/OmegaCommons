@@ -186,7 +186,7 @@ implements OmegaFilterEventListener {
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
 				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown());
+						|| evt.isControlDown(), evt.isShiftDown(), true);
 			}
 		});
 		this.tbNamesPanel.addMouseListener(new MouseAdapter() {
@@ -194,7 +194,8 @@ implements OmegaFilterEventListener {
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
 				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown());
+						|| evt.isControlDown(), evt.isShiftDown(),
+				        false);
 			}
 		});
 		this.showParticles_itm.addActionListener(new ActionListener() {
@@ -249,16 +250,17 @@ implements OmegaFilterEventListener {
 	}
 
 	protected void handleMouseClick(final Point clickP,
-	        final boolean isRightButton, final boolean isShiftDown) {
+	        final boolean isRightButton, final boolean isShiftDown,
+			final boolean isTrackPanel) {
 		final OmegaTrajectory oldTraj = this.getSelectedTrajectory();
 		this.resetClickReferences();
 		this.findSelectedTrajectory(clickP);
 		if (isRightButton) {
-			if (this.getSelectedTrajectory() != null) {
+			if (isTrackPanel && (this.getSelectedTrajectory() != null)) {
 				this.findSelectedParticle(clickP);
 			}
 			this.createTrajectoryMenu();
-			this.showTrajectoryMenu(clickP);
+			this.showTrajectoryMenu(clickP, isTrackPanel);
 			this.getSelectedTrajectories().clear();
 		} else {
 			if (this.getSelectedTrajectory() != null) {
@@ -330,8 +332,13 @@ implements OmegaFilterEventListener {
 		}
 	}
 
-	protected void showTrajectoryMenu(final Point clickP) {
-		this.tbMenu.show(this.tbTrajectoriesPanel, clickP.x, clickP.y);
+	protected void showTrajectoryMenu(final Point clickP,
+			final boolean isTrackPanel) {
+		if (isTrackPanel) {
+			this.tbMenu.show(this.tbTrajectoriesPanel, clickP.x, clickP.y);
+		} else {
+			this.tbMenu.show(this.tbNamesPanel, clickP.x, clickP.y);
+		}
 	}
 
 	protected void disableShowSportsThumbnail() {

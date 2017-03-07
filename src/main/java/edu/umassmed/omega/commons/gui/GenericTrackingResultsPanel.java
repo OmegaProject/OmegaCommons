@@ -756,66 +756,6 @@ OmegaFilterEventListener {
 	
 	public void populateLocalDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-			final Map<OmegaSegment, List<Double>> localDistances,
-			final Map<OmegaSegment, List<Double>> localDisplacements,
-			final Map<OmegaSegment, List<Double>> localConfinementRatios,
-			final Map<OmegaSegment, List<Double[]>> localAnglesAndDirectionalChanges) {
-		this.resetResultsPanel();
-		this.addParticleColumns();
-		this.addTrajectoryColumns();
-		this.addSegmentColumns();
-		this.addDoubleValueColumn("Distance");
-		this.addDoubleValueColumn("Displacement");
-		this.addDoubleValueColumn("Confinement");
-		this.addDoubleValueColumn("Angle");
-		this.addDoubleValueColumn("Directional Change");
-		this.updateFilterPanel();
-		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
-		OmegaSegmentationTypes types = null;
-		if (this.analysisRun != null) {
-			types = ((OmegaTrajectoriesSegmentationRun) this.parentAnalysisRun)
-					.getSegmentationTypes();
-		}
-		for (final OmegaTrajectory track : segments.keySet()) {
-			final List<OmegaSegment> segmentList = segments.get(track);
-			final String trackName = track.getName();
-			final List<OmegaROI> rois = track.getROIs();
-			for (final OmegaSegment segment : segmentList) {
-				final List<Double> distances = localDistances.get(segment);
-				final List<Double> displacements = localDisplacements
-						.get(segment);
-				final List<Double> confiments = localConfinementRatios
-						.get(segment);
-				final List<Double[]> anglesAndDirectionalChanges = localAnglesAndDirectionalChanges
-						.get(segment);
-				final int start = segment.getStartingROI().getFrameIndex();
-				final int end = segment.getEndingROI().getFrameIndex();
-				int i = 0;
-				for (final OmegaROI roi : rois) {
-					final int index = roi.getFrameIndex();
-					if ((index >= start) && (index <= end)) {
-						final Double dist = distances.get(i);
-						final Double displ = displacements.get(i);
-						final Double conf = confiments.get(i);
-						final Double[] angles = anglesAndDirectionalChanges
-								.get(i);
-						i++;
-						final String segmName = types
-								.getSegmentationName(segment
-										.getSegmentationType());
-						final Object[] row = { roi.getElementID(),
-								roi.getFrameIndex(), roi.getX(), roi.getY(),
-								trackName, rois.indexOf(roi), segmName, dist,
-								displ, conf, angles[0], angles[1] };
-						dtm.addRow(row);
-					}
-				}
-			}
-		}
-	}
-	
-	public void populateLocalDiffusivitySegmentsResults(
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[]> nyMap,
 			final Map<OmegaSegment, Double[][]> logMuMap,
 			final Map<OmegaSegment, Double[][]> muMap,
@@ -824,12 +764,12 @@ OmegaFilterEventListener {
 		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
-		this.addIntValueColumn("Nu");
-		this.addDoubleValueColumn("Interval");
-		this.addDoubleValueColumn("Mu");
-		this.addDoubleValueColumn("Delta T");
-		this.addDoubleValueColumn("Log Mu");
-		this.addDoubleValueColumn("Log Delta T");
+		this.addStringValueColumn("Nu");
+		this.addStringValueColumn("Interval");
+		this.addStringValueColumn("Mu");
+		this.addStringValueColumn("Delta T");
+		this.addStringValueColumn("Log Mu");
+		this.addStringValueColumn("Log Delta T");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -841,26 +781,80 @@ OmegaFilterEventListener {
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
 			for (final OmegaSegment segment : segmentList) {
-				final Double[] nus = nyMap.get(segment);
-				final Double[][] logMus = logMuMap.get(segment);
-				final Double[][] mus = muMap.get(segment);
-				final Double[][] logDeltaTs = logDeltaTMap.get(segment);
-				final Double[][] deltaTs = deltaTMap.get(segment);
+				Double[] nus = null;
+				if ((nyMap != null) && nyMap.containsKey(segment)) {
+					nus = nyMap.get(segment);
+				}
+				Double[][] logMus = null;
+				if ((logMuMap != null) && logMuMap.containsKey(segment)) {
+					logMus = logMuMap.get(segment);
+				}
+				Double[][] mus = null;
+				if ((muMap != null) && muMap.containsKey(segment)) {
+					mus = muMap.get(segment);
+				}
+				Double[][] logDeltaTs = null;
+				if ((logDeltaTMap != null) && logDeltaTMap.containsKey(segment)) {
+					logDeltaTs = logDeltaTMap.get(segment);
+				}
+				Double[][] deltaTs = null;
+				if ((deltaTMap != null) && deltaTMap.containsKey(segment)) {
+					deltaTs = deltaTMap.get(segment);
+				}
 				final String segmName = types.getSegmentationName(segment
 						.getSegmentationType());
+				if (nus == null) {
+					continue;
+				}
 				for (final Double nu : nus) {
 					final Integer ny = new BigDecimal(nu).intValue();
-					final Double[] logMusNu = logMus[ny];
-					final Double[] musNu = mus[ny];
-					final Double[] logDeltaTNu = logDeltaTs[ny];
-					final Double[] deltaTNu = deltaTs[ny];
-					for (int i = 0; i < logMusNu.length; i++) {
-						final Double logMu = logMusNu[i];
-						final Double mu = musNu[i];
-						final Double logDeltaT = logDeltaTNu[i];
-						final Double deltaT = deltaTNu[i];
-						final Object[] row = { trackName, segmName, ny, i + 1,
-								mu, deltaT, logMu, logDeltaT };
+					Double[] logMusNu = null;
+					if (logMus != null) {
+						logMusNu = logMus[ny];
+					}
+					Double[] musNu = null;
+					if (mus != null) {
+						musNu = mus[ny];
+					}
+					Double[] logDeltaTNu = null;
+					if (logDeltaTs != null) {
+						logDeltaTNu = logDeltaTs[ny];
+					}
+					Double[] deltaTNu = null;
+					if (deltaTs != null) {
+						deltaTNu = deltaTs[ny];
+					}
+					int l = 0;
+					if (logMusNu != null) {
+						l = logMusNu.length;
+					} else if (musNu != null) {
+						l = musNu.length;
+					} else if (logDeltaTNu != null) {
+						l = logDeltaTNu.length;
+					} else if (deltaTNu != null) {
+						l = deltaTNu.length;
+					}
+					for (int i = 0; i < l; i++) {
+						String logMu = OmegaGUIConstants.NOT_ASSIGNED;
+						if ((logMusNu != null) && (logMusNu[i] != null)) {
+							logMu = String.valueOf(logMusNu[i]);
+						}
+						String mu = OmegaGUIConstants.NOT_ASSIGNED;
+						if ((musNu != null) && (musNu[i] != null)) {
+							mu = String.valueOf(musNu[i]);
+						}
+						String logDeltaT = OmegaGUIConstants.NOT_ASSIGNED;
+						if ((logDeltaTNu != null) && (logDeltaTNu[i] != null)) {
+							logDeltaT = String.valueOf(logDeltaTNu[i]);
+						}
+						String deltaT = OmegaGUIConstants.NOT_ASSIGNED;
+						if ((deltaTNu != null) && (deltaTNu[i] != null)) {
+							deltaT = String.valueOf(deltaTNu[i]);
+						}
+						final String nyVal = String.valueOf(ny);
+						final String intVal = String.valueOf(i + 1);
+						final Object[] row = { trackName, segmName, nyVal,
+						        intVal, mu, deltaT, logMu, logDeltaT };
 						dtm.addRow(row);
 					}
 					
@@ -878,7 +872,7 @@ OmegaFilterEventListener {
 		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
-		this.addIntValueColumn("Nu");
+		this.addStringValueColumn("Nu");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -890,50 +884,99 @@ OmegaFilterEventListener {
 		final OmegaSegment segment1 = segments.get(track1).get(0);
 		final Double nu1 = nyMap.get(segment1)[0];
 		final Integer ny1 = new BigDecimal(nu1).intValue();
-		final int gammaDLogLength = gammaDFromLogMap.get(segment1)[ny1].length;
-		final int gammaDLength = gammaDMap.get(segment1)[ny1].length;
+		int gammaDLogLength = 0;
+		if ((gammaDFromLogMap != null)
+				&& gammaDFromLogMap.containsKey(segment1)) {
+			final Double[][] array = gammaDFromLogMap.get(segment1);
+			if ((array != null) && (array[ny1] != null)) {
+				gammaDLogLength = array[ny1].length;
+			}
+		}
+		int gammaDLength = 0;
+		if ((gammaDMap != null) && gammaDMap.containsKey(segment1)) {
+			final Double[][] array = gammaDMap.get(segment1);
+			if ((array != null) && (array[ny1] != null)) {
+				gammaDLength = array[ny1].length;
+			}
+		}
 		for (int i = 0; i < gammaDLength; i++) {
-			this.addDoubleValueColumn("Gamma " + i);
+			this.addStringValueColumn("Gamma " + i);
 		}
 		for (int i = 0; i < gammaDLogLength; i++) {
-			this.addDoubleValueColumn("Gamma from Log " + i);
+			this.addStringValueColumn("Gamma from Log " + i);
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
 			for (final OmegaSegment segment : segmentList) {
-				final Double[] nus = nyMap.get(segment);
-				final Double[][] gammaDsFromLog = gammaDFromLogMap.get(segment);
-				final Double[][] gammaDs = gammaDMap.get(segment);
+				Double[] nus = null;
+				if ((nyMap != null) && nyMap.containsKey(segment)) {
+					nus = nyMap.get(segment);
+				}
+				Double[][] gammaDsFromLog = null;
+				if ((gammaDFromLogMap != null)
+						&& gammaDFromLogMap.containsKey(segment)) {
+					gammaDsFromLog = gammaDFromLogMap.get(segment);
+				}
+				Double[][] gammaDs = null;
+				if ((gammaDMap != null) && gammaDMap.containsKey(segment)) {
+					gammaDs = gammaDMap.get(segment);
+				}
 				final String segmName = types.getSegmentationName(segment
 						.getSegmentationType());
+				if (nus == null) {
+					continue;
+				}
 				for (final Double nu : nus) {
 					final Integer ny = new BigDecimal(nu).intValue();
-					final Double[] gammaDFromLog = gammaDsFromLog[ny];
-					final Double[] gammaD = gammaDs[ny];
-					new ArrayList<Object>();
-					final int size = 3 + gammaDFromLog.length + gammaD.length;
+					Double[] gammaDFromLog = null;
+					int gammaLogLength = 0;
+					if (gammaDsFromLog != null) {
+						gammaDFromLog = gammaDsFromLog[ny];
+						gammaLogLength = gammaDFromLog.length;
+					}
+					Double[] gammaD = null;
+					int gammaLength = 0;
+					if (gammaDs != null) {
+						gammaD = gammaDs[ny];
+						gammaLength = gammaD.length;
+					}
+					final int size = 3 + gammaLogLength + gammaLength;
 					final Object[] row = new Object[size];
 					row[0] = trackName;
 					row[1] = segmName;
-					row[2] = ny;
+					row[2] = String.valueOf(ny);
 					int index = 3;
-					for (final Double gamma : gammaD) {
-						if (Double.isNaN(gamma)) {
-							// row[index] = "NaN";
-							row[index] = gamma;
-						} else {
-							row[index] = gamma;
+					for (int i = 0; i < gammaLogLength; i++) {
+						// for (final Double gamma : gammaD) {
+						String gammaVal = OmegaGUIConstants.NOT_ASSIGNED;
+						if (gammaDFromLog != null) {
+							final Double gamma = gammaDFromLog[i];
+							if (Double.isNaN(gamma)) {
+								// row[index] = "NaN";
+								gammaVal = String.valueOf(gamma);
+								row[index] = gammaVal;
+							} else {
+								gammaVal = String.valueOf(gamma);
+								row[index] = gammaVal;
+							}
 						}
 						// rowObj.add(d);
 						index++;
 					}
-					for (final Double gamma : gammaDFromLog) {
-						if (Double.isNaN(gamma)) {
-							// row[index] = "NaN";
-							row[index] = gamma;
-						} else {
-							row[index] = gamma;
+					for (int i = 0; i < gammaLength; i++) {
+						// for (final Double gamma : gammaDFromLog) {
+						String gammaVal = OmegaGUIConstants.NOT_ASSIGNED;
+						if (gammaD != null) {
+							final Double gamma = gammaD[i];
+							if (Double.isNaN(gamma)) {
+								// row[index] = "NaN";
+								gammaVal = String.valueOf(gamma);
+								row[index] = gammaVal;
+							} else {
+								gammaVal = String.valueOf(gamma);
+								row[index] = gammaVal;
+							}
 						}
 						// rowObj.add(d);
 						index++;
@@ -953,10 +996,10 @@ OmegaFilterEventListener {
 		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
-		this.addIntValueColumn("D");
-		this.addIntValueColumn("Error D");
-		this.addIntValueColumn("SMSS");
-		this.addIntValueColumn("Error SMSS");
+		this.addStringValueColumn("D");
+		this.addStringValueColumn("Error D");
+		this.addStringValueColumn("SMSS");
+		this.addStringValueColumn("Error SMSS");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -968,25 +1011,42 @@ OmegaFilterEventListener {
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
 			for (final OmegaSegment segment : segmentList) {
-				final Double[][] gammaFromLog = gammaDFromLogResultsMap
-						.get(segment);
-				final Double[] smssFromLog = smssFromLogResultsMap.get(segment);
+				Double[][] gammaFromLog = null;
+				if ((gammaDFromLogResultsMap != null)
+						&& gammaDFromLogResultsMap.containsKey(segment)) {
+					gammaFromLog = gammaDFromLogResultsMap.get(segment);
+				}
+				Double[] smssFromLog = null;
+				if ((smssFromLogResultsMap != null)
+						&& smssFromLogResultsMap.containsKey(segment)) {
+					smssFromLog = smssFromLogResultsMap.get(segment);
+				}
 				Double[] errorFromLog = null;
-				if (errosFromLogResultsMap != null) {
+				if ((errosFromLogResultsMap != null)
+						&& errosFromLogResultsMap.containsKey(segment)) {
 					errorFromLog = errosFromLogResultsMap.get(segment);
 				}
 				final String segmName = types.getSegmentationName(segment
 						.getSegmentationType());
 				new ArrayList<Object>();
-				final Object[] row = {
-						trackName,
-						segmName,
-						gammaFromLog[2][3],
-						errorFromLog == null ? OmegaGUIConstants.NOT_ASSIGNED
-								: errorFromLog[0],
-								smssFromLog[0],
-								errorFromLog == null ? OmegaGUIConstants.NOT_ASSIGNED
-										: errorFromLog[1] };
+				String dVal = OmegaGUIConstants.NOT_ASSIGNED;
+				if ((gammaFromLog != null) && (gammaFromLog[2] != null)) {
+					dVal = String.valueOf(gammaFromLog[2][3]);
+				}
+				String dErr = OmegaGUIConstants.NOT_ASSIGNED;
+				if (errorFromLog != null) {
+					dErr = String.valueOf(errorFromLog[0]);
+				}
+				String smssVal = OmegaGUIConstants.NOT_ASSIGNED;
+				if (smssFromLog != null) {
+					smssVal = String.valueOf(smssFromLog[0]);
+				}
+				String smssErr = OmegaGUIConstants.NOT_ASSIGNED;
+				if (errorFromLog != null) {
+					smssErr = String.valueOf(errorFromLog[1]);
+				}
+				final Object[] row = { trackName, segmName, dVal, dErr,
+						smssVal, smssErr };
 				dtm.addRow(row);
 			}
 		}

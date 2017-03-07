@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.RootPaneContainer;
+import javax.swing.ToolTipManager;
 
 import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
@@ -18,11 +22,16 @@ public class GenericSegmentsBrowserNamesPanel extends
 GenericTrajectoriesBrowserNamesPanel {
 	
 	private static final long serialVersionUID = 313531450859107197L;
+
+	private final Map<Point, OmegaSegment> posMap;
 	
 	public GenericSegmentsBrowserNamesPanel(final RootPaneContainer parent,
 	        final GenericSegmentsBrowserPanel sbPanel,
 	        final boolean isSelectionEnabled, final boolean isShowEnabled) {
 		super(parent, sbPanel, isSelectionEnabled, isShowEnabled);
+		this.posMap = new LinkedHashMap<Point, OmegaSegment>();
+
+		ToolTipManager.sharedInstance().registerComponent(this);
 	}
 	
 	@Override
@@ -53,6 +62,7 @@ GenericTrajectoriesBrowserNamesPanel {
 		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		final GenericSegmentsBrowserPanel sbPanel = ((GenericSegmentsBrowserPanel) this
 		        .getPanel());
+		this.posMap.clear();
 		for (int y = 0; y < sbPanel.getNumberOfSegments(); y++) {
 			final int xPos = space;
 			final int yPos = (space * y) + 5 + (space / 2);
@@ -65,7 +75,23 @@ GenericTrajectoriesBrowserNamesPanel {
 			}
 			g2D.drawString(idS, xPos, yPos);
 			g2D.drawString(segment.getName(), xPos * 2, yPos);
+			this.posMap.put(new Point(xPos, yPos), segment);
 		}
+	}
+	
+	@Override
+	public String getToolTipText(final MouseEvent event) {
+		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT / 2;
+		for (final Point p : this.posMap.keySet()) {
+			final double px = p.getX();
+			final double py = p.getY();
+			final int ex = event.getX();
+			final int ey = event.getY();
+			if ((ex > px) && (ex < (px * 5)))
+				if ((ey > (py - space)) && (ey < (py + space)))
+					return this.posMap.get(p).getName();
+		}
+		return super.getToolTipText(event);
 	}
 	
 	@Override

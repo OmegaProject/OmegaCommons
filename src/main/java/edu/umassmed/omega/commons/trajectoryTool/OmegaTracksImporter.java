@@ -202,9 +202,18 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 							+ sourceFolder
 							+ " has to contain at least 1 file containing the given file name identifier");
 		
+		final List<OmegaTrajectory> toRemoveTracks = new ArrayList<OmegaTrajectory>();
 		for (final OmegaTrajectory t : this.tracks) {
 			t.recalculateLength();
+			if (t.getLength() < 2) {
+				toRemoveTracks.add(t);
+			}
 		}
+		this.tracks.removeAll(toRemoveTracks);
+		if (this.tracks.isEmpty())
+			throw new IllegalArgumentException(
+					"Something wrong with parameters: no tracks have been found in "
+			                + sourceFolder);
 		
 		final LinkedHashMap<String, String> analysisData = new LinkedHashMap<String, String>(
 				this.analysisDataMap);

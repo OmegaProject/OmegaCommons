@@ -214,7 +214,7 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 			public void mouseClicked(final MouseEvent evt) {
 				GenericSegmentsBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown());
+						|| evt.isControlDown(), evt.isShiftDown(), true);
 			}
 		});
 		this.tbNamesPanel.addMouseListener(new MouseAdapter() {
@@ -222,7 +222,8 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 			public void mouseClicked(final MouseEvent evt) {
 				GenericSegmentsBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown());
+						|| evt.isControlDown(), evt.isShiftDown(),
+						false);
 			}
 		});
 		this.showParticles_itm.addActionListener(new ActionListener() {
@@ -276,17 +277,18 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 	}
 
 	protected void handleMouseClick(final Point clickP,
-			final boolean isRightButton, final boolean isShiftDown) {
+			final boolean isRightButton, final boolean isShiftDown,
+			final boolean isTrackPanel) {
 		final OmegaSegment oldSegm = this.getSelectedSegment();
 		this.resetClickReferences();
 		this.findSelectedTrajectory(clickP);
 		this.findSelectedSegment(clickP);
 		if (isRightButton) {
-			if (this.getSelectedSegment() != null) {
+			if (isTrackPanel && (this.getSelectedSegment() != null)) {
 				this.findSelectedParticle(clickP);
 			}
 			this.createTrajectoryMenu();
-			this.showTrajectoryMenu(clickP);
+			this.showTrajectoryMenu(clickP, isTrackPanel);
 			this.getSelectedTrajectories().clear();
 			this.selectedSegments.clear();
 		} else {
@@ -362,7 +364,7 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 		final StringBuffer buf = new StringBuffer();
 		int frameIndex = -1;
 		if (this.getSelectedTrajectory() != null) {
-			buf.append("Track ");
+			buf.append("Segment ");
 			buf.append(this.getSelectedTrajectory().getName());
 			if (this.getSelectedParticle() != null) {
 				frameIndex = this.getSelectedParticle().getFrameIndex() + 1;
@@ -382,8 +384,13 @@ OmegaMessageDisplayerPanelInterface, OmegaFilterEventListener {
 		}
 	}
 
-	protected void showTrajectoryMenu(final Point clickP) {
-		this.tbMenu.show(this.sbTrajectoriesPanel, clickP.x, clickP.y);
+	protected void showTrajectoryMenu(final Point clickP,
+	        final boolean isTrackPanel) {
+		if (isTrackPanel) {
+			this.tbMenu.show(this.sbTrajectoriesPanel, clickP.x, clickP.y);
+		} else {
+			this.tbMenu.show(this.tbNamesPanel, clickP.x, clickP.y);
+		}
 	}
 
 	protected void disableShowSportsThumbnail() {

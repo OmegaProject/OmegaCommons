@@ -699,11 +699,13 @@ public abstract class StatsGraphProducer implements Runnable {
 				final XYSeries serie = new XYSeries(serieName, false);
 				final Double[] msd = this.getValue(segment, null);
 				final Double[] deltaT = this.getValue(segment, null);
-				for (int i = 0; i < msd.length; i++) {
-					final Double msdVal = msd[i];
-					final Double deltaTVal = deltaT[i];
-					if ((msdVal != null) && (deltaTVal != null)) {
-						serie.add(deltaTVal, msdVal);
+				if (msd != null) {
+					for (int i = 0; i < msd.length; i++) {
+						final Double msdVal = msd[i];
+						final Double deltaTVal = deltaT[i];
+						if ((msdVal != null) && (deltaTVal != null)) {
+							serie.add(deltaTVal, msdVal);
+						}
 					}
 				}
 				this.updateStatus(false);
