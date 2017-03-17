@@ -255,6 +255,7 @@ implements OmegaFilterEventListener {
 		final OmegaTrajectory oldTraj = this.getSelectedTrajectory();
 		this.resetClickReferences();
 		this.findSelectedTrajectory(clickP);
+		boolean selected = false;
 		if (isRightButton) {
 			if (isTrackPanel && (this.getSelectedTrajectory() != null)) {
 				this.findSelectedParticle(clickP);
@@ -263,12 +264,17 @@ implements OmegaFilterEventListener {
 			this.showTrajectoryMenu(clickP, isTrackPanel);
 			this.getSelectedTrajectories().clear();
 		} else {
-			if (this.getSelectedTrajectory() != null) {
-				this.checkIfCheckboxAndSelect(clickP);
+			if ((this.getSelectedTrajectory() != null) && !isTrackPanel) {
+				selected = this.selectIfCheckbox(clickP);
 			}
 			if (!isShiftDown) {
 				this.getSelectedTrajectories().clear();
 			}
+		}
+
+		if (selected) {
+			this.resetClickReferences();
+			this.getSelectedTrajectories().clear();
 		}
 
 		// FIXME there is a bug when right click on a track already selected, it
@@ -278,10 +284,14 @@ implements OmegaFilterEventListener {
 			if (isRightButton || (this.getSelectedTrajectory() != oldTraj)) {
 				this.getSelectedTrajectories()
 				.add(this.getSelectedTrajectory());
+			} else {
+				this.resetClickReferences();
+				this.getSelectedTrajectories().clear();
 			}
 		} else {
 			if (!isRightButton) {
-				this.setSelectedTrajectory(null);
+				this.resetClickReferences();
+				this.getSelectedTrajectories().clear();
 			}
 			// this.selectedTraj = null;
 		}
@@ -298,8 +308,8 @@ implements OmegaFilterEventListener {
 		this.tbTrajectoriesPanel.findSelectedTrajectory(clickP);
 	}
 
-	protected void checkIfCheckboxAndSelect(final Point clickP) {
-		this.tbNamesPanel.checkIfCheckboxAndSelect(clickP);
+	protected boolean selectIfCheckbox(final Point clickP) {
+		return this.tbNamesPanel.selectIfCheckbox(clickP);
 	}
 
 	protected void findSelectedParticle(final Point clickP) {
@@ -315,7 +325,7 @@ implements OmegaFilterEventListener {
 			buf.append("Track ");
 			buf.append(this.getSelectedTrajectory().getName());
 			if (this.getSelectedParticle() != null) {
-				frameIndex = this.getSelectedParticle().getFrameIndex() + 1;
+				frameIndex = this.getSelectedParticle().getFrameIndex();
 				buf.append(" - Frame ");
 				buf.append(frameIndex);
 			}

@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
+import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
@@ -16,7 +18,7 @@ import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInter
 
 public class OmegaIntensityAnalyzer implements Runnable {
 
-	private OmegaMessageDisplayerPanelInterface displayerPanel;
+	private final OmegaMessageDisplayerPanelInterface displayerPanel;
 
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 	private final Map<OmegaSegment, Double[]> peakSignalsMap;
@@ -30,16 +32,25 @@ public class OmegaIntensityAnalyzer implements Runnable {
 	// SNR related END
 	
 	private OmegaSNRRun snrRun;
+	private final OmegaTrajectoriesSegmentationRun segmRun;
+	
+	private final List<OmegaElement> selections;
 
 	public OmegaIntensityAnalyzer(
+	        final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		this(null, segments);
+		this(null, segmRun, segments, null);
 	}
 
 	public OmegaIntensityAnalyzer(
 	        final OmegaMessageDisplayerPanelInterface displayerPanel,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+			final OmegaTrajectoriesSegmentationRun segmRun,
+	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final List<OmegaElement> selections) {
 		this.displayerPanel = displayerPanel;
+		
+		this.segmRun = segmRun;
+		this.selections = selections;
 
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
 		        segments);
@@ -52,8 +63,6 @@ public class OmegaIntensityAnalyzer implements Runnable {
 		this.snrsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		this.areasMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		// SNR related END
-		
-		this.displayerPanel = null;
 	}
 
 	public void setSNRRun(final OmegaSNRRun snrRun) {
@@ -180,6 +189,14 @@ public class OmegaIntensityAnalyzer implements Runnable {
 			this.updateStatusAsync("Processing intensity analysis ended", true,
 			        false);
 		}
+	}
+	
+	public List<OmegaElement> getSelections() {
+		return this.selections;
+	}
+
+	public OmegaTrajectoriesSegmentationRun getTrajectorySegmentationRun() {
+		return this.segmRun;
 	}
 
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegments() {
