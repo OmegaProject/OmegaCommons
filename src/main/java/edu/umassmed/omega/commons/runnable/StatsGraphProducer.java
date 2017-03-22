@@ -420,6 +420,10 @@ public abstract class StatsGraphProducer implements Runnable {
 
 	@Override
 	public void run() {
+		this.doRun();
+	}
+	
+	public void doRun() {
 		this.isTerminated = false;
 		this.completed = 0.0;
 	}
@@ -613,6 +617,7 @@ public abstract class StatsGraphProducer implements Runnable {
 						if (!timepoint.equals(t)) {
 							continue;
 						}
+						System.out.println(t + " - " + name);
 						final Double value = this.getValue(segment, roi)[0];
 						if (value == null) {
 							continue;
@@ -717,11 +722,12 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.completed > 100.0) {
 					this.completed = 100.0;
 				}
-				segmentSeriesMap.put(segment, counter);
-				counter++;
 				if (!serie.isEmpty()) {
 					xySeriesCollection.addSeries(serie);
+					segmentSeriesMap.put(segment, counter);
+					counter++;
 				}
+
 			}
 		}
 
@@ -801,10 +807,10 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.completed > 100.0) {
 					this.completed = 100.0;
 				}
-				segmentSeriesMap.put(segment, counter);
-				counter++;
 				if (!serie.isEmpty()) {
 					xySeriesCollection.addSeries(serie);
+					segmentSeriesMap.put(segment, counter);
+					counter++;
 				}
 				
 				if (!upperbound.isEmpty() || !lowerbound.isEmpty()) {
@@ -905,10 +911,10 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.completed > 100.0) {
 					this.completed = 100.0;
 				}
-				segmentSeriesMap.put(segment, counter);
-				counter++;
 				if (!serie.isEmpty()) {
 					xySeriesCollection.addSeries(serie);
+					segmentSeriesMap.put(segment, counter);
+					counter++;
 				}
 			}
 		}
@@ -1039,10 +1045,10 @@ public abstract class StatsGraphProducer implements Runnable {
 				if (this.completed > 100.0) {
 					this.completed = 100.0;
 				}
-				segmentSeriesMap.put(segment, counter);
-				counter++;
 				if (!serie.isEmpty()) {
 					xySeriesCollection.addSeries(serie);
+					segmentSeriesMap.put(segment, counter);
+					counter++;
 				}
 			}
 		}

@@ -2,6 +2,8 @@ package edu.umassmed.omega.commons.constants;
 
 public class StatsConstants {
 
+	public static final String GRAPH_RESULTSTYPE_LBL = "Select Results Type";
+
 	public static final String GRAPH_X_LBL = "<html>Select Independent Variable<br>(x axis)</html>";
 	public static final String GRAPH_Y_LBL = "<html>Select Dependent Variable<br>(y axis)</html>";
 	public static final String GRAPH_TYPE = "Select Graph Type:";

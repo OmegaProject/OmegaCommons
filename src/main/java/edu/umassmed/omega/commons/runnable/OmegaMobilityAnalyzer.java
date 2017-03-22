@@ -17,9 +17,9 @@ import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInter
 import edu.umassmed.omega.commons.libraries.OmegaMobilityLibrary;
 
 public class OmegaMobilityAnalyzer implements Runnable {
-
+	
 	private final OmegaMessageDisplayerPanelInterface displayerPanel;
-
+	
 	private final int tMax;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 	private final Map<OmegaSegment, List<Double>> distancesMap;
@@ -28,30 +28,30 @@ public class OmegaMobilityAnalyzer implements Runnable {
 	private final Map<OmegaSegment, Integer> totalTimeTraveledMap;
 	private final Map<OmegaSegment, List<Double>> confinementRatioMap;
 	private final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap;
-	
+
 	private final OmegaTrajectoriesSegmentationRun segmRun;
 	private final List<OmegaElement> selections;
-
+	
 	public OmegaMobilityAnalyzer(final int tMax,
-			final OmegaTrajectoriesSegmentationRun segmRun,
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+	        final OmegaTrajectoriesSegmentationRun segmRun,
+	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this(null, tMax, segmRun, segments, null);
 	}
-
+	
 	public OmegaMobilityAnalyzer(
-	        final OmegaMessageDisplayerPanelInterface displayerPanel,
-	        final int tMax, final OmegaTrajectoriesSegmentationRun segmRun,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-			final List<OmegaElement> selections) {
-		
+			final OmegaMessageDisplayerPanelInterface displayerPanel,
+			final int tMax, final OmegaTrajectoriesSegmentationRun segmRun,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+	        final List<OmegaElement> selections) {
+
 		this.displayerPanel = displayerPanel;
 		this.tMax = tMax;
-		
+
 		this.segmRun = segmRun;
 		this.selections = selections;
-
+		
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
-		        segments);
+				segments);
 		this.distancesMap = new LinkedHashMap<>();
 		this.displacementsMap = new LinkedHashMap<>();
 		this.maxDisplacementesMap = new LinkedHashMap<>();
@@ -59,7 +59,7 @@ public class OmegaMobilityAnalyzer implements Runnable {
 		this.confinementRatioMap = new LinkedHashMap<>();
 		this.anglesAndDirectionalChangesMap = new LinkedHashMap<>();
 	}
-
+	
 	@Override
 	public void run() {
 		int counter = 1;
@@ -68,9 +68,9 @@ public class OmegaMobilityAnalyzer implements Runnable {
 			final List<OmegaROI> rois = track.getROIs();
 			if (this.displayerPanel != null) {
 				this.updateStatusAsync(
-				        "Processing mobility analysis, trajectory "
-								+ track.getName() + " " + counter + "/" + max,
-								false, false);
+						"Processing mobility analysis, trajectory "
+				                + track.getName() + " " + counter + "/" + max,
+				        false, false);
 			}
 			for (final OmegaSegment segment : this.segments.get(track)) {
 				double maxDisp = 0.0;
@@ -81,24 +81,24 @@ public class OmegaMobilityAnalyzer implements Runnable {
 				final List<Double[]> anglesAndDirectionalChanges = new ArrayList<>();
 				boolean counting = false;
 				Double prevAngle = null;
-				final int startFrameIndex = segment.getStartingROI()
-						.getFrameIndex();
-				final int endFrameIndex = segment.getEndingROI()
-						.getFrameIndex();
+				// final int startFrameIndex = segment.getStartingROI()
+				// .getFrameIndex();
+				// final int endFrameIndex = segment.getEndingROI()
+				// .getFrameIndex();
 				final int startROI = rois.indexOf(segment.getStartingROI());
 				final int endROI = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(startROI,
-						endROI + 1);
-				for (int t = startFrameIndex; t <= endFrameIndex; t++) {
+				        endROI + 1);
+				for (int t = 0; t < this.tMax; t++) {
 					final Double distance = OmegaMobilityLibrary
-					        .computeTotalDistanceTraveled(segmentROIs, t);
+							.computeTotalDistanceTraveled(segmentROIs, t);
 					final Double displacement = OmegaMobilityLibrary
-					        .computeTotalNetDisplacement(segmentROIs, t);
-
+							.computeTotalNetDisplacement(segmentROIs, t);
+					
 					final Double[] angleAndDirectionalChange = OmegaMobilityLibrary
-					        .computeDirectionalChange(segmentROIs, prevAngle, t);
+							.computeDirectionalChange(segmentROIs, prevAngle, t);
 					prevAngle = angleAndDirectionalChange[0];
-
+					
 					Double confinementRatio = null;
 					if (displacement != null) {
 						confinementRatio = displacement / distance;
@@ -111,7 +111,7 @@ public class OmegaMobilityAnalyzer implements Runnable {
 					}
 					if (counting && (displacement == null)) {
 						final int maxT = segmentROIs
-								.get(segmentROIs.size() - 1).getFrameIndex();
+						        .get(segmentROIs.size() - 1).getFrameIndex();
 						if (t > maxT) {
 							counting = false;
 						}
@@ -130,61 +130,61 @@ public class OmegaMobilityAnalyzer implements Runnable {
 				this.totalTimeTraveledMap.put(segment, totalTimeTraveled);
 				this.confinementRatioMap.put(segment, confinementRatios);
 				this.anglesAndDirectionalChangesMap.put(segment,
-				        anglesAndDirectionalChanges);
+						anglesAndDirectionalChanges);
 				counter++;
 			}
 		}
 		if (this.displayerPanel != null) {
 			this.updateStatusAsync("Processing mobility analysis ended", true,
-			        false);
+					false);
 		}
 	}
-
+	
 	public List<OmegaElement> getSelections() {
 		return this.selections;
 	}
-	
+
 	public OmegaTrajectoriesSegmentationRun getTrajectorySegmentationRun() {
 		return this.segmRun;
 	}
-
+	
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegments() {
 		return this.segments;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getDistancesResults() {
 		return this.distancesMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getDisplacementsResults() {
 		return this.displacementsMap;
 	}
-
+	
 	public Map<OmegaSegment, Double> getMaxDisplacementsResults() {
 		return this.maxDisplacementesMap;
 	}
-
+	
 	public Map<OmegaSegment, Integer> getTotalTimeTraveledResults() {
 		return this.totalTimeTraveledMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getConfinementRatioResults() {
 		return this.confinementRatioMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double[]>> getAnglesAndDirectionalChangesResults() {
 		return this.anglesAndDirectionalChangesMap;
 	}
-
+	
 	private void updateStatusSync(final String msg, final boolean ended,
-			final boolean dialog) {
+	        final boolean dialog) {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
 					OmegaMobilityAnalyzer.this.displayerPanel
-					        .updateMessageStatus(new AnalyzerEvent(msg, ended,
-							dialog));
+					.updateMessageStatus(new AnalyzerEvent(msg, ended,
+					                dialog));
 				}
 			});
 		} catch (final InvocationTargetException e) {
@@ -193,15 +193,15 @@ public class OmegaMobilityAnalyzer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void updateStatusAsync(final String msg, final boolean ended,
-			final boolean dialog) {
+	        final boolean dialog) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				OmegaMobilityAnalyzer.this.displayerPanel
-				        .updateMessageStatus(new AnalyzerEvent(msg, ended,
-						dialog));
+				.updateMessageStatus(new AnalyzerEvent(msg, ended,
+				                dialog));
 			}
 		});
 	}
