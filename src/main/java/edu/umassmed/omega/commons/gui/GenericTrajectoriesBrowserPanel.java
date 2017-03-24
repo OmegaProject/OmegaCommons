@@ -27,6 +27,7 @@ import javax.swing.RootPaneContainer;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import edu.umassmed.omega.commons.OmegaLogFileManager;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
@@ -58,15 +59,15 @@ implements OmegaFilterEventListener {
 
 	private JPopupMenu tbMenu;
 	private JMenuItem showParticles_itm, generateRandomColors_itm,
-	        chooseColor_itm;
+	chooseColor_itm;
 
 	private OmegaGateway gateway;
 	private OmegaImage img;
 
 	public GenericTrajectoriesBrowserPanel(final RootPaneContainer parent,
-	        final GenericTrajectoriesBrowserContainerInterface tbContainer,
-	        final OmegaGateway gateway, final boolean showEnabled,
-	        final boolean selectionEnabled) {
+			final GenericTrajectoriesBrowserContainerInterface tbContainer,
+			final OmegaGateway gateway, final boolean showEnabled,
+			final boolean selectionEnabled) {
 		super(parent, showEnabled, selectionEnabled);
 
 		this.tbContainer = tbContainer;
@@ -97,44 +98,44 @@ implements OmegaFilterEventListener {
 		topPanel.add(this.filterPanel, BorderLayout.NORTH);
 
 		this.tbLabelsPanel = new GenericTrajectoriesBrowserLabelsPanel(
-		        this.getParentContainer(), this.isShowEnabled());
+				this.getParentContainer(), this.isShowEnabled());
 		topPanel.add(this.tbLabelsPanel, BorderLayout.WEST);
 
 		this.tbHeaderPanel = new GenericTrajectoriesBrowserHeaderPanel(
-		        this.getParentContainer(), this);
+				this.getParentContainer(), this);
 		this.tbHeaderScrollPane = new JScrollPane(this.tbHeaderPanel);
 		this.tbHeaderScrollPane
-		        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		this.tbHeaderScrollPane
-		        .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		topPanel.add(this.tbHeaderScrollPane, BorderLayout.CENTER);
 
 		this.add(topPanel, BorderLayout.NORTH);
 
 		this.tbNamesPanel = new GenericTrajectoriesBrowserNamesPanel(
-		        this.getParentContainer(), this, this.isSelectionEnabled(),
-		        this.isShowEnabled());
+				this.getParentContainer(), this, this.isSelectionEnabled(),
+				this.isShowEnabled());
 		this.tbNamesScrollPane = new JScrollPane(this.tbNamesPanel);
 		this.tbNamesScrollPane
-		        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		this.tbNamesScrollPane
-		        .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.add(this.tbNamesScrollPane, BorderLayout.WEST);
 
 		this.tbTrajectoriesPanel = new GenericTrajectoriesBrowserTrajectoriesPanel(
-		        this.getParentContainer(), this, this.gateway,
-		        this.isSelectionEnabled());
+				this.getParentContainer(), this, this.gateway,
+				this.isSelectionEnabled());
 		this.tbTrajectoriesScrollPane = new JScrollPane(
-		        this.tbTrajectoriesPanel);
+				this.tbTrajectoriesPanel);
 		this.add(this.tbTrajectoriesScrollPane, BorderLayout.CENTER);
 	}
 
 	private void createPopupMenu() {
 		this.tbMenu = new JPopupMenu();
 		this.showParticles_itm = new JMenuItem(
-		        OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
+				OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
 		this.generateRandomColors_itm = new JMenuItem(
-		        OmegaGUIConstants.RANDOM_COLORS);
+				OmegaGUIConstants.RANDOM_COLORS);
 		this.chooseColor_itm = new JMenuItem(OmegaGUIConstants.CHOSE_COLOR);
 	}
 
@@ -149,7 +150,7 @@ implements OmegaFilterEventListener {
 			@Override
 			public void mouseEntered(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseIn(evt
-				        .getPoint());
+						.getPoint());
 			}
 
 			@Override
@@ -158,34 +159,34 @@ implements OmegaFilterEventListener {
 			}
 		});
 		this.tbTrajectoriesPanel
-		        .addMouseMotionListener(new MouseMotionAdapter() {
-			        @Override
-			        public void mouseMoved(final MouseEvent evt) {
-				        GenericTrajectoriesBrowserPanel.this
-				                .handleMouseMovement(evt.getPoint());
-			        }
-		        });
+		.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(final MouseEvent evt) {
+				GenericTrajectoriesBrowserPanel.this
+				.handleMouseMovement(evt.getPoint());
+			}
+		});
 		this.tbTrajectoriesScrollPane.getHorizontalScrollBar()
-		        .addAdjustmentListener(new AdjustmentListener() {
-			        @Override
-			        public void adjustmentValueChanged(final AdjustmentEvent evt) {
-				        GenericTrajectoriesBrowserPanel.this
-				                .handleHorizontalScrollBarChanged();
-			        }
-		        });
+		.addAdjustmentListener(new AdjustmentListener() {
+			@Override
+			public void adjustmentValueChanged(final AdjustmentEvent evt) {
+				GenericTrajectoriesBrowserPanel.this
+				.handleHorizontalScrollBarChanged();
+			}
+		});
 		this.tbTrajectoriesScrollPane.getVerticalScrollBar()
-		        .addAdjustmentListener(new AdjustmentListener() {
-			        @Override
-			        public void adjustmentValueChanged(final AdjustmentEvent evt) {
-				        GenericTrajectoriesBrowserPanel.this
-				                .handleVerticalScrollBarChanged();
-			        }
-		        });
+		.addAdjustmentListener(new AdjustmentListener() {
+			@Override
+			public void adjustmentValueChanged(final AdjustmentEvent evt) {
+				GenericTrajectoriesBrowserPanel.this
+				.handleVerticalScrollBarChanged();
+			}
+		});
 		this.tbTrajectoriesPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
-				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
+						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
 						|| evt.isControlDown(), evt.isShiftDown(), true);
 			}
 		});
@@ -193,9 +194,9 @@ implements OmegaFilterEventListener {
 			@Override
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
-				        evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
+						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
 						|| evt.isControlDown(), evt.isShiftDown(),
-				        false);
+						false);
 			}
 		});
 		this.showParticles_itm.addActionListener(new ActionListener() {
@@ -208,7 +209,7 @@ implements OmegaFilterEventListener {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				GenericTrajectoriesBrowserPanel.this
-				        .handleGenerateRandomColors();
+				.handleGenerateRandomColors();
 			}
 		});
 		this.chooseColor_itm.addActionListener(new ActionListener() {
@@ -239,18 +240,18 @@ implements OmegaFilterEventListener {
 
 	private void handleHorizontalScrollBarChanged() {
 		final int value = this.tbTrajectoriesScrollPane
-		        .getHorizontalScrollBar().getValue();
+				.getHorizontalScrollBar().getValue();
 		this.tbHeaderScrollPane.getHorizontalScrollBar().setValue(value);
 	}
 
 	private void handleVerticalScrollBarChanged() {
 		final int value = this.tbTrajectoriesScrollPane.getVerticalScrollBar()
-		        .getValue();
+				.getValue();
 		this.tbNamesScrollPane.getVerticalScrollBar().setValue(value);
 	}
 
 	protected void handleMouseClick(final Point clickP,
-	        final boolean isRightButton, final boolean isShiftDown,
+			final boolean isRightButton, final boolean isShiftDown,
 			final boolean isTrackPanel) {
 		final OmegaTrajectory oldTraj = this.getSelectedTrajectory();
 		this.resetClickReferences();
@@ -360,11 +361,11 @@ implements OmegaFilterEventListener {
 	private void handleShowSpotsThumbnail() {
 		if (this.isShowParticles()) {
 			this.showParticles_itm
-			        .setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
+			.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
 			this.setShowParticles(!this.isShowParticles());
 		} else {
 			this.showParticles_itm
-			        .setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
+			.setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
 			this.setShowParticles(!this.isShowParticles());
 		}
 		this.repaint();
@@ -372,14 +373,14 @@ implements OmegaFilterEventListener {
 
 	private void handleGenerateRandomColors() {
 		final GenericConfirmationDialog dialog = new GenericConfirmationDialog(
-		        this.getParentContainer(),
-		        OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM,
-		        OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM_MSG, true);
+				this.getParentContainer(),
+				OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM,
+				OmegaGUIConstants.TRACK_RANDOM_COLOR_CONFIRM_MSG, true);
 		dialog.setVisible(true);
 		if (!dialog.getConfirmation())
 			return;
 		final List<Color> colors = OmegaColorManagerUtilities
-		        .generateRandomColors(this.getTrajectories().size());
+				.generateRandomColors(this.getTrajectories().size());
 		for (int i = 0; i < this.getTrajectories().size(); i++) {
 			final OmegaTrajectory traj = this.getTrajectories().get(i);
 			final Color c = colors.get(i);
@@ -396,7 +397,7 @@ implements OmegaFilterEventListener {
 		buf1.append(this.getSelectedTrajectory().getName());
 
 		final Color c = OmegaColorManagerUtilities.openPaletteColor(this,
-		        buf1.toString(), this.getSelectedTrajectory().getColor());
+				buf1.toString(), this.getSelectedTrajectory().getColor());
 
 		final StringBuffer buf2 = new StringBuffer();
 		buf2.append(OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM_MSG);
@@ -404,9 +405,9 @@ implements OmegaFilterEventListener {
 		buf2.append("?");
 
 		final GenericConfirmationDialog dialog = new GenericConfirmationDialog(
-		        this.getParentContainer(),
-		        OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM, buf2.toString(),
-		        true);
+				this.getParentContainer(),
+				OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM, buf2.toString(),
+				true);
 		dialog.setVisible(true);
 		if (!dialog.getConfirmation())
 			return;
@@ -425,9 +426,9 @@ implements OmegaFilterEventListener {
 	}
 
 	public void updateTrajectories(final List<OmegaTrajectory> trajectories,
-	        final boolean selection) {
+			final boolean selection) {
 		if ((this.img == null) && (trajectories != null)
-		        && !trajectories.isEmpty()) {
+				&& !trajectories.isEmpty()) {
 			int maxT = -1;
 			for (final OmegaTrajectory traj : trajectories) {
 				if (maxT < traj.getLength()) {
@@ -479,22 +480,22 @@ implements OmegaFilterEventListener {
 		final Point p = this.tbTrajectoriesPanel.findTrajectoryLocation(traj);
 		if (p != null) {
 			final int xPos = p.x
-			        - (this.tbTrajectoriesScrollPane.getWidth() / 2);
+					- (this.tbTrajectoriesScrollPane.getWidth() / 2);
 			final int yPos = p.y
-			        - (this.tbTrajectoriesScrollPane.getHeight() / 2);
+					- (this.tbTrajectoriesScrollPane.getHeight() / 2);
 			this.tbTrajectoriesScrollPane.getVerticalScrollBar().setValue(yPos);
 			this.tbTrajectoriesScrollPane.getHorizontalScrollBar().setValue(
-			        xPos);
+					xPos);
 		}
 	}
 
 	public void addTrajectoriesToSelection(
-	        final List<OmegaTrajectory> trajectories, final int index) {
+			final List<OmegaTrajectory> trajectories, final int index) {
 		this.getSelectedTrajectories().addAll(index, trajectories);
 	}
 
 	public int removeTrajectoriesFromSelection(
-	        final List<OmegaTrajectory> trajectories) {
+			final List<OmegaTrajectory> trajectories) {
 		if (trajectories.isEmpty())
 			return this.getSelectedTrajectories().size();
 		int index = this.getSelectedTrajectories().indexOf(trajectories.get(0));
@@ -525,8 +526,14 @@ implements OmegaFilterEventListener {
 		if (this.img == null)
 			return;
 		final OmegaImagePixels pixels = this.img.getDefaultPixels();
-		final Double physicalSizeT = gateway.computeSizeT(pixels.getOmeroId(),
-				pixels.getSizeT(), pixels.getSizeT());
+		Double physicalSizeT;
+		try {
+			physicalSizeT = gateway.computeSizeT(pixels.getOmeroId(),
+					pixels.getSizeT(), pixels.getSizeT());
+		} catch (final Exception ex) {
+			physicalSizeT = null;
+			OmegaLogFileManager.handleCoreException(ex, false);
+		}
 		this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 		this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 	}
@@ -540,8 +547,14 @@ implements OmegaFilterEventListener {
 			this.img = image;
 			final OmegaImagePixels pixels = this.img.getDefaultPixels();
 			this.setSizeT(pixels.getSizeT());
-			final Double physicalSizeT = this.gateway.computeSizeT(
-			        pixels.getOmeroId(), this.getSizeT(), this.getSizeT());
+			Double physicalSizeT;
+			try {
+				physicalSizeT = this.gateway.computeSizeT(pixels.getOmeroId(),
+						pixels.getSizeT(), pixels.getSizeT());
+			} catch (final Exception ex) {
+				physicalSizeT = null;
+				OmegaLogFileManager.handleCoreException(ex, false);
+			}
 			this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 			this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 		}
@@ -566,8 +579,8 @@ implements OmegaFilterEventListener {
 	}
 
 	protected void sendEventTrajectories(
-	        final List<OmegaTrajectory> selectedTrajectories,
-	        final boolean selected) {
+			final List<OmegaTrajectory> selectedTrajectories,
+			final boolean selected) {
 		this.tbContainer.sendEventTrajectories(selectedTrajectories, selected);
 	}
 
@@ -580,7 +593,7 @@ implements OmegaFilterEventListener {
 		final Dimension size = this.getSize();
 		final Dimension headerSize = this.tbHeaderPanel.getSize();
 		return new Dimension(size.width - headerSize.width, size.height
-		        - headerSize.height - 25);
+				- headerSize.height - 25);
 	}
 
 	@Override
@@ -647,7 +660,7 @@ implements OmegaFilterEventListener {
 	}
 
 	private void handleNormalFilter(final String key, final String value,
-	        final boolean isExact) {
+			final boolean isExact) {
 		String regex = value;
 		if (isExact) {
 			regex = "^" + value + "$";
