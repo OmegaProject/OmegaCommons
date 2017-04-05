@@ -6,6 +6,27 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaMobilityLibrary {
+	
+	public static Double computeDistanceTraveled(final List<OmegaROI> rois,
+			final int t) {
+		final int maxT = rois.get(rois.size() - 1).getFrameIndex();
+		if (t > maxT)
+			return null;
+		for (int i = 0; i < rois.size(); i++) {
+			final OmegaROI roi1 = rois.get(i);
+			if (roi1.getFrameIndex() != t) {
+				continue;
+			}
+			if ((i - 1) < 0)
+				return null;
+			final OmegaROI roi2 = rois.get(i - 1);
+			if (roi2 == null)
+				return null;
+			return OmegaMobilityLibrary.computeDistance(roi1.getRealX(),
+					roi1.getRealY(), roi2.getRealX(), roi2.getRealY());
+		}
+		return null;
+	}
 
 	public static Double computeTotalDistanceTraveled(
 			final OmegaTrajectory track) {
@@ -31,11 +52,12 @@ public class OmegaMobilityLibrary {
 		if (endT > maxT)
 			return null;
 		double totalDistanceTraveled = 0.0;
-		for (int i = 0; i < (rois.size() - 1); i++) {
+		for (int i = 0; i < rois.size(); i++) {
 			final OmegaROI roi1 = rois.get(i);
 			final OmegaROI roi2 = rois.get(i + 1);
 			totalDistanceTraveled += OmegaMobilityLibrary.computeDistance(
-					roi1.getX(), roi1.getY(), roi2.getX(), roi2.getY());
+					roi1.getRealX(), roi1.getRealY(), roi2.getRealX(),
+					roi2.getRealY());
 			if (roi2.getFrameIndex() == endT) {
 				break;
 			} else if (roi2.getFrameIndex() > endT)
@@ -47,44 +69,40 @@ public class OmegaMobilityLibrary {
 	public static Double computeTotalNetDisplacement(final OmegaTrajectory track) {
 		final List<OmegaROI> rois = track.getROIs();
 		return OmegaMobilityLibrary.computeTotalNetDisplacement(rois,
-				rois.get(0).getFrameIndex(), rois.get(rois.size() - 1)
-		                .getFrameIndex());
+				rois.get(rois.size() - 1).getFrameIndex());
 	}
 
 	public static Double computeTotalNetDisplacement(final List<OmegaROI> rois) {
 		return OmegaMobilityLibrary.computeTotalNetDisplacement(rois,
-				rois.get(0).getFrameIndex(), rois.get(rois.size() - 1)
-		                .getFrameIndex());
+				rois.get(rois.size() - 1).getFrameIndex());
 	}
 
 	public static Double computeTotalNetDisplacement(
 			final OmegaTrajectory track, final int endT) {
 		final List<OmegaROI> rois = track.getROIs();
-		return OmegaMobilityLibrary.computeTotalNetDisplacement(rois,
-				rois.get(0).getFrameIndex(), endT);
+		return OmegaMobilityLibrary.computeTotalNetDisplacement(rois, endT);
 	}
 
 	public static Double computeTotalNetDisplacement(final List<OmegaROI> rois,
 			final int endT) {
-		return OmegaMobilityLibrary.computeTotalNetDisplacement(rois,
-				rois.get(0).getFrameIndex(), endT);
+		return OmegaMobilityLibrary.computeNetDisplacement(rois, rois.get(0)
+				.getFrameIndex(), endT);
 	}
 
-	public static Double computeTotalNetDisplacement(
-			final OmegaTrajectory track, final int startT, final int endT) {
+	public static Double computeNetDisplacement(final OmegaTrajectory track,
+			final int startT, final int endT) {
 		final List<OmegaROI> rois = track.getROIs();
-		return OmegaMobilityLibrary.computeTotalNetDisplacement(rois, startT,
-		        endT);
+		return OmegaMobilityLibrary.computeNetDisplacement(rois, startT, endT);
 	}
 
-	public static Double computeTotalNetDisplacement(final List<OmegaROI> rois,
-	        final int startT, final int endT) {
+	public static Double computeNetDisplacement(final List<OmegaROI> rois,
+			final int startT, final int endT) {
 		final OmegaROI roi1 = OmegaMobilityLibrary.findROI(rois, startT);
 		final OmegaROI roi2 = OmegaMobilityLibrary.findROI(rois, endT);
 		if ((roi2 == null) || (roi1 == roi2))
 			return null;
-		return OmegaMobilityLibrary.computeDistance(roi1.getX(), roi1.getY(),
-				roi2.getX(), roi2.getY());
+		return OmegaMobilityLibrary.computeDistance(roi1.getRealX(),
+				roi1.getRealY(), roi2.getRealX(), roi2.getRealY());
 	}
 
 	public static Double[] computeDirectionalChange(
@@ -92,18 +110,18 @@ public class OmegaMobilityLibrary {
 		final List<OmegaROI> rois = track.getROIs();
 		final OmegaROI endROI = rois.get(rois.size() - 1);
 		return OmegaMobilityLibrary.computeDirectionalChange(rois, prevAngle,
-		        endROI.getFrameIndex());
+				endROI.getFrameIndex());
 	}
 
 	public static Double[] computeDirectionalChange(
 			final OmegaTrajectory track, final Double prevAngle, final int t) {
 		final List<OmegaROI> rois = track.getROIs();
 		return OmegaMobilityLibrary
-		        .computeDirectionalChange(rois, prevAngle, t);
+				.computeDirectionalChange(rois, prevAngle, t);
 	}
 
 	public static Double[] computeDirectionalChange(final List<OmegaROI> rois,
-	        final Double prevAngle, final int t) {
+			final Double prevAngle, final int t) {
 		final Double[] angleAndDirectionalChange = new Double[2];
 		angleAndDirectionalChange[0] = null;
 		angleAndDirectionalChange[1] = null;
@@ -119,8 +137,8 @@ public class OmegaMobilityLibrary {
 					- angleAndDirectionalChange[0];
 		}
 		// if (roi2.getFrameIndex() == endT) {
-			// break;
-			// } else if (roi2.getFrameIndex() > endT)
+		// break;
+		// } else if (roi2.getFrameIndex() > endT)
 		// return null;
 		return angleAndDirectionalChange;
 	}
@@ -152,7 +170,7 @@ public class OmegaMobilityLibrary {
 		if (roi1 == null)
 			return angleAndDirectionalChange;
 		angleAndDirectionalChange[0] = OmegaMobilityLibrary.computeAngle(x, y,
-		        roi1.getX(), roi1.getY());
+				roi1.getX(), roi1.getY());
 		angleAndDirectionalChange[1] = null;
 		if (prevAngle != null) {
 			angleAndDirectionalChange[1] = prevAngle
@@ -201,7 +219,7 @@ public class OmegaMobilityLibrary {
 		// Return angle
 		return StrictMath.acos(div);
 	}
-
+	
 	public static Double computeDistance(final double x1, final double y1,
 			final double x2, final double y2) {
 		final double distX = x2 - x1;

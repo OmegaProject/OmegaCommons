@@ -36,20 +36,20 @@ import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class OmegaTracksExporter extends OmegaIOUtility {
-	
+
 	private OmegaParticleDetectionRun detRun;
 	private OmegaParticleLinkingRun linkRun;
 	private OmegaTrajectoriesRelinkingRun relinkRun;
 	private OmegaTrajectoriesSegmentationRun segmRun;
 	private OmegaTrackingMeasuresRun measuresRun;
 	private final OmegaSNRRun snrRun;
-	
+
 	// private final Map<OmegaPlane, List<OmegaROI>> particles;
 	// private final Map<OmegaROI, Map<String, Object>> particlesValues;
 	// private final List<OmegaTrajectory> tracks;
-	
+
 	private OmegaTracksToolDialog dialog;
-	
+
 	public OmegaTracksExporter(final RootPaneContainer parent) {
 		// this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		// this.particlesValues = new LinkedHashMap<OmegaROI, Map<String,
@@ -63,7 +63,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		this.snrRun = null;
 		this.dialog = new OmegaTracksToolDialog(parent, true, false, this);
 	}
-	
+
 	public OmegaTracksExporter() {
 		// this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		// this.particlesValues = new LinkedHashMap<OmegaROI, Map<String,
@@ -77,7 +77,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		this.snrRun = null;
 		this.dialog = null;
 	}
-	
+
 	public void showDialog(final RootPaneContainer parent) {
 		if (this.dialog == null) {
 			this.dialog = new OmegaTracksToolDialog(parent, true, false, this);
@@ -98,77 +98,77 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		this.dialog.updateParentContainer(parent);
 		this.dialog.setVisible(true);
 	}
-	
+
 	public void export(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String targetIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException {
+			final String fileNameIdentifier, final String extension,
+			final String targetIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException {
 		if (this.measuresRun != null) {
 			this.exportAnalysisMetadata(this.measuresRun, multifile,
-			        fileNameIdentifier, particleSeparator,
-			        nonParticleIdentifier, sourceFolder, extension);
+					fileNameIdentifier, particleSeparator,
+					nonParticleIdentifier, sourceFolder, extension);
 			if (this.measuresRun instanceof OmegaTrackingMeasuresMobilityRun) {
 				this.exportTrackingMeasuresMobility(multifile,
-				        fileNameIdentifier, extension, targetIdentifier,
-				        particleIdentifier, startAtOne, nonParticleIdentifier,
-				        particleSeparator, particleDataOrder, sourceFolder);
+						fileNameIdentifier, extension, targetIdentifier,
+						particleIdentifier, startAtOne, nonParticleIdentifier,
+						particleSeparator, particleDataOrder, sourceFolder);
 			} else if (this.measuresRun instanceof OmegaTrackingMeasuresVelocityRun) {
 				this.exportTrackingMeasuresVelocity(multifile,
-				        fileNameIdentifier, extension, targetIdentifier,
-				        particleIdentifier, startAtOne, nonParticleIdentifier,
-				        particleSeparator, particleDataOrder, sourceFolder);
+						fileNameIdentifier, extension, targetIdentifier,
+						particleIdentifier, startAtOne, nonParticleIdentifier,
+						particleSeparator, particleDataOrder, sourceFolder);
 			} else if (this.measuresRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
 				this.exportTrackingMeasuresDiffusivity(multifile,
-				        fileNameIdentifier, extension, targetIdentifier,
-				        particleIdentifier, startAtOne, nonParticleIdentifier,
-				        particleSeparator, particleDataOrder, sourceFolder);
+						fileNameIdentifier, extension, targetIdentifier,
+						particleIdentifier, startAtOne, nonParticleIdentifier,
+						particleSeparator, particleDataOrder, sourceFolder);
 			}
 		} else if (this.segmRun != null) {
 			this.exportAnalysisMetadata(this.segmRun, multifile,
-			        fileNameIdentifier, particleSeparator,
-			        nonParticleIdentifier, sourceFolder, extension);
+					fileNameIdentifier, particleSeparator,
+					nonParticleIdentifier, sourceFolder, extension);
 			this.exportSegments(multifile, fileNameIdentifier, extension,
-			        targetIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, sourceFolder);
+					targetIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		} else if (this.relinkRun != null) {
 			this.exportAnalysisMetadata(this.relinkRun, multifile,
-			        fileNameIdentifier, particleSeparator,
-			        nonParticleIdentifier, sourceFolder, extension);
+					fileNameIdentifier, particleSeparator,
+					nonParticleIdentifier, sourceFolder, extension);
 			this.exportTrajectories(multifile, fileNameIdentifier, extension,
-			        targetIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, sourceFolder);
+					targetIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		} else if (this.linkRun != null) {
 			this.exportAnalysisMetadata(this.linkRun, multifile,
-			        fileNameIdentifier, particleSeparator,
-			        nonParticleIdentifier, sourceFolder, extension);
+					fileNameIdentifier, particleSeparator,
+					nonParticleIdentifier, sourceFolder, extension);
 			this.exportTrajectories(multifile, fileNameIdentifier, extension,
-			        targetIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, sourceFolder);
+					targetIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		} else if (this.snrRun != null) {
 			this.exportAnalysisMetadata(this.snrRun, multifile,
-			        fileNameIdentifier, particleSeparator,
-			        nonParticleIdentifier, sourceFolder, extension);
+					fileNameIdentifier, particleSeparator,
+					nonParticleIdentifier, sourceFolder, extension);
 			this.exportSNR(multifile, fileNameIdentifier, extension,
-			        targetIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, sourceFolder);
+					targetIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		} else if (this.detRun != null) {
 			this.exportAnalysisMetadata(this.detRun, multifile,
-			        fileNameIdentifier, particleSeparator,
-			        nonParticleIdentifier, sourceFolder, extension);
+					fileNameIdentifier, particleSeparator,
+					nonParticleIdentifier, sourceFolder, extension);
 			this.exportParticles(multifile, fileNameIdentifier, extension,
-			        targetIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, sourceFolder);
+					targetIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		}
 	}
-	
+
 	private void exportAnalysisMetadata(final OmegaAnalysisRun analysisRun,
 			final boolean multifile, final String fileNameIdentifier,
 			final String particleSeparator, final String nonParticleIdentifier,
@@ -187,7 +187,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			if ((this.measuresRun != null) || (this.snrRun != null)) {
 				if ((this.measuresRun != null)
-				        && (this.measuresRun instanceof OmegaTrackingMeasuresDiffusivityRun)) {
+						&& (this.measuresRun instanceof OmegaTrackingMeasuresDiffusivityRun)) {
 					f1 = new File(sourceFolder.getPath() + File.separatorChar
 							+ fileNameIdentifier + "_local_intervals."
 							+ extension);
@@ -225,13 +225,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			f3.createNewFile();
 		}
 		final StringBuffer buf = new StringBuffer();
-		
+
 		String newPartSep = "";
 		if (particleSeparator != null) {
 			newPartSep = particleSeparator;
 			newPartSep = newPartSep.replace("TAB", "\t");
 		}
-		
+
 		buf.append(nonParticleIdentifier + " "
 				+ OmegaDataToolConstants.RUN_NAME + newPartSep
 				+ analysisRun.getName() + "\n");
@@ -272,7 +272,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		buf.append(nonParticleIdentifier + "\n");
 		buf.append("\n");
-		
+
 		final FileWriter fw1 = new FileWriter(f1, false);
 		final BufferedWriter bw1 = new BufferedWriter(fw1);
 		bw1.write(buf.toString());
@@ -293,14 +293,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		bw3.close();
 		fw3.close();
 	}
-	
+
 	private void exportSNR(final boolean multifile,
 			final String fileNameIdentifier, final String extension,
 			final String planeIdentifier, final String particleIdentifier,
 			final boolean startAtOne, final String nonParticleIdentifier,
 			final String particleSeparator,
 			final List<String> particleDataOrder, final File sourceFolder)
-					throws IOException, IllegalArgumentException {
+			throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
 					+ sourceFolder + " has to be a valid directory");
@@ -363,7 +363,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newPlaneIdent != null) {
 			append = true;
 		}
-		
+
 		int counter = 1;
 		final int max = particlesMap.keySet().size();
 		final int maxDigits = String.valueOf(max).length();
@@ -396,7 +396,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 			if (counter >= (max - 1)) {
 			}
-			
+
 			final FileWriter fw = new FileWriter(localFile, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(globalFile, append);
@@ -448,7 +448,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw.write(newPartSep);
 				bw.write("\n");
 			}
-			
+
 			bw.close();
 			fw.close();
 			bw2.close();
@@ -457,40 +457,40 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		this.reset();
 	}
-
+	
 	private void exportTrackingMeasuresDiffusivity(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException, IllegalArgumentException {
+			final String fileNameIdentifier, final String extension,
+			final String trajectoryIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be a valid directory");
+					+ sourceFolder + " has to be a valid directory");
 		if ((sourceFolder.listFiles().length != 0) && multifile)
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be empty");
+					+ sourceFolder + " has to be empty");
 		final Map<OmegaTrajectory, List<OmegaSegment>> segments = this.segmRun
-		        .getResultingSegments();
+				.getResultingSegments();
 		final OmegaSegmentationTypes types = this.segmRun
-		        .getSegmentationTypes();
+				.getSegmentationTypes();
 		final OmegaTrackingMeasuresDiffusivityRun diffRun = (OmegaTrackingMeasuresDiffusivityRun) this.measuresRun;
 		final Map<OmegaSegment, Double[]> nu = diffRun.getNyResults();
 		final Map<OmegaSegment, Double[][]> deltaT = diffRun.getDeltaTResults();
 		final Map<OmegaSegment, Double[][]> mu = diffRun.getMuResults();
 		final Map<OmegaSegment, Double[][]> logDeltaT = diffRun
-		        .getLogDeltaTResults();
+				.getLogDeltaTResults();
 		final Map<OmegaSegment, Double[][]> logMu = diffRun.getLogMuResults();
 		diffRun.getGammaDResults();
 		final Map<OmegaSegment, Double[][]> gamma = diffRun.getGammaDResults();
 		final Map<OmegaSegment, Double[][]> logGamma = diffRun
-		        .getGammaDFromLogResults();
+				.getGammaDFromLogResults();
 		diffRun.getGammaFromLogResults();
 		final Map<OmegaSegment, Double[]> smss = diffRun
-		        .getSmssFromLogResults();
+				.getSmssFromLogResults();
 		final Map<OmegaSegment, Double[]> errors = diffRun
-		        .getErrosFromLogResults();
+				.getErrosFromLogResults();
 		String newTrajIdent = "";
 		if (newTrajIdent != null) {
 			newTrajIdent = trajectoryIdentifier;
@@ -522,34 +522,34 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File localIntervalFile, localFile, globalFile;
 			final String multiDigitCounter = OmegaStringUtilities
-			        .getMultiDigitsCounter(counter, maxDigits);
+					.getMultiDigitsCounter(counter, maxDigits);
 			if (multifile) {
 				localIntervalFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_"
-				        + multiDigitCounter + "_" + track.getName()
+						+ File.separatorChar + fileNameIdentifier + "_"
+						+ multiDigitCounter + "_" + track.getName()
 						+ "_local_intervals." + extension);
 				if (localIntervalFile.exists())
 					throw new IllegalArgumentException("The file "
-					        + localIntervalFile.getName()
+							+ localIntervalFile.getName()
 							+ " already exists in " + sourceFolder);
 				localFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_"
-				        + multiDigitCounter + "_" + track.getName() + "_local."
-				        + extension);
+						+ File.separatorChar + fileNameIdentifier + "_"
+						+ multiDigitCounter + "_" + track.getName() + "_local."
+						+ extension);
 				if (localFile.exists())
 					throw new IllegalArgumentException("The file "
-					        + localFile.getName() + " already exists in "
-					        + sourceFolder);
+							+ localFile.getName() + " already exists in "
+							+ sourceFolder);
 			} else {
 				localIntervalFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier
+						+ File.separatorChar + fileNameIdentifier
 						+ "_local_intervals." + extension);
 				localFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_local."
-				        + extension);
+						+ File.separatorChar + fileNameIdentifier + "_local."
+						+ extension);
 			}
 			globalFile = new File(sourceFolder.getPath() + File.separatorChar
-			        + fileNameIdentifier + "_global." + extension);
+					+ fileNameIdentifier + "_global." + extension);
 			if (!localFile.exists()) {
 				localFile.createNewFile();
 			}
@@ -557,39 +557,39 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (counter >= (max - 1)) {
 				isLast = true;
 			}
-			
+
 			final FileWriter fw = new FileWriter(localIntervalFile, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(localFile, append);
 			final BufferedWriter bw2 = new BufferedWriter(fw2);
 			final FileWriter fw3 = new FileWriter(globalFile, true);
 			final BufferedWriter bw3 = new BufferedWriter(fw3);
-			
+
 			final String trackIdent;
 			if (trajectoryIdentifier == null) {
 				trackIdent = counter + "\n";
 			} else {
 				trackIdent = nonPartIdent + newTrajIdent + newPartSep + counter
-				        + "\n";
+						+ "\n";
 			}
-			
+
 			bw.write(trackIdent);
 			bw2.write(trackIdent);
 			bw3.write(trackIdent);
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				final OmegaROI start = segment.getStartingROI();
 				final OmegaROI end = segment.getEndingROI();
 				final String segmentString = begin
-				        + "Segment from "
-				        + start.getFrameIndex()
-				        + " to "
-				        + end.getFrameIndex()
-				        + newPartSep
-				        + "type"
-				        + newPartSep
-				        + types.getSegmentationName(segment
-				                .getSegmentationType());
+						+ "Segment from "
+						+ start.getFrameIndex()
+						+ " to "
+						+ end.getFrameIndex()
+						+ newPartSep
+						+ "type"
+						+ newPartSep
+						+ types.getSegmentationName(segment
+								.getSegmentationType());
 				bw.write(segmentString + "\n");
 				bw2.write(segmentString + "\n");
 				bw3.write(segmentString);
@@ -608,7 +608,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					bw3.write(newPartSep);
 				}
 				bw3.write("\n");
-				
+
 				for (final Double n : nu.get(segment)) {
 					final Integer ny = new BigDecimal(n).intValue();
 					final Double[] logMusNu = logMu.get(segment)[ny];
@@ -666,33 +666,33 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		this.reset();
 	}
-	
+
 	private void exportTrackingMeasuresVelocity(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException, IllegalArgumentException {
+			final String fileNameIdentifier, final String extension,
+			final String trajectoryIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be a valid directory");
+					+ sourceFolder + " has to be a valid directory");
 		if ((sourceFolder.listFiles().length != 0) && multifile)
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be empty");
+					+ sourceFolder + " has to be empty");
 		final Map<OmegaTrajectory, List<OmegaSegment>> segments = this.segmRun
-		        .getResultingSegments();
+				.getResultingSegments();
 		final OmegaSegmentationTypes types = this.segmRun
-		        .getSegmentationTypes();
+				.getSegmentationTypes();
 		final OmegaTrackingMeasuresVelocityRun veloRun = (OmegaTrackingMeasuresVelocityRun) this.measuresRun;
 		final Map<OmegaSegment, List<Double>> localSpeeds = veloRun
-		        .getLocalSpeedResults();
+				.getLocalSpeedFromOriginResults();
 		final Map<OmegaSegment, List<Double>> localVelocities = veloRun
-		        .getLocalVelocityResults();
+				.getLocalVelocityFromOriginResults();
 		final Map<OmegaSegment, Double> globalSpeeds = veloRun
-		        .getAverageCurvilinearSpeedMapResults();
+				.getAverageCurvilinearSpeedMapResults();
 		final Map<OmegaSegment, Double> globalVelocities = veloRun
-		        .getAverageStraightLineVelocityMapResults();
+				.getAverageStraightLineVelocityMapResults();
 		String newTrajIdent = "";
 		if (newTrajIdent != null) {
 			newTrajIdent = trajectoryIdentifier;
@@ -727,23 +727,23 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File localFile, globalFile;
 			final String multiDigitCounter = OmegaStringUtilities
-			        .getMultiDigitsCounter(counter, maxDigits);
+					.getMultiDigitsCounter(counter, maxDigits);
 			if (multifile) {
 				localFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_"
-				        + multiDigitCounter + "_" + track.getName() + "_local."
-				        + extension);
+						+ File.separatorChar + fileNameIdentifier + "_"
+						+ multiDigitCounter + "_" + track.getName() + "_local."
+						+ extension);
 				if (localFile.exists())
 					throw new IllegalArgumentException("The file "
-					        + localFile.getName() + " already exists in "
-					        + sourceFolder);
+							+ localFile.getName() + " already exists in "
+							+ sourceFolder);
 			} else {
 				localFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_local."
-				        + extension);
+						+ File.separatorChar + fileNameIdentifier + "_local."
+						+ extension);
 			}
 			globalFile = new File(sourceFolder.getPath() + File.separatorChar
-			        + fileNameIdentifier + "_global." + extension);
+					+ fileNameIdentifier + "_global." + extension);
 			if (!localFile.exists()) {
 				localFile.createNewFile();
 			}
@@ -755,172 +755,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(globalFile, true);
 			final BufferedWriter bw2 = new BufferedWriter(fw2);
-			
-			final String trackIdent;
-			if (trajectoryIdentifier == null) {
-				trackIdent = counter + "\n";
-			} else {
-				trackIdent = nonPartIdent + newTrajIdent + newPartSep + counter
-				        + "\n";
-			}
-			bw.write(trackIdent);
-			bw2.write(trackIdent);
-			
-			for (final OmegaSegment segment : segments.get(track)) {
-				boolean isSegment = false;
-				final OmegaROI start = segment.getStartingROI();
-				final OmegaROI end = segment.getEndingROI();
-				
-				final String segmentString = begin
-				        + "Segment from "
-				        + start.getFrameIndex()
-				        + " to "
-				        + end.getFrameIndex()
-				        + newPartSep
-				        + "type"
-				        + newPartSep
-				        + types.getSegmentationName(segment
-				                .getSegmentationType());
-				bw.write(segmentString + "\n");
-				bw2.write(segmentString);
-				bw2.write(newPartSep + globalSpeeds.get(segment) + newPartSep
-				        + globalVelocities.get(segment) + "\n");
-				
-				int segmCounter = 0;
-				for (final OmegaROI roi : track.getROIs()) {
-					if (roi == start) {
-						isSegment = true;
-					} else if (roi == end) {
-						isSegment = false;
-						this.exportParticle(bw, startAtOne, newPartIdent,
-						        newPartSep, particleDataOrder, roi);
-						bw.write(String.valueOf(localSpeeds.get(segment).get(
-						        segmCounter)));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(localVelocities.get(segment)
-						        .get(segmCounter)));
-						bw.write(newPartSep);
-						bw.write("\n");
-						segmCounter++;
-						break;
-					}
-					if (isSegment) {
-						this.exportParticle(bw, startAtOne, newPartIdent,
-						        newPartSep, particleDataOrder, roi);
-						bw.write(String.valueOf(localSpeeds.get(segment).get(
-						        segmCounter)));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(localVelocities.get(segment)
-						        .get(segmCounter)));
-						bw.write(newPartSep);
-						bw.write("\n");
-						segmCounter++;
-					}
-				}
-			}
-			if (!isLast && !multifile) {
-				bw.write("\n");
-			}
-			bw.close();
-			fw.close();
-			bw2.close();
-			fw2.close();
-			counter++;
-		}
-		this.reset();
-	}
-	
-	private void exportTrackingMeasuresMobility(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException, IllegalArgumentException {
-		if (!sourceFolder.isDirectory())
-			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be a valid directory");
-		if ((sourceFolder.listFiles().length != 0) && multifile)
-			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be empty");
-		final Map<OmegaTrajectory, List<OmegaSegment>> segments = this.segmRun
-		        .getResultingSegments();
-		final OmegaSegmentationTypes types = this.segmRun
-		        .getSegmentationTypes();
-		final OmegaTrackingMeasuresMobilityRun mobiRun = (OmegaTrackingMeasuresMobilityRun) this.measuresRun;
-		final Map<OmegaSegment, List<Double>> distances = mobiRun
-		        .getDistancesResults();
-		final Map<OmegaSegment, List<Double>> displacements = mobiRun
-		        .getDisplacementsResults();
-		final Map<OmegaSegment, List<Double>> confinements = mobiRun
-		        .getConfinementRatioResults();
-		final Map<OmegaSegment, List<Double[]>> angle = mobiRun
-		        .getAnglesAndDirectionalChangesResults();
-		final Map<OmegaSegment, Double> maxDisplacement = mobiRun
-		        .getMaxDisplacementsResults();
-		final Map<OmegaSegment, Integer> totalTimeTraveled = mobiRun
-		        .getTotalTimeTraveledResults();
-		int counter = 1;
-		final int max = segments.keySet().size();
-		final int maxDigits = String.valueOf(max).length();
-		String newTrajIdent = "";
-		if (newTrajIdent != null) {
-			newTrajIdent = trajectoryIdentifier;
-			newTrajIdent = newTrajIdent.replace("TAB", "\t");
-		}
-		String newPartIdent = "";
-		if (newPartIdent != null) {
-			newPartIdent = particleIdentifier;
-			newPartIdent = newPartIdent.replace("TAB", "\t");
-		}
-		String newPartSep = "\t";
-		if (newPartSep != null) {
-			newPartSep = particleSeparator;
-			newPartSep = newPartSep.replace("TAB", "\t");
-		}
-		String nonPartIdent = "";
-		if (nonPartIdent != null) {
-			nonPartIdent = nonParticleIdentifier;
-			nonPartIdent = nonPartIdent.replace("TAB", "\t");
-		}
-		final String begin = nonPartIdent + " ";
-		boolean append = false;
-		if (newTrajIdent != null) {
-			append = true;
-		}
-		for (final OmegaTrajectory track : segments.keySet()) {
-			final File localFile, globalFile;
-			final String multiDigitCounter = OmegaStringUtilities
-			        .getMultiDigitsCounter(counter, maxDigits);
-			if (multifile) {
-				localFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_"
-				        + multiDigitCounter + "_" + track.getName() + "_local."
-				        + extension);
-				if (localFile.exists())
-					throw new IllegalArgumentException("The file "
-					        + localFile.getName() + " already exists in "
-					        + sourceFolder);
-			} else {
-				localFile = new File(sourceFolder.getPath()
-				        + File.separatorChar + fileNameIdentifier + "_local."
-				        + extension);
-			}
-			globalFile = new File(sourceFolder.getPath() + File.separatorChar
-			        + fileNameIdentifier + "_global." + extension);
-			if (!localFile.exists()) {
-				localFile.createNewFile();
-			}
-			boolean isLast = false;
-			if (counter >= (max - 1)) {
-				isLast = true;
-			}
-			
-			final FileWriter fw = new FileWriter(localFile, append);
-			final BufferedWriter bw = new BufferedWriter(fw);
-			final FileWriter fw2 = new FileWriter(globalFile, true);
-			final BufferedWriter bw2 = new BufferedWriter(fw2);
-			
+
 			final String trackIdent;
 			if (trajectoryIdentifier == null) {
 				trackIdent = counter + "\n";
@@ -930,27 +765,27 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 			bw.write(trackIdent);
 			bw2.write(trackIdent);
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				boolean isSegment = false;
 				final OmegaROI start = segment.getStartingROI();
 				final OmegaROI end = segment.getEndingROI();
-				
+
 				final String segmentString = begin
-				        + "Segment from "
-				        + start.getFrameIndex()
-				        + " to "
-				        + end.getFrameIndex()
-				        + newPartSep
-				        + "type"
-				        + newPartSep
-				        + types.getSegmentationName(segment
-				                .getSegmentationType());
+						+ "Segment from "
+						+ start.getFrameIndex()
+						+ " to "
+						+ end.getFrameIndex()
+						+ newPartSep
+						+ "type"
+						+ newPartSep
+						+ types.getSegmentationName(segment
+								.getSegmentationType());
 				bw.write(segmentString + "\n");
 				bw2.write(segmentString);
-				bw2.write(newPartSep + maxDisplacement.get(segment)
-				        + newPartSep + totalTimeTraveled.get(segment) + "\n");
-				
+				bw2.write(newPartSep + globalSpeeds.get(segment) + newPartSep
+						+ globalVelocities.get(segment) + "\n");
+
 				int segmCounter = 0;
 				for (final OmegaROI roi : track.getROIs()) {
 					if (roi == start) {
@@ -958,21 +793,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					} else if (roi == end) {
 						isSegment = false;
 						this.exportParticle(bw, startAtOne, newPartIdent,
-						        newPartSep, particleDataOrder, roi);
-						bw.write(String.valueOf(distances.get(segment).get(
-						        segmCounter)));
+								newPartSep, particleDataOrder, roi);
+						bw.write(String.valueOf(localSpeeds.get(segment).get(
+								segmCounter)));
 						bw.write(newPartSep);
-						bw.write(String.valueOf(displacements.get(segment).get(
-						        segmCounter)));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(confinements.get(segment).get(
-						        segmCounter)));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(angle.get(segment).get(
-						        segmCounter)[0]));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(angle.get(segment).get(
-						        segmCounter)[1]));
+						bw.write(String.valueOf(localVelocities.get(segment)
+								.get(segmCounter)));
 						bw.write(newPartSep);
 						bw.write("\n");
 						segmCounter++;
@@ -980,21 +806,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					}
 					if (isSegment) {
 						this.exportParticle(bw, startAtOne, newPartIdent,
-						        newPartSep, particleDataOrder, roi);
-						bw.write(String.valueOf(distances.get(segment).get(
-						        segmCounter)));
+								newPartSep, particleDataOrder, roi);
+						bw.write(String.valueOf(localSpeeds.get(segment).get(
+								segmCounter)));
 						bw.write(newPartSep);
-						bw.write(String.valueOf(displacements.get(segment).get(
-						        segmCounter)));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(confinements.get(segment).get(
-						        segmCounter)));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(angle.get(segment).get(
-						        segmCounter)[0]));
-						bw.write(newPartSep);
-						bw.write(String.valueOf(angle.get(segment).get(
-						        segmCounter)[1]));
+						bw.write(String.valueOf(localVelocities.get(segment)
+								.get(segmCounter)));
 						bw.write(newPartSep);
 						bw.write("\n");
 						segmCounter++;
@@ -1012,24 +829,210 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		this.reset();
 	}
-	
-	private void exportSegments(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException, IllegalArgumentException {
+
+	private void exportTrackingMeasuresMobility(final boolean multifile,
+			final String fileNameIdentifier, final String extension,
+			final String trajectoryIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be a valid directory");
+					+ sourceFolder + " has to be a valid directory");
 		if ((sourceFolder.listFiles().length != 0) && multifile)
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be empty");
+					+ sourceFolder + " has to be empty");
 		final Map<OmegaTrajectory, List<OmegaSegment>> segments = this.segmRun
-		        .getResultingSegments();
+				.getResultingSegments();
 		final OmegaSegmentationTypes types = this.segmRun
-		        .getSegmentationTypes();
+				.getSegmentationTypes();
+		final OmegaTrackingMeasuresMobilityRun mobiRun = (OmegaTrackingMeasuresMobilityRun) this.measuresRun;
+		final Map<OmegaSegment, List<Double>> distances = mobiRun
+				.getDistancesFromOriginResults();
+		final Map<OmegaSegment, List<Double>> displacements = mobiRun
+				.getDisplacementsFromOriginResults();
+		final Map<OmegaSegment, List<Double>> confinements = mobiRun
+				.getConfinementRatioResults();
+		final Map<OmegaSegment, List<Double[]>> angle = mobiRun
+				.getAnglesAndDirectionalChangesResults();
+		final Map<OmegaSegment, Double> maxDisplacement = mobiRun
+				.getMaxDisplacementsFromOriginResults();
+		final Map<OmegaSegment, List<Double>> totalTimeTraveled = mobiRun
+				.getTimeTraveledResults();
+		int counter = 1;
+		final int max = segments.keySet().size();
+		final int maxDigits = String.valueOf(max).length();
+		String newTrajIdent = "";
+		if (newTrajIdent != null) {
+			newTrajIdent = trajectoryIdentifier;
+			newTrajIdent = newTrajIdent.replace("TAB", "\t");
+		}
+		String newPartIdent = "";
+		if (newPartIdent != null) {
+			newPartIdent = particleIdentifier;
+			newPartIdent = newPartIdent.replace("TAB", "\t");
+		}
+		String newPartSep = "\t";
+		if (newPartSep != null) {
+			newPartSep = particleSeparator;
+			newPartSep = newPartSep.replace("TAB", "\t");
+		}
+		String nonPartIdent = "";
+		if (nonPartIdent != null) {
+			nonPartIdent = nonParticleIdentifier;
+			nonPartIdent = nonPartIdent.replace("TAB", "\t");
+		}
+		final String begin = nonPartIdent + " ";
+		boolean append = false;
+		if (newTrajIdent != null) {
+			append = true;
+		}
+		for (final OmegaTrajectory track : segments.keySet()) {
+			final File localFile, globalFile;
+			final String multiDigitCounter = OmegaStringUtilities
+					.getMultiDigitsCounter(counter, maxDigits);
+			if (multifile) {
+				localFile = new File(sourceFolder.getPath()
+						+ File.separatorChar + fileNameIdentifier + "_"
+						+ multiDigitCounter + "_" + track.getName() + "_local."
+						+ extension);
+				if (localFile.exists())
+					throw new IllegalArgumentException("The file "
+							+ localFile.getName() + " already exists in "
+							+ sourceFolder);
+			} else {
+				localFile = new File(sourceFolder.getPath()
+						+ File.separatorChar + fileNameIdentifier + "_local."
+						+ extension);
+			}
+			globalFile = new File(sourceFolder.getPath() + File.separatorChar
+					+ fileNameIdentifier + "_global." + extension);
+			if (!localFile.exists()) {
+				localFile.createNewFile();
+			}
+			boolean isLast = false;
+			if (counter >= (max - 1)) {
+				isLast = true;
+			}
+
+			final FileWriter fw = new FileWriter(localFile, append);
+			final BufferedWriter bw = new BufferedWriter(fw);
+			final FileWriter fw2 = new FileWriter(globalFile, true);
+			final BufferedWriter bw2 = new BufferedWriter(fw2);
+
+			final String trackIdent;
+			if (trajectoryIdentifier == null) {
+				trackIdent = counter + "\n";
+			} else {
+				trackIdent = nonPartIdent + newTrajIdent + newPartSep + counter
+						+ "\n";
+			}
+			bw.write(trackIdent);
+			bw2.write(trackIdent);
+
+			for (final OmegaSegment segment : segments.get(track)) {
+				boolean isSegment = false;
+				final OmegaROI start = segment.getStartingROI();
+				final OmegaROI end = segment.getEndingROI();
+
+				final String segmentString = begin
+						+ "Segment from "
+						+ start.getFrameIndex()
+						+ " to "
+						+ end.getFrameIndex()
+						+ newPartSep
+						+ "type"
+						+ newPartSep
+						+ types.getSegmentationName(segment
+								.getSegmentationType());
+				bw.write(segmentString + "\n");
+				bw2.write(segmentString);
+				bw2.write(newPartSep
+						+ String.valueOf(maxDisplacement.get(segment)) + "\n");
+
+				int segmCounter = 0;
+				for (final OmegaROI roi : track.getROIs()) {
+					if (roi == start) {
+						isSegment = true;
+					} else if (roi == end) {
+						isSegment = false;
+						this.exportParticle(bw, startAtOne, newPartIdent,
+								newPartSep, particleDataOrder, roi);
+						bw.write(String.valueOf(totalTimeTraveled.get(segment)
+								.get(segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(distances.get(segment).get(
+								segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(displacements.get(segment).get(
+								segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(confinements.get(segment).get(
+								segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(angle.get(segment).get(
+								segmCounter)[0]));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(angle.get(segment).get(
+								segmCounter)[1]));
+						bw.write(newPartSep);
+						bw.write("\n");
+						segmCounter++;
+						break;
+					}
+					if (isSegment) {
+						this.exportParticle(bw, startAtOne, newPartIdent,
+								newPartSep, particleDataOrder, roi);
+						bw.write(String.valueOf(distances.get(segment).get(
+								segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(displacements.get(segment).get(
+								segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(confinements.get(segment).get(
+								segmCounter)));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(angle.get(segment).get(
+								segmCounter)[0]));
+						bw.write(newPartSep);
+						bw.write(String.valueOf(angle.get(segment).get(
+								segmCounter)[1]));
+						bw.write(newPartSep);
+						bw.write("\n");
+						segmCounter++;
+					}
+				}
+			}
+			if (!isLast && !multifile) {
+				bw.write("\n");
+			}
+			bw.close();
+			fw.close();
+			bw2.close();
+			fw2.close();
+			counter++;
+		}
+		this.reset();
+	}
+
+	private void exportSegments(final boolean multifile,
+			final String fileNameIdentifier, final String extension,
+			final String trajectoryIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException, IllegalArgumentException {
+		if (!sourceFolder.isDirectory())
+			throw new IllegalArgumentException("The source folder "
+					+ sourceFolder + " has to be a valid directory");
+		if ((sourceFolder.listFiles().length != 0) && multifile)
+			throw new IllegalArgumentException("The source folder "
+					+ sourceFolder + " has to be empty");
+		final Map<OmegaTrajectory, List<OmegaSegment>> segments = this.segmRun
+				.getResultingSegments();
+		final OmegaSegmentationTypes types = this.segmRun
+				.getSegmentationTypes();
 		int counter = 1;
 		final int max = segments.keySet().size();
 		final int maxDigits = String.valueOf(max).length();
@@ -1061,18 +1064,18 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File f;
 			final String multiDigitCounter = OmegaStringUtilities
-			        .getMultiDigitsCounter(counter, maxDigits);
+					.getMultiDigitsCounter(counter, maxDigits);
 			if (multifile) {
 				f = new File(sourceFolder.getPath() + File.separatorChar
-				        + fileNameIdentifier + "_" + multiDigitCounter + "_"
-				        + track.getName() + "." + extension);
+						+ fileNameIdentifier + "_" + multiDigitCounter + "_"
+						+ track.getName() + "." + extension);
 				if (f.exists())
 					throw new IllegalArgumentException("The file "
-					        + f.getName() + " already exists in "
-					        + sourceFolder);
+							+ f.getName() + " already exists in "
+							+ sourceFolder);
 			} else {
 				f = new File(sourceFolder.getPath() + File.separatorChar
-				        + fileNameIdentifier + "." + extension);
+						+ fileNameIdentifier + "." + extension);
 			}
 			if (!f.exists()) {
 				f.createNewFile();
@@ -1081,48 +1084,48 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (counter >= (max - 1)) {
 				isLast = true;
 			}
-			
+
 			final FileWriter fw = new FileWriter(f, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
-			
+
 			final String trackIdent;
 			if (trajectoryIdentifier == null) {
 				trackIdent = counter + "\n";
 			} else {
 				trackIdent = nonPartIdent + newTrajIdent + newPartSep + counter
-				        + "\n";
+						+ "\n";
 			}
 			bw.write(trackIdent);
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				boolean isSegment = false;
 				final OmegaROI start = segment.getStartingROI();
 				final OmegaROI end = segment.getEndingROI();
-				
+
 				bw.write(begin
-				        + "Segment from "
-				        + start.getFrameIndex()
-				        + " to "
-				        + end.getFrameIndex()
-				        + newPartSep
-				        + "type"
-				        + newPartSep
-				        + types.getSegmentationName(segment
-				                .getSegmentationType()) + "\n");
-				
+						+ "Segment from "
+						+ start.getFrameIndex()
+						+ " to "
+						+ end.getFrameIndex()
+						+ newPartSep
+						+ "type"
+						+ newPartSep
+						+ types.getSegmentationName(segment
+								.getSegmentationType()) + "\n");
+
 				for (final OmegaROI roi : track.getROIs()) {
 					if (roi == start) {
 						isSegment = true;
 					} else if (roi == end) {
 						isSegment = false;
 						this.exportParticle(bw, startAtOne, newPartIdent,
-						        newPartSep, particleDataOrder, roi);
+								newPartSep, particleDataOrder, roi);
 						bw.write("\n");
-						
+
 					}
 					if (isSegment) {
 						this.exportParticle(bw, startAtOne, newPartIdent,
-						        newPartSep, particleDataOrder, roi);
+								newPartSep, particleDataOrder, roi);
 						bw.write("\n");
 					}
 				}
@@ -1133,25 +1136,25 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			bw.close();
 			fw.close();
 			counter++;
-			
+
 		}
 		this.reset();
 	}
-	
+
 	// TODO change IllegalArgumentException with a custom exception
 	private void exportTrajectories(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String trajectoryIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException, IllegalArgumentException {
+			final String fileNameIdentifier, final String extension,
+			final String trajectoryIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be a valid directory");
+					+ sourceFolder + " has to be a valid directory");
 		if ((sourceFolder.listFiles().length != 0) && multifile)
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be empty");
+					+ sourceFolder + " has to be empty");
 		String newTrajIdent = "";
 		if (newTrajIdent != null) {
 			newTrajIdent = trajectoryIdentifier;
@@ -1177,7 +1180,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			append = true;
 		}
 		final List<OmegaTrajectory> tracks;
-		
+
 		if (this.relinkRun == null) {
 			tracks = this.linkRun.getResultingTrajectories();
 		} else {
@@ -1186,22 +1189,22 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		int counter = 1;
 		final int max = tracks.size();
 		final int maxDigits = String.valueOf(max).length();
-		
+
 		for (final OmegaTrajectory track : tracks) {
 			final File f;
 			final String multiDigitCounter = OmegaStringUtilities
-			        .getMultiDigitsCounter(counter, maxDigits);
+					.getMultiDigitsCounter(counter, maxDigits);
 			if (multifile) {
 				f = new File(sourceFolder.getPath() + File.separatorChar
-				        + fileNameIdentifier + "_" + multiDigitCounter + "_"
-				        + track.getName() + "." + extension);
+						+ fileNameIdentifier + "_" + multiDigitCounter + "_"
+						+ track.getName() + "." + extension);
 				if (f.exists())
 					throw new IllegalArgumentException("The file "
-					        + f.getName() + " already exists in "
-					        + sourceFolder);
+							+ f.getName() + " already exists in "
+							+ sourceFolder);
 			} else {
 				f = new File(sourceFolder.getPath() + File.separatorChar
-				        + fileNameIdentifier + "." + extension);
+						+ fileNameIdentifier + "." + extension);
 			}
 			if (!f.exists()) {
 				f.createNewFile();
@@ -1210,10 +1213,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (tracks.indexOf(track) == (tracks.size() - 1)) {
 				isLast = true;
 			}
-			
+
 			final FileWriter fw = new FileWriter(f, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
-			
+
 			final String trackIdent;
 			if (trajectoryIdentifier == null) {
 				trackIdent = counter + "\n";
@@ -1222,40 +1225,40 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						+ "\n";
 			}
 			bw.write(trackIdent);
-			
+
 			for (final OmegaROI roi : track.getROIs()) {
 				this.exportParticle(bw, startAtOne, newPartIdent, newPartSep,
-				        particleDataOrder, roi);
+						particleDataOrder, roi);
 				bw.write("\n");
 			}
-			
+
 			if (!isLast && !multifile) {
 				bw.write("\n");
 			}
-			
+
 			bw.close();
 			fw.close();
 			counter++;
 		}
-		
+
 		this.reset();
 	}
-	
+
 	private void exportParticles(final boolean multifile,
-	        final String fileNameIdentifier, final String extension,
-	        final String planeIdentifier, final String particleIdentifier,
-	        final boolean startAtOne, final String nonParticleIdentifier,
-	        final String particleSeparator,
-	        final List<String> particleDataOrder, final File sourceFolder)
-	        throws IOException {
+			final String fileNameIdentifier, final String extension,
+			final String planeIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
+			final List<String> particleDataOrder, final File sourceFolder)
+			throws IOException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
-			        + sourceFolder + " has to be a valid directory");
+					+ sourceFolder + " has to be a valid directory");
 		// if ((sourceFolder.listFiles().length != 0) && multifile)
 		// throw new IllegalArgumentException("The source folder "
 		// + sourceFolder + " has to be empty");
 		final Map<OmegaPlane, List<OmegaROI>> particles = this.detRun
-		        .getResultingParticles();
+				.getResultingParticles();
 		int counter = 1;
 		final int max = particles.size();
 		final int maxDigits = String.valueOf(max).length();
@@ -1290,19 +1293,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				final File f;
 				final String multiDigitCounter = OmegaStringUtilities
-				        .getMultiDigitsCounter(counter, maxDigits);
+						.getMultiDigitsCounter(counter, maxDigits);
 				if (multifile) {
 					f = new File(sourceFolder.getPath() + File.separatorChar
-					        + fileNameIdentifier + "_" + multiDigitCounter
-					        + "_" + planeIdentifier + "_" + counter + "."
-					        + extension);
+							+ fileNameIdentifier + "_" + multiDigitCounter
+							+ "_" + planeIdentifier + "_" + counter + "."
+							+ extension);
 					if (f.exists())
 						throw new IllegalArgumentException("The file "
-						        + f.getName() + " already exists in "
-						        + sourceFolder);
+								+ f.getName() + " already exists in "
+								+ sourceFolder);
 				} else {
 					f = new File(sourceFolder.getPath() + File.separatorChar
-					        + fileNameIdentifier + "." + extension);
+							+ fileNameIdentifier + "." + extension);
 				}
 				if (!f.exists()) {
 					f.createNewFile();
@@ -1311,10 +1314,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				if (counter == max) {
 					isLast = true;
 				}
-				
+
 				final FileWriter fw = new FileWriter(f, append);
 				final BufferedWriter bw = new BufferedWriter(fw);
-				
+
 				final String planeIdent;
 				if (planeIdentifier == null) {
 					planeIdent = counter + "\n";
@@ -1323,17 +1326,17 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ counter + "\n";
 				}
 				bw.write(planeIdent);
-				
+
 				for (final OmegaROI roi : particles.get(plane)) {
 					this.exportParticle(bw, startAtOne, newPartIdent,
-					        newPartSep, particleDataOrder, roi);
+							newPartSep, particleDataOrder, roi);
 					bw.write("\n");
 				}
-				
+
 				if (!isLast && !multifile) {
 					bw.write("\n");
 				}
-				
+
 				bw.close();
 				fw.close();
 				counter++;
@@ -1342,11 +1345,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		this.reset();
 	}
-	
+
 	private void exportParticle(final BufferedWriter bw,
-	        final boolean startAtOne, final String newPartIdent,
-	        final String newPartSep, final List<String> particleDataOrder,
-	        final OmegaROI roi) throws IOException {
+			final boolean startAtOne, final String newPartIdent,
+			final String newPartSep, final List<String> particleDataOrder,
+			final OmegaROI roi) throws IOException {
 		final StringBuffer buf = new StringBuffer();
 		buf.append(newPartIdent);
 		Integer frameIndex = roi.getFrameIndex();
@@ -1354,7 +1357,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			frameIndex += 1;
 		}
 		final Map<OmegaROI, Map<String, Object>> particlesValues = this.detRun
-		        .getResultingParticlesValues();
+				.getResultingParticlesValues();
 		final Map<String, Object> values = particlesValues.get(roi);
 		for (final String order : particleDataOrder) {
 			if (order.equals(OmegaDataToolConstants.PARTICLE_SEPARATOR)) {
@@ -1366,13 +1369,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			} else if (order.equals(OmegaDataToolConstants.PARTICLE_YCOORD)) {
 				buf.append(roi.getY());
 			} else if (order
-			        .equals(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY)) {
+					.equals(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY)) {
 				if (!(roi instanceof OmegaParticle)) {
 					// TODO problem
 				}
 				buf.append(((OmegaParticle) roi).getCentroidIntensity());
 			} else if (order
-			        .equals(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY)) {
+					.equals(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY)) {
 				if (!(roi instanceof OmegaParticle)) {
 					// TODO problem
 				}
@@ -1386,30 +1389,30 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		bw.write(buf.toString());
 	}
-	
+
 	public void setParticleDetectionRun(final OmegaParticleDetectionRun detRun) {
 		this.detRun = detRun;
 	}
-	
+
 	public void setParticleLinkingRun(final OmegaParticleLinkingRun linkRun) {
 		this.linkRun = linkRun;
 	}
-	
+
 	public void setTrackRelinkingRun(
-	        final OmegaTrajectoriesRelinkingRun relinkRun) {
+			final OmegaTrajectoriesRelinkingRun relinkRun) {
 		this.relinkRun = relinkRun;
 	}
-	
+
 	public void setTrackSegmentationRun(
-	        final OmegaTrajectoriesSegmentationRun segmRun) {
+			final OmegaTrajectoriesSegmentationRun segmRun) {
 		this.segmRun = segmRun;
 	}
-	
+
 	public void setTrackingMeasuresRun(
-	        final OmegaTrackingMeasuresRun measuresRun) {
+			final OmegaTrackingMeasuresRun measuresRun) {
 		this.measuresRun = measuresRun;
 	}
-	
+
 	public void reset() {
 		this.detRun = null;
 		this.linkRun = null;

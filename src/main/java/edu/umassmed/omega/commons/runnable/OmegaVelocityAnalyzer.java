@@ -17,46 +17,51 @@ import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInter
 import edu.umassmed.omega.commons.libraries.OmegaVelocityLibrary;
 
 public class OmegaVelocityAnalyzer implements Runnable {
-	
+
 	private final OmegaMessageDisplayerPanelInterface displayerPanel;
-	
+
 	private final int tMax;
+	private final Double physicalT;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 	private final Map<OmegaSegment, List<Double>> localSpeedMap;
-	private final Map<OmegaSegment, List<Double>> localVelocityMap;
+	private final Map<OmegaSegment, List<Double>> localSpeedFromOriginMap;
+	private final Map<OmegaSegment, List<Double>> localVelocityFromOriginMap;
 	private final Map<OmegaSegment, Double> averagerCurvilinearSpeedMap;
 	private final Map<OmegaSegment, Double> averageStraightLineVelocityMap;
 	private final Map<OmegaSegment, Double> forwardProgressionLinearityMap;
-
+	
 	private final OmegaTrajectoriesSegmentationRun segmRun;
 	private final List<OmegaElement> selections;
-	
-	public OmegaVelocityAnalyzer(final int tMax,
+
+	public OmegaVelocityAnalyzer(final double physicalT, final int tMax,
 			final OmegaTrajectoriesSegmentationRun segmRun,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		this(null, tMax, segmRun, segments, null);
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+		this(null, physicalT, tMax, segmRun, segments, null);
 	}
-	
+
 	public OmegaVelocityAnalyzer(
 			final OmegaMessageDisplayerPanelInterface displayerPanel,
-	        final int tMax, final OmegaTrajectoriesSegmentationRun segmRun,
+			final double physicalT, final int tMax,
+			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final List<OmegaElement> selections) {
 		this.displayerPanel = displayerPanel;
-		
+
 		this.segmRun = segmRun;
 		this.selections = selections;
-		
+
 		this.tMax = tMax;
+		this.physicalT = physicalT;
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
-		        segments);
+				segments);
 		this.localSpeedMap = new LinkedHashMap<OmegaSegment, List<Double>>();
-		this.localVelocityMap = new LinkedHashMap<OmegaSegment, List<Double>>();
+		this.localSpeedFromOriginMap = new LinkedHashMap<OmegaSegment, List<Double>>();
+		this.localVelocityFromOriginMap = new LinkedHashMap<OmegaSegment, List<Double>>();
 		this.averagerCurvilinearSpeedMap = new LinkedHashMap<OmegaSegment, Double>();
 		this.averageStraightLineVelocityMap = new LinkedHashMap<OmegaSegment, Double>();
 		this.forwardProgressionLinearityMap = new LinkedHashMap<OmegaSegment, Double>();
 	}
-	
+
 	@Override
 	public void run() {
 		int counter = 1;
@@ -65,38 +70,49 @@ public class OmegaVelocityAnalyzer implements Runnable {
 			final List<OmegaROI> rois = track.getROIs();
 			if (this.displayerPanel != null) {
 				this.updateStatusAsync(
-				        "Processing velocity analysis, trajectory "
-				                + track.getName() + " " + counter + "/" + max,
-				        false, false);
+						"Processing velocity analysis, trajectory "
+								+ track.getName() + " " + counter + "/" + max,
+						false, false);
 			}
 			for (final OmegaSegment segment : this.segments.get(track)) {
 				final int roiStart = rois.indexOf(segment.getStartingROI());
 				final int roiEnd = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-				        roiEnd + 1);
+						roiEnd + 1);
 				final List<Double> localSpeeds = new ArrayList<>();
-				final List<Double> localVelocities = new ArrayList<>();
-				for (int t = 0; t < this.tMax; t++) {
+				final List<Double> localSpeedsFromOrigin = new ArrayList<>();
+				final List<Double> localVelocitiesFromOrigin = new ArrayList<>();
+				for (int t = 1; t <= this.tMax; t++) {
 					final Double localSpeed = OmegaVelocityLibrary
-					        .computeLocalSpeed(segmentROIs, t);
-					final Double localVelocity = OmegaVelocityLibrary
-					        .computeLocalVelocity(segmentROIs, t);
+							.computeLocalSpeed(this.physicalT, segmentROIs, t);
+					final Double localSpeedFromOrigin = OmegaVelocityLibrary
+							.computeLocalSpeedFromOrigin(this.physicalT,
+									segmentROIs, t);
+					final Double localVelocityFromOrigin = OmegaVelocityLibrary
+							.computeLocalVelocity(this.physicalT, segmentROIs,
+									t);
 					localSpeeds.add(localSpeed);
-					localVelocities.add(localVelocity);
+					localSpeedsFromOrigin.add(localSpeedFromOrigin);
+					localVelocitiesFromOrigin.add(localVelocityFromOrigin);
 				}
 				this.localSpeedMap.put(segment, localSpeeds);
-				this.localVelocityMap.put(segment, localVelocities);
-				
+				this.localSpeedFromOriginMap
+						.put(segment, localSpeedsFromOrigin);
+				this.localVelocityFromOriginMap.put(segment,
+						localVelocitiesFromOrigin);
+
 				final Double averagerCurvilinearSpeed = OmegaVelocityLibrary
-				        .computeAveragerCurvilinearSpeed(segmentROIs);
+						.computeAveragerCurvilinearSpeed(this.physicalT,
+								segmentROIs);
 				final Double averageStraightLineVelocity = OmegaVelocityLibrary
-				        .computeAverageStraightLineVelocity(segmentROIs);
+						.computeAverageStraightLineVelocity(this.physicalT,
+								segmentROIs);
 				final Double forwardProgressionLinearity = averageStraightLineVelocity
 						/ averagerCurvilinearSpeed;
 				this.averagerCurvilinearSpeedMap.put(segment,
-				        averagerCurvilinearSpeed);
+						averagerCurvilinearSpeed);
 				this.averageStraightLineVelocityMap.put(segment,
-				        averageStraightLineVelocity);
+						averageStraightLineVelocity);
 				this.forwardProgressionLinearityMap.put(segment,
 						forwardProgressionLinearity);
 				counter++;
@@ -107,39 +123,43 @@ public class OmegaVelocityAnalyzer implements Runnable {
 					false);
 		}
 	}
-	
+
 	public List<OmegaElement> getSelections() {
 		return this.selections;
 	}
-	
+
 	public OmegaTrajectoriesSegmentationRun getTrajectorySegmentationRun() {
 		return this.segmRun;
 	}
-	
+
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegments() {
 		return this.segments;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getLocalSpeedResults() {
 		return this.localSpeedMap;
 	}
-	
-	public Map<OmegaSegment, List<Double>> getLocalVelocityResults() {
-		return this.localVelocityMap;
+
+	public Map<OmegaSegment, List<Double>> getLocalSpeedFromOriginResults() {
+		return this.localSpeedFromOriginMap;
 	}
-	
+
+	public Map<OmegaSegment, List<Double>> getLocalVelocityFromOriginResults() {
+		return this.localVelocityFromOriginMap;
+	}
+
 	public Map<OmegaSegment, Double> getAverageCurvilinearSpeedResults() {
 		return this.averagerCurvilinearSpeedMap;
 	}
-	
+
 	public Map<OmegaSegment, Double> getAverageStraightLineVelocityResults() {
 		return this.averageStraightLineVelocityMap;
 	}
-	
+
 	public Map<OmegaSegment, Double> getForwardProgressionLinearityResults() {
 		return this.forwardProgressionLinearityMap;
 	}
-	
+
 	private void updateStatusSync(final String msg, final boolean ended,
 			final boolean dialog) {
 		try {
@@ -147,8 +167,8 @@ public class OmegaVelocityAnalyzer implements Runnable {
 				@Override
 				public void run() {
 					OmegaVelocityAnalyzer.this.displayerPanel
-					.updateMessageStatus(new AnalyzerEvent(msg, ended,
-							dialog));
+							.updateMessageStatus(new AnalyzerEvent(msg, ended,
+									dialog));
 				}
 			});
 		} catch (final InvocationTargetException e) {
@@ -157,15 +177,15 @@ public class OmegaVelocityAnalyzer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void updateStatusAsync(final String msg, final boolean ended,
 			final boolean dialog) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				OmegaVelocityAnalyzer.this.displayerPanel
-				.updateMessageStatus(new AnalyzerEvent(msg, ended,
-						dialog));
+						.updateMessageStatus(new AnalyzerEvent(msg, ended,
+								dialog));
 			}
 		});
 	}

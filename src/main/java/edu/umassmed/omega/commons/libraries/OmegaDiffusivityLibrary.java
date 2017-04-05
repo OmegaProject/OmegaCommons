@@ -29,9 +29,9 @@ public class OmegaDiffusivityLibrary {
 		try {
 			// extrapolate from Ivo's values
 			final double bias = SplineInterpolation.interpolate(minMinSNR,
-			        Size.BIAS);
+					Size.BIAS);
 			final double sigma = SplineInterpolation.interpolate(minMinSNR,
-			        Size.SIGMA);
+					Size.SIGMA);
 
 			// Martin's model
 			final double minD = ((sigma * sigma) + (bias * bias)) / (2 * 2);
@@ -98,27 +98,27 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[] computeDeltaNDeltaT(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t, final int from, final int to) {
+			final double Delta_t, final int from, final int to) {
 		final Integer m = to - from;
 		final int max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
 				windowDivisor);
 		final Double[] delta_t = new Double[max_Delta_n + 1];
 		for (int Delta_n = 1; Delta_n <= max_Delta_n; ++Delta_n) {
-			delta_t[Delta_n] = (double) Delta_t * (double) Delta_n;
+			delta_t[Delta_n] = Delta_t * Delta_n;
 		}
 		return delta_t;
 	}
 
 	public static Double[] computeDeltaNDeltaT(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t) {
+			final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeDeltaNDeltaT(x, y, windowDivisor,
 				nu, Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[] computeDeltaNDeltaT(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t, final OmegaSegment segment) {
+			final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary.computeDeltaNDeltaT(x, y, windowDivisor,
@@ -127,7 +127,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[] computeDeltaNLogDeltaT(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t, final int from, final int to) {
+			final double Delta_t, final int from, final int to) {
 		final Integer m = to - from;
 		final Double log_Delta_t = StrictMath.log(Delta_t);
 		final int max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
@@ -141,14 +141,14 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[] computeDeltaNLogDeltaT(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t) {
+			final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeDeltaNLogDeltaT(x, y,
 				windowDivisor, nu, Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[] computeDeltaNLogDeltaT(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t, final OmegaSegment segment) {
+			final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary.computeDeltaNLogDeltaT(x, y,
@@ -216,7 +216,7 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[] computeGamma(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t,
+			final int windowDivisor, final int nu, final double Delta_t,
 			final int from, final int to) {
 		final int m = (to + 1) - from;
 		final Integer max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
@@ -231,13 +231,13 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[] computeGamma(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t) {
+			final int windowDivisor, final int nu, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeGamma(x, y, windowDivisor, nu,
 				Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[] computeGamma(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t,
+			final int windowDivisor, final int nu, final double Delta_t,
 			final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
@@ -247,7 +247,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[] computeGammaFromLog(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t, final int from, final int to) {
+			final double Delta_t, final int from, final int to) {
 		final int m = (to + 1) - from;
 		final Integer max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
 				windowDivisor);
@@ -263,14 +263,14 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[] computeGammaFromLog(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t) {
+			final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeGammaFromLog(x, y, windowDivisor,
 				nu, Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[] computeGammaFromLog(final Double[] x,
 			final Double[] y, final int windowDivisor, final int nu,
-			final int Delta_t, final OmegaSegment segment) {
+			final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary.computeGammaFromLog(x, y, windowDivisor,
@@ -278,7 +278,7 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double computeD(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t,
+			final int windowDivisor, final int nu, final double Delta_t,
 			final int from, final int to) {
 		final int m = (to + 1) - from;
 		final Integer max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
@@ -294,13 +294,13 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double computeD(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t) {
+			final int windowDivisor, final int nu, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeDFromLog(x, y, windowDivisor, nu,
 				Delta_t, 0, x.length - 1);
 	}
 
 	public static Double computeD(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t,
+			final int windowDivisor, final int nu, final double Delta_t,
 			final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
@@ -309,7 +309,7 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double computeDFromLog(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t,
+			final int windowDivisor, final int nu, final double Delta_t,
 			final int from, final int to) {
 		final int m = (to + 1) - from;
 		final Integer max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
@@ -326,13 +326,13 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double computeDFromLog(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t) {
+			final int windowDivisor, final int nu, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeDFromLog(x, y, windowDivisor, nu,
 				Delta_t, 0, x.length - 1);
 	}
 
 	public static Double computeDFromLog(final Double[] x, final Double[] y,
-			final int windowDivisor, final int nu, final int Delta_t,
+			final int windowDivisor, final int nu, final double Delta_t,
 			final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
@@ -342,7 +342,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeDeltaNDeltaT_DeltaNMu_GammaD(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int nu, final int Delta_t, final int from, final int to) {
+			final int nu, final double Delta_t, final int from, final int to) {
 		final int m = (to + 1) - from;
 		final int max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
 				windowDivisor);
@@ -353,7 +353,7 @@ public class OmegaDiffusivityLibrary {
 		for (int Delta_n = 1; Delta_n <= max_Delta_n; ++Delta_n) {
 			mu[Delta_n] = OmegaDiffusivityLibrary.computeMu(norms,
 					windowDivisor, nu, Delta_n, from, to);
-			delta_t[Delta_n] = (double) Delta_t * (double) Delta_n;
+			delta_t[Delta_n] = Delta_t * Delta_n;
 		}
 		final Double[] fits = OmegaMathsUtilities.linearFit(delta_t, mu, 1,
 				max_Delta_n);
@@ -364,14 +364,14 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeDeltaNDeltaT_DeltaNMu_GammaD(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int nu, final int Delta_t) {
+			final int nu, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeDeltaNDeltaT_DeltaNMu_GammaD(x,
 				y, windowDivisor, nu, Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[][] computeDeltaNDeltaT_DeltaNMu_GammaD(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int nu, final int Delta_t, final OmegaSegment segment) {
+			final int nu, final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary.computeDeltaNDeltaT_DeltaNMu_GammaD(x,
@@ -380,7 +380,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeDeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int nu, final int Delta_t, final int from, final int to) {
+			final int nu, final double Delta_t, final int from, final int to) {
 		final int m = (to + 1) - from;
 		final Double log_Delta_t = StrictMath.log(Delta_t);
 		final int max_Delta_n = OmegaDiffusivityLibrary.getMaxDeltaN(m,
@@ -403,7 +403,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeDeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int nu, final int Delta_t) {
+			final int nu, final double Delta_t) {
 		return OmegaDiffusivityLibrary
 				.computeDeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog(x, y,
 						windowDivisor, nu, Delta_t, 0, x.length - 1);
@@ -411,7 +411,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeDeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int nu, final int Delta_t, final OmegaSegment segment) {
+			final int nu, final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary
@@ -428,7 +428,7 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[] computeSMSS(final Double[] x, final Double[] y,
-			final int windowDivisor, final int Delta_t, final int from,
+			final int windowDivisor, final double Delta_t, final int from,
 			final int to) {
 		final Double[] nu = OmegaDiffusivityLibrary.computeNu();
 		final Double[] gamma = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
@@ -441,13 +441,13 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[] computeSMSS(final Double[] x, final Double[] y,
-			final int windowDivisor, final int Delta_t) {
+			final int windowDivisor, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeSMSS(x, y, windowDivisor,
 				Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[] computeSMSS(final Double[] x, final Double[] y,
-			final int windowDivisor, final int Delta_t,
+			final int windowDivisor, final double Delta_t,
 			final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
@@ -456,7 +456,7 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[] computeSMSSFromLog(final Double[] x,
-			final Double[] y, final int windowDivisor, final int Delta_t,
+			final Double[] y, final int windowDivisor, final double Delta_t,
 			final int from, final int to) {
 		final Double[] nu = OmegaDiffusivityLibrary.computeNu();
 		final Double[] gamma = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
@@ -469,13 +469,13 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[] computeSMSSFromLog(final Double[] x,
-			final Double[] y, final int windowDivisor, final int Delta_t) {
+			final Double[] y, final int windowDivisor, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeSMSSFromLog(x, y, windowDivisor,
 				Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[] computeSMSSFromLog(final Double[] x,
-			final Double[] y, final int windowDivisor, final int Delta_t,
+			final Double[] y, final int windowDivisor, final double Delta_t,
 			final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
@@ -484,7 +484,7 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[][] computeNu_Gamma_SMSS(final Double[] x,
-			final Double[] y, final int windowDivisor, final int Delta_t,
+			final Double[] y, final int windowDivisor, final double Delta_t,
 			final int from, final int to) {
 		final Double[] nu = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
 		final Double[] gamma = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
@@ -498,13 +498,13 @@ public class OmegaDiffusivityLibrary {
 	}
 
 	public static Double[][] computeNu_Gamma_SMSS(final Double[] x,
-			final Double[] y, final int windowDivisor, final int Delta_t) {
+			final Double[] y, final int windowDivisor, final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeNu_Gamma_SMSS(x, y,
 				windowDivisor, Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[][] computeNu_Gamma_SMSS(final Double[] x,
-			final Double[] y, final int windowDivisor, final int Delta_t,
+			final Double[] y, final int windowDivisor, final double Delta_t,
 			final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
@@ -514,7 +514,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeNu_GammaFromLog_SMSSFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t, final int from, final int to) {
+			final double Delta_t, final int from, final int to) {
 		final Double[] nu = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
 		final Double[] gamma = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
 		for (int ny = 0; ny <= OmegaDiffusivityLibrary.MAX_NU; ++ny) {
@@ -528,14 +528,14 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][] computeNu_GammaFromLog_SMSSFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t) {
+			final double Delta_t) {
 		return OmegaDiffusivityLibrary.computeNu_GammaFromLog_SMSSFromLog(x, y,
 				windowDivisor, Delta_t, 0, x.length - 1);
 	}
 
 	public static Double[][] computeNu_GammaFromLog_SMSSFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t, final OmegaSegment segment) {
+			final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary.computeNu_GammaFromLog_SMSSFromLog(x, y,
@@ -544,7 +544,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][][] computeNu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t, final int from, final int to) {
+			final double Delta_t, final int from, final int to) {
 		final Double[] nu = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
 		final Double[][] delta_t = new Double[OmegaDiffusivityLibrary.MAX_NU + 1][];
 		final Double[][] mu = new Double[OmegaDiffusivityLibrary.MAX_NU + 1][];
@@ -562,11 +562,11 @@ public class OmegaDiffusivityLibrary {
 		// final Double[] smss = OmegaMathsUtilities.linearFit(nu, gamma);
 		return new Double[][][] { { nu }, delta_t, mu, gammaAndD };// , { smss }
 		// };
-}
+	}
 
 	public static Double[][][] computeNu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t) {
+			final double Delta_t) {
 		return OmegaDiffusivityLibrary
 				.computeNu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS(x, y,
 						windowDivisor, Delta_t, 0, x.length - 1);
@@ -574,7 +574,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][][] computeNu_DeltaNDeltaT_DeltaNMu_GammaD_SMSS(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t, final OmegaSegment segment) {
+			final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary
@@ -584,7 +584,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][][] computeNu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t, final int from, final int to) {
+			final double Delta_t, final int from, final int to) {
 		final Double[] nu = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
 		final Double[] gamma = new Double[OmegaDiffusivityLibrary.MAX_NU + 1];
 		final Double[][] log_delta_t = new Double[OmegaDiffusivityLibrary.MAX_NU + 1][];
@@ -607,7 +607,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][][] computeNu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t) {
+			final double Delta_t) {
 		return OmegaDiffusivityLibrary
 				.computeNu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog(
 						x, y, windowDivisor, Delta_t, 0, x.length - 1);
@@ -615,7 +615,7 @@ public class OmegaDiffusivityLibrary {
 
 	public static Double[][][] computeNu_DeltaNLogDeltaT_DeltaNLogMu_GammaDFromLog_SMSSFromLog(
 			final Double[] x, final Double[] y, final int windowDivisor,
-			final int Delta_t, final OmegaSegment segment) {
+			final double Delta_t, final OmegaSegment segment) {
 		final int from = segment.getEndingROI().getFrameIndex();
 		final int to = segment.getStartingROI().getFrameIndex();
 		return OmegaDiffusivityLibrary

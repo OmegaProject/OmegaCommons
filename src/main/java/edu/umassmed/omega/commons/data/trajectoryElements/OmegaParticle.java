@@ -27,37 +27,39 @@
 package edu.umassmed.omega.commons.data.trajectoryElements;
 
 public class OmegaParticle extends OmegaROI {
-
+	
 	private final Double centroidIntensity;
 	private final Double peakIntensity;
-
-	public OmegaParticle(final int frameIndex, final double x, final double y) {
-		super(frameIndex, x, y);
-
+	
+	public OmegaParticle(final int frameIndex, final double x, final double y,
+			final double realX, final double realY) {
+		super(frameIndex, x, y, realX, realY);
+		
 		this.centroidIntensity = null;
 		this.peakIntensity = null;
 	}
-
+	
 	public OmegaParticle(final int frameIndex, final double x, final double y,
-	        final double intensity) {
-		super(frameIndex, x, y);
-		
+			final double realX, final double realY, final double intensity) {
+		super(frameIndex, x, y, realX, realY);
+
 		this.centroidIntensity = intensity;
 		this.peakIntensity = intensity;
 	}
-
+	
 	public OmegaParticle(final int frameIndex, final double x, final double y,
-	        final double peakIntensity, final double centroidIntensity) {
-		super(frameIndex, x, y);
-		
+			final double realX, final double realY, final double peakIntensity,
+			final double centroidIntensity) {
+		super(frameIndex, x, y, realX, realY);
+
 		this.centroidIntensity = centroidIntensity;
 		this.peakIntensity = peakIntensity;
 	}
-
+	
 	public Double getCentroidIntensity() {
 		return this.centroidIntensity;
 	}
-
+	
 	public Double getPeakIntensity() {
 		return this.peakIntensity;
 	}

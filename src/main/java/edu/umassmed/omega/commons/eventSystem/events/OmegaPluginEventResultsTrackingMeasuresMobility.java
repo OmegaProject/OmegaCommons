@@ -14,47 +14,54 @@ OmegaPluginEventResultsTrackingMeasures {
 	
 	// Mobility
 	private final Map<OmegaSegment, List<Double>> distancesMap;
-	private final Map<OmegaSegment, List<Double>> displacementsMap;
-	private final Map<OmegaSegment, Double> maxDisplacementesMap;
-	private final Map<OmegaSegment, Integer> totalTimeTraveledMap;
+	private final Map<OmegaSegment, List<Double>> distancesFromOriginMap;
+	private final Map<OmegaSegment, List<Double>> displacementsFromOriginMap;
+	private final Map<OmegaSegment, Double> maxDisplacementesFromOriginMap;
+	private final Map<OmegaSegment, List<Double>> timeTraveledMap;
 	private final Map<OmegaSegment, List<Double>> confinementRatioMap;
 	private final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap;
 	
 	public OmegaPluginEventResultsTrackingMeasuresMobility(
 			final OmegaPlugin source,
 			final List<OmegaElement> selections,
-	        final OmegaElement element,
+			final OmegaElement element,
 			final List<OmegaParameter> params,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, List<Double>> distancesMap,
-			final Map<OmegaSegment, List<Double>> displacementsMap,
-			final Map<OmegaSegment, Double> maxDisplacementesMap,
-			final Map<OmegaSegment, Integer> totalTimeTraveledMap,
+			final Map<OmegaSegment, List<Double>> distancesFromOriginMap,
+			final Map<OmegaSegment, List<Double>> displacementsFromOriginMap,
+			final Map<OmegaSegment, Double> maxDisplacementesFromOriginMap,
+			final Map<OmegaSegment, List<Double>> timeTraveledMap,
 			final Map<OmegaSegment, List<Double>> confinementRatioMap,
 			final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap) {
 		super(source, selections, element, params, segments);
 		this.distancesMap = distancesMap;
-		this.displacementsMap = displacementsMap;
-		this.maxDisplacementesMap = maxDisplacementesMap;
-		this.totalTimeTraveledMap = totalTimeTraveledMap;
+		this.distancesFromOriginMap = distancesFromOriginMap;
+		this.displacementsFromOriginMap = displacementsFromOriginMap;
+		this.maxDisplacementesFromOriginMap = maxDisplacementesFromOriginMap;
+		this.timeTraveledMap = timeTraveledMap;
 		this.confinementRatioMap = confinementRatioMap;
 		this.anglesAndDirectionalChangesMap = anglesAndDirectionalChangesMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getResultingDistances() {
 		return this.distancesMap;
 	}
 	
-	public Map<OmegaSegment, List<Double>> getResultingDisplacements() {
-		return this.displacementsMap;
+	public Map<OmegaSegment, List<Double>> getResultingDistancesFromOrigin() {
+		return this.distancesFromOriginMap;
 	}
 	
-	public Map<OmegaSegment, Double> getResultingMaxDisplacements() {
-		return this.maxDisplacementesMap;
+	public Map<OmegaSegment, List<Double>> getResultingDisplacementsFromOrigin() {
+		return this.displacementsFromOriginMap;
 	}
 	
-	public Map<OmegaSegment, Integer> getResultingTotalTimeTraveled() {
-		return this.totalTimeTraveledMap;
+	public Map<OmegaSegment, Double> getResultingMaxDisplacementsFromOrigin() {
+		return this.maxDisplacementesFromOriginMap;
+	}
+	
+	public Map<OmegaSegment, List<Double>> getResultingTimeTraveled() {
+		return this.timeTraveledMap;
 	}
 	
 	public Map<OmegaSegment, List<Double>> getResultingConfinementRatio() {

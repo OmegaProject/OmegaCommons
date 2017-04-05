@@ -95,24 +95,24 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	}
 
 	public void importData(final boolean multifile,
-	        final String fileNameIdentifier, final String dataIdentifier,
-	        final String particleIdentifier, final boolean startAtOne,
-	        final String nonParticleIdentifier, final String particleSeparator,
+			final String fileNameIdentifier, final String dataIdentifier,
+			final String particleIdentifier, final boolean startAtOne,
+			final String nonParticleIdentifier, final String particleSeparator,
 			final List<String> particleDataOrder, final File sourceFolder)
 					throws IllegalArgumentException, IOException {
 		if (this.mode == OmegaTracksImporter.IMPORTER_MODE_NOT_SET)
 			throw new IllegalArgumentException(
-			        OmegaTracksImporter.class.getName()
-			                + " mode not set, cannot import data");
+					OmegaTracksImporter.class.getName()
+					+ " mode not set, cannot import data");
 		if (this.mode == OmegaTracksImporter.IMPORTER_MODE_PARTICLES) {
 			this.importParticles(fileNameIdentifier, dataIdentifier,
 					particleIdentifier, startAtOne, nonParticleIdentifier,
 					particleSeparator, particleDataOrder, sourceFolder);
 		} else if (this.mode == OmegaTracksImporter.IMPORTER_MODE_TRACKS) {
 			this.importTrajectories(multifile, fileNameIdentifier,
-			        dataIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, sourceFolder);
+					dataIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, sourceFolder);
 		}
 	}
 	
@@ -154,7 +154,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		final LinkedHashMap<String, String> analysisData = new LinkedHashMap<String, String>(
 				this.analysisDataMap);
 		final LinkedHashMap<String, String> paramData = new LinkedHashMap<String, String>(
-		        this.paramMap);
+				this.paramMap);
 		final Map<OmegaPlane, List<OmegaROI>> resultingParticles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>(
 				this.particles);
 		final Map<OmegaROI, Map<String, Object>> resultingParticlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>(
@@ -167,9 +167,9 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	
 	// TODO change IllegalArgumentException with a custom exception
 	private void importTrajectories(final boolean multifile,
-	        final String fileNameIdentifier, final String trajectoryIdentifier,
-	        final String particleIdentifier, final boolean startAtOne,
-	        final String nonParticleIdentifier, final String particleSeparator,
+			final String fileNameIdentifier, final String trajectoryIdentifier,
+			final String particleIdentifier, final boolean startAtOne,
+			final String nonParticleIdentifier, final String particleSeparator,
 			final List<String> particleDataOrder, final File sourceFolder)
 					throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
@@ -190,9 +190,9 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final FileReader fr = new FileReader(f);
 			final BufferedReader br = new BufferedReader(fr);
 			this.importTrajectories(multifile, f.getName(),
-			        trajectoryIdentifier, particleIdentifier, startAtOne,
-			        nonParticleIdentifier, particleSeparator,
-			        particleDataOrder, br);
+					trajectoryIdentifier, particleIdentifier, startAtOne,
+					nonParticleIdentifier, particleSeparator,
+					particleDataOrder, br);
 			br.close();
 			fr.close();
 		}
@@ -213,12 +213,12 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		if (this.tracks.isEmpty())
 			throw new IllegalArgumentException(
 					"Something wrong with parameters: no tracks have been found in "
-			                + sourceFolder);
+							+ sourceFolder);
 		
 		final LinkedHashMap<String, String> analysisData = new LinkedHashMap<String, String>(
 				this.analysisDataMap);
 		final LinkedHashMap<String, String> paramData = new LinkedHashMap<String, String>(
-		        this.paramMap);
+				this.paramMap);
 		final Map<OmegaPlane, List<OmegaROI>> resultingParticles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>(
 				this.particles);
 		final Map<OmegaROI, Map<String, Object>> resultingParticlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>(
@@ -250,7 +250,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					&& line.startsWith(nonParticleIdentifier)) {
 				line = br.readLine();
 				this.importAnalysisData(nonParticleIdentifier,
-				        particleSeparator, line);
+						particleSeparator, line);
 				continue;
 			}
 			
@@ -268,7 +268,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	}
 
 	private void importAnalysisData(final String nonParticleIdentifier,
-	        final String particleSeparator, final String line) {
+			final String particleSeparator, final String line) {
 		String newLine = line.replaceFirst(nonParticleIdentifier, "");
 		newLine = newLine.replaceFirst(" ", "");
 		final String[] tokens = newLine.split(particleSeparator);
@@ -295,16 +295,16 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		} else if (tokens[0].equals(OmegaDataToolConstants.PARAM)) {
 			this.paramMap.put(tokens[1], tokens[2]);
 		} else if (tokens[0].equals(nonParticleIdentifier)
-		        && this.isReadingParams) {
+				&& this.isReadingParams) {
 			this.isReadingParams = false;
 		}
 		
 	}
 	
 	private void importTrajectories(final boolean multifile,
-	        final String fileName, final String trajectoryIdentifier,
-	        final String particleIdentifier, final boolean startAtOne,
-	        final String nonParticleIdentifier, final String particleSeparator,
+			final String fileName, final String trajectoryIdentifier,
+			final String particleIdentifier, final boolean startAtOne,
+			final String nonParticleIdentifier, final String particleSeparator,
 			final List<String> particleDataOrder, final BufferedReader br)
 					throws IOException, IllegalArgumentException {
 		final String name1 = fileName.substring(0, fileName.lastIndexOf("."));
@@ -364,7 +364,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		final Map<String, Object> particleValues = new LinkedHashMap<String, Object>();
 		if (particleData.length < particleDataOrder.size())
 			throw new IllegalArgumentException("The line: " + particleToImport
-			        + " doesn't contain the required information");
+					+ " doesn't contain the required information");
 		for (int i = 0; i < particleDataOrder.size(); i++) {
 			final String order = particleDataOrder.get(i);
 			final String data = particleData[i];
@@ -377,10 +377,10 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			} else if (order.equals(OmegaDataToolConstants.PARTICLE_YCOORD)) {
 				y = Double.valueOf(data);
 			} else if (order
-			        .equals(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY)) {
+					.equals(OmegaDataToolConstants.PARTICLE_PEAK_INTENSITY)) {
 				peakIntensity = Double.valueOf(data);
 			} else if (order
-			        .equals(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY)) {
+					.equals(OmegaDataToolConstants.PARTICLE_CENT_INTENSITY)) {
 				centroidIntensity = Double.valueOf(data);
 			} else {
 				// TODO ADD CHOICE OF TYPE OF CONTENT IN GUI AND HERE
@@ -397,16 +397,17 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			frameIndex++;
 		}
 		if ((peakIntensity == null) && (centroidIntensity == null)) {
-			p = new OmegaParticle(frameIndex, x, y);
+			p = new OmegaParticle(frameIndex, x, y, x, y);
 		} else {
 			if ((peakIntensity != null) && (centroidIntensity != null)) {
 				p = new OmegaParticle(frameIndex, x, y, peakIntensity,
-				        centroidIntensity);
+						centroidIntensity);
 			} else {
 				if (peakIntensity == null) {
-					p = new OmegaParticle(frameIndex, x, y, centroidIntensity);
+					p = new OmegaParticle(frameIndex, x, y, x, y,
+							centroidIntensity);
 				} else {
-					p = new OmegaParticle(frameIndex, x, y, peakIntensity);
+					p = new OmegaParticle(frameIndex, x, y, x, y, peakIntensity);
 				}
 			}
 		}

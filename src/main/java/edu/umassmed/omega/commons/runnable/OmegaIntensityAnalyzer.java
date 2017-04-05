@@ -23,12 +23,22 @@ public class OmegaIntensityAnalyzer implements Runnable {
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 	private final Map<OmegaSegment, Double[]> peakSignalsMap;
 	private final Map<OmegaSegment, Double[]> centroidSignalsMap;
+
+	private final Map<OmegaROI, Double> peakSignalsLocMap;
+	private final Map<OmegaROI, Double> centroidSignalsLocMap;
 	
 	// SNR related START
+	private final Map<OmegaSegment, Double[]> backgroundsMap;
 	private final Map<OmegaSegment, Double[]> noisesMap;
 	private final Map<OmegaSegment, Double[]> snrsMap;
 	private final Map<OmegaSegment, Double[]> areasMap;
 	private final Map<OmegaSegment, Double[]> meanSignalsMap;
+
+	private final Map<OmegaROI, Double> meanSignalsLocMap;
+	private final Map<OmegaROI, Double> backgroundsLocMap;
+	private final Map<OmegaROI, Double> noisesLocMap;
+	private final Map<OmegaROI, Double> areasLocMap;
+	private final Map<OmegaROI, Double> snrsLocMap;
 	// SNR related END
 
 	private OmegaSNRRun snrRun;
@@ -38,15 +48,15 @@ public class OmegaIntensityAnalyzer implements Runnable {
 	
 	public OmegaIntensityAnalyzer(
 			final OmegaTrajectoriesSegmentationRun segmRun,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this(null, segmRun, segments, null);
 	}
 	
 	public OmegaIntensityAnalyzer(
 			final OmegaMessageDisplayerPanelInterface displayerPanel,
-	        final OmegaTrajectoriesSegmentationRun segmRun,
+			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-	        final List<OmegaElement> selections) {
+			final List<OmegaElement> selections) {
 		this.displayerPanel = displayerPanel;
 
 		this.segmRun = segmRun;
@@ -57,11 +67,21 @@ public class OmegaIntensityAnalyzer implements Runnable {
 		this.peakSignalsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		this.centroidSignalsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 
+		this.peakSignalsLocMap = new LinkedHashMap<OmegaROI, Double>();
+		this.centroidSignalsLocMap = new LinkedHashMap<OmegaROI, Double>();
+
 		// SNR related START
+		this.backgroundsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		this.noisesMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		this.meanSignalsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		this.snrsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		this.areasMap = new LinkedHashMap<OmegaSegment, Double[]>();
+
+		this.backgroundsLocMap = new LinkedHashMap<OmegaROI, Double>();
+		this.noisesLocMap = new LinkedHashMap<OmegaROI, Double>();
+		this.meanSignalsLocMap = new LinkedHashMap<OmegaROI, Double>();
+		this.snrsLocMap = new LinkedHashMap<OmegaROI, Double>();
+		this.areasLocMap = new LinkedHashMap<OmegaROI, Double>();
 		// SNR related END
 	}
 	
@@ -96,13 +116,14 @@ public class OmegaIntensityAnalyzer implements Runnable {
 			final List<OmegaROI> rois = track.getROIs();
 			if (this.displayerPanel != null) {
 				this.updateStatusAsync(
-				        "Processing intensity analysis, trajectory "
-				                + track.getName() + " " + counter + "/" + max,
-				        false, false);
+						"Processing intensity analysis, trajectory "
+								+ track.getName() + " " + counter + "/" + max,
+								false, false);
 			}
 			final Double[] peaks = new Double[3];
 			final Double[] centroids = new Double[3];
 			// SNR related START
+			final Double[] backgrounds = new Double[3];
 			final Double[] noises = new Double[3];
 			final Double[] means = new Double[3];
 			final Double[] areas = new Double[3];
@@ -112,6 +133,7 @@ public class OmegaIntensityAnalyzer implements Runnable {
 				this.resetArray(peaks);
 				this.resetArray(centroids);
 				// SNR related START
+				this.resetArray(backgrounds);
 				this.resetArray(noises);
 				this.resetArray(means);
 				this.resetArray(areas);
@@ -120,7 +142,7 @@ public class OmegaIntensityAnalyzer implements Runnable {
 				final int roiStart = rois.indexOf(segment.getStartingROI());
 				final int roiEnd = rois.indexOf(segment.getEndingROI());
 				final List<OmegaROI> segmentROIs = rois.subList(roiStart,
-				        roiEnd + 1);
+						roiEnd + 1);
 				boolean foundAtLeastOnePeak = false;
 				boolean foundAtLeastOneCentroid = false;
 				for (final OmegaROI roi : segmentROIs) {
@@ -128,7 +150,9 @@ public class OmegaIntensityAnalyzer implements Runnable {
 					
 					final Double centroidSignal = particle
 							.getCentroidIntensity();
+					this.centroidSignalsLocMap.put(roi, centroidSignal);
 					final Double peakSignal = particle.getPeakIntensity();
+					this.peakSignalsLocMap.put(roi, peakSignal);
 
 					if (peakSignal != null) {
 						peaks[1] += peakSignal;
@@ -146,22 +170,31 @@ public class OmegaIntensityAnalyzer implements Runnable {
 						// Integer centerSignal =
 						// snrRun.getResultingLocalCenterSignals().get(roi);
 						final Double meanSignal = this.snrRun
-						        .getResultingLocalMeanSignals().get(roi);
+								.getResultingLocalMeanSignals().get(roi);
+						this.meanSignalsLocMap.put(roi, meanSignal);
+						final Double background = this.snrRun
+								.getResultingLocalBackgrounds().get(roi);
+						this.backgroundsLocMap.put(roi, background);
 						final Double noise = this.snrRun
-						        .getResultingLocalNoises().get(roi);
+								.getResultingLocalNoises().get(roi);
+						this.noisesLocMap.put(roi, noise);
 						final Integer area = this.snrRun
-						        .getResultingLocalParticleArea().get(roi);
+								.getResultingLocalParticleArea().get(roi);
+						this.areasLocMap.put(roi, (double) area);
 						// Double peakSignal =
 						// snrRun.getResultingLocalPeakSignals().get(roi);
 						final Double snr = this.snrRun.getResultingLocalSNRs()
-						        .get(roi);
+								.get(roi);
+						this.snrsLocMap.put(roi, snr);
 						
 						means[1] += meanSignal;
+						backgrounds[1] += background;
 						noises[1] += noise;
 						areas[1] += area;
 						snrs[1] += snr;
 						
 						this.findMinMax(means, meanSignal);
+						this.findMinMax(backgrounds, background);
 						this.findMinMax(noises, noise);
 						this.findMinMax(areas, Double.valueOf(area));
 						this.findMinMax(snrs, snr);
@@ -202,11 +235,15 @@ public class OmegaIntensityAnalyzer implements Runnable {
 					noises[0] = null;
 					noises[1] = null;
 					noises[2] = null;
+					backgrounds[0] = null;
+					backgrounds[1] = null;
+					backgrounds[2] = null;
 				}
 				this.meanSignalsMap.put(segment, means);
 				this.areasMap.put(segment, areas);
 				this.snrsMap.put(segment, snrs);
 				this.noisesMap.put(segment, noises);
+				this.backgroundsMap.put(segment, backgrounds);
 				counter++;
 			}
 		}
@@ -236,6 +273,14 @@ public class OmegaIntensityAnalyzer implements Runnable {
 		return this.centroidSignalsMap;
 	}
 
+	public Map<OmegaROI, Double> getPeakSignalsLocalResults() {
+		return this.peakSignalsLocMap;
+	}
+	
+	public Map<OmegaROI, Double> getCentroidSignalsLocalResults() {
+		return this.centroidSignalsLocMap;
+	}
+
 	// SNR related START
 	public Map<OmegaSegment, Double[]> getMeanSignalsResults() {
 		return this.meanSignalsMap;
@@ -243,6 +288,10 @@ public class OmegaIntensityAnalyzer implements Runnable {
 
 	public Map<OmegaSegment, Double[]> getAreasResults() {
 		return this.areasMap;
+	}
+	
+	public Map<OmegaSegment, Double[]> getBackgroundsResults() {
+		return this.backgroundsMap;
 	}
 
 	public Map<OmegaSegment, Double[]> getNoisesResults() {
@@ -253,17 +302,37 @@ public class OmegaIntensityAnalyzer implements Runnable {
 		return this.snrsMap;
 	}
 
+	public Map<OmegaROI, Double> getMeanSignalsLocalResults() {
+		return this.meanSignalsLocMap;
+	}
+
+	public Map<OmegaROI, Double> getAreasLocalResults() {
+		return this.areasLocMap;
+	}
+	
+	public Map<OmegaROI, Double> getBackgroundsLocalResults() {
+		return this.backgroundsLocMap;
+	}
+
+	public Map<OmegaROI, Double> getNoisesLocalResults() {
+		return this.noisesLocMap;
+	}
+
+	public Map<OmegaROI, Double> getSNRsLocalResults() {
+		return this.snrsLocMap;
+	}
+	
 	// SNR related END
 	
 	private void updateStatusSync(final String msg, final boolean ended,
-	        final boolean dialog) {
+			final boolean dialog) {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
 					OmegaIntensityAnalyzer.this.displayerPanel
 					.updateMessageStatus(new AnalyzerEvent(msg, ended,
-					                dialog));
+							dialog));
 				}
 			});
 		} catch (final InvocationTargetException e) {
@@ -274,13 +343,13 @@ public class OmegaIntensityAnalyzer implements Runnable {
 	}
 	
 	private void updateStatusAsync(final String msg, final boolean ended,
-	        final boolean dialog) {
+			final boolean dialog) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				OmegaIntensityAnalyzer.this.displayerPanel
 				.updateMessageStatus(new AnalyzerEvent(msg, ended,
-				                dialog));
+						dialog));
 			}
 		});
 	}

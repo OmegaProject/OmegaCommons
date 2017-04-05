@@ -60,37 +60,37 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaData {
-	
+
 	private final List<OmegaProject> projects;
 	private final List<OmegaExperimenter> experimenters;
 	private final List<OmegaExperimenterGroup> groups;
 	private final List<OmegaSegmentationTypes> segmTypesList;
 	private final OrphanedAnalysisContainer orphanedAnalysis;
-	
+
 	private final List<OmegaPerson> persons;
-	
+
 	public OmegaData() {
 		this.projects = new ArrayList<OmegaProject>();
 		this.experimenters = new ArrayList<OmegaExperimenter>();
 		this.groups = new ArrayList<OmegaExperimenterGroup>();
 		this.segmTypesList = new ArrayList<OmegaSegmentationTypes>();
 		this.segmTypesList.add(OmegaSegmentationTypes
-		        .getDefaultSegmentationTypes());
+				.getDefaultSegmentationTypes());
 		this.orphanedAnalysis = new OrphanedAnalysisContainer();
-		
+
 		this.persons = new ArrayList<OmegaPerson>();
 	}
-	
+
 	public StringBuffer printOmegaData() {
 		StringBuffer buf = new StringBuffer();
-		
+
 		for (final OmegaProject project : this.projects) {
 			buf.append("Project " + project.getName() + "\n");
 			buf.append("\tId: " + project.getElementID() + "\n");
 			buf.append("\tOId: " + project.getOmeroId() + "\n");
 			buf.append("\tNum Dataset: " + project.getDatasets().size() + "\n");
 			buf.append("\tNum Analysis: " + project.getAnalysisRuns().size()
-			        + "\n");
+					+ "\n");
 			buf.append("\tContains:" + "\n");
 			for (final OmegaDataset dataset : project.getDatasets()) {
 				buf.append("-----------------------------------------------------\n");
@@ -99,40 +99,40 @@ public class OmegaData {
 				buf.append("\tOId: " + dataset.getOmeroId() + "\n");
 				buf.append("\tNum Images: " + dataset.getImages().size() + "\n");
 				buf.append("\tNum Analysis: "
-				        + dataset.getAnalysisRuns().size() + "\n");
+						+ dataset.getAnalysisRuns().size() + "\n");
 				buf.append("\tContains:" + "\n");
 				for (final OmegaImage image : dataset.getImages()) {
 					final OmegaImagePixels defaultPixels = image
-					        .getDefaultPixels();
+							.getDefaultPixels();
 					final OmegaExperimenter exp = image.getExperimenter();
 					buf.append("*************************************************\n");
 					buf.append("Image " + image.getName() + "\n");
 					buf.append("\tId: " + image.getElementID() + "\n");
 					buf.append("\tOId: " + image.getOmeroId() + "\n");
 					buf.append("\tNum Analysis: "
-					        + image.getAnalysisRuns().size() + "\n");
+							+ image.getAnalysisRuns().size() + "\n");
 					buf.append("\tOwner:" + exp.getFirstName() + " "
-					        + exp.getLastName() + "\n");
+							+ exp.getLastName() + "\n");
 					buf.append("\t\tOwner Id:" + exp.getElementID() + "\n");
 					buf.append("\t\tOwner OId:" + exp.getOmeroId() + "\n");
 					buf.append("\tPixel: " + "\n");
 					buf.append("\t\tPixel Id: " + defaultPixels.getElementID()
-					        + "\n");
+							+ "\n");
 					buf.append("\t\tPixel OId: " + defaultPixels.getOmeroId()
-					        + "\n");
+							+ "\n");
 					buf.append("\t\tPixel values X: "
-					        + defaultPixels.getPhysicalSizeX() + " Y: "
-					        + defaultPixels.getPhysicalSizeY() + " Z: "
-					        + defaultPixels.getPhysicalSizeZ() + " T: "
-					        + defaultPixels.getPhysicalSizeT() + "\n");
+							+ defaultPixels.getPhysicalSizeX() + " Y: "
+							+ defaultPixels.getPhysicalSizeY() + " Z: "
+							+ defaultPixels.getPhysicalSizeZ() + " T: "
+							+ defaultPixels.getPhysicalSizeT() + "\n");
 					buf.append("\t\tNum Frames: " + "\n");
 					for (final int c : defaultPixels.getAllFrames().keySet()) {
 						final Map<Integer, List<OmegaPlane>> zMap = defaultPixels
-						        .getAllFrames().get(c);
+								.getAllFrames().get(c);
 						for (final int z : zMap.keySet()) {
 							final List<OmegaPlane> planes = zMap.get(z);
 							buf.append("\t\t\t C: " + c + " Z: " + z
-							        + " Planes: " + planes.size() + "\n");
+									+ " Planes: " + planes.size() + "\n");
 						}
 					}
 					buf = this.printAnalysis(image, 0, buf);
@@ -140,14 +140,14 @@ public class OmegaData {
 			}
 			buf.append("#####################################################\n");
 		}
-		
+
 		buf.append("Orphaned analysis" + "\n");
 		buf.append("\tNum Analysis: "
-		        + this.orphanedAnalysis.getAnalysisRuns().size() + "\n");
+				+ this.orphanedAnalysis.getAnalysisRuns().size() + "\n");
 		buf = this.printAnalysis(this.orphanedAnalysis, 0, buf);
 		return buf;
 	}
-	
+
 	public StringBuffer printAnalysis(
 			final OmegaAnalysisRunContainer container, final int lvl,
 			final StringBuffer buf) {
@@ -193,7 +193,7 @@ public class OmegaData {
 				Long minID = Long.MAX_VALUE;
 				Long maxID = Long.MIN_VALUE;
 				for (final OmegaPlane p : snrRun.getResultingImageBGR()
-				        .keySet()) {
+						.keySet()) {
 					if (p.getElementID() < minID) {
 						minID = p.getElementID();
 					}
@@ -203,39 +203,39 @@ public class OmegaData {
 				}
 				for (long i = minID; i <= maxID; i++) {
 					for (final OmegaPlane p : snrRun.getResultingImageBGR()
-					        .keySet()) {
+							.keySet()) {
 						// System.out.println(p.getElementID() + " VS " + i);
 						if (p.getElementID() != i) {
 							continue;
 						}
 						buf.append(space
-						        + "Plane ID: "
-						        + p.getElementID()
-						        + "\tBGR: "
-						        + snrRun.getResultingImageBGR().get(p)
-						        + "\tNOI: "
-						        + snrRun.getResultingImageNoise().get(p)
-						        + "\tminSNR: "
-						        + snrRun.getResultingImageMinimumSNR().get(p)
-						        + "\tavgSNR: "
-						        + snrRun.getResultingImageAverageSNR().get(p)
-						        + "\tmaxSNR: "
-						        + snrRun.getResultingImageMaximumSNR().get(p)
-						        + "\tminISNR: "
-						        + snrRun.getResultingImageMinimumErrorIndexSNR()
-						                .get(p)
-						        + "\tavgISNR: "
-						        + snrRun.getResultingImageAverageErrorIndexSNR()
-						                .get(p)
-						        + "\tmaxISNR: "
-						        + snrRun.getResultingImageMaximumErrorIndexSNR()
-						                .get(p) + "\n");
+								+ "Plane ID: "
+								+ p.getElementID()
+								+ "\tBGR: "
+								+ snrRun.getResultingImageBGR().get(p)
+								+ "\tNOI: "
+								+ snrRun.getResultingImageNoise().get(p)
+								+ "\tminSNR: "
+								+ snrRun.getResultingImageMinimumSNR().get(p)
+								+ "\tavgSNR: "
+								+ snrRun.getResultingImageAverageSNR().get(p)
+								+ "\tmaxSNR: "
+								+ snrRun.getResultingImageMaximumSNR().get(p)
+								+ "\tminISNR: "
+								+ snrRun.getResultingImageMinimumErrorIndexSNR()
+										.get(p)
+								+ "\tavgISNR: "
+								+ snrRun.getResultingImageAverageErrorIndexSNR()
+										.get(p)
+								+ "\tmaxISNR: "
+								+ snrRun.getResultingImageMaximumErrorIndexSNR()
+										.get(p) + "\n");
 					}
 				}
 				minID = Long.MAX_VALUE;
 				maxID = Long.MIN_VALUE;
 				for (final OmegaROI p : snrRun.getResultingLocalCenterSignals()
-				        .keySet()) {
+						.keySet()) {
 					if (p.getElementID() < minID) {
 						minID = p.getElementID();
 					}
@@ -254,7 +254,7 @@ public class OmegaData {
 								+ p.getElementID()
 								+ "\tCS: "
 								+ snrRun.getResultingLocalCenterSignals()
-								.get(p)
+										.get(p)
 								+ "\tPS: "
 								+ snrRun.getResultingLocalPeakSignals().get(p)
 								+ "\tMS: "
@@ -383,27 +383,31 @@ public class OmegaData {
 						buf.append(space + "Segment: " + s.getElementID()
 								+ "\n");
 						buf.append(space1 + "Distances:");
-						for (int i = 0; i < mobiRun.getDistancesResults()
-								.get(s).size(); i++) {
+						for (int i = 0; i < mobiRun
+								.getDistancesFromOriginResults().get(s).size(); i++) {
 							buf.append("\t");
-							buf.append(mobiRun.getDistancesResults().get(s)
-									.get(i));
+							buf.append(mobiRun.getDistancesFromOriginResults()
+									.get(s).get(i));
 						}
 						buf.append("\n");
 						buf.append(space1 + "Displacements:");
-						for (int i = 0; i < mobiRun.getDisplacementsResults()
-								.get(s).size(); i++) {
+						for (int i = 0; i < mobiRun
+								.getDisplacementsFromOriginResults().get(s)
+								.size(); i++) {
 							buf.append("\t");
-							buf.append(mobiRun.getDisplacementsResults().get(s)
+							buf.append(mobiRun
+									.getDisplacementsFromOriginResults().get(s)
 									.get(i));
 						}
 						buf.append("\n");
 						buf.append(space1 + "TotalTime:\t"
-								+ mobiRun.getTotalTimeTraveledResults().get(s)
+								+ mobiRun.getTimeTraveledResults().get(s)
 								+ "\n");
-						buf.append(space1 + "MaxDisplacements:\t"
-								+ mobiRun.getMaxDisplacementsResults().get(s)
-								+ "\n");
+						buf.append(space1
+								+ "MaxDisplacements:\t"
+								+ mobiRun
+										.getMaxDisplacementsFromOriginResults()
+										.get(s) + "\n");
 						buf.append(space1 + "ConfinementRatio:");
 						for (int i = 0; i < mobiRun
 								.getConfinementRatioResults().get(s).size(); i++) {
@@ -420,8 +424,8 @@ public class OmegaData {
 							buf.append(mobiRun
 									.getAnglesAndDirectionalChangesResults()
 									.get(s).get(i)[0]
-											+ " - "
-											+ mobiRun
+									+ " - "
+									+ mobiRun
 											.getAnglesAndDirectionalChangesResults()
 											.get(s).get(i)[1]);
 						}
@@ -434,33 +438,35 @@ public class OmegaData {
 						buf.append(space + "Segment: " + s.getElementID()
 								+ "\n");
 						buf.append(space1 + "Speed:");
-						for (int i = 0; i < velRun.getLocalSpeedResults()
-								.get(s).size(); i++) {
+						for (int i = 0; i < velRun
+								.getLocalSpeedFromOriginResults().get(s).size(); i++) {
 							buf.append("\t");
-							buf.append(velRun.getLocalSpeedResults().get(s)
-									.get(i));
+							buf.append(velRun.getLocalSpeedFromOriginResults()
+									.get(s).get(i));
 						}
 						buf.append("\n");
 						buf.append(space1 + "Velocity:");
-						for (int i = 0; i < velRun.getLocalVelocityResults()
-								.get(s).size(); i++) {
+						for (int i = 0; i < velRun
+								.getLocalVelocityFromOriginResults().get(s)
+								.size(); i++) {
 							buf.append("\t");
-							buf.append(velRun.getLocalVelocityResults().get(s)
+							buf.append(velRun
+									.getLocalVelocityFromOriginResults().get(s)
 									.get(i));
 						}
 						buf.append("\n");
 						buf.append(space1
 								+ "Average Speed:\t"
 								+ velRun.getAverageCurvilinearSpeedMapResults()
-								.get(s) + "\n");
+										.get(s) + "\n");
 						buf.append(space1
 								+ "Average Velocity:\t"
 								+ velRun.getAverageStraightLineVelocityMapResults()
-								.get(s) + "\n");
+										.get(s) + "\n");
 						buf.append(space1
 								+ "Forward Progression:\t"
 								+ velRun.getForwardProgressionLinearityMapResults()
-								.get(s) + "\n");
+										.get(s) + "\n");
 					}
 				}
 			} else if (analysisRun instanceof OmegaTrackingMeasuresIntensityRun) {
@@ -479,7 +485,7 @@ public class OmegaData {
 								.get(s).length; i++) {
 							buf.append("\t");
 							buf.append(intRun.getCentroidSignalsResults()
-							        .get(s)[i]);
+									.get(s)[i]);
 						}
 						buf.append("\n");
 					}
@@ -524,25 +530,25 @@ public class OmegaData {
 					}
 				}
 			} else {
-				
+
 			}
 			this.printAnalysis(analysisRun, lvl + 1, buf);
 		}
 		return buf;
 	}
-	
+
 	public OrphanedAnalysisContainer getOrphanedContainer() {
 		return this.orphanedAnalysis;
 	}
-	
+
 	public List<OmegaAnalysisRun> getOrphanedAnalyses() {
 		return this.orphanedAnalysis.getAnalysisRuns();
 	}
-	
+
 	public void addOrphanedAnalysis(final OmegaAnalysisRun analysisRun) {
 		this.orphanedAnalysis.addAnalysisRun(analysisRun);
 	}
-	
+
 	public void consolidateData() {
 		if (OmegaLogFileManager.isDebug()) {
 			OmegaLogFileManager.appendToCoreLog("Consolidation started");
@@ -559,9 +565,9 @@ public class OmegaData {
 					if (sameExperimenter != null) {
 						if (OmegaLogFileManager.isDebug()) {
 							OmegaLogFileManager
-							        .appendToCoreLog("Experimenter: "
-							                + exp.printName()
-							                + " already found, replacing.");
+									.appendToCoreLog("Experimenter: "
+											+ exp.printName()
+											+ " already found, replacing.");
 						}
 						image.changeExperimenter(sameExperimenter);
 					} else {
@@ -569,17 +575,17 @@ public class OmegaData {
 						if (samePerson != null) {
 							if (OmegaLogFileManager.isDebug()) {
 								OmegaLogFileManager
-								        .appendToCoreLog("Experimenter: "
-								                + exp.printName()
-								                + " found as person, replacing person with exp.");
+										.appendToCoreLog("Experimenter: "
+												+ exp.printName()
+												+ " found as person, replacing person with exp.");
 							}
 							this.changePersonWithExperimenter(samePerson, exp);
 						}
 						if (OmegaLogFileManager.isDebug()) {
 							OmegaLogFileManager
-							        .appendToCoreLog("Experimenter: "
-							                + exp.printName()
-							                + " not found, adding.");
+									.appendToCoreLog("Experimenter: "
+											+ exp.printName()
+											+ " not found, adding.");
 						}
 						this.addExperimenter(exp);
 					}
@@ -593,7 +599,7 @@ public class OmegaData {
 								}
 							}
 						}
-						
+
 					}
 				}
 			}
@@ -602,16 +608,16 @@ public class OmegaData {
 			OmegaLogFileManager.appendToCoreLog("Consolidation ended");
 		}
 	}
-	
+
 	private void consolidateData(final OmegaAnalysisRunContainer container) {
 		for (final OmegaAnalysisRun analysisRun : container.getAnalysisRuns()) {
 			final OmegaExperimenter exp = analysisRun.getExperimenter();
 			final OmegaExperimenter sameExperimenter = this
-			        .findSameExperiementer(exp);
+					.findSameExperiementer(exp);
 			if (sameExperimenter != null) {
 				if (OmegaLogFileManager.isDebug()) {
 					OmegaLogFileManager.appendToCoreLog("Experimenter: "
-					        + exp.printName() + " already found, replacing.");
+							+ exp.printName() + " already found, replacing.");
 				}
 				analysisRun.changeExperimenter(sameExperimenter);
 			} else {
@@ -619,42 +625,42 @@ public class OmegaData {
 				if (samePerson != null) {
 					if (OmegaLogFileManager.isDebug()) {
 						OmegaLogFileManager
-						        .appendToCoreLog("Experimenter: "
-						                + exp.printName()
-						                + " found as person, replacing person with exp.");
+								.appendToCoreLog("Experimenter: "
+										+ exp.printName()
+										+ " found as person, replacing person with exp.");
 					}
 					this.changePersonWithExperimenter(samePerson, exp);
 				}
 				if (OmegaLogFileManager.isDebug()) {
 					OmegaLogFileManager.appendToCoreLog("Experimenter: "
-					        + exp.printName() + " not found, adding.");
+							+ exp.printName() + " not found, adding.");
 				}
 				this.addExperimenter(exp);
 			}
-			
+
 			final OmegaPerson author = analysisRun.getAlgorithmSpec()
-			        .getAlgorithmInfo().getAuthor();
+					.getAlgorithmInfo().getAuthor();
 			final OmegaPerson samePerson = this.findSamePerson(author);
 			if (samePerson != null) {
 				if (OmegaLogFileManager.isDebug()) {
 					OmegaLogFileManager
-					        .appendToCoreLog("Person: " + author.printName()
-					                + " already found, replacing.");
+							.appendToCoreLog("Person: " + author.printName()
+									+ " already found, replacing.");
 					analysisRun.getAlgorithmSpec().getAlgorithmInfo()
-					        .changeAuthor(samePerson);
+							.changeAuthor(samePerson);
 				}
 			} else {
 				if (OmegaLogFileManager.isDebug()) {
 					OmegaLogFileManager.appendToCoreLog("Person: "
-					        + author.printName() + " not found, adding.");
+							+ author.printName() + " not found, adding.");
 					this.addPerson(author);
 				}
 			}
 		}
 	}
-	
+
 	public void changePersonWithExperimenter(final OmegaPerson person,
-	        final OmegaExperimenter exp) {
+			final OmegaExperimenter exp) {
 		this.persons.remove(person);
 		for (final OmegaProject project : this.projects) {
 			this.changePersonWithExperimenter(project, person, exp);
@@ -669,31 +675,31 @@ public class OmegaData {
 								for (final OmegaPlane frame : pixels.getFrames(
 										c, z)) {
 									this.changePersonWithExperimenter(frame,
-									        person, exp);
+											person, exp);
 								}
 							}
 						}
-						
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	private void changePersonWithExperimenter(
-	        final OmegaAnalysisRunContainer container,
-	        final OmegaPerson person, final OmegaExperimenter exp) {
+			final OmegaAnalysisRunContainer container,
+			final OmegaPerson person, final OmegaExperimenter exp) {
 		for (final OmegaAnalysisRun analysisRun : container.getAnalysisRuns()) {
 			final OmegaPerson author = analysisRun.getAlgorithmSpec()
-			        .getAlgorithmInfo().getAuthor();
+					.getAlgorithmInfo().getAuthor();
 			if (author == person) {
 				analysisRun.getAlgorithmSpec().getAlgorithmInfo()
-				.changeAuthor(exp);
+						.changeAuthor(exp);
 			}
 			this.changePersonWithExperimenter(analysisRun, person, exp);
 		}
 	}
-	
+
 	// Element id or omero id ?
 	private void checkSegmentationTypesListConsistency() {
 		final List<OmegaSegmentationTypes> toRemove = new ArrayList<OmegaSegmentationTypes>();
@@ -716,7 +722,7 @@ public class OmegaData {
 				} else {
 					// TODO create exception here
 					OmegaLogFileManager
-					.appendToCoreLog("Omega Data segm types error");
+							.appendToCoreLog("Omega Data segm types error");
 				}
 			}
 		}
@@ -730,13 +736,13 @@ public class OmegaData {
 		this.segmTypesList.remove(defaultSegmTypes);
 		this.segmTypesList.add(0, defaultSegmTypes);
 	}
-	
+
 	public void updateSegmentationTypes() {
 		for (final OmegaProject proj : this.projects) {
 			for (final OmegaDataset dataset : proj.getDatasets()) {
 				for (final OmegaImage img : dataset.getImages()) {
 					for (final OmegaAnalysisRun analysisRun : img
-					        .getAnalysisRuns()) {
+							.getAnalysisRuns()) {
 						this.checkAnalysisRunForSegmentationTypes(analysisRun);
 					}
 				}
@@ -744,33 +750,33 @@ public class OmegaData {
 		}
 		this.checkSegmentationTypesListConsistency();
 	}
-	
+
 	private void checkAnalysisRunForSegmentationTypes(
-	        final OmegaAnalysisRun analysisRun) {
+			final OmegaAnalysisRun analysisRun) {
 		if (!(analysisRun instanceof OmegaTrajectoriesSegmentationRun))
 			return;
 		final OmegaTrajectoriesSegmentationRun tmRun = (OmegaTrajectoriesSegmentationRun) analysisRun;
 		this.segmTypesList.add(tmRun.getSegmentationTypes());
 		for (final OmegaAnalysisRun innerAnalysisRun : analysisRun
-		        .getAnalysisRuns()) {
+				.getAnalysisRuns()) {
 			this.checkAnalysisRunForSegmentationTypes(innerAnalysisRun);
 		}
 	}
-	
+
 	public List<OmegaSegmentationTypes> getSegmentationTypesList() {
 		return this.segmTypesList;
 	}
-	
+
 	public List<OmegaProject> getProjects() {
 		return this.projects;
 	}
-	
+
 	public void addProject(final OmegaProject project) {
 		if (this.projects.contains(project))
 			return;
 		this.projects.add(project);
 	}
-	
+
 	public void addExperimenter(final OmegaExperimenter experimenter) {
 		// TODO Consolidation here
 		this.addPerson(experimenter);
@@ -778,7 +784,7 @@ public class OmegaData {
 			return;
 		this.experimenters.add(experimenter);
 	}
-	
+
 	public OmegaExperimenter findSameExperiementer(
 			final OmegaExperimenter experimenter) {
 		for (final OmegaExperimenter exp : this.experimenters) {
@@ -787,7 +793,7 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public OmegaPerson findSamePerson(final OmegaPerson person) {
 		for (final OmegaPerson p : this.persons) {
 			if (p.isSamePersonAs(person))
@@ -795,20 +801,20 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public void addPerson(final OmegaPerson person) {
 		// TODO Consolidation here
 		if (this.persons.contains(person))
 			return;
 		this.persons.add(person);
 	}
-	
+
 	public void addExperimenterGroup(final OmegaExperimenterGroup group) {
 		this.groups.add(group);
 	}
-	
+
 	public OmegaExperimenterGroup getExperimenterGroup(final long id,
-	        final boolean gatewayId) {
+			final boolean gatewayId) {
 		for (final OmegaExperimenterGroup group : this.groups) {
 			if (!gatewayId) {
 				if (group.getElementID() == id)
@@ -820,9 +826,9 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public OmegaExperimenter getExperimenter(final long id,
-	        final boolean gatewayId) {
+			final boolean gatewayId) {
 		for (final OmegaExperimenter experimenter : this.experimenters) {
 			if (!gatewayId) {
 				if (experimenter.getElementID() == id)
@@ -834,7 +840,7 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public OmegaPerson getPerson(final long id) {
 		for (final OmegaPerson person : this.persons) {
 			if (person.getElementID() == id)
@@ -842,7 +848,7 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public OmegaProject getProject(final long id, final boolean gatewayId) {
 		for (final OmegaProject project : this.projects) {
 			if (!gatewayId) {
@@ -855,7 +861,7 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public OmegaDataset getDataset(final long id, final boolean gatewayId) {
 		for (final OmegaProject project : this.projects) {
 			for (final OmegaDataset dataset : project.getDatasets())
@@ -869,7 +875,7 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	public OmegaImage getImage(final long id, final boolean gatewayId) {
 		for (final OmegaProject project : this.projects) {
 			for (final OmegaDataset dataset : project.getDatasets()) {
@@ -886,7 +892,7 @@ public class OmegaData {
 		}
 		return null;
 	}
-	
+
 	// public boolean containsExperimenterGroup(final long id,
 	// final boolean gatewayId) {
 	// for (final OmegaExperimenterGroup group : this.groups) {
@@ -900,7 +906,7 @@ public class OmegaData {
 	// }
 	// return false;
 	// }
-	
+
 	// public boolean containsExperimenter(final long id, final boolean
 	// gatewayId) {
 	// for (final OmegaExperimenter experimenter : this.experimenters) {
@@ -914,7 +920,7 @@ public class OmegaData {
 	// }
 	// return false;
 	// }
-	
+
 	// public boolean containsProject(final long id, final boolean gatewayId) {
 	// for (final OmegaProject project : this.projects) {
 	// if (!gatewayId) {
@@ -927,7 +933,7 @@ public class OmegaData {
 	// }
 	// return false;
 	// }
-	
+
 	// public boolean containsDataset(final long id, final boolean gatewayId) {
 	// for (final OmegaProject project : this.projects) {
 	// for (final OmegaDataset dataset : project.getDatasets())
@@ -941,7 +947,7 @@ public class OmegaData {
 	// }
 	// return false;
 	// }
-	
+
 	// public boolean containsImage(final long id, final boolean gatewayId) {
 	// for (final OmegaProject project : this.projects) {
 	// for (final OmegaDataset dataset : project.getDatasets()) {

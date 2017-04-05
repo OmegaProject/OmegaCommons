@@ -21,24 +21,24 @@ import edu.umassmed.omega.commons.utilities.OmegaAlgorithmsUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 
 public class OmegaTracksCalculator extends OmegaIOUtility implements
-OmegaMessageDisplayerPanelInterface {
-
+		OmegaMessageDisplayerPanelInterface {
+	
 	public static void main(final String[] args) {
 		final OmegaTracksCalculator otc = new OmegaTracksCalculator();
 		otc.computeAndWriteValues();
 	}
-
+	
 	final Map<Double, Map<Integer, Map<Double, Map<Double, List<Double>>>>> smssOutput;
 	final Map<Double, Map<Integer, Map<Double, Map<Double, List<Double>>>>> dOutput;
-
+	
 	private final String readDirName, writeDirName, subDirName1, subDirName2,
-	fileName, trajIdent, particleIdent, nonParticleIdent, particleSep;
+			fileName, trajIdent, particleIdent, nonParticleIdent, particleSep;
 	private final File dir, omegaSMSSDir, omegaDDir;
 	private final List<String> dataOrder;
-
+	
 	private final String windowDivisor, logOption, computeError;
 	private final OmegaTracksImporter oti;
-
+	
 	public OmegaTracksCalculator() {
 		this.windowDivisor = OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW_3;
 		this.logOption = OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY;
@@ -68,12 +68,12 @@ OmegaMessageDisplayerPanelInterface {
 		this.smssOutput = new LinkedHashMap<>();
 		this.dOutput = new LinkedHashMap<>();
 	}
-
+	
 	public void computeAndWriteValues() {
 		this.computeValues();
 		this.writeValues();
 	}
-
+	
 	private void computeValues() {
 		try {
 			for (final File f1 : this.dir.listFiles()) {
@@ -114,7 +114,7 @@ OmegaMessageDisplayerPanelInterface {
 					final List<OmegaTrajectory> tracks = this.oti.getTracks();
 					// System.out.println(Calendar.getInstance().getTime() + " "
 					// + tracks.size() + " trajectory imported...");
-
+					
 					Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap;
 					if (this.smssOutput.containsKey(snr)) {
 						lSMSSMap = this.smssOutput.get(snr);
@@ -139,7 +139,7 @@ OmegaMessageDisplayerPanelInterface {
 					} else {
 						outputSMSS = new ArrayList<>();
 					}
-
+					
 					Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap;
 					if (this.dOutput.containsKey(snr)) {
 						lDMap = this.dOutput.get(snr);
@@ -164,7 +164,7 @@ OmegaMessageDisplayerPanelInterface {
 					} else {
 						outputD = new ArrayList<>();
 					}
-
+					
 					final Map<OmegaTrajectory, List<OmegaSegment>> segments = OmegaAlgorithmsUtilities
 							.createDefaultSegmentation(tracks);
 					// if (segments.keySet().size() > 1000) {
@@ -176,16 +176,16 @@ OmegaMessageDisplayerPanelInterface {
 					// + " segments created...");
 					final List<OmegaParameter> params = new ArrayList<OmegaParameter>();
 					params.add(new OmegaParameter(
-					        OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW,
-					        this.windowDivisor));
+							OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW,
+							this.windowDivisor));
 					params.add(new OmegaParameter(
-					        OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION,
+							OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION,
 							this.logOption));
 					params.add(new OmegaParameter(
-					        OmegaConstants.PARAMETER_ERROR_OPTION,
+							OmegaConstants.PARAMETER_ERROR_OPTION,
 							this.computeError));
 					final OmegaDiffusivityAnalyzer analyzer = new OmegaDiffusivityAnalyzer(
-							this, segments, params);
+							this, 1.0, segments, params);
 					analyzer.setFileOutput("L_" + L + "_D_" + D + "_SMSS_"
 							+ SMSS);
 					final Thread t = new Thread(analyzer);
@@ -194,7 +194,7 @@ OmegaMessageDisplayerPanelInterface {
 							+ SMSS + "_D_" + D);
 					// System.out.println(Calendar.getInstance().getTime()
 					// + " analyzer started...");
-
+					
 					while (t.isAlive()) {
 						try {
 							Thread.sleep(60000);
@@ -214,12 +214,12 @@ OmegaMessageDisplayerPanelInterface {
 					// + " analyzer finished, lasted " + counter
 					// + " mins");
 					// System.out.println();
-
+					
 					final Map<OmegaSegment, Double[][]> segmentD = analyzer
 							.getGammaDFromLogResults();
 					final Map<OmegaSegment, Double[]> segmentSMSS = analyzer
 							.getSmssFromLogResults();
-
+					
 					for (final OmegaTrajectory traj : tracks) {
 						final List<OmegaSegment> trajSegments = segments
 								.get(traj);
@@ -230,7 +230,7 @@ OmegaMessageDisplayerPanelInterface {
 							outputD.add(omegaD);
 						}
 					}
-
+					
 					dDMap.put(D, outputD);
 					dSMSSMap.put(D, outputSMSS);
 					smssDMap.put(SMSS, dDMap);
@@ -247,12 +247,12 @@ OmegaMessageDisplayerPanelInterface {
 			// TODO should I do something here?
 		}
 	}
-
+	
 	private void writeValues() {
 		int snrCounter = 0, lCounter = 0;
 		String snrString = "", lString = "";
 		final List<Double> snrs = new ArrayList<Double>(
-		        this.smssOutput.keySet());
+				this.smssOutput.keySet());
 		Collections.sort(snrs);
 		for (final Double snr : snrs) {
 			snrCounter++;
@@ -264,9 +264,9 @@ OmegaMessageDisplayerPanelInterface {
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap = this.smssOutput
 					.get(snr);
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap = this.dOutput
-			        .get(snr);
+					.get(snr);
 			final List<Integer> ls = new ArrayList<Integer>(this.smssOutput
-			        .get(snr).keySet());
+					.get(snr).keySet());
 			Collections.sort(ls);
 			for (final Integer l : ls) {
 				lCounter++;
@@ -279,16 +279,16 @@ OmegaMessageDisplayerPanelInterface {
 				final Map<Double, Map<Double, List<Double>>> smssSMSSMap = lSMSSMap
 						.get(l);
 				final Map<Double, Map<Double, List<Double>>> smssDMap = lDMap
-				        .get(l);
+						.get(l);
 				final List<Double> smsss = new ArrayList<Double>(lSMSSMap
-				        .get(l).keySet());
+						.get(l).keySet());
 				Collections.sort(smsss);
 				for (final Double smss : smsss) {
 					final Map<Double, List<Double>> dSMSSMap = smssSMSSMap
 							.get(smss);
 					final Map<Double, List<Double>> dDMap = smssDMap.get(smss);
 					final List<Double> ds = new ArrayList<Double>(smssSMSSMap
-					        .get(smss).keySet());
+							.get(smss).keySet());
 					Collections.sort(ds);
 					for (final Double d : ds) {
 						rowCounter++;
@@ -319,7 +319,7 @@ OmegaMessageDisplayerPanelInterface {
 								row.toString());
 						final StringBuffer dRow = new StringBuffer(
 								row.toString());
-
+						
 						for (final Double val : smssValues) {
 							smssRow.append(String.valueOf(val));
 							smssRow.append(";");
@@ -337,7 +337,7 @@ OmegaMessageDisplayerPanelInterface {
 							bw.write(smssRow.toString());
 							bw.close();
 							fw.close();
-
+							
 							final File dFile = new File(dFileName);
 							fw = new FileWriter(dFile, true);
 							bw = new BufferedWriter(fw);
@@ -352,7 +352,7 @@ OmegaMessageDisplayerPanelInterface {
 			}
 		}
 	}
-
+	
 	@Override
 	public void updateMessageStatus(final OmegaMessageEvent evt) {
 		// System.out.println(evt.getMessage());
