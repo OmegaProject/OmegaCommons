@@ -1,29 +1,28 @@
 /*******************************************************************************
- * Copyright (C) 2014 University of Massachusetts Medical School
- * Alessandro Rigano (Program in Molecular Medicine)
- * Caterina Strambio De Castillia (Program in Molecular Medicine)
+ * Copyright (C) 2014 University of Massachusetts Medical School Alessandro
+ * Rigano (Program in Molecular Medicine) Caterina Strambio De Castillia
+ * (Program in Molecular Medicine)
  *
  * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
  * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
  * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
- * Key contacts:
- * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
+ * Key contacts: Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
  * Alex Rigano: alex.rigano@umassmed.edu
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package edu.umassmed.omega.commons.data.coreElements;
 
@@ -58,9 +57,9 @@ OmegaAnalysisRunContainer {
 	private Long omeroId;
 
 	public OmegaImagePixels(final String pixelsType, final int sizeX,
-	        final int sizeY, final int sizeZ, final int sizeC, final int sizeT,
-	        final double pixelSizeX, final double pixelSizeY,
-	        final double pixelSizeZ, final Map<Integer, String> channelNames) {
+			final int sizeY, final int sizeZ, final int sizeC, final int sizeT,
+			final double pixelSizeX, final double pixelSizeY,
+			final double pixelSizeZ, final Map<Integer, String> channelNames) {
 		super(-1L);
 		this.omeroId = -1L;
 		this.image = null;
@@ -91,6 +90,7 @@ OmegaAnalysisRunContainer {
 		} else {
 			this.physicalSizeZ = pixelSizeZ;
 		}
+		this.physicalSizeT = -1;
 
 		this.selectedZ = -1;
 		this.selectedT = -1;
@@ -186,7 +186,7 @@ OmegaAnalysisRunContainer {
 	}
 
 	public void addFrames(final Integer c, final Integer z,
-	        final List<OmegaPlane> frames) {
+			final List<OmegaPlane> frames) {
 		List<OmegaPlane> frameList = null;
 		Map<Integer, List<OmegaPlane>> subMap = null;
 		if (this.frames.containsKey(c)) {
@@ -207,7 +207,7 @@ OmegaAnalysisRunContainer {
 	}
 
 	public void addFrame(final Integer c, final Integer z,
-	        final OmegaPlane frame) {
+			final OmegaPlane frame) {
 		List<OmegaPlane> frameList = null;
 		Map<Integer, List<OmegaPlane>> subMap = null;
 		if (this.frames.containsKey(c)) {

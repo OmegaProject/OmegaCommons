@@ -39,55 +39,55 @@ import edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
 import edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
 
 public class GenericTrackingResultsPanel extends GenericScrollPane implements
-		OmegaFilterEventListener {
-	
+OmegaFilterEventListener {
+
 	private static final long serialVersionUID = 1114253444374606565L;
-	
+
 	private OmegaAnalysisRun parentAnalysisRun;
 	private OmegaAnalysisRun analysisRun;
-	
+
 	private GenericAnalysisInformationPanel infoPanel;
 	private GenericFilterPanel filterPanel;
-	
+
 	private JTable table;
 	private TableRowSorter<DefaultTableModel> rowSorter;
-	
-	private boolean isLocal, isSpecific;
 
-	private final List<Integer> ints, doubles;
+	private boolean isLocal, isSpecific;
 	
+	private final List<Integer> ints, doubles;
+
 	// private JFXPanel fxPanel;
 	// private GridPane gp;
-	
+
 	public GenericTrackingResultsPanel(final RootPaneContainer parent) {
 		super(parent);
-		
+
 		this.createAndAddWidgets();
-		
+
 		this.addListeners();
-		
+
 		this.isLocal = true;
 		this.isSpecific = false;
 		this.parentAnalysisRun = null;
-
+		
 		this.ints = new ArrayList<Integer>();
 		this.doubles = new ArrayList<Integer>();
 	}
-	
+
 	private void createAndAddWidgets() {
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		
+
 		final JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
-		
+
 		this.filterPanel = new GenericFilterPanel(this.getParentContainer());
 		this.filterPanel.addOmegaFilterListener(this);
 		centerPanel.add(this.filterPanel, BorderLayout.NORTH);
-		
+
 		// JPanel optionsPanel = new JPanel();
 		// centerPanel.add(optionsPanel, BorderLayout.NORTH);
-		
+
 		// this.gp = new GridPane();
 		// this.gp = new GridPane();
 		// this.gp.setAlignment(Pos.TOP_LEFT);
@@ -102,7 +102,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		// });
 		final TableModel tableModel = new DefaultTableModel() {
 			private static final long serialVersionUID = 4879341195916488038L;
-			
+
 			@Override
 			public Class<?> getColumnClass(final int columnIndex) {
 				return GenericTrackingResultsPanel.this
@@ -111,41 +111,41 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		};
 		this.table = new JTable(tableModel) {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public boolean isCellEditable(final int row, final int column) {
 				return false;
 			};
 		};
-		
+
 		this.rowSorter = new TableRowSorter<DefaultTableModel>(
 				(DefaultTableModel) this.table.getModel());
 		this.table.setRowSorter(this.rowSorter);
 		final JScrollPane sp = new JScrollPane(this.table);
 		centerPanel.add(sp, BorderLayout.CENTER);
-		
+
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
-		
+
 		this.infoPanel = new GenericAnalysisInformationPanel(
 				this.getParentContainer());
 		mainPanel.add(this.infoPanel, BorderLayout.WEST);
-		
+
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-		
+
 		this.setViewportView(mainPanel);
 	}
-	
+
 	// private void initFX() {
 	// this.fxPanel.setScene(new Scene(this.gp));
 	// }
-	
-	private void addListeners() {
-		
-	}
 
+	private void addListeners() {
+
+	}
+	
 	private Class<?> getColumnClass(final int columnIndex) {
 		if (this.ints.contains(columnIndex))
 			return Integer.class;
@@ -154,8 +154,8 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		else
 			return String.class;
 	}
-	
-	private void addParticleColumns() {
+
+	private void addParticleColumns(final boolean needIndex) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		int index;
 		dtm.addColumn("ID");
@@ -170,12 +170,14 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		dtm.addColumn("Y");
 		index = this.table.getColumnModel().getColumnIndex("Y");
 		this.doubles.add(index);
-		dtm.addColumn("Index");
-		index = this.table.getColumnModel().getColumnIndex("Index");
-		this.ints.add(index);
-		
+		if (needIndex) {
+			dtm.addColumn("Index");
+			index = this.table.getColumnModel().getColumnIndex("Index");
+			this.ints.add(index);
+		}
+
 	}
-	
+
 	private void addTrajectoryColumns() {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn("Track");
@@ -183,9 +185,9 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex("Track");
 		this.table.getColumnModel().getColumn(index)
-				.setCellRenderer(rightRenderer);
+		.setCellRenderer(rightRenderer);
 	}
-
+	
 	private void addSegmentColumns() {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn("Segment Name");
@@ -195,13 +197,13 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		final int index = this.table.getColumnModel().getColumnIndex(
 				"Segment Name");
 		this.table.getColumnModel().getColumn(index)
-				.setCellRenderer(rightRenderer);
+		.setCellRenderer(rightRenderer);
 		final int index2 = this.table.getColumnModel().getColumnIndex(
 				"Segment Type");
 		this.table.getColumnModel().getColumn(index2)
-				.setCellRenderer(rightRenderer);
+		.setCellRenderer(rightRenderer);
 	}
-	
+
 	private void addIntValueColumn(final String name) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn(name);
@@ -209,10 +211,10 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex(name);
 		this.table.getColumnModel().getColumn(index)
-				.setCellRenderer(rightRenderer);
+		.setCellRenderer(rightRenderer);
 		this.ints.add(index);
 	}
-	
+
 	private void addDoubleValueColumn(final String name) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn(name);
@@ -220,10 +222,10 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex(name);
 		this.table.getColumnModel().getColumn(index)
-				.setCellRenderer(rightRenderer);
+		.setCellRenderer(rightRenderer);
 		this.doubles.add(index);
 	}
-	
+
 	private void addStringValueColumn(final String name) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn(name);
@@ -231,9 +233,9 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex(name);
 		this.table.getColumnModel().getColumn(index)
-				.setCellRenderer(rightRenderer);
+		.setCellRenderer(rightRenderer);
 	}
-	
+
 	private void addParticleValuesColumns() {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		final OmegaParticleDetectionRun detectionRun = (OmegaParticleDetectionRun) this.analysisRun;
@@ -254,7 +256,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			dtm.addColumn(s);
 		}
 	}
-	
+
 	private void populateResultsPanel() {
 		if (this.analysisRun instanceof OmegaSNRRun) {
 			final OmegaSNRRun snrRun = (OmegaSNRRun) this.analysisRun;
@@ -376,12 +378,11 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		}
 		// this.table.setRowSorter(this.rowSorter);
 	}
-
-	public void populateParticlesResults(
+	
+	private void populateParticlesResults(
 			final Map<OmegaPlane, List<OmegaROI>> particles,
 			final Map<OmegaROI, Map<String, Object>> particlesValues) {
-		this.resetResultsPanel();
-		this.addParticleColumns();
+		this.addParticleColumns(false);
 		this.addParticleValuesColumns();
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -402,10 +403,10 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-	
+
 	public void populateTrajectoriesResults(final List<OmegaTrajectory> tracks) {
 		this.resetResultsPanel();
-		this.addParticleColumns();
+		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -414,16 +415,17 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final List<OmegaROI> rois = track.getROIs();
 			for (final OmegaROI roi : rois) {
 				final Object[] row = { roi.getElementID(), roi.getFrameIndex(),
-						roi.getX(), roi.getY(), rois.indexOf(roi), trackName };
+						roi.getX(), roi.getY(), /* rois.indexOf(roi), */
+						trackName };
 				dtm.addRow(row);
 			}
 		}
 	}
-	
+
 	public void populateSegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this.resetResultsPanel();
-		this.addParticleColumns();
+		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		this.updateFilterPanel();
@@ -449,7 +451,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 										.getSegmentationType());
 						final Object[] row = { roi.getElementID(),
 								roi.getFrameIndex(), roi.getX(), roi.getY(),
-								rois.indexOf(roi), trackName, segmName,
+								/* rois.indexOf(roi), */trackName, segmName,
 								segmType };
 						dtm.addRow(row);
 					}
@@ -457,8 +459,8 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-
-	public void populateLocalSNRResults(
+	
+	private void populateLocalSNRResults(
 			final Map<OmegaROI, Integer> particleArea,
 			final Map<OmegaROI, Integer> centerSignal,
 			final Map<OmegaROI, Integer> peakSignal,
@@ -467,8 +469,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaROI, Double> background,
 			final Map<OmegaROI, Double> snr,
 			final Map<OmegaROI, Double> indexSNR) {
-		this.resetResultsPanel();
-		this.addParticleColumns();
+		this.addParticleColumns(false);
 		this.addDoubleValueColumn("Particle Area");
 		this.addDoubleValueColumn("Center Signal");
 		this.addDoubleValueColumn("Peak Signal");
@@ -496,8 +497,8 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			dtm.addRow(row);
 		}
 	}
-	
-	public void populateGlobalSpecificSNRResults(
+
+	private void populateGlobalSpecificSNRResults(
 			final Map<OmegaPlane, Double> bgr,
 			final Map<OmegaPlane, Double> noise,
 			final Map<OmegaPlane, Double> minSNR,
@@ -506,7 +507,6 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaPlane, Double> minIndexSNR,
 			final Map<OmegaPlane, Double> avgIndexSNR,
 			final Map<OmegaPlane, Double> maxIndexSNR) {
-		this.resetResultsPanel();
 		this.addIntValueColumn("ID");
 		this.addIntValueColumn("Frame Index");
 		this.addDoubleValueColumn("Background");
@@ -534,12 +534,11 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			dtm.addRow(row);
 		}
 	}
-	
-	public void populateGlobalGenericSNRResults(final Double bgr,
+
+	private void populateGlobalGenericSNRResults(final Double bgr,
 			final Double noise, final Double minSNR, final Double avgSNR,
 			final Double maxSNR, final Double minIndexSNR,
 			final Double avgIndexSNR, final Double maxIndexSNR) {
-		this.resetResultsPanel();
 		this.addIntValueColumn("ID");
 		this.addDoubleValueColumn("T");
 		this.addDoubleValueColumn("Z");
@@ -568,13 +567,11 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		// localMinIndexSNR, localAvgIndexSNR, localMaxIndexSNR
 		dtm.addRow(row);
 	}
-
-	public void populateGlobalIntensitySegmentsResults(
+	
+	private void populateGlobalIntensitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[]> peakSignals,
 			final Map<OmegaSegment, Double[]> centroidSignals) {
-		this.resetResultsPanel();
-		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
 		this.addIntValueColumn("Min Peak signal");
@@ -607,14 +604,13 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-	
-	public void populateLocalVelocitySegmentsResults(
+
+	private void populateLocalVelocitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, List<Double>> localSpeeds,
 			final Map<OmegaSegment, List<Double>> localSpeedsFromOrigin,
 			final Map<OmegaSegment, List<Double>> localVelocitiesFromOrigin) {
-		this.resetResultsPanel();
-		this.addParticleColumns();
+		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		this.addDoubleValueColumn("Instantaneous Speed");
@@ -650,26 +646,26 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 					final Double speedFromOrigin = speedsFromOrigin.get(i);
 					final Double velocityFromOrigin = velocitiesFromOrigin
 							.get(i);
-
+					
 					final String segmName = segment.getName();
 					final String segmType = types.getSegmentationName(segment
 							.getSegmentationType());
 					final Object[] row = { roi.getElementID(),
 							roi.getFrameIndex(), roi.getX(), roi.getY(),
-							rois.indexOf(roi), trackName, segmName, segmType,
-							speed, speedFromOrigin, velocityFromOrigin };
+							/* rois.indexOf(roi), */trackName, segmName,
+							segmType, speed, speedFromOrigin,
+							velocityFromOrigin };
 					dtm.addRow(row);
 				}
 			}
 		}
 	}
-	
-	public void populateGlobalVelocitySegmentsResults(
+
+	private void populateGlobalVelocitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double> averageSpeeds,
 			final Map<OmegaSegment, Double> averageVelocities,
 			final Map<OmegaSegment, Double> forwardProgressions) {
-		this.resetResultsPanel();
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		this.addDoubleValueColumn("Speed");
@@ -699,8 +695,8 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-	
-	public void populateLocalMobilitySegmentsResults(
+
+	private void populateLocalMobilitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, List<Double>> localDistances,
 			final Map<OmegaSegment, List<Double>> localDistancesFromOrigin,
@@ -708,8 +704,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaSegment, List<Double>> localConfinementRatios,
 			final Map<OmegaSegment, List<Double[]>> localAnglesAndDirectionalChanges,
 			final Map<OmegaSegment, List<Double>> timeTraveled) {
-		this.resetResultsPanel();
-		this.addParticleColumns();
+		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		this.addDoubleValueColumn("Time");
@@ -756,28 +751,27 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 					final Double displ = displacements.get(i);
 					final Double conf = confiments.get(i);
 					final Double[] angles = anglesAndDirectionalChanges.get(i);
-
+					
 					final String segmName = segment.getName();
 					final String segmType = types.getSegmentationName(segment
 							.getSegmentationType());
 					final Object[] row = { roi.getElementID(),
 							roi.getFrameIndex(), roi.getX(), roi.getY(),
-							rois.indexOf(roi), trackName, segmName, segmType,
-							time, ldist, dist, displ, conf, angles[0],
-							angles[1] };
+							/* rois.indexOf(roi), */trackName, segmName,
+							segmType, time, ldist, dist, displ, conf,
+							angles[0], angles[1] };
 					dtm.addRow(row);
 				}
 			}
 		}
 	}
-	
-	public void populateGlobalMobilitySegmentsResults(
+
+	private void populateGlobalMobilitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double> maxDisplacementes,
 			final Map<OmegaSegment, List<Double>> localDistancesFromOrigin,
 			final Map<OmegaSegment, List<Double>> localDisplacementsFromOrigin,
 			final Map<OmegaSegment, List<Double>> timeTraveled) {
-		this.resetResultsPanel();
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		this.addDoubleValueColumn("Time");
@@ -814,15 +808,14 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-	
-	public void populateLocalDiffusivitySegmentsResults(
+
+	private void populateLocalDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[]> nyMap,
 			final Map<OmegaSegment, Double[][]> logMuMap,
 			final Map<OmegaSegment, Double[][]> muMap,
 			final Map<OmegaSegment, Double[][]> logDeltaTMap,
 			final Map<OmegaSegment, Double[][]> deltaTMap) {
-		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
 		this.addStringValueColumn("Nu");
@@ -919,19 +912,18 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 								nyVal, intVal, mu, deltaT, logMu, logDeltaT };
 						dtm.addRow(row);
 					}
-					
+
 				}
-				
+
 			}
 		}
 	}
-	
-	public void populateGlobalGenericDiffusivitySegmentsResults(
+
+	private void populateGlobalGenericDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[]> nyMap,
 			final Map<OmegaSegment, Double[][]> gammaDFromLogMap,
 			final Map<OmegaSegment, Double[][]> gammaDMap) {
-		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
 		this.addStringValueColumn("Nu");
@@ -1051,13 +1043,12 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-	
+
 	private void populateGlobalSpecificDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[][]> gammaDFromLogResultsMap,
 			final Map<OmegaSegment, Double[]> smssFromLogResultsMap,
 			final Map<OmegaSegment, Double[]> errosFromLogResultsMap) {
-		this.resetResultsPanel();
 		this.addStringValueColumn("Track");
 		this.addSegmentColumns();
 		this.addStringValueColumn("SMSD");
@@ -1119,7 +1110,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			}
 		}
 	}
-	
+
 	private void updateFilterPanel() {
 		final List<String> columNames = new ArrayList<String>();
 		for (int i = 0; i < this.table.getColumnCount(); i++) {
@@ -1127,7 +1118,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		}
 		this.filterPanel.updateCombo(columNames);
 	}
-	
+
 	private void resetResultsPanel() {
 		// this.table.setRowSorter(null)
 		this.ints.clear();
@@ -1141,26 +1132,26 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		this.table.revalidate();
 		this.table.repaint();
 	}
-	
+
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun) {
 		this.setAnalysisRun(analysisRun, true);
 	}
-	
+
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
 			final boolean isLocal) {
 		this.setAnalysisRun(analysisRun, null, isLocal);
 	}
-
+	
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
 			final boolean isLocal, final boolean isSpecific) {
 		this.setAnalysisRun(analysisRun, null, isLocal, isSpecific);
 	}
-
+	
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
 			final OmegaAnalysisRun parentAnalysisRun, final boolean isLocal) {
 		this.setAnalysisRun(analysisRun, parentAnalysisRun, isLocal, true);
 	}
-	
+
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
 			final OmegaAnalysisRun parentAnalysisRun, final boolean isLocal,
 			final boolean isSpecific) {
@@ -1169,15 +1160,16 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		this.parentAnalysisRun = parentAnalysisRun;
 		this.analysisRun = analysisRun;
 		this.infoPanel.update(analysisRun);
+		this.resetResultsPanel();
 		if (this.analysisRun != null) {
 			this.populateResultsPanel();
 		}
 	}
-	
+
 	public OmegaAnalysisRun getAnalysisRun() {
 		return this.analysisRun;
 	}
-	
+
 	@Override
 	public void handleFilterEvent(final OmegaFilterEvent event) {
 		final String key = event.getKey();
@@ -1212,7 +1204,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		}
 		this.rowSorter.setRowFilter(rf);
 	}
-
+	
 	@Override
 	public void updateParentContainer(final RootPaneContainer parent) {
 		super.updateParentContainer(parent);

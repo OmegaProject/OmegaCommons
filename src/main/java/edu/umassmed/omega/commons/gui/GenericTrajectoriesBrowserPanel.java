@@ -27,7 +27,6 @@ import javax.swing.RootPaneContainer;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import edu.umassmed.omega.commons.OmegaLogFileManager;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
@@ -526,14 +525,17 @@ implements OmegaFilterEventListener {
 		if (this.img == null)
 			return;
 		final OmegaImagePixels pixels = this.img.getDefaultPixels();
-		Double physicalSizeT;
-		try {
-			physicalSizeT = gateway.computeSizeT(pixels.getOmeroId(),
-					pixels.getSizeT(), pixels.getSizeT());
-		} catch (final Exception ex) {
-			physicalSizeT = null;
-			OmegaLogFileManager.handleCoreException(ex, false);
+		Double physicalSizeT = null;
+		if (pixels.getPhysicalSizeT() > 0.0) {
+			physicalSizeT = pixels.getPhysicalSizeT();
 		}
+		// try {
+		// physicalSizeT = gateway.computeSizeT(pixels.getOmeroId(),
+		// pixels.getSizeT(), pixels.getSizeT());
+		// } catch (final Exception ex) {
+		// physicalSizeT = null;
+		// OmegaLogFileManager.handleCoreException(ex, false);
+		// }
 		this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 		this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 	}
@@ -547,14 +549,17 @@ implements OmegaFilterEventListener {
 			this.img = image;
 			final OmegaImagePixels pixels = this.img.getDefaultPixels();
 			this.setSizeT(pixels.getSizeT());
-			Double physicalSizeT;
-			try {
-				physicalSizeT = this.gateway.computeSizeT(pixels.getOmeroId(),
-						pixels.getSizeT(), pixels.getSizeT());
-			} catch (final Exception ex) {
-				physicalSizeT = null;
-				OmegaLogFileManager.handleCoreException(ex, false);
+			Double physicalSizeT = null;
+			if (pixels.getPhysicalSizeT() > 0.0) {
+				physicalSizeT = pixels.getPhysicalSizeT();
 			}
+			// try {
+			// physicalSizeT = this.gateway.computeSizeT(pixels.getOmeroId(),
+			// pixels.getSizeT(), pixels.getSizeT());
+			// } catch (final Exception ex) {
+			// physicalSizeT = null;
+			// OmegaLogFileManager.handleCoreException(ex, false);
+			// }
 			this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 			this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 		}

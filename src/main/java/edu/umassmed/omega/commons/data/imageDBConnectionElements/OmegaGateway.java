@@ -32,7 +32,7 @@ public abstract class OmegaGateway {
 
 	public abstract void setConnected(boolean isConnected);
 
-	public abstract int connect(final OmegaLoginCredentials loginCred,
+	public abstract void connect(final OmegaLoginCredentials loginCred,
 			final OmegaServerInformation serverInfo) throws Exception;
 	
 	public abstract byte[] getImageData(final Long pixelsID, final int z,
@@ -63,6 +63,7 @@ public abstract class OmegaGateway {
 	public abstract void setActiveChannel(final Long pixelsID, int channel,
 			boolean active) throws Exception;
 	
+	// TODO to be removed because unused
 	public abstract Double computeSizeT(final Long pixelsID, int sizeT,
 			int currentMaxT) throws Exception;
 	
