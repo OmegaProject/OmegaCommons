@@ -32,9 +32,9 @@ public class OmegaGUIConstants {
 	public static final String SIDEPANEL_INFO_DIM_ZTC = "Dimensions (ZTC): ";
 	public static final String SIDEPANEL_INFO_PIXELTYPE = "Pixel Type: ";
 	public static final String SIDEPANEL_INFO_PIXELSIZES = "Pixel Sizes (XY) "
-	        + OmegaConstantsMathSymbols.MU + "m :";
+			+ OmegaConstantsMathSymbols.MU + "m :";
 	public static final String SIDEPANEL_INFO_PIXELSIZES_Z = "Pixel Sizes (XYZ) "
-	        + OmegaConstantsMathSymbols.MU + "m :";
+			+ OmegaConstantsMathSymbols.MU + "m :";
 
 	public static final String INFO_EXECUTED = "Executed: ";
 
@@ -110,10 +110,11 @@ public class OmegaGUIConstants {
 	public static final String PLUGIN_ORPHANED_ANALYSES = "Orphaned analyses";
 	public static final String PLUGIN_RUN_DEFINITION = "Run Definition";
 
+	public static final String PLUGIN_INPUT_INFORMATION = "Input information";
 	public static final String PLUGIN_PARAMETERS_DETECTION = "Particle Detection Parameters";
 	public static final String PLUGIN_PARAMETERS_LINKING = "Particle Linking Parameters";
 	public static final String PLUGIN_PARAMETERS_LINKING_ADVANCED = "Particle Linking Advanced Options";
-	public static final String PLUGIN_PARAMETERS_GENERAL = "General Parameters";
+	public static final String PLUGIN_PARAMETERS_SELECTION = "Selection Parameters";
 	public static final String PLUGIN_PARAMETERS_SNR = "SNR Estimation Parameters";
 	public static final String PLUGIN_PARAMETERS_TMD = "Diffusivity Estimation Parameters";
 	public static final String PLUGIN_PARAMETERS_TMDE = "Error Estimation Parameters";

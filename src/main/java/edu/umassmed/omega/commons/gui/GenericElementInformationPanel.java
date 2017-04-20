@@ -72,7 +72,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 	private final GenericElementDetailsDialog detailsDialog;
 	
 	public GenericElementInformationPanel(final RootPaneContainer parent,
-	        final GenericElementInformationContainerInterface infoContainer) {
+			final GenericElementInformationContainerInterface infoContainer) {
 		super(parent);
 		
 		this.normal = new SimpleAttributeSet();
@@ -217,7 +217,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 					this.normal);
 		} else {
 			this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NOT_NAMED,
-			        this.normal);
+					this.normal);
 		}
 	}
 	
@@ -238,7 +238,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 	private void addAdditionalProjectInformation(final OmegaProject project)
 			throws BadLocationException {
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_DATASET,
-		        this.bold);
+				this.bold);
 		this.appendString(String.valueOf(project.getDatasets().size()),
 				this.normal);
 		this.appendNewline();
@@ -251,7 +251,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 	private void addAdditionalDatasetInformation(final OmegaDataset dataset)
 			throws BadLocationException {
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_IMAGES,
-		        this.bold);
+				this.bold);
 		this.appendString(String.valueOf(dataset.getImages().size()),
 				this.normal);
 		this.appendNewline();
@@ -272,11 +272,22 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 				.getAnalysisCount(image)), this.normal);
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ACQUIRED, this.bold);
-		final String acquiredDate = format.format(image.getAcquisitionDate());
+		final String acquiredDate;
+		if (image.getAcquisitionDate() != null) {
+			acquiredDate = format.format(image.getAcquisitionDate());
+
+		} else {
+			acquiredDate = OmegaGUIConstants.NOT_ASSIGNED;
+		}
 		this.appendString(acquiredDate.replace("_", " "), this.normal);
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_IMPORTED, this.bold);
-		final String importedDate = format.format(image.getImportedDate());
+		final String importedDate;
+		if (image.getImportedDate() != null) {
+			importedDate = format.format(image.getImportedDate());
+		} else {
+			importedDate = OmegaGUIConstants.NOT_ASSIGNED;
+		}
 		this.appendString(importedDate.replace("_", " "), this.normal);
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_DIM_XY, this.bold);
@@ -293,19 +304,19 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		if ((pixelsSizeX != -1) && (pixelsSizeY != -1)) {
 			if (pixelsSizeZ != -1) {
 				this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES,
-				        this.bold);
+						this.bold);
 			} else {
 				this.appendString(
-				        OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES_Z,
-				        this.bold);
+						OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES_Z,
+						this.bold);
 			}
 			final BigDecimal bigX = new BigDecimal(pixelsSizeX).setScale(2,
-			        RoundingMode.HALF_UP);
+					RoundingMode.HALF_UP);
 			final String pixelsSizeXs = bigX.toString();
 			this.appendString(pixelsSizeXs, this.normal);
 			this.appendString(" x ", this.normal);
 			final BigDecimal bigY = new BigDecimal(pixelsSizeY).setScale(2,
-			        RoundingMode.HALF_UP);
+					RoundingMode.HALF_UP);
 			final String pixelsSizeYs = bigY.toString();
 			this.appendString(pixelsSizeYs, this.normal);
 			if (pixelsSizeZ != -1) {
