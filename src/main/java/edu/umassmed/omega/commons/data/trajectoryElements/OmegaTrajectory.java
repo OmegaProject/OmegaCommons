@@ -33,41 +33,46 @@ import java.util.List;
 import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaTrajectory extends OmegaNamedElement implements
-Comparable<OmegaTrajectory> {
-	
-	public static final String DEFAULT_TRAJ_NAME = "Traj";
+		Comparable<OmegaTrajectory> {
 
+	public static final String DEFAULT_TRAJ_NAME = "Track_";
+	
 	private int length;
 	private OmegaROI startingROI;
 	private OmegaROI endingROI;
-	
+
 	private final List<OmegaROI> ROIs;
 	private final List<OmegaLink> links;
-	
+
 	private Color color;
 	private boolean isVisible, isColorChanged, isAnnotationChanged;
-	
+
 	private String annotations;
-	
-	public OmegaTrajectory(final int length, final String name) {
+
+	private final Double index;
+
+	public OmegaTrajectory(final int length, final String name,
+			final Double index) {
 		super(-1L, name);
-		
+
+		this.index = index;
+
 		this.startingROI = null;
 		this.endingROI = null;
-		
+
 		this.length = length;
-		
+
 		this.ROIs = new ArrayList<OmegaROI>();
 		this.links = new ArrayList<OmegaLink>();
-		
+
 		this.color = Color.yellow;
 		this.isVisible = true;
 		this.isColorChanged = false;
-		
+
 		this.annotations = "";
 		this.isAnnotationChanged = false;
 	}
-	
+
 	// public OmegaTrajectory(final OmegaROI startingROI,
 	// final OmegaROI endingROI, final int length) {
 	// super(-1L, OmegaTrajectory.DEFAULT_TRAJ_NAME);
@@ -88,7 +93,7 @@ Comparable<OmegaTrajectory> {
 	// this.annotations = "";
 	// this.isAnnotationChanged = false;
 	// }
-	
+
 	// public OmegaTrajectory(final OmegaROI startingROI,
 	// final OmegaROI endingROI, final int length,
 	// final List<OmegaROI> ROIs, final List<OmegaLink> links) {
@@ -111,90 +116,94 @@ Comparable<OmegaTrajectory> {
 	// this.isAnnotationChanged = false;
 	// }
 	
+	public Double getIndex() {
+		return this.index;
+	}
+
 	public OmegaROI getStartingROI() {
 		return this.startingROI;
 	}
-	
+
 	public void setStartingROI(final OmegaROI startingPoint) {
 		this.startingROI = startingPoint;
 	}
-	
+
 	public OmegaROI getEndingROI() {
 		return this.endingROI;
 	}
-	
+
 	public void setEndingROI(final OmegaROI endingPoint) {
 		this.endingROI = endingPoint;
 	}
-	
+
 	public int getLength() {
 		return this.length;
 	}
-	
+
 	public void recalculateLength() {
 		this.length = this.ROIs.size();
 	}
-	
+
 	public List<OmegaROI> getROIs() {
 		return this.ROIs;
 	}
-	
+
 	public void addROI(final OmegaROI ROI) {
 		this.ROIs.add(ROI);
 	}
-	
+
 	public void addROIs(final List<OmegaROI> ROIs) {
 		this.ROIs.addAll(ROIs);
 	}
-	
+
 	public List<OmegaLink> getLinks() {
 		return this.links;
 	}
-	
+
 	public void addLink(final OmegaLink link) {
 		this.links.add(link);
 	}
-	
+
 	public boolean isColorChanged() {
 		return this.isColorChanged;
 	}
-	
+
 	public void setColorChanged(final boolean isColorChanged) {
 		this.isColorChanged = isColorChanged;
 	}
-	
+
 	public void setColor(final Color color) {
 		this.color = color;
 	}
-	
+
 	public Color getColor() {
 		return this.color;
 	}
-	
+
 	public boolean isVisible() {
 		return this.isVisible;
 	}
-	
+
 	public void setVisible(final boolean isVisible) {
 		this.isVisible = isVisible;
 	}
-	
+
 	public boolean isAnnotationsChanged() {
 		return this.isAnnotationChanged;
 	}
-	
+
 	public void setAnnotationsChanged(final boolean isAnnotationChanged) {
 		this.isAnnotationChanged = isAnnotationChanged;
 	}
-	
+
 	public void updateAnnotations(final String newAnnotations) {
 		this.annotations = newAnnotations;
 	}
-	
+
 	public String getAnnotations() {
 		return this.annotations;
 	}
-	
+
 	public boolean isEqual(final OmegaTrajectory traj) {
 		if (this.length != traj.length)
 			return false;
@@ -215,16 +224,20 @@ Comparable<OmegaTrajectory> {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int compareTo(final OmegaTrajectory traj) {
-		return (this.getName().compareTo(traj.getName()));
+		if (this.getIndex() == traj.getIndex())
+			return 0;
+		if (this.getIndex() < traj.getIndex())
+			return -1;
+		return 1;
 	}
-
+	
 	@Override
 	public OmegaTrajectory clone() {
 		final OmegaTrajectory newTraj = new OmegaTrajectory(this.length,
-		        this.getName());
+				this.getName(), this.getIndex());
 		newTraj.setColor(this.color);
 		newTraj.addROIs(this.ROIs);
 		newTraj.setVisible(this.isVisible);

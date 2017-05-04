@@ -41,7 +41,7 @@ import edu.umassmed.omega.commons.gui.interfaces.GenericTrajectoriesBrowserConta
 import edu.umassmed.omega.commons.utilities.OmegaColorManagerUtilities;
 
 public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
-implements OmegaFilterEventListener {
+		implements OmegaFilterEventListener {
 	private static final long serialVersionUID = -4914198379223290679L;
 
 	private final GenericTrajectoriesBrowserContainerInterface tbContainer;
@@ -58,7 +58,7 @@ implements OmegaFilterEventListener {
 
 	private JPopupMenu tbMenu;
 	private JMenuItem showParticles_itm, generateRandomColors_itm,
-	chooseColor_itm;
+			chooseColor_itm;
 
 	private OmegaGateway gateway;
 	private OmegaImage img;
@@ -104,9 +104,9 @@ implements OmegaFilterEventListener {
 				this.getParentContainer(), this);
 		this.tbHeaderScrollPane = new JScrollPane(this.tbHeaderPanel);
 		this.tbHeaderScrollPane
-		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		this.tbHeaderScrollPane
-		.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		topPanel.add(this.tbHeaderScrollPane, BorderLayout.CENTER);
 
 		this.add(topPanel, BorderLayout.NORTH);
@@ -116,9 +116,9 @@ implements OmegaFilterEventListener {
 				this.isShowEnabled());
 		this.tbNamesScrollPane = new JScrollPane(this.tbNamesPanel);
 		this.tbNamesScrollPane
-		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		this.tbNamesScrollPane
-		.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.add(this.tbNamesScrollPane, BorderLayout.WEST);
 
 		this.tbTrajectoriesPanel = new GenericTrajectoriesBrowserTrajectoriesPanel(
@@ -158,35 +158,35 @@ implements OmegaFilterEventListener {
 			}
 		});
 		this.tbTrajectoriesPanel
-		.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseMoved(final MouseEvent evt) {
-				GenericTrajectoriesBrowserPanel.this
-				.handleMouseMovement(evt.getPoint());
-			}
-		});
+				.addMouseMotionListener(new MouseMotionAdapter() {
+					@Override
+					public void mouseMoved(final MouseEvent evt) {
+						GenericTrajectoriesBrowserPanel.this
+								.handleMouseMovement(evt.getPoint());
+					}
+				});
 		this.tbTrajectoriesScrollPane.getHorizontalScrollBar()
-		.addAdjustmentListener(new AdjustmentListener() {
-			@Override
-			public void adjustmentValueChanged(final AdjustmentEvent evt) {
-				GenericTrajectoriesBrowserPanel.this
-				.handleHorizontalScrollBarChanged();
-			}
-		});
+				.addAdjustmentListener(new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(final AdjustmentEvent evt) {
+						GenericTrajectoriesBrowserPanel.this
+								.handleHorizontalScrollBarChanged();
+					}
+				});
 		this.tbTrajectoriesScrollPane.getVerticalScrollBar()
-		.addAdjustmentListener(new AdjustmentListener() {
-			@Override
-			public void adjustmentValueChanged(final AdjustmentEvent evt) {
-				GenericTrajectoriesBrowserPanel.this
-				.handleVerticalScrollBarChanged();
-			}
-		});
+				.addAdjustmentListener(new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(final AdjustmentEvent evt) {
+						GenericTrajectoriesBrowserPanel.this
+								.handleVerticalScrollBarChanged();
+					}
+				});
 		this.tbTrajectoriesPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown(), true);
+								|| evt.isControlDown(), evt.isShiftDown(), true);
 			}
 		});
 		this.tbNamesPanel.addMouseListener(new MouseAdapter() {
@@ -194,7 +194,7 @@ implements OmegaFilterEventListener {
 			public void mouseClicked(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown(),
+								|| evt.isControlDown(), evt.isShiftDown(),
 						false);
 			}
 		});
@@ -208,7 +208,7 @@ implements OmegaFilterEventListener {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				GenericTrajectoriesBrowserPanel.this
-				.handleGenerateRandomColors();
+						.handleGenerateRandomColors();
 			}
 		});
 		this.chooseColor_itm.addActionListener(new ActionListener() {
@@ -283,7 +283,7 @@ implements OmegaFilterEventListener {
 		if ((this.getSelectedTrajectory() != null)) {
 			if (isRightButton || (this.getSelectedTrajectory() != oldTraj)) {
 				this.getSelectedTrajectories()
-				.add(this.getSelectedTrajectory());
+						.add(this.getSelectedTrajectory());
 			} else {
 				this.resetClickReferences();
 				this.getSelectedTrajectories().clear();
@@ -351,20 +351,28 @@ implements OmegaFilterEventListener {
 		}
 	}
 
-	protected void disableShowSportsThumbnail() {
+	protected void enabledShowSportsThumbnail() {
+		this.setShowParticlesAutomaticallyDisabled(false);
 		this.showParticles_itm
-		.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
+				.setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
+		this.setShowParticles(!this.isShowParticles());
+	}
+
+	protected void disableShowSportsThumbnail() {
+		this.setShowParticlesAutomaticallyDisabled(true);
+		this.showParticles_itm
+				.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
 		this.setShowParticles(!this.isShowParticles());
 	}
 
 	private void handleShowSpotsThumbnail() {
 		if (this.isShowParticles()) {
 			this.showParticles_itm
-			.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
+					.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
 			this.setShowParticles(!this.isShowParticles());
 		} else {
 			this.showParticles_itm
-			.setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
+					.setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
 			this.setShowParticles(!this.isShowParticles());
 		}
 		this.repaint();

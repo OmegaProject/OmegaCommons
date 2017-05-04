@@ -99,11 +99,11 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final String particleIdentifier, final boolean startAtOne,
 			final String nonParticleIdentifier, final String particleSeparator,
 			final List<String> particleDataOrder, final File sourceFolder)
-					throws IllegalArgumentException, IOException {
+			throws IllegalArgumentException, IOException {
 		if (this.mode == OmegaTracksImporter.IMPORTER_MODE_NOT_SET)
 			throw new IllegalArgumentException(
 					OmegaTracksImporter.class.getName()
-					+ " mode not set, cannot import data");
+							+ " mode not set, cannot import data");
 		if (this.mode == OmegaTracksImporter.IMPORTER_MODE_PARTICLES) {
 			this.importParticles(fileNameIdentifier, dataIdentifier,
 					particleIdentifier, startAtOne, nonParticleIdentifier,
@@ -121,7 +121,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final boolean startAtOne, final String nonParticleIdentifier,
 			final String particleSeparator,
 			final List<String> particleDataOrder, final File sourceFolder)
-					throws IllegalArgumentException, IOException {
+			throws IllegalArgumentException, IOException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The destination folder: "
 					+ sourceFolder + " has to be a valid directory");
@@ -171,7 +171,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final String particleIdentifier, final boolean startAtOne,
 			final String nonParticleIdentifier, final String particleSeparator,
 			final List<String> particleDataOrder, final File sourceFolder)
-					throws IOException, IllegalArgumentException {
+			throws IOException, IllegalArgumentException {
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The destination folder: "
 					+ sourceFolder + " has to be a valid directory");
@@ -180,6 +180,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					+ sourceFolder + " has to be not empty");
 		boolean isValid = false;
 		
+		Double fileCounter = 0.0;
 		for (final File f : sourceFolder.listFiles()) {
 			final String fName = f.getName();
 			if (!fName.matches(fileNameIdentifier)
@@ -189,7 +190,8 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			isValid = true;
 			final FileReader fr = new FileReader(f);
 			final BufferedReader br = new BufferedReader(fr);
-			this.importTrajectories(multifile, f.getName(),
+			fileCounter++;
+			this.importTrajectories(multifile, f.getName(), fileCounter,
 					trajectoryIdentifier, particleIdentifier, startAtOne,
 					nonParticleIdentifier, particleSeparator,
 					particleDataOrder, br);
@@ -237,7 +239,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final boolean startAtOne, final String nonParticleIdentifier,
 			final String particleSeparator,
 			final List<String> particleDataOrder, final BufferedReader br)
-					throws IOException, IllegalArgumentException {
+			throws IOException, IllegalArgumentException {
 		fileName.substring(0, fileName.lastIndexOf("."));
 		String line = br.readLine();
 		while (line != null) {
@@ -302,19 +304,21 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	}
 	
 	private void importTrajectories(final boolean multifile,
-			final String fileName, final String trajectoryIdentifier,
-			final String particleIdentifier, final boolean startAtOne,
-			final String nonParticleIdentifier, final String particleSeparator,
+			final String fileName, final Double fileCounter,
+			final String trajectoryIdentifier, final String particleIdentifier,
+			final boolean startAtOne, final String nonParticleIdentifier,
+			final String particleSeparator,
 			final List<String> particleDataOrder, final BufferedReader br)
-					throws IOException, IllegalArgumentException {
+			throws IOException, IllegalArgumentException {
 		final String name1 = fileName.substring(0, fileName.lastIndexOf("."));
 		OmegaTrajectory trajectory = null;
 		if (multifile) {
-			trajectory = new OmegaTrajectory(-1, name1);
+			trajectory = new OmegaTrajectory(-1, name1, fileCounter);
 			// trajectory.setName(name1);
 			this.tracks.add(trajectory);
 		}
 		String line = br.readLine();
+		Double counter = 0.0;
 		while (line != null) {
 			if (line.isEmpty()) {
 				line = br.readLine();
@@ -327,7 +331,8 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				if (name2.startsWith("_")) {
 					name2 = name2.replaceFirst("_", "");
 				}
-				trajectory = new OmegaTrajectory(-1, name2);
+				trajectory = new OmegaTrajectory(-1, name2, counter);
+				counter++;
 				// trajectory.setName(name1 + "_" + name2);
 				this.tracks.add(trajectory);
 			}
@@ -357,7 +362,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	private OmegaParticle importParticle(final boolean startAtOne,
 			final String particleSeparator,
 			final List<String> particleDataOrder, final String particleToImport)
-					throws IllegalArgumentException {
+			throws IllegalArgumentException {
 		final String[] particleData = particleToImport.split(particleSeparator);
 		Integer frameIndex = null;
 		Double x = null, y = null, peakIntensity = null, centroidIntensity = null;

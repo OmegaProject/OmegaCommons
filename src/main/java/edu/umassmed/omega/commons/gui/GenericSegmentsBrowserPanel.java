@@ -403,7 +403,15 @@ public class GenericSegmentsBrowserPanel extends GenericBrowserPanel implements
 		}
 	}
 
+	protected void enabledShowSportsThumbnail() {
+		this.setShowParticlesAutomaticallyDisabled(false);
+		this.showParticles_itm
+				.setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
+		this.setShowParticles(!this.isShowParticles());
+	}
+
 	protected void disableShowSportsThumbnail() {
+		this.setShowParticlesAutomaticallyDisabled(true);
 		this.showParticles_itm
 				.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
 		this.setShowParticles(!this.isShowParticles());

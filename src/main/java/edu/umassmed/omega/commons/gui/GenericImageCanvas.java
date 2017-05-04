@@ -102,7 +102,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	/** Trajectories to be drawed, scaled. **/
 	private final List<OmegaTrajectory> selectedTrajectories, trajectories;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> selectedSegments,
-	segments;
+			segments;
 	private OmegaSegmentationTypes segmTypes;
 
 	private int selectedTrajectoryIndex, selectedSegmentIndex;
@@ -115,7 +115,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	private int radius;
 
 	private boolean isCompressed, showTrajectoriesOnlyUpToT,
-	showTrajectoriesOnlyActive, showTrajectoriesOnlyStartingAtT;
+			showTrajectoriesOnlyActive, showTrajectoriesOnlyStartingAtT;
 
 	private JPopupMenu canvasMenu;
 	private JMenuItem canvasZoomIn, canvasZoomOut;
@@ -188,7 +188,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				GenericImageCanvas.this.handleMouseClick(
 						clickP,
 						SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown(), evt.isShiftDown());
+								|| evt.isControlDown(), evt.isShiftDown());
 			}
 
 			@Override
@@ -201,7 +201,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				GenericImageCanvas.this.handleMouseReleased(
 						evt.getPoint(),
 						SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown());
+								|| evt.isControlDown());
 			}
 		});
 		this.canvasPanel.addMouseMotionListener(new MouseMotionAdapter() {
@@ -210,7 +210,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				GenericImageCanvas.this.handleMouseDragged(
 						evt.getPoint(),
 						SwingUtilities.isRightMouseButton(evt)
-						|| evt.isControlDown());
+								|| evt.isControlDown());
 			}
 		});
 		this.canvasZoomOut.addActionListener(new ActionListener() {
@@ -306,6 +306,8 @@ public class GenericImageCanvas extends GenericScrollPane {
 					segmentList = new ArrayList<OmegaSegment>();
 				}
 				segmentList.add(segm);
+				this.selectedTrajectories.add(traj);
+				this.sendCoreEventTrajectories(this.selectedTrajectories, true);
 				this.selectedSegments.put(traj, segmentList);
 				this.sendCoreEventSegments(this.selectedSegments,
 						this.segmTypes, true);
@@ -408,6 +410,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 					trajIndex = GenericImageCanvas.this.trajectories
 							.indexOf(traj);
 					final int roiIndex = roi.getFrameIndex();
+					if ((this.segments == null) || this.segments.isEmpty()) {
+						continue;
+					}
 					for (final OmegaSegment segm : this.segments.get(traj)) {
 						final int startIndex = segm.getStartingROI()
 								.getFrameIndex();
@@ -614,6 +619,8 @@ public class GenericImageCanvas extends GenericScrollPane {
 		this.particles.clear();
 		this.selectedTrajectories.clear();
 		this.trajectories.clear();
+		this.selectedSegments.clear();
+		this.segments.clear();
 		this.revalidate();
 		this.repaint();
 	}
