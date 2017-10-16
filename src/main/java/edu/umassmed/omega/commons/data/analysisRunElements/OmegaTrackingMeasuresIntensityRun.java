@@ -11,6 +11,8 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresIntensityRun extends OmegaTrackingMeasuresRun {
 	
+	private static String DISPLAY_NAME = "Intensity Measures Run";
+	
 	// private Map<OmegaROI, List<Double>> particlesMeasures;
 	// Intensity
 	private final Map<OmegaSegment, Double[]> peakSignalsMap;
@@ -229,5 +231,15 @@ public class OmegaTrackingMeasuresIntensityRun extends OmegaTrackingMeasuresRun 
 	public OmegaSNRRun getSNRRun() {
 		return this.snrRun;
 	}
+	
 	// SNR related END
+
+	public static String getStaticDisplayName() {
+		return OmegaTrackingMeasuresIntensityRun.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaTrackingMeasuresIntensityRun.getStaticDisplayName();
+	}
 }

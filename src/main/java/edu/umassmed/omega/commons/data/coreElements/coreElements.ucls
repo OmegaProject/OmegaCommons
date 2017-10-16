@@ -1,473 +1,463 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaDataset" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaDataset.java" binary="false" 
+  associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaImage" project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaImage.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="246" y="443"/>    
+    <position height="-1" width="-1" x="219" y="182"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaPlane" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaPlane.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="554" y="193"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement" 
+  <class id="2" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaNamedElement.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="242" y="65"/>    
+    <position height="-1" width="-1" x="157" y="29"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenterGroup" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaExperimenterGroup.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1028" y="699"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaElement" 
-    project="omega.commons" 
+  <class id="3" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaElement" project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="798" y="54"/>    
+    <position height="-1" width="-1" x="612" y="38"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaPerson" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaPerson.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="939" y="169"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaProject" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaProject.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="236" y="621"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter" 
+  <class id="4" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaExperimenter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="968" y="309"/>    
+    <position height="-1" width="-1" x="923" y="240"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImage" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaImage.java" binary="false" 
+  <class id="5" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaDataset" project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaDataset.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="257" y="193"/>    
+    <position height="-1" width="-1" x="217" y="359"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels" 
+  <class id="6" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaProject" project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaProject.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="220" y="621"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaExperimenterGroup" 
     project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaImagePixels.java" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaExperimenterGroup.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="601" y="457"/>    
+    <position height="-1" width="-1" x="929" y="451"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="main.java.edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/analysisRunElements/OmegaAnalysisRun.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="609" y="788"/>    
+  <class id="8" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaPlane" project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaPlane.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="568" y="187"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="12" language="java" name="main.java.edu.umassmed.omega.commons.data.coreElements.OmeroElement" 
+  <interface id="9" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmeroElement" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmeroElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="228" y="775"/>    
+    <position height="-1" width="-1" x="219" y="760"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
+  <class id="10" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels" 
+    project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaImagePixels.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="534" y="478"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="edu.umassmed.omega.commons.data.coreElements.OmegaPerson" project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/coreElements/OmegaPerson.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="961" y="90"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun" 
+    project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/analysisRunElements/OmegaAnalysisRun.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="907" y="729"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
   <realization id="13">    
-    <bendpoint x="56" y="641"/>    
-    <bendpoint x="59" y="751"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="12"/>  
+    <bendpoint x="96" y="372"/>    
+    <bendpoint x="75" y="372"/>    
+    <bendpoint x="75" y="739"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="9"/>  
   </realization>  
-  <generalization id="14">    
-    <bendpoint x="556" y="72"/>    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <generalization id="15">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <generalization id="16">    
-    <bendpoint x="797" y="754"/>    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <association id="17">    
-    <bendpoint x="406" y="197"/>    
-    <bendpoint x="406" y="754"/>    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="18" name="analysisRuns">        
-        <position height="18" width="73" x="382" y="759"/>      
+  <association id="14">    
+    <bendpoint x="438" y="183"/>    
+    <bendpoint x="438" y="286"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="15" name="pixelsList">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="19" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="413" y="774"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="20">    
-    <bendpoint x="22" y="195"/>    
-    <bendpoint x="20" y="785"/>    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <realization id="21">    
-    <bendpoint x="805" y="313"/>    
-    <bendpoint x="805" y="663"/>    
-    <bendpoint x="195" y="682"/>    
-    <bendpoint x="194" y="728"/>    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <generalization id="22">    
-    <bendpoint x="63" y="443"/>    
-    <bendpoint x="64" y="61"/>    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <generalization id="23">    
-    <bendpoint x="44" y="629"/>    
-    <bendpoint x="42" y="49"/>    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <generalization id="24">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <realization id="25">    
-    <bendpoint x="825" y="675"/>    
-    <bendpoint x="229" y="695"/>    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <association id="26">    
-    <bendpoint x="763" y="190"/>    
-    <bendpoint x="759" y="706"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="27" name="analysisRuns">        
-        <position height="18" width="73" x="663" y="687"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="678" y="704"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="29">    
-    <bendpoint x="419" y="288"/>    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="30" name="pixelsList">        
-        <position height="18" width="53" x="423" y="272"/>      
-      </attribute>      
-      <multiplicity id="31" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="434" y="287"/>      
+      <multiplicity id="16" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="32">    
-    <bendpoint x="309" y="332"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="33" name="images">        
-        <position height="0" width="0" x="16" y="-150"/>      
+  <realization id="17">    
+    <bendpoint x="714" y="241"/>    
+    <bendpoint x="711" y="751"/>    
+    <bendpoint x="360" y="751"/>    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <generalization id="18">    
+    <bendpoint x="962" y="198"/>    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </generalization>  
+  <generalization id="19">    
+    <bendpoint x="562" y="86"/>    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="20">    
+    <bendpoint x="282" y="38"/>    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="21">    
+    <bendpoint x="766" y="477"/>    
+    <bendpoint x="766" y="44"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="22">    
+    <bendpoint x="961" y="397"/>    
+    <bendpoint x="961" y="287"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="23" name="associates">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="34" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="257" y="276"/>      
+      <multiplicity id="24" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="35">    
-    <bendpoint x="1216" y="710"/>    
-    <bendpoint x="1187" y="44"/>    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <association id="36">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="37" name="analysisRuns">        
-        <position height="18" width="73" x="530" y="686"/>      
+  <association id="25">    
+    <bendpoint x="1061" y="728"/>    
+    <bendpoint x="1061" y="239"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="26" name="experimenter">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="38" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="578" y="703"/>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="28">    
+    <bendpoint x="219" y="673"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <realization id="29">    
+    <bendpoint x="371" y="477"/>    
+    <bendpoint x="371" y="737"/>    
+    <bendpoint x="345" y="738"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <realization id="30">    
+    <bendpoint x="50" y="182"/>    
+    <bendpoint x="50" y="753"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="31">    
+    <bendpoint x="849" y="399"/>    
+    <bendpoint x="849" y="286"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="32" name="leaders">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="34">    
+    <bendpoint x="83" y="360"/>    
+    <bendpoint x="83" y="89"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="35">    
+    <bendpoint x="57" y="620"/>    
+    <bendpoint x="57" y="88"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="36">    
+    <bendpoint x="281" y="412"/>    
+    <bendpoint x="281" y="565"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="37" name="project">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="39">    
-    <bendpoint x="201" y="322"/>    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="40" name="datasets">        
-        <position height="0" width="0" x="5" y="-52"/>      
+    <bendpoint x="147" y="307"/>    
+    <bendpoint x="147" y="256"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="40" name="images">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="41" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="194" y="389"/>      
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="42">    
-    <bendpoint x="381" y="620"/>    
-    <bendpoint x="380" y="807"/>    
-    <end type="SOURCE" refId="7" navigable="false">      
+    <bendpoint x="383" y="359"/>    
+    <bendpoint x="383" y="665"/>    
+    <bendpoint x="787" y="665"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="43" name="analysisRuns">        
-        <position height="18" width="73" x="377" y="806"/>      
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="44" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="413" y="820"/>      
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="45">    
-    <bendpoint x="777" y="450"/>    
-    <bendpoint x="778" y="120"/>    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="5"/>  
-  </generalization>  
-  <association id="46">    
-    <bendpoint x="395" y="334"/>    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="47" name="image">        
-        <position height="18" width="36" x="293" y="260"/>      
-      </attribute>      
-      <multiplicity id="48" minimum="0" maximum="1">        
-        <position height="16" width="23" x="311" y="278"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="49">    
-    <end type="SOURCE" refId="9"/>    
+    <bendpoint x="960" y="18"/>    
+    <bendpoint x="750" y="18"/>    
+    <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <association id="50">    
-    <bendpoint x="189" y="531"/>    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="51" name="datasets">        
-        <position height="0" width="0" x="5" y="-52"/>      
+  <generalization id="46">    
+    <bendpoint x="819" y="667"/>    
+    <bendpoint x="819" y="610"/>    
+    <bendpoint x="734" y="610"/>    
+    <bendpoint x="734" y="97"/>    
+    <bendpoint x="184" y="97"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="47">    
+    <bendpoint x="387" y="302"/>    
+    <bendpoint x="376" y="302"/>    
+    <bendpoint x="376" y="165"/>    
+    <bendpoint x="340" y="165"/>    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="48" name="image">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="52" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="166" y="509"/>      
+      <multiplicity id="49" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="54" name="pixels">        
-        <position height="0" width="0" x="16" y="-155"/>      
-      </attribute>      
-      <multiplicity id="55" minimum="0" maximum="1">        
-        <position height="16" width="23" x="536" y="287"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="56">    
-    <bendpoint x="819" y="770"/>    
-    <bendpoint x="818" y="428"/>    
-    <bendpoint x="919" y="430"/>    
-    <bendpoint x="920" y="360"/>    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="57" name="experimenter">        
-        <position height="18" width="71" x="828" y="430"/>      
-      </attribute>      
-      <multiplicity id="58" minimum="0" maximum="1">        
-        <position height="16" width="23" x="830" y="446"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="59">    
-    <bendpoint x="442" y="441"/>    
-    <bendpoint x="436" y="743"/>    
+  <generalization id="50">    
+    <bendpoint x="810" y="435"/>    
+    <bendpoint x="786" y="435"/>    
+    <bendpoint x="786" y="30"/>    
+    <bendpoint x="742" y="30"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="51">    
+    <bendpoint x="223" y="106"/>    
+    <bendpoint x="828" y="106"/>    
+    <bendpoint x="828" y="176"/>    
+    <bendpoint x="921" y="176"/>    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="60" name="analysisRuns">        
-        <position height="18" width="73" x="436" y="688"/>      
+      <attribute id="52" name="experimenter">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="61" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="442" y="702"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="62">    
-    <bendpoint x="38" y="452"/>    
-    <bendpoint x="38" y="768"/>    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <association id="63">    
-    <bendpoint x="28" y="175"/>    
-    <bendpoint x="27" y="10"/>    
-    <bendpoint x="1159" y="9"/>    
-    <bendpoint x="1162" y="291"/>    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="64" name="experimenter">        
-        <position height="18" width="71" x="1110" y="295"/>      
-      </attribute>      
-      <multiplicity id="65" minimum="0" maximum="1">        
-        <position height="16" width="23" x="1125" y="312"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="66">    
-    <bendpoint x="275" y="531"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="67" name="project">        
-        <position height="18" width="41" x="228" y="535"/>      
-      </attribute>      
-      <multiplicity id="68" minimum="0" maximum="1">        
-        <position height="16" width="23" x="235" y="554"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="69">    
-    <bendpoint x="819" y="787"/>    
-    <bendpoint x="819" y="802"/>    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="70" name="analysisRuns">        
-        <position height="18" width="73" x="763" y="806"/>      
-      </attribute>      
-      <multiplicity id="71" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="770" y="823"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="72">    
-    <bendpoint x="591" y="660"/>    
-    <bendpoint x="158" y="674"/>    
-    <bendpoint x="160" y="735"/>    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <association id="73">    
-    <bendpoint x="957" y="644"/>    
-    <bendpoint x="945" y="380"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="74" name="leaders">        
-        <position height="18" width="44" x="954" y="374"/>      
-      </attribute>      
-      <multiplicity id="75" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="958" y="392"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="76">    
-    <bendpoint x="1195" y="696"/>    
-    <bendpoint x="1176" y="335"/>    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="77" name="associates">        
-        <position height="18" width="61" x="1104" y="335"/>      
-      </attribute>      
-      <multiplicity id="78" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="1113" y="355"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="79">    
-    <bendpoint x="1056" y="362"/>    
-    <bendpoint x="1070" y="636"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="80" name="groups">        
-        <position height="18" width="42" x="1073" y="622"/>      
-      </attribute>      
-      <multiplicity id="81" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="1077" y="638"/>      
+      <multiplicity id="53" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="82">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="6"/>  
+  <association id="54">    
+    <bendpoint x="270" y="251"/>    
+    <bendpoint x="270" y="305"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="55" name="datasets">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="57">    
+    <bendpoint x="686" y="451"/>    
+    <bendpoint x="686" y="789"/>    
+    <bendpoint x="351" y="789"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <generalization id="58">    
+    <bendpoint x="156" y="115"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
+  <association id="59">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="60" name="analysisRuns">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="61" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="62">    
+    <bendpoint x="682" y="535"/>    
+    <bendpoint x="1024" y="535"/>    
+    <bendpoint x="1024" y="668"/>    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="63" name="analysisRuns">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="64" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="65">    
+    <bendpoint x="170" y="563"/>    
+    <bendpoint x="170" y="418"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="66" name="datasets">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="67" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="68">    
+    <bendpoint x="375" y="621"/>    
+    <bendpoint x="375" y="699"/>    
+    <bendpoint x="765" y="699"/>    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="69" name="analysisRuns">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="70" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="71">    
+    <bendpoint x="336" y="216"/>    
+    <bendpoint x="357" y="216"/>    
+    <bendpoint x="357" y="777"/>    
+    <bendpoint x="768" y="777"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="72" name="analysisRuns">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="73" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="74">    
+    <bendpoint x="1031" y="282"/>    
+    <bendpoint x="1031" y="398"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="75" name="groups">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="76" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

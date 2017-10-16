@@ -5,6 +5,8 @@ import java.awt.Color;
 import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaSegmentationType extends OmegaNamedElement {
+	
+	private static String DISPLAY_NAME = "Segmentation Type";
 
 	public static final String NOT_ASSIGNED = "Not assigned";
 	public static final Color NOT_ASSIGNED_COL = Color.black;
@@ -85,5 +87,14 @@ public class OmegaSegmentationType extends OmegaNamedElement {
 
 	public String getDescription() {
 		return this.description;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaSegmentationType.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaSegmentationType.getStaticDisplayName();
 	}
 }

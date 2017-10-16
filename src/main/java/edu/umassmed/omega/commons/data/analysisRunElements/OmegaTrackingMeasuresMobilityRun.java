@@ -10,6 +10,8 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 	
+	private static String DISPLAY_NAME = "Mobility Measures Run";
+	
 	// Mobility
 	private final Map<OmegaSegment, List<Double>> distancesMap;
 	private final Map<OmegaSegment, List<Double>> distancesFromOriginMap;
@@ -117,5 +119,14 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 	
 	public Map<OmegaSegment, List<Double[]>> getAnglesAndDirectionalChangesResults() {
 		return this.anglesAndDirectionalChangesMap;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaTrackingMeasuresMobilityRun.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaTrackingMeasuresMobilityRun.getStaticDisplayName();
 	}
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
@@ -36,7 +36,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 	
 	private OmegaTracksToolDialog dialog;
 	
-	private OmegaAnalysisRunContainer container;
+	private OmegaAnalysisRunContainerInterface container;
 
 	public static int IMPORTER_MODE_NOT_SET = -1;
 	public static int IMPORTER_MODE_PARTICLES = 0;
@@ -319,12 +319,14 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		}
 		String line = br.readLine();
 		Double counter = 0.0;
+		Integer trackIndex = -1;
 		while (line != null) {
 			if (line.isEmpty()) {
 				line = br.readLine();
 				continue;
 			}
-			if (!multifile && line.startsWith(trajectoryIdentifier)) {
+			if (!multifile && (trajectoryIdentifier != null)
+					&& line.startsWith(trajectoryIdentifier)) {
 				final String name = OmegaStringUtilities.removeSymbols(line);
 				String name2 = OmegaStringUtilities.replaceWhitespaces(name,
 						"_");
@@ -343,6 +345,15 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				continue;
 			}
 			
+			Integer tmpTrackIndex = -1;
+			if (particleDataOrder
+					.contains(OmegaDataToolConstants.PARTICLE_TRACKINDEX)) {
+				final int ind = particleDataOrder
+						.indexOf(OmegaDataToolConstants.PARTICLE_TRACKINDEX);
+				final String s = line.split(particleSeparator)[ind];
+				tmpTrackIndex = Integer.valueOf(s);
+			}
+			
 			if ((particleIdentifier != null)
 					&& line.startsWith(particleIdentifier)
 					&& (trajectory != null)) {
@@ -350,6 +361,14 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				final OmegaParticle p = this.importParticle(startAtOne,
 						particleSeparator, particleDataOrder, line);
 				trajectory.addROI(p);
+			} else if ((trackIndex == -1) || (trackIndex != tmpTrackIndex)) {
+				trajectory = new OmegaTrajectory(-1, "Track" + counter, counter);
+				counter++;
+				this.tracks.add(trajectory);
+				final OmegaParticle p = this.importParticle(false,
+						particleSeparator, particleDataOrder, line);
+				trajectory.addROI(p);
+				trackIndex = tmpTrackIndex;
 			} else {
 				final OmegaParticle p = this.importParticle(startAtOne,
 						particleSeparator, particleDataOrder, line);
@@ -374,6 +393,8 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final String order = particleDataOrder.get(i);
 			final String data = particleData[i];
 			if (order.equals(OmegaDataToolConstants.PARTICLE_SEPARATOR)) {
+				continue;
+			} else if (order.equals(OmegaDataToolConstants.PARTICLE_TRACKINDEX)) {
 				continue;
 			} else if (order.equals(OmegaDataToolConstants.PARTICLE_FRAMEINDEX)) {
 				frameIndex = Integer.valueOf(data);
@@ -469,7 +490,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		this.tracks.clear();
 	}
 	
-	public void setContainer(final OmegaAnalysisRunContainer container) {
+	public void setContainer(final OmegaAnalysisRunContainerInterface container) {
 		this.container = container;
 	}
 }

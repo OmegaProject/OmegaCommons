@@ -34,7 +34,12 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 
 public class OmegaSNRRun extends OmegaAnalysisRun {
+	
+	private static String DISPLAY_NAME = "SNR Estimation Run";
 
+	private final Double resultingAvgCenterSignal;
+	private final Double resultingAvgPeakSignal;
+	private final Double resultingAvgMeanSignal;
 	private final Double resultingBGR;
 	private final Double resultingNoise;
 	private final Double resultingAvgSNR;
@@ -44,6 +49,9 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 	private final Double resultingMinErrorIndexSNR;
 	private final Double resultingMaxErrorIndexSNR;
 	
+	private final Map<OmegaPlane, Double> resultingImageAvgCenterSignal;
+	private final Map<OmegaPlane, Double> resultingImageAvgPeakSignal;
+	private final Map<OmegaPlane, Double> resultingImageAvgMeanSignal;
 	private final Map<OmegaPlane, Double> resultingImageBGR;
 	private final Map<OmegaPlane, Double> resultingImageNoise;
 	private final Map<OmegaPlane, Double> resultingImageAvgSNR;
@@ -65,8 +73,11 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 	
 	public OmegaSNRRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
-			final Map<OmegaPlane, Double> resultingImageNoise,
+			final Map<OmegaPlane, Double> resultingImageAvgCenterSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgPeakSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgMeanSignal,
 			final Map<OmegaPlane, Double> resultingImageBGR,
+			final Map<OmegaPlane, Double> resultingImageNoise,
 			final Map<OmegaPlane, Double> resultingImageAverageSNR,
 			final Map<OmegaPlane, Double> resultingImageMinimumSNR,
 			final Map<OmegaPlane, Double> resultingImageMaximumSNR,
@@ -81,14 +92,19 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 			final Map<OmegaROI, Double> resultingLocalNoise,
 			final Map<OmegaROI, Double> resultingLocalSNR,
 			final Map<OmegaROI, Double> resultingLocalErrorIndexSNR,
-			final Double resultingBGR, final Double resultingNoise,
-			final Double resultingAvgSNR, final Double resultingMinSNR,
-			final Double resultingMaxSNR,
+			final Double resultingAvgCenterSignal,
+			final Double resultingAvgPeakSignal,
+			final Double resultingAvgMeanSignal, final Double resultingBGR,
+			final Double resultingNoise, final Double resultingAvgSNR,
+			final Double resultingMinSNR, final Double resultingMaxSNR,
 			final Double resultingAvgErrorIndexSNR,
 			final Double resultingMinErrorIndexSNR,
 			final Double resultingMaxErrorIndexSNR) {
 		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun);
 		
+		this.resultingImageAvgCenterSignal = resultingImageAvgCenterSignal;
+		this.resultingImageAvgPeakSignal = resultingImageAvgPeakSignal;
+		this.resultingImageAvgMeanSignal = resultingImageAvgMeanSignal;
 		this.resultingImageBGR = resultingImageBGR;
 		this.resultingImageNoise = resultingImageNoise;
 		this.resultingImageAvgSNR = resultingImageAverageSNR;
@@ -105,6 +121,9 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingLocalNoise = resultingLocalNoise;
 		this.resultingLocalSNR = resultingLocalSNR;
 		this.resultingLocalErrorIndexSNR = resultingLocalErrorIndexSNR;
+		this.resultingAvgCenterSignal = resultingAvgCenterSignal;
+		this.resultingAvgPeakSignal = resultingAvgPeakSignal;
+		this.resultingAvgMeanSignal = resultingAvgMeanSignal;
 		this.resultingBGR = resultingBGR;
 		this.resultingNoise = resultingNoise;
 		this.resultingAvgSNR = resultingAvgSNR;
@@ -118,8 +137,11 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 	public OmegaSNRRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final Date timeStamps,
 			final String name,
-			final Map<OmegaPlane, Double> resultingImageNoise,
+			final Map<OmegaPlane, Double> resultingImageAvgCenterSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgPeakSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgMeanSignal,
 			final Map<OmegaPlane, Double> resultingImageBGR,
+			final Map<OmegaPlane, Double> resultingImageNoise,
 			final Map<OmegaPlane, Double> resultingImageAverageSNR,
 			final Map<OmegaPlane, Double> resultingImageMinimumSNR,
 			final Map<OmegaPlane, Double> resultingImageMaximumSNR,
@@ -134,15 +156,20 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 			final Map<OmegaROI, Double> resultingLocalNoise,
 			final Map<OmegaROI, Double> resultingLocalSNR,
 			final Map<OmegaROI, Double> resultingLocalErrorIndexSNR,
-			final Double resultingBGR, final Double resultingNoise,
-			final Double resultingAvgSNR, final Double resultingMinSNR,
-			final Double resultingMaxSNR,
+			final Double resultingAvgCenterSignal,
+			final Double resultingAvgPeakSignal,
+			final Double resultingAvgMeanSignal, final Double resultingBGR,
+			final Double resultingNoise, final Double resultingAvgSNR,
+			final Double resultingMinSNR, final Double resultingMaxSNR,
 			final Double resultingAvgErrorIndexSNR,
 			final Double resultingMinErrorIndexSNR,
 			final Double resultingMaxErrorIndexSNR) {
 		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun, timeStamps,
 				name);
 		
+		this.resultingImageAvgCenterSignal = resultingImageAvgCenterSignal;
+		this.resultingImageAvgPeakSignal = resultingImageAvgPeakSignal;
+		this.resultingImageAvgMeanSignal = resultingImageAvgMeanSignal;
 		this.resultingImageBGR = resultingImageBGR;
 		this.resultingImageNoise = resultingImageNoise;
 		this.resultingImageAvgSNR = resultingImageAverageSNR;
@@ -159,6 +186,9 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingLocalNoise = resultingLocalNoise;
 		this.resultingLocalSNR = resultingLocalSNR;
 		this.resultingLocalErrorIndexSNR = resultingLocalErrorIndexSNR;
+		this.resultingAvgCenterSignal = resultingAvgCenterSignal;
+		this.resultingAvgPeakSignal = resultingAvgPeakSignal;
+		this.resultingAvgMeanSignal = resultingAvgMeanSignal;
 		this.resultingBGR = resultingBGR;
 		this.resultingNoise = resultingNoise;
 		this.resultingAvgSNR = resultingAvgSNR;
@@ -167,6 +197,18 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingAvgErrorIndexSNR = resultingAvgErrorIndexSNR;
 		this.resultingMinErrorIndexSNR = resultingMinErrorIndexSNR;
 		this.resultingMaxErrorIndexSNR = resultingMaxErrorIndexSNR;
+	}
+
+	public Double getResultingAverageCenterSignal() {
+		return this.resultingAvgCenterSignal;
+	}
+
+	public Double getResultingAveragePeakSignal() {
+		return this.resultingAvgPeakSignal;
+	}
+
+	public Double getResultingAverageMeanSignal() {
+		return this.resultingAvgMeanSignal;
 	}
 	
 	public Double getResultingBackground() {
@@ -199,6 +241,18 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 
 	public Double getResultingMinErrorIndexSNR() {
 		return this.resultingMinErrorIndexSNR;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageAverageCenterSignal() {
+		return this.resultingImageAvgCenterSignal;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageAveragePeakSignal() {
+		return this.resultingImageAvgPeakSignal;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageAverageMeanSignal() {
+		return this.resultingImageAvgMeanSignal;
 	}
 	
 	public Map<OmegaPlane, Double> getResultingImageBGR() {
@@ -263,5 +317,14 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 	
 	public Map<OmegaROI, Double> getResultingLocalErrorIndexSNRs() {
 		return this.resultingLocalErrorIndexSNR;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaSNRRun.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaSNRRun.getStaticDisplayName();
 	}
 }

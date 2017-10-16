@@ -25,8 +25,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package edu.umassmed.omega.commons.data.coreElements;
+package edu.umassmed.omega.commons.data.analysisRunElements;
 
-public class CoreElementsUtilities {
+import java.util.List;
 
+public interface OmegaAnalysisRunContainerInterface {
+	public List<OmegaAnalysisRun> getAnalysisRuns();
+
+	public void addAnalysisRun(final OmegaAnalysisRun analysisRun);
+
+	public void removeAnalysisRun(OmegaAnalysisRun analysisRun);
+
+	public boolean containsAnalysisRun(long id);
 }

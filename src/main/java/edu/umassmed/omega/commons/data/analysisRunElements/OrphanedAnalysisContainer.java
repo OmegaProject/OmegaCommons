@@ -6,7 +6,10 @@ import java.util.List;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 
 public class OrphanedAnalysisContainer extends OmegaElement implements
-        OmegaAnalysisRunContainer {
+		OmegaAnalysisRunContainerInterface {
+	
+	private static String DISPLAY_NAME = "Orphaned Analysis Container";
+	
 	private final List<OmegaAnalysisRun> analysisRuns;
 
 	public OrphanedAnalysisContainer() {
@@ -39,5 +42,14 @@ public class OrphanedAnalysisContainer extends OmegaElement implements
 
 	public boolean isEmpty() {
 		return this.analysisRuns.isEmpty();
+	}
+	
+	public static String getStaticDisplayName() {
+		return OrphanedAnalysisContainer.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OrphanedAnalysisContainer.getStaticDisplayName();
 	}
 }

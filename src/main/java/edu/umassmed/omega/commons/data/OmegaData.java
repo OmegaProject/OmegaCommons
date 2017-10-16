@@ -33,7 +33,7 @@ import java.util.Map;
 import edu.umassmed.omega.commons.OmegaLogFileManager;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
@@ -149,7 +149,7 @@ public class OmegaData {
 	}
 
 	public StringBuffer printAnalysis(
-			final OmegaAnalysisRunContainer container, final int lvl,
+			final OmegaAnalysisRunContainerInterface container, final int lvl,
 			final StringBuffer buf) {
 		String space = "";
 		for (int i = 0; i <= lvl; i++) {
@@ -173,10 +173,7 @@ public class OmegaData {
 			buf.append(space + "Algo: " + algoInfo.getName());
 			buf.append(space1 + "Id: " + algoInfo.getElementID());
 			buf.append(space1 + "Version: " + algoInfo.getVersion());
-			buf.append(space1 + "Author: ["
-					+ algoInfo.getAuthor().getElementID() + "] "
-					+ algoInfo.getAuthor().getFirstName() + " "
-					+ algoInfo.getAuthor().getLastName());
+			buf.append(space1 + "Authors: " + algoInfo.getAuthors());
 			buf.append(space1 + "RdId: " + algoSpec.getElementID());
 			buf.append(space1 + "Num Params: "
 					+ algoSpec.getParameters().size() + "\n");
@@ -530,7 +527,7 @@ public class OmegaData {
 					}
 				}
 			} else {
-
+				
 			}
 			this.printAnalysis(analysisRun, lvl + 1, buf);
 		}
@@ -609,7 +606,7 @@ public class OmegaData {
 		}
 	}
 
-	private void consolidateData(final OmegaAnalysisRunContainer container) {
+	private void consolidateData(final OmegaAnalysisRunContainerInterface container) {
 		for (final OmegaAnalysisRun analysisRun : container.getAnalysisRuns()) {
 			final OmegaExperimenter exp = analysisRun.getExperimenter();
 			final OmegaExperimenter sameExperimenter = this
@@ -638,24 +635,24 @@ public class OmegaData {
 				this.addExperimenter(exp);
 			}
 
-			final OmegaPerson author = analysisRun.getAlgorithmSpec()
-					.getAlgorithmInfo().getAuthor();
-			final OmegaPerson samePerson = this.findSamePerson(author);
-			if (samePerson != null) {
-				if (OmegaLogFileManager.isDebug()) {
-					OmegaLogFileManager
-							.appendToCoreLog("Person: " + author.printName()
-									+ " already found, replacing.");
-					analysisRun.getAlgorithmSpec().getAlgorithmInfo()
-							.changeAuthor(samePerson);
-				}
-			} else {
-				if (OmegaLogFileManager.isDebug()) {
-					OmegaLogFileManager.appendToCoreLog("Person: "
-							+ author.printName() + " not found, adding.");
-					this.addPerson(author);
-				}
-			}
+			// final String authors = analysisRun.getAlgorithmSpec()
+			// .getAlgorithmInfo().getAuthors();
+			// final OmegaPerson samePerson = this.findSamePerson(author);
+			// if (samePerson != null) {
+			// if (OmegaLogFileManager.isDebug()) {
+			// OmegaLogFileManager
+			// .appendToCoreLog("Person: " + author.printName()
+			// + " already found, replacing.");
+			// analysisRun.getAlgorithmSpec().getAlgorithmInfo()
+			// .changeAuthor(samePerson);
+			// }
+			// } else {
+			// if (OmegaLogFileManager.isDebug()) {
+			// OmegaLogFileManager.appendToCoreLog("Person: "
+			// + author.printName() + " not found, adding.");
+			// this.addPerson(author);
+			// }
+			// }
 		}
 	}
 
@@ -687,17 +684,18 @@ public class OmegaData {
 	}
 
 	private void changePersonWithExperimenter(
-			final OmegaAnalysisRunContainer container,
+			final OmegaAnalysisRunContainerInterface container,
 			final OmegaPerson person, final OmegaExperimenter exp) {
-		for (final OmegaAnalysisRun analysisRun : container.getAnalysisRuns()) {
-			final OmegaPerson author = analysisRun.getAlgorithmSpec()
-					.getAlgorithmInfo().getAuthor();
-			if (author == person) {
-				analysisRun.getAlgorithmSpec().getAlgorithmInfo()
-						.changeAuthor(exp);
-			}
-			this.changePersonWithExperimenter(analysisRun, person, exp);
-		}
+		// for (final OmegaAnalysisRun analysisRun :
+		// container.getAnalysisRuns()) {
+		// final OmegaPerson author = analysisRun.getAlgorithmSpec()
+		// .getAlgorithmInfo().getAuthor();
+		// if (author == person) {
+		// analysisRun.getAlgorithmSpec().getAlgorithmInfo()
+		// .changeAuthor(exp);
+		// }
+		// this.changePersonWithExperimenter(analysisRun, person, exp);
+		// }
 	}
 
 	// Element id or omero id ?

@@ -19,7 +19,7 @@ import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaConstantsAlgorithmParameters;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OrphanedAnalysisContainer;
@@ -40,7 +40,7 @@ implements GenericElementInformationContainerInterface {
 
 	private List<OmegaImage> images;
 	private OrphanedAnalysisContainer orphanedAnalysis;
-	private OmegaAnalysisRunContainer selectedImage;
+	private OmegaAnalysisRunContainerInterface selectedImage;
 	private List<OmegaAnalysisRun> loadedAnalysisRuns;
 
 	private final List<OmegaParticleDetectionRun> particleDetectionRuns;
@@ -239,7 +239,7 @@ implements GenericElementInformationContainerInterface {
 			return;
 		final int index = this.particles_cmb.getSelectedIndex();
 		this.selectedParticleDetectionRun = null;
-		this.gaip1.update(this.selectedParticleDetectionRun);
+		this.gaip1.updateContent(this.selectedParticleDetectionRun);
 		if ((index == -1) || this.isImporter) {
 			this.populateTrajectoriesCombo();
 			// this.runPanel.populateSNRCombo();
@@ -251,7 +251,7 @@ implements GenericElementInformationContainerInterface {
 		// if (!this.isHandlingEvent) {
 		// this.fireEventSelectionPluginParticleDetectionRun();
 		// }
-		this.gaip1.update(this.selectedParticleDetectionRun);
+		this.gaip1.updateContent(this.selectedParticleDetectionRun);
 		this.populateTrajectoriesCombo();
 		// this.runPanel.populateSNRCombo();
 	}
@@ -261,7 +261,7 @@ implements GenericElementInformationContainerInterface {
 			return;
 		final int index = this.trajectories_cmb.getSelectedIndex();
 		this.selectedParticleLinkingRun = null;
-		this.gaip2.update(this.selectedParticleLinkingRun);
+		this.gaip2.updateContent(this.selectedParticleLinkingRun);
 		if ((index == -1) || this.isImporter)
 			// this.populateTrajectoriesRelinkingCombo();
 			// this.populateTrackingMeasuresCombo();
@@ -282,7 +282,7 @@ implements GenericElementInformationContainerInterface {
 		// this.tbPanel.updateTrajectories(
 		// this.selectedParticleLinkingRun.getResultingTrajectories(),
 		// false);
-		this.gaip2.update(this.selectedParticleLinkingRun);
+		this.gaip2.updateContent(this.selectedParticleLinkingRun);
 	}
 
 	private void populateImagesCombo() {
@@ -313,7 +313,7 @@ implements GenericElementInformationContainerInterface {
 		this.particleDetectionRuns.clear();
 		this.particles_cmb.setSelectedIndex(-1);
 		this.selectedParticleDetectionRun = null;
-		this.gaip1.update(this.selectedParticleDetectionRun);
+		this.gaip1.updateContent(this.selectedParticleDetectionRun);
 		if ((this.selectedImage == null) || this.isImporter) {
 			this.particles_cmb.setEnabled(false);
 			this.populateTrajectoriesCombo();
@@ -354,7 +354,7 @@ implements GenericElementInformationContainerInterface {
 		this.particleLinkingRuns.clear();
 		this.trajectories_cmb.setSelectedIndex(-1);
 		this.selectedParticleLinkingRun = null;
-		this.gaip2.update(this.selectedParticleLinkingRun);
+		this.gaip2.updateContent(this.selectedParticleLinkingRun);
 		if ((this.selectedParticleDetectionRun == null) || this.isImporter) {
 			this.trajectories_cmb.setEnabled(false);
 			// this.populateTrajectoriesRelinkingCombo();
@@ -415,7 +415,7 @@ implements GenericElementInformationContainerInterface {
 		}
 	}
 
-	public OmegaAnalysisRunContainer getSelectedImage() {
+	public OmegaAnalysisRunContainerInterface getSelectedImage() {
 		return this.selectedImage;
 	}
 

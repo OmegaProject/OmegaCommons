@@ -26,7 +26,10 @@
  *******************************************************************************/
 package edu.umassmed.omega.commons.data.coreElements;
 
-public class OmegaNamedElement extends OmegaElement {
+
+public abstract class OmegaNamedElement extends OmegaElement {
+
+	private static String DISPLAY_NAME = "Named Element";
 
 	private String name;
 	private boolean nameChanged;
@@ -51,5 +54,14 @@ public class OmegaNamedElement extends OmegaElement {
 
 	public boolean isNameChanged() {
 		return this.nameChanged;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaNamedElement.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaNamedElement.getStaticDisplayName();
 	}
 }

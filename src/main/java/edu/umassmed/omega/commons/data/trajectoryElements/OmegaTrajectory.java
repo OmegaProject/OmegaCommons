@@ -34,6 +34,8 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaTrajectory extends OmegaNamedElement implements
 		Comparable<OmegaTrajectory> {
+	
+	private static String DISPLAY_NAME = "Trajectory";
 
 	public static final String DEFAULT_TRAJ_NAME = "Track_";
 	
@@ -242,5 +244,14 @@ public class OmegaTrajectory extends OmegaNamedElement implements
 		newTraj.addROIs(this.ROIs);
 		newTraj.setVisible(this.isVisible);
 		return newTraj;
+	}
+	
+	public static String getStaticDisplayName() {
+		return OmegaTrajectory.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaTrajectory.getStaticDisplayName();
 	}
 }

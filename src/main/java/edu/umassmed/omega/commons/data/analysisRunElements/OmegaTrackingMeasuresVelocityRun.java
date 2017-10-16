@@ -10,6 +10,8 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
 	
+	private static String DISPLAY_NAME = "Velocity Measures Run";
+	
 	// Velocity
 	private final Map<OmegaSegment, List<Double>> localSpeedMap;
 	private final Map<OmegaSegment, List<Double>> localSpeedFromOriginMap;
@@ -101,5 +103,14 @@ public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
 	
 	public Map<OmegaSegment, Double> getForwardProgressionLinearityMapResults() {
 		return this.forwardProgressionLinearityMap;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaTrackingMeasuresVelocityRun.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaTrackingMeasuresVelocityRun.getStaticDisplayName();
 	}
 }

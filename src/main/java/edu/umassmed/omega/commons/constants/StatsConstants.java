@@ -1,6 +1,11 @@
 package edu.umassmed.omega.commons.constants;
 
+import javax.xml.bind.DatatypeConverter;
+
 public class StatsConstants {
+	
+	public static final String DELTA_SYMBOL = new String(
+			DatatypeConverter.parseHexBinary("ce94")).toLowerCase();
 	
 	public static final String GRAPH_RESULTSTYPE_LBL = "Select Results Type";
 	
@@ -18,7 +23,7 @@ public class StatsConstants {
 	public static final String GRAPH_TYPE_SWARMP = "Swarm Plot";
 	
 	public static final String TAB_TRACK_BROWSER = "Browser";
-	public static final String TAB_GRAPH = "Graphs";
+	public static final String TAB_GRAPH = "Plots";
 	public static final String TAB_RESULTS = "Results";
 	public static final String TAB_RESULTS_LOCAL = "Local results";
 	public static final String TAB_RESULTS_GLOBAL = "Global results";
@@ -27,7 +32,8 @@ public class StatsConstants {
 	// MOTION TYPE CLASSIFICATION
 	public static final String GRAPH_MTC_LBL_COMPLETE = "Complete set";
 	public static final String GRAPH_MTC_LBL_TRACK = "Trajectory plot";
-	public static final String GRAPH_MTC_LBL_MSD = "Log-Log MSD vs. t plot";
+	public static final String GRAPH_MTC_LBL_MSD = "Log-Log MSD vs. "
+			+ StatsConstants.DELTA_SYMBOL + "t plot";
 	public static final String GRAPH_MTC_LBL_MSS = "MSS plot";
 	public static final String GRAPH_MTC_LBL_PHASE = "ODC2 vs. Slope MSS scatter plot";
 	// TRACK
@@ -38,7 +44,8 @@ public class StatsConstants {
 			+ OmegaConstantsMathSymbols.MU + "m]";
 	// MSD
 	public static final String GRAPH_MTC_NAME_MSD = "MSD Plot";
-	public static final String GRAPH_MTC_LAB_MSD_X = "Log(deltaT) [log s]";
+	public static final String GRAPH_MTC_LAB_MSD_X = "Log("
+			+ StatsConstants.DELTA_SYMBOL + "T) [log s]";
 	public static final String GRAPH_MTC_LAB_MSD_Y = "Log(MSD) [log pixel^2 or"
 			+ OmegaConstantsMathSymbols.MU + "m^2]";
 	// MSS
@@ -50,7 +57,7 @@ public class StatsConstants {
 	public static final String GRAPH_MTC_LAB_SMSS_D_X = "ODC2 ["// "D2 ["
 			+ OmegaConstantsMathSymbols.MU + "m^2/s]";
 	public static final String GRAPH_MTC_LAB_SMSS_D_Y = "Slope MSS [a.u]";
-
+	
 	// DIFFUSIVITY
 	// GLOBAL
 	public static final String GRAPH_NAME_UNCERT_D = "Uncertainty of OCD2 estimation";
@@ -59,7 +66,8 @@ public class StatsConstants {
 	// "Slope MSS Uncertainty";
 	public static final String GRAPH_NAME_DIFF = "Observed Diffusion Constant of Order 2 (Logaritmic Intercept)";
 	// "Diffusion Coefficient (D2)";
-	public static final String GRAPH_NAME_MSD = "Slope of Log-Log MSD vs. deltaT Plot";
+	public static final String GRAPH_NAME_MSD = "Slope of Log-Log MSD vs. "
+			+ StatsConstants.DELTA_SYMBOL + "t Plot";
 	// "Slope of log-log MSD vs T Plot";
 	public static final String GRAPH_NAME_MSS = "Slope of the Moment Scaling Spectrum";
 	// "Slope MSS";
@@ -70,7 +78,8 @@ public class StatsConstants {
 	// "Slope MSS Uncertainty [a.u.]";
 	public static final String GRAPH_LAB_Y_DIFF = "Observed Diffusion Constant of Order 2 ["// "D2 ["
 			+ OmegaConstantsMathSymbols.MU + "m^2/s]";
-	public static final String GRAPH_LAB_Y_MSD = "Slope of Log-Log MSD vs. deltaT Plot [a.u.]";
+	public static final String GRAPH_LAB_Y_MSD = "Slope of Log-Log MSD vs. "
+			+ StatsConstants.DELTA_SYMBOL + "t Plot [a.u.]";
 	// "Slope of log(MSD) / log(deltaT) [a.u.]";
 	public static final String GRAPH_LAB_Y_MSS = "Slope of the Moment Scaling Spectrum [a.u.]";
 	// "Gamma [a.u.]";
@@ -137,17 +146,17 @@ public class StatsConstants {
 	public static final String MIN_MEAN_INTENSITY_GLO = StatsConstants.GRAPH_NAME_MIN
 			+ " " + StatsConstants.GRAPH_NAME_INT_MEAN;
 	public static final String MAX_BACKGROUND_GLO = StatsConstants.GRAPH_NAME_MAX
-			+ " " + StatsConstants.GRAPH_NAME_BACKGROUND;
+			+ " " + StatsConstants.BACKGROUND_LOC;
 	public static final String AVG_BACKGROUND_GLO = StatsConstants.GRAPH_NAME_AVG
-			+ " " + StatsConstants.GRAPH_NAME_BACKGROUND;
+			+ " " + StatsConstants.BACKGROUND_LOC;
 	public static final String MIN_BACKGROUND_GLO = StatsConstants.GRAPH_NAME_MIN
-			+ " " + StatsConstants.GRAPH_NAME_BACKGROUND;
+			+ " " + StatsConstants.BACKGROUND_LOC;
 	public static final String MAX_NOISE_GLO = StatsConstants.GRAPH_NAME_MAX
-			+ " " + StatsConstants.GRAPH_NAME_NOISE;
+			+ " " + StatsConstants.NOISE_LOC;
 	public static final String AVG_NOISE_GLO = StatsConstants.GRAPH_NAME_AVG
-			+ " " + StatsConstants.GRAPH_NAME_NOISE;
+			+ " " + StatsConstants.NOISE_LOC;
 	public static final String MIN_NOISE_GLO = StatsConstants.GRAPH_NAME_MIN
-			+ " " + StatsConstants.GRAPH_NAME_NOISE;
+			+ " " + StatsConstants.NOISE_LOC;
 	public static final String MAX_AREA_GLO = StatsConstants.GRAPH_NAME_MAX
 			+ " " + StatsConstants.GRAPH_NAME_AREA;
 	public static final String AVG_AREA_GLO = StatsConstants.GRAPH_NAME_AVG
@@ -155,11 +164,11 @@ public class StatsConstants {
 	public static final String MIN_AREA_GLO = StatsConstants.GRAPH_NAME_MIN
 			+ " " + StatsConstants.GRAPH_NAME_AREA;
 	public static final String MAX_SNR_GLO = StatsConstants.GRAPH_NAME_MAX
-			+ " " + StatsConstants.GRAPH_NAME_SNR;
+			+ " " + StatsConstants.SNR_LOC;
 	public static final String AVG_SNR_GLO = StatsConstants.GRAPH_NAME_AVG
-			+ " " + StatsConstants.GRAPH_NAME_SNR;
+			+ " " + StatsConstants.SNR_LOC;
 	public static final String MIN_SNR_GLO = StatsConstants.GRAPH_NAME_MIN
-			+ " " + StatsConstants.GRAPH_NAME_SNR;
+			+ " " + StatsConstants.SNR_LOC;
 	
 	public static final String PEAK_INTENSITY_LOC = StatsConstants.GRAPH_NAME_INT_PEAK;
 	public static final String CENTROID_INTENSITY_LOC = StatsConstants.GRAPH_NAME_INT_CENT;
@@ -189,7 +198,7 @@ public class StatsConstants {
 	
 	// GENERAL
 	public static final String GRAPH_LAB_Y_FREQ = "Frequency";
-	public static final String GRAPH_LAB_X_TRACK = "Track";
-	public static final String GRAPH_LAB_X_TPT = "Timepoint or Time";
-	public static final String GRAPH_LAB_X_TIME = "Timepoint[a.u] or Time [s]";
+	public static final String GRAPH_LAB_X_TRACK = "Trajectory";
+	public static final String GRAPH_LAB_X_TPT = "Time Point or Time";
+	public static final String GRAPH_LAB_X_TIME = "Time Point [a.u] or Time [s]";
 }

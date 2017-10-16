@@ -211,7 +211,7 @@ public class GenericSegmentsBrowserPanel extends GenericBrowserPanel implements
 				});
 		this.sbTrajectoriesPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent evt) {
+			public void mouseReleased(final MouseEvent evt) {
 				GenericSegmentsBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
 								|| evt.isControlDown(), evt.isShiftDown(), true);
@@ -219,7 +219,7 @@ public class GenericSegmentsBrowserPanel extends GenericBrowserPanel implements
 		});
 		this.tbNamesPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent evt) {
+			public void mouseReleased(final MouseEvent evt) {
 				GenericSegmentsBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
 								|| evt.isControlDown(), evt.isShiftDown(),
@@ -338,11 +338,15 @@ public class GenericSegmentsBrowserPanel extends GenericBrowserPanel implements
 			}
 			// this.selectedTraj = null;
 		}
-		if (this.selectedSegment == null) {
-			this.sendEventTrajectories(this.getSelectedTrajectories(), true);
-		} else {
-			this.sendEventSegments(this.getSelectedSegments(), true);
-		}
+		// if (this.selectedSegment == null) {
+		// this.sendEventTrajectories(this.getSelectedTrajectories(), true);
+		// this.sendEventSegments(this.getSelectedSegments(), true);
+		// } else {
+		// this.sendEventTrajectories(this.getSelectedTrajectories(), true);
+		// this.sendEventSegments(this.getSelectedSegments(), true);
+		// }
+		this.sendEventTrajectories(this.getSelectedTrajectories(), true);
+		this.sendEventSegments(this.getSelectedSegments(), true);
 		this.repaint();
 	}
 

@@ -29,7 +29,7 @@ package edu.umassmed.omega.commons.eventSystem.events;
 import java.util.List;
 import java.util.Map;
 
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
@@ -37,7 +37,7 @@ import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 public class OmegaImporterEventResultsParticleDetection extends
         OmegaTrajectoryIOEvent {
 
-	private final OmegaAnalysisRunContainer container;
+	private final OmegaAnalysisRunContainerInterface container;
 	
 	private final Map<String, String> analysisData, paramData;
 	
@@ -46,7 +46,7 @@ public class OmegaImporterEventResultsParticleDetection extends
 
 	public OmegaImporterEventResultsParticleDetection(
 			final OmegaIOUtility source,
-	        final OmegaAnalysisRunContainer container,
+	        final OmegaAnalysisRunContainerInterface container,
 	        final Map<String, String> analysisData,
 	        final Map<String, String> paramData,
 			final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
@@ -59,7 +59,7 @@ public class OmegaImporterEventResultsParticleDetection extends
 		this.resultingParticlesValues = resultingParticlesValues;
 	}
 
-	public OmegaAnalysisRunContainer getContainer() {
+	public OmegaAnalysisRunContainerInterface getContainer() {
 		return this.container;
 	}
 

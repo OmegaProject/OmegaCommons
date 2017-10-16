@@ -26,9 +26,9 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegm
 import edu.umassmed.omega.commons.gui.GenericTrackingResultsPanel;
 
 public class GenericResultsDialog extends GenericDialog {
-
+	
 	private static final long serialVersionUID = -3630569328100786646L;
-
+	
 	private static final String TAB_SNR_ROI = "ROI results";
 	private static final String TAB_SNR_PLANE = "Plane results";
 	private static final String TAB_SNR_IMAGE = "Image results";
@@ -36,15 +36,15 @@ public class GenericResultsDialog extends GenericDialog {
 	private static final String TAB_RL = "Relinking results";
 	private static final String TAB_PL = "Linking results";
 	private static final String TAB_PD = "Detection results";
-	
+
 	private JTabbedPane pane;
 	private GenericTrackingResultsPanel resPanel1, resPanel2, resPanel3;
 	private JButton ok_btt;
-
+	
 	public GenericResultsDialog(final RootPaneContainer parentContainer,
-	        final String title, final boolean modal) {
+			final String title, final boolean modal) {
 		super(parentContainer, title, modal);
-
+		
 		final Dimension dim = new Dimension(600, 600);
 		this.setSize(dim);
 		this.setPreferredSize(dim);
@@ -52,29 +52,29 @@ public class GenericResultsDialog extends GenericDialog {
 		this.repaint();
 		this.pack();
 	}
-	
+
 	@Override
 	protected void createAndAddWidgets() {
 		this.pane = new JTabbedPane();
 		this.resPanel1 = new GenericTrackingResultsPanel(
-		        this.getParentContainer());
+				this.getParentContainer());
 		this.resPanel2 = new GenericTrackingResultsPanel(
 				this.getParentContainer());
 		this.resPanel3 = new GenericTrackingResultsPanel(
 				this.getParentContainer());
 		this.add(this.pane, BorderLayout.CENTER);
-
+		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
-
+		
 		this.ok_btt = new JButton("Close");
 		this.ok_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
 		this.ok_btt.setSize(OmegaConstants.BUTTON_SIZE);
 		buttonPanel.add(this.ok_btt);
-
+		
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
-
+	
 	@Override
 	protected void addListeners() {
 		this.ok_btt.addActionListener(new ActionListener() {
@@ -84,12 +84,13 @@ public class GenericResultsDialog extends GenericDialog {
 			}
 		});
 	}
-	
+
 	public void setAnalysis(final OmegaAnalysisRun analysisRun,
-	        final OmegaAnalysisRun parentAnalysisRun) {
-		this.resPanel1.setAnalysisRun(null);
-		this.resPanel2.setAnalysisRun(null);
-		this.resPanel3.setAnalysisRun(null);
+			final OmegaAnalysisRun parentAnalysisRun, final String c,
+			final String z) {
+		this.resPanel1.setAnalysisRun(null, c, z);
+		this.resPanel2.setAnalysisRun(null, c, z);
+		this.resPanel3.setAnalysisRun(null, c, z);
 		this.pane.remove(this.resPanel1);
 		this.pane.remove(this.resPanel2);
 		this.pane.remove(this.resPanel3);
@@ -101,46 +102,50 @@ public class GenericResultsDialog extends GenericDialog {
 					this.resPanel2);
 			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL + " D & SMSS",
 					this.resPanel3);
-			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true);
+			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
+					c, z);
 			this.resPanel2.setAnalysisRun(analysisRun, parentAnalysisRun,
-			        false, false);
+					false, false, c, z);
 			this.resPanel3.setAnalysisRun(analysisRun, parentAnalysisRun,
-			        false, true);
+					false, true, c, z);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresMobilityRun) {
 			this.pane.add(StatsConstants.TAB_RESULTS_LOCAL, this.resPanel1);
 			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
-			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true);
-			this.resPanel2
-			.setAnalysisRun(analysisRun, parentAnalysisRun, false);
+			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
+					c, z);
+			this.resPanel2.setAnalysisRun(analysisRun, parentAnalysisRun,
+					false, c, z);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresVelocityRun) {
 			this.pane.add(StatsConstants.TAB_RESULTS_LOCAL, this.resPanel1);
 			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
-			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true);
-			this.resPanel2
-			.setAnalysisRun(analysisRun, parentAnalysisRun, false);
+			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
+					c, z);
+			this.resPanel2.setAnalysisRun(analysisRun, parentAnalysisRun,
+					false, c, z);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresIntensityRun) {
 			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL, this.resPanel1);
-			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true);
+			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
+					c, z);
 		} else if (analysisRun instanceof OmegaSNRRun) {
 			this.pane.add(GenericResultsDialog.TAB_SNR_ROI, this.resPanel1);
 			this.pane.add(GenericResultsDialog.TAB_SNR_PLANE, this.resPanel2);
 			this.pane.add(GenericResultsDialog.TAB_SNR_IMAGE, this.resPanel3);
-			this.resPanel1.setAnalysisRun(analysisRun, true);
-			this.resPanel2.setAnalysisRun(analysisRun, false, true);
+			this.resPanel1.setAnalysisRun(analysisRun, true, c, z);
+			this.resPanel2.setAnalysisRun(analysisRun, false, true, c, z);
 			this.resPanel3.setAnalysisRun(analysisRun, parentAnalysisRun,
-			        false, false);
+					false, false, c, z);
 		} else if (analysisRun instanceof OmegaTrajectoriesSegmentationRun) {
 			this.pane.add(GenericResultsDialog.TAB_SE, this.resPanel1);
-			this.resPanel1.setAnalysisRun(analysisRun);
+			this.resPanel1.setAnalysisRun(analysisRun, c, z);
 		} else if (analysisRun instanceof OmegaTrajectoriesRelinkingRun) {
 			this.pane.add(GenericResultsDialog.TAB_RL, this.resPanel1);
-			this.resPanel1.setAnalysisRun(analysisRun);
+			this.resPanel1.setAnalysisRun(analysisRun, c, z);
 		} else if (analysisRun instanceof OmegaParticleLinkingRun) {
 			this.pane.add(GenericResultsDialog.TAB_PL, this.resPanel1);
-			this.resPanel1.setAnalysisRun(analysisRun);
+			this.resPanel1.setAnalysisRun(analysisRun, c, z);
 		} else if (analysisRun instanceof OmegaParticleDetectionRun) {
 			this.pane.add(GenericResultsDialog.TAB_PD, this.resPanel1);
-			this.resPanel1.setAnalysisRun(analysisRun);
+			this.resPanel1.setAnalysisRun(analysisRun, c, z);
 		}
 	}
 }

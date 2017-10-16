@@ -30,6 +30,8 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 
 public class OmegaROI extends OmegaElement {
 
+	private static String DISPLAY_NAME = "Region Of Interest";
+	
 	private int frameIndex;
 	private final double x, y;
 	private final double realX, realY;
@@ -67,5 +69,14 @@ public class OmegaROI extends OmegaElement {
 
 	public double getRealY() {
 		return this.realY;
+	}
+	
+	public static String getStaticDisplayName() {
+		return OmegaROI.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaROI.getStaticDisplayName();
 	}
 }

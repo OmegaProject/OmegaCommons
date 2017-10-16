@@ -2,6 +2,7 @@ package edu.umassmed.omega.commons.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,15 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
@@ -37,28 +42,33 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
 import edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
+import edu.umassmed.omega.commons.utilities.OmegaTrajectoryUtilities;
 
 public class GenericTrackingResultsPanel extends GenericScrollPane implements
-OmegaFilterEventListener {
-
+		OmegaFilterEventListener {
+	
 	private static final long serialVersionUID = 1114253444374606565L;
-
+	
 	private OmegaAnalysisRun parentAnalysisRun;
 	private OmegaAnalysisRun analysisRun;
-
+	
 	private GenericAnalysisInformationPanel infoPanel;
 	private GenericFilterPanel filterPanel;
-
+	
 	private JTable table;
 	private TableRowSorter<DefaultTableModel> rowSorter;
-
-	private boolean isLocal, isSpecific;
 	
+	private boolean isLocal, isSpecific;
+
 	private final List<Integer> ints, doubles;
 
+	private String z, c;
+
+	private MyTableHeader tableHeader;
+	
 	// private JFXPanel fxPanel;
 	// private GridPane gp;
-
+	
 	public GenericTrackingResultsPanel(final RootPaneContainer parent) {
 		super(parent);
 
@@ -69,11 +79,14 @@ OmegaFilterEventListener {
 		this.isLocal = true;
 		this.isSpecific = false;
 		this.parentAnalysisRun = null;
-		
+
 		this.ints = new ArrayList<Integer>();
 		this.doubles = new ArrayList<Integer>();
-	}
 
+		this.z = "NA";
+		this.c = "NA";
+	}
+	
 	private void createAndAddWidgets() {
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -117,6 +130,8 @@ OmegaFilterEventListener {
 				return false;
 			};
 		};
+		this.tableHeader = new MyTableHeader(this.table.getColumnModel());
+		this.table.setTableHeader(this.tableHeader);
 
 		this.rowSorter = new TableRowSorter<DefaultTableModel>(
 				(DefaultTableModel) this.table.getModel());
@@ -138,14 +153,41 @@ OmegaFilterEventListener {
 		this.setViewportView(mainPanel);
 	}
 
+	private class MyTableHeader extends JTableHeader {
+		
+		private final List<String> tooltips;
+		
+		MyTableHeader(final TableColumnModel columnModel) {
+			super(columnModel);// do everything a normal JTableHeader does
+			this.tooltips = new ArrayList<String>();// plus extra data
+		}
+		
+		public void addTooltip(final String s) {
+			this.tooltips.add(s);
+		}
+		
+		@Override
+		public String getToolTipText(final MouseEvent e) {
+			final java.awt.Point p = e.getPoint();
+			final int index = this.columnModel.getColumnIndexAtX(p.x);
+			final int realIndex = this.columnModel.getColumn(index)
+					.getModelIndex();
+			return this.tooltips.get(realIndex);
+		}
+		
+		public void clear() {
+			this.tooltips.clear();
+		}
+	}
+	
 	// private void initFX() {
 	// this.fxPanel.setScene(new Scene(this.gp));
 	// }
-
-	private void addListeners() {
-
-	}
 	
+	private void addListeners() {
+		
+	}
+
 	private Class<?> getColumnClass(final int columnIndex) {
 		if (this.ints.contains(columnIndex))
 			return Integer.class;
@@ -154,56 +196,32 @@ OmegaFilterEventListener {
 		else
 			return String.class;
 	}
-
+	
 	private void addParticleColumns(final boolean needIndex) {
-		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
-		int index;
-		dtm.addColumn("ID");
-		index = this.table.getColumnModel().getColumnIndex("ID");
-		this.ints.add(index);
-		dtm.addColumn("Frame");
-		index = this.table.getColumnModel().getColumnIndex("Frame");
-		this.ints.add(index);
-		dtm.addColumn("X");
-		index = this.table.getColumnModel().getColumnIndex("X");
-		this.doubles.add(index);
-		dtm.addColumn("Y");
-		index = this.table.getColumnModel().getColumnIndex("Y");
-		this.doubles.add(index);
+		this.addStringValueColumn("Particle ID");
+		this.addIntValueColumn("Frame");
+		this.addDoubleValueColumn("X");
+		this.addDoubleValueColumn("Y");
+		this.addStringValueColumn("Z");
+		this.addStringValueColumn("C");
 		if (needIndex) {
-			dtm.addColumn("Index");
-			index = this.table.getColumnModel().getColumnIndex("Index");
-			this.ints.add(index);
+			this.addIntValueColumn("Index");
 		}
-
-	}
-
-	private void addTrajectoryColumns() {
-		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
-		dtm.addColumn("Track");
-		final DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		final int index = this.table.getColumnModel().getColumnIndex("Track");
-		this.table.getColumnModel().getColumn(index)
-		.setCellRenderer(rightRenderer);
 	}
 	
-	private void addSegmentColumns() {
-		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
-		dtm.addColumn("Segment Name");
-		dtm.addColumn("Segment Type");
-		final DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-		final int index = this.table.getColumnModel().getColumnIndex(
-				"Segment Name");
-		this.table.getColumnModel().getColumn(index)
-		.setCellRenderer(rightRenderer);
-		final int index2 = this.table.getColumnModel().getColumnIndex(
-				"Segment Type");
-		this.table.getColumnModel().getColumn(index2)
-		.setCellRenderer(rightRenderer);
+	private void addTrajectoryColumns() {
+		this.addStringValueColumn("Trajectory ID");
+		this.addStringValueColumn("Trajectory Name");
+		this.addIntValueColumn("Trajectory Length");
 	}
 
+	private void addSegmentColumns() {
+		this.addStringValueColumn("Segment ID");
+		this.addStringValueColumn("Segment Name");
+		this.addStringValueColumn("Motion Type");
+		this.addIntValueColumn("Segment Length");
+	}
+	
 	private void addIntValueColumn(final String name) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn(name);
@@ -211,10 +229,11 @@ OmegaFilterEventListener {
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex(name);
 		this.table.getColumnModel().getColumn(index)
-		.setCellRenderer(rightRenderer);
+				.setCellRenderer(rightRenderer);
 		this.ints.add(index);
+		this.tableHeader.addTooltip(name);
 	}
-
+	
 	private void addDoubleValueColumn(final String name) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn(name);
@@ -222,10 +241,11 @@ OmegaFilterEventListener {
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex(name);
 		this.table.getColumnModel().getColumn(index)
-		.setCellRenderer(rightRenderer);
+				.setCellRenderer(rightRenderer);
 		this.doubles.add(index);
+		this.tableHeader.addTooltip(name);
 	}
-
+	
 	private void addStringValueColumn(final String name) {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		dtm.addColumn(name);
@@ -233,11 +253,12 @@ OmegaFilterEventListener {
 		rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		final int index = this.table.getColumnModel().getColumnIndex(name);
 		this.table.getColumnModel().getColumn(index)
-		.setCellRenderer(rightRenderer);
+				.setCellRenderer(rightRenderer);
+		this.tableHeader.addTooltip(name);
 	}
-
+	
 	private void addParticleValuesColumns() {
-		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
+		this.table.getModel();
 		final OmegaParticleDetectionRun detectionRun = (OmegaParticleDetectionRun) this.analysisRun;
 		final Map<OmegaROI, Map<String, Object>> particlesValues = detectionRun
 				.getResultingParticlesValues();
@@ -245,19 +266,28 @@ OmegaFilterEventListener {
 			return;
 		final OmegaROI roi = (OmegaROI) particlesValues.keySet().toArray()[0];
 		final Map<String, Object> particleValues = particlesValues.get(roi);
-		dtm.getColumnCount();
 		for (final String s : particleValues.keySet()) {
+			// dtm.addColumn(s);
+			// final int index = this.table.getColumnModel().getColumnIndex(s);
 			final Object val = particleValues.get(s);
 			if ((val instanceof Integer) || (val instanceof Long)) {
-				// this.ints.add(counter);
+				// this.ints.add(index);
+				this.addIntValueColumn(s);
 			} else if ((val instanceof Float) || (val instanceof Double)) {
-				// this.doubles.add(counter);
+				// this.doubles.add(index);
+				this.addDoubleValueColumn(s);
 			}
-			dtm.addColumn(s);
 		}
 	}
-
-	private void populateResultsPanel() {
+	
+	private void populateResultsPanel(final String c, final String z) {
+		if (c != null) {
+			this.c = c;
+		}
+		if (z != null) {
+			this.z = z;
+		}
+		this.tableHeader.clear();
 		if (this.analysisRun instanceof OmegaSNRRun) {
 			final OmegaSNRRun snrRun = (OmegaSNRRun) this.analysisRun;
 			if (this.isLocal) {
@@ -274,6 +304,9 @@ OmegaFilterEventListener {
 			} else {
 				if (this.isSpecific) {
 					this.populateGlobalSpecificSNRResults(
+							snrRun.getResultingImageAverageCenterSignal(),
+							snrRun.getResultingImageAveragePeakSignal(),
+							snrRun.getResultingImageAverageMeanSignal(),
 							snrRun.getResultingImageBGR(),
 							snrRun.getResultingImageNoise(),
 							snrRun.getResultingImageMinimumSNR(),
@@ -285,6 +318,9 @@ OmegaFilterEventListener {
 					this.rowSorter.toggleSortOrder(1);
 				} else {
 					this.populateGlobalGenericSNRResults(
+							snrRun.getResultingAverageCenterSignal(),
+							snrRun.getResultingAveragePeakSignal(),
+							snrRun.getResultingAverageMeanSignal(),
 							snrRun.getResultingBackground(),
 							snrRun.getResultingNoise(),
 							snrRun.getResultingMinSNR(),
@@ -313,7 +349,10 @@ OmegaFilterEventListener {
 			final OmegaTrackingMeasuresIntensityRun intRun = (OmegaTrackingMeasuresIntensityRun) this.analysisRun;
 			this.populateGlobalIntensitySegmentsResults(intRun.getSegments(),
 					intRun.getPeakSignalsResults(),
-					intRun.getCentroidSignalsResults());
+					intRun.getCentroidSignalsResults(),
+					intRun.getSNRRun() != null, intRun.getMeanSignalsResults(),
+					intRun.getBackgroundsResults(), intRun.getNoisesResults(),
+					intRun.getSNRsResults());
 			this.rowSorter.toggleSortOrder(1);
 		} else if (this.analysisRun instanceof OmegaTrackingMeasuresVelocityRun) {
 			final OmegaTrackingMeasuresVelocityRun velRun = (OmegaTrackingMeasuresVelocityRun) this.analysisRun;
@@ -353,22 +392,30 @@ OmegaFilterEventListener {
 			}
 		} else if (this.analysisRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
 			final OmegaTrackingMeasuresDiffusivityRun difRun = (OmegaTrackingMeasuresDiffusivityRun) this.analysisRun;
+			final OmegaParameter param = difRun.getAlgorithmSpec()
+					.getParameter(OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW);
+			String LD = OmegaGUIConstants.NOT_ASSIGNED;
+			if (param != null) {
+				LD = param.getStringValue();
+			}
 			if (this.isLocal) {
 				this.populateLocalDiffusivitySegmentsResults(
-						difRun.getSegments(), difRun.getNyResults(),
+						difRun.getSegments(), LD, difRun.getNyResults(),
 						difRun.getLogMuResults(), difRun.getMuResults(),
 						difRun.getLogDeltaTResults(), difRun.getDeltaTResults());
 				// this.rowSorter.toggleSortOrder(1);
 			} else {
+				difRun.getMinimumDetectableODC();
 				if (this.isSpecific) {
 					this.populateGlobalSpecificDiffusivitySegmentsResults(
-							difRun.getSegments(),
+							difRun.getSegments(), LD,
 							difRun.getGammaDFromLogResults(),
 							difRun.getSmssFromLogResults(),
-							difRun.getErrosFromLogResults());
+							difRun.getErrosFromLogResults(),
+							difRun.getMinimumDetectableODC());
 				} else {
 					this.populateGlobalGenericDiffusivitySegmentsResults(
-							difRun.getSegments(), difRun.getNyResults(),
+							difRun.getSegments(), LD, difRun.getNyResults(),
 							difRun.getGammaDFromLogResults(),
 							difRun.getGammaDResults());
 				}
@@ -378,7 +425,7 @@ OmegaFilterEventListener {
 		}
 		// this.table.setRowSorter(this.rowSorter);
 	}
-	
+
 	private void populateParticlesResults(
 			final Map<OmegaPlane, List<OmegaROI>> particles,
 			final Map<OmegaROI, Map<String, Object>> particlesValues) {
@@ -392,10 +439,18 @@ OmegaFilterEventListener {
 				final Map<String, Object> particleValues = particlesValues
 						.get(roi);
 				final List<Object> row = new ArrayList<Object>();
-				row.add(roi.getElementID());
+				String id;
+				if (roi.getElementID() == -1) {
+					id = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					id = String.valueOf(roi.getElementID());
+				}
+				row.add(id);
 				row.add(frame.getIndex());
 				row.add(roi.getX());
 				row.add(roi.getY());
+				row.add(this.z);
+				row.add(this.c);
 				for (final String valName : particleValues.keySet()) {
 					row.add(particleValues.get(valName));
 				}
@@ -403,7 +458,7 @@ OmegaFilterEventListener {
 			}
 		}
 	}
-
+	
 	public void populateTrajectoriesResults(final List<OmegaTrajectory> tracks) {
 		this.resetResultsPanel();
 		this.addParticleColumns(false);
@@ -412,16 +467,29 @@ OmegaFilterEventListener {
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		for (final OmegaTrajectory track : tracks) {
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			final List<OmegaROI> rois = track.getROIs();
 			for (final OmegaROI roi : rois) {
-				final Object[] row = { roi.getElementID(), roi.getFrameIndex(),
-						roi.getX(), roi.getY(), /* rois.indexOf(roi), */
-						trackName };
+				String roiID;
+				if (roi.getElementID() == -1) {
+					roiID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					roiID = String.valueOf(roi.getElementID());
+				}
+				String trackID;
+				if (track.getElementID() == -1) {
+					trackID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					trackID = String.valueOf(track.getElementID());
+				}
+				final Object[] row = { roiID, roi.getFrameIndex(), roi.getX(),
+						roi.getY(), this.z, this.c, trackID, trackName,
+						trackLen };
 				dtm.addRow(row);
 			}
 		}
 	}
-
+	
 	public void populateSegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this.resetResultsPanel();
@@ -438,28 +506,49 @@ OmegaFilterEventListener {
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			final List<OmegaROI> rois = track.getROIs();
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				final int start = segment.getStartingROI().getFrameIndex();
 				final int end = segment.getEndingROI().getFrameIndex();
 				for (final OmegaROI roi : rois) {
+					String roiID;
+					if (roi.getElementID() == -1) {
+						roiID = OmegaGUIConstants.NOT_ASSIGNED;
+					} else {
+						roiID = String.valueOf(roi.getElementID());
+					}
 					final int index = roi.getFrameIndex();
 					if ((index >= start) && (index <= end)) {
 						final String segmName = segment.getName();
 						final String segmType = types
 								.getSegmentationName(segment
 										.getSegmentationType());
-						final Object[] row = { roi.getElementID(),
-								roi.getFrameIndex(), roi.getX(), roi.getY(),
-								/* rois.indexOf(roi), */trackName, segmName,
-								segmType };
+						final int segmLen = OmegaTrajectoryUtilities
+								.computeSegmentLength(track, segment);
+						final Object[] row = { roiID, roi.getFrameIndex(),
+								roi.getX(), roi.getY(), this.z, this.c,
+								trackID, trackName, trackLen, segmID, segmName,
+								segmType, segmLen };
 						dtm.addRow(row);
 					}
 				}
 			}
 		}
 	}
-	
+
 	private void populateLocalSNRResults(
 			final Map<OmegaROI, Integer> particleArea,
 			final Map<OmegaROI, Integer> centerSignal,
@@ -470,17 +559,23 @@ OmegaFilterEventListener {
 			final Map<OmegaROI, Double> snr,
 			final Map<OmegaROI, Double> indexSNR) {
 		this.addParticleColumns(false);
+		this.addDoubleValueColumn("Center Intensity");
+		this.addDoubleValueColumn("Peak Intensity");
+		this.addDoubleValueColumn("Mean Intensity");
+		this.addDoubleValueColumn("Local Background");
+		this.addDoubleValueColumn("Local Noise");
+		this.addDoubleValueColumn("Local SNR");
 		this.addDoubleValueColumn("Particle Area");
-		this.addDoubleValueColumn("Center Signal");
-		this.addDoubleValueColumn("Peak Signal");
-		this.addDoubleValueColumn("Mean Signal");
-		this.addDoubleValueColumn("Noise");
-		this.addDoubleValueColumn("Background");
-		this.addDoubleValueColumn("SNR");
 		// this.addDoubleValueColumn("Index SNR");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		for (final OmegaROI roi : particleArea.keySet()) {
+			String roiID;
+			if (roi.getElementID() == -1) {
+				roiID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				roiID = String.valueOf(roi.getElementID());
+			}
 			final int index = roi.getFrameIndex();
 			final Integer area = particleArea.get(roi);
 			final Integer center = centerSignal.get(roi);
@@ -490,15 +585,18 @@ OmegaFilterEventListener {
 			final Double localBackground = background.get(roi);
 			final Double localSNR = snr.get(roi);
 			// final Double localIndexSNR = indexSNR.get(roi);
-			final Object[] row = { roi.getElementID(), index, roi.getX(),
-					roi.getY(), area, center, peak, mean, localNoise,
-					localBackground, localSNR };
+			final Object[] row = { roiID, index, roi.getX(), roi.getY(),
+					this.z, this.c, center, peak, mean, localBackground,
+					localNoise, localSNR, area };
 			// localIndexSNR
 			dtm.addRow(row);
 		}
 	}
-
+	
 	private void populateGlobalSpecificSNRResults(
+			final Map<OmegaPlane, Double> avgCenterSignal,
+			final Map<OmegaPlane, Double> avgPeakSignal,
+			final Map<OmegaPlane, Double> avgMeanSignal,
 			final Map<OmegaPlane, Double> bgr,
 			final Map<OmegaPlane, Double> noise,
 			final Map<OmegaPlane, Double> minSNR,
@@ -507,12 +605,15 @@ OmegaFilterEventListener {
 			final Map<OmegaPlane, Double> minIndexSNR,
 			final Map<OmegaPlane, Double> avgIndexSNR,
 			final Map<OmegaPlane, Double> maxIndexSNR) {
-		this.addIntValueColumn("ID");
-		this.addIntValueColumn("Frame Index");
+		this.addStringValueColumn("Plane ID");
+		this.addIntValueColumn("Plane Index");
+		this.addDoubleValueColumn("Average Center Intesity");
+		this.addDoubleValueColumn("Average Peak Intesity");
+		this.addDoubleValueColumn("Average Mean Intesity");
 		this.addDoubleValueColumn("Background");
 		this.addDoubleValueColumn("Noise");
-		this.addDoubleValueColumn("Min SNR");
 		this.addDoubleValueColumn("Avg SNR");
+		this.addDoubleValueColumn("Min SNR");
 		this.addDoubleValueColumn("Max SNR");
 		// this.addDoubleValueColumn("Min Index SNR");
 		// this.addDoubleValueColumn("Avg Index SNR");
@@ -520,6 +621,15 @@ OmegaFilterEventListener {
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		for (final OmegaPlane plane : bgr.keySet()) {
+			String planeID;
+			if (plane.getElementID() == -1) {
+				planeID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				planeID = String.valueOf(plane.getElementID());
+			}
+			final Double localAvgCenterSignal = avgCenterSignal.get(plane);
+			final Double localAvgPeakSignal = avgPeakSignal.get(plane);
+			final Double localAvgMeanSignal = avgMeanSignal.get(plane);
 			final Double localBGR = bgr.get(plane);
 			final Double localNoise = noise.get(plane);
 			final Double localMinSNR = minSNR.get(plane);
@@ -528,25 +638,31 @@ OmegaFilterEventListener {
 			// final Double localMinIndexSNR = minIndexSNR.get(plane);
 			// final Double localAvgIndexSNR = avgIndexSNR.get(plane);
 			// final Double localMaxIndexSNR = maxIndexSNR.get(plane);
-			final Object[] row = { plane.getElementID(), plane.getIndex(),
-					localBGR, localNoise, localMinSNR, localAvgSNR, localMaxSNR };
+			final Object[] row = { planeID, plane.getIndex(),
+					localAvgCenterSignal, localAvgPeakSignal,
+					localAvgMeanSignal, localBGR, localNoise, localAvgSNR,
+					localMinSNR, localMaxSNR };
 			// localMinIndexSNR, localAvgIndexSNR, localMaxIndexSNR
 			dtm.addRow(row);
 		}
 	}
-
-	private void populateGlobalGenericSNRResults(final Double bgr,
-			final Double noise, final Double minSNR, final Double avgSNR,
-			final Double maxSNR, final Double minIndexSNR,
+	
+	private void populateGlobalGenericSNRResults(final Double avgCenterSignal,
+			final Double avgPeakSignal, final Double avgMeanSignal,
+			final Double bgr, final Double noise, final Double minSNR,
+			final Double avgSNR, final Double maxSNR, final Double minIndexSNR,
 			final Double avgIndexSNR, final Double maxIndexSNR) {
-		this.addIntValueColumn("ID");
-		this.addDoubleValueColumn("T");
-		this.addDoubleValueColumn("Z");
-		this.addDoubleValueColumn("C");
+		this.addStringValueColumn("Image ID");
+		// this.addDoubleValueColumn("T");
+		this.addStringValueColumn("Z");
+		this.addStringValueColumn("C");
+		this.addDoubleValueColumn("Average Center Intesity");
+		this.addDoubleValueColumn("Average Peak Intesity");
+		this.addDoubleValueColumn("Average Mean Intesity");
 		this.addDoubleValueColumn("Background");
 		this.addDoubleValueColumn("Noise");
-		this.addDoubleValueColumn("Min SNR");
 		this.addDoubleValueColumn("Avg SNR");
+		this.addDoubleValueColumn("Min SNR");
 		this.addDoubleValueColumn("Max SNR");
 		// this.addDoubleValueColumn("Min Index SNR");
 		// this.addDoubleValueColumn("Avg Index SNR");
@@ -559,27 +675,53 @@ OmegaFilterEventListener {
 			img = p.getParentPixels().getParentImage();
 			break;
 		}
-		final Object[] row = { img.getElementID(),
-				img.getDefaultPixels().getSizeT(),
-				img.getDefaultPixels().getSizeZ(),
-				img.getDefaultPixels().getSizeC(), bgr, noise, minSNR, avgSNR,
-				maxSNR };
+		if (img == null)
+			// TODO error
+			return;
+		String imageID;
+		if (img.getElementID() == -1) {
+			imageID = OmegaGUIConstants.NOT_ASSIGNED;
+		} else {
+			imageID = String.valueOf(img.getElementID());
+		}
+		final Object[] row = { imageID, /* img.getDefaultPixels().getSizeT(), */
+		this.z, this.c, avgCenterSignal, avgPeakSignal, avgMeanSignal, bgr,
+				noise, avgSNR, minSNR, maxSNR };
 		// localMinIndexSNR, localAvgIndexSNR, localMaxIndexSNR
 		dtm.addRow(row);
 	}
-	
+
 	private void populateGlobalIntensitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[]> peakSignals,
-			final Map<OmegaSegment, Double[]> centroidSignals) {
-		this.addStringValueColumn("Track");
+			final Map<OmegaSegment, Double[]> centroidSignals,
+			final boolean hasSNR,
+			final Map<OmegaSegment, Double[]> meanSignals,
+			final Map<OmegaSegment, Double[]> backgrounds,
+			final Map<OmegaSegment, Double[]> noises,
+			final Map<OmegaSegment, Double[]> snrs) {
+		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addIntValueColumn("Min Peak signal");
-		this.addIntValueColumn("Avg Peak signal");
-		this.addIntValueColumn("Max Peak signal");
-		this.addIntValueColumn("Min Centroid signal");
-		this.addIntValueColumn("Avg Centroid signal");
-		this.addIntValueColumn("Max Centroid signal");
+		this.addIntValueColumn("Avg Centroid Intensity");
+		this.addIntValueColumn("Min Centroid Intensity");
+		this.addIntValueColumn("Max Centroid Intensity");
+		this.addIntValueColumn("Avg Peak Intensity");
+		this.addIntValueColumn("Min Peak Intensity");
+		this.addIntValueColumn("Max Peak Intensity");
+		if (hasSNR) {
+			this.addDoubleValueColumn("Avg Mean Intensity");
+			this.addDoubleValueColumn("Min Mean Intensity");
+			this.addDoubleValueColumn("Max Mean Intensity");
+			this.addDoubleValueColumn("Avg Local Background");
+			this.addDoubleValueColumn("Min Local Background");
+			this.addDoubleValueColumn("Max Local Background");
+			this.addDoubleValueColumn("Avg Local Noise");
+			this.addDoubleValueColumn("Min Local Noise");
+			this.addDoubleValueColumn("Max Local Noise");
+			this.addDoubleValueColumn("Avg Local SNR");
+			this.addDoubleValueColumn("Min Local SNR");
+			this.addDoubleValueColumn("Max Local SNR");
+		}
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -588,23 +730,52 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				final Double[] peaks = peakSignals.get(segment);
 				final Double[] centroids = centroidSignals.get(segment);
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
-				new ArrayList<Object>();
-				final Object[] row = { trackName, segmName, segmType, peaks[0],
-						peaks[1], peaks[2], centroids[0], centroids[1],
-						centroids[2] };
-				dtm.addRow(row);
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
+				if (hasSNR) {
+					final Double[] means = meanSignals.get(segment);
+					final Double[] bgr = backgrounds.get(segment);
+					final Double[] noise = noises.get(segment);
+					final Double[] snr = snrs.get(segment);
+					final Object[] row = { trackID, trackName, trackLen,
+							segmID, segmName, segmType, segmLen, centroids[1],
+							centroids[0], centroids[2], peaks[1], peaks[0],
+							peaks[2], means[1], means[0], means[2], bgr[1],
+							bgr[0], bgr[2], noise[1], noise[0], noise[2],
+							snr[1], snr[0], snr[2] };
+					dtm.addRow(row);
+				} else {
+					final Object[] row = { trackID, trackName, trackLen,
+							segmID, segmName, segmType, segmLen, centroids[1],
+							centroids[0], centroids[2], peaks[1], peaks[0],
+							peaks[2] };
+					dtm.addRow(row);
+				}
 			}
 		}
 	}
-
+	
 	private void populateLocalVelocitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, List<Double>> localSpeeds,
@@ -614,8 +785,8 @@ OmegaFilterEventListener {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		this.addDoubleValueColumn("Instantaneous Speed");
-		this.addDoubleValueColumn("Cumulative Speed");
-		this.addDoubleValueColumn("Cumulative Velocity");
+		this.addDoubleValueColumn("Instantaneous Cumulative Curvilinear Speed");
+		this.addDoubleValueColumn("Instantaneous Cumulative Straight Speed");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -624,10 +795,23 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			final List<OmegaROI> rois = track.getROIs();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				final List<Double> speeds = localSpeeds.get(segment);
 				final List<Double> speedsFromOrigin = localSpeedsFromOrigin
 						.get(segment);
@@ -637,6 +821,12 @@ OmegaFilterEventListener {
 				final int end = segment.getEndingROI().getFrameIndex();
 				int i = 0;
 				for (final OmegaROI roi : rois) {
+					String roiID;
+					if (roi.getElementID() == -1) {
+						roiID = OmegaGUIConstants.NOT_ASSIGNED;
+					} else {
+						roiID = String.valueOf(roi.getElementID());
+					}
 					final int index = roi.getFrameIndex();
 					i++;
 					if ((index < start) || (index >= end)) {
@@ -646,21 +836,22 @@ OmegaFilterEventListener {
 					final Double speedFromOrigin = speedsFromOrigin.get(i);
 					final Double velocityFromOrigin = velocitiesFromOrigin
 							.get(i);
-					
+
 					final String segmName = segment.getName();
 					final String segmType = types.getSegmentationName(segment
 							.getSegmentationType());
-					final Object[] row = { roi.getElementID(),
-							roi.getFrameIndex(), roi.getX(), roi.getY(),
-							/* rois.indexOf(roi), */trackName, segmName,
-							segmType, speed, speedFromOrigin,
-							velocityFromOrigin };
+					final int segmLen = OmegaTrajectoryUtilities
+							.computeSegmentLength(track, segment);
+					final Object[] row = { roiID, roi.getFrameIndex(),
+							roi.getX(), roi.getY(), this.z, this.c, trackID,
+							trackName, trackLen, segmID, segmName, segmType,
+							segmLen, speed, speedFromOrigin, velocityFromOrigin };
 					dtm.addRow(row);
 				}
 			}
 		}
 	}
-
+	
 	private void populateGlobalVelocitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double> averageSpeeds,
@@ -668,9 +859,9 @@ OmegaFilterEventListener {
 			final Map<OmegaSegment, Double> forwardProgressions) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Speed");
-		this.addDoubleValueColumn("Velocity");
-		this.addDoubleValueColumn("Progression");
+		this.addDoubleValueColumn("Average Curvilinear Speed");
+		this.addDoubleValueColumn("Average Straight Speed");
+		this.addDoubleValueColumn("Forward Progression Linearity");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -679,9 +870,22 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				final Double speed = averageSpeeds.get(segment);
 				final Double velocity = averageVelocities.get(segment);
 				final Double forwardProgression = forwardProgressions
@@ -689,13 +893,16 @@ OmegaFilterEventListener {
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
-				final Object[] row = { trackName, segmName, segmType, speed,
-						velocity, forwardProgression };
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
+				final Object[] row = { trackID, trackName, trackLen, segmID,
+						segmName, segmType, segmLen, speed, velocity,
+						forwardProgression };
 				dtm.addRow(row);
 			}
 		}
 	}
-
+	
 	private void populateLocalMobilitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, List<Double>> localDistances,
@@ -707,13 +914,13 @@ OmegaFilterEventListener {
 		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Time");
-		this.addDoubleValueColumn("Instantaneous Distance");
-		this.addDoubleValueColumn("Cumulative Curvilinear Distance");
-		this.addDoubleValueColumn("Cumulative Straight-Line Distance");
-		this.addDoubleValueColumn("Confinement");
-		this.addDoubleValueColumn("Angle");
+		this.addDoubleValueColumn("Distance Traveled");
+		this.addDoubleValueColumn("Cumulative Curvilinear Distance Traveled");
+		this.addDoubleValueColumn("Cumulative Straight Distance Traveled");
+		this.addDoubleValueColumn("Cumulative Confinement Ratio");
+		this.addDoubleValueColumn("Instantaneous Angle");
 		this.addDoubleValueColumn("Directional Change");
+		this.addDoubleValueColumn("Cumulative Time Traveled");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -722,10 +929,23 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			final List<OmegaROI> rois = track.getROIs();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				final List<Double> times = timeTraveled.get(segment);
 				final List<Double> instDist = localDistances.get(segment);
 				final List<Double> distances = localDistancesFromOrigin
@@ -740,6 +960,12 @@ OmegaFilterEventListener {
 				final int end = segment.getEndingROI().getFrameIndex();
 				int i = 0;
 				for (final OmegaROI roi : rois) {
+					String roiID;
+					if (roi.getElementID() == -1) {
+						roiID = OmegaGUIConstants.NOT_ASSIGNED;
+					} else {
+						roiID = String.valueOf(roi.getElementID());
+					}
 					final int index = roi.getFrameIndex();
 					i++;
 					if ((index < start) || (index >= end)) {
@@ -751,21 +977,23 @@ OmegaFilterEventListener {
 					final Double displ = displacements.get(i);
 					final Double conf = confiments.get(i);
 					final Double[] angles = anglesAndDirectionalChanges.get(i);
-					
+
 					final String segmName = segment.getName();
 					final String segmType = types.getSegmentationName(segment
 							.getSegmentationType());
-					final Object[] row = { roi.getElementID(),
-							roi.getFrameIndex(), roi.getX(), roi.getY(),
-							/* rois.indexOf(roi), */trackName, segmName,
-							segmType, time, ldist, dist, displ, conf,
-							angles[0], angles[1] };
+					final int segmLen = OmegaTrajectoryUtilities
+							.computeSegmentLength(track, segment);
+					final Object[] row = { roiID, roi.getFrameIndex(),
+							roi.getX(), roi.getY(), this.z, this.c, trackID,
+							trackName, trackLen, segmID, segmName, segmType,
+							segmLen, ldist, dist, displ, conf, angles[0],
+							angles[1], time };
 					dtm.addRow(row);
 				}
 			}
 		}
 	}
-
+	
 	private void populateGlobalMobilitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double> maxDisplacementes,
@@ -774,10 +1002,11 @@ OmegaFilterEventListener {
 			final Map<OmegaSegment, List<Double>> timeTraveled) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Time");
-		this.addDoubleValueColumn("Cumulative Curvilinear Distance");
-		this.addDoubleValueColumn("Cumulative Straight-Line Distance");
-		this.addDoubleValueColumn("Max Displacement");
+		this.addDoubleValueColumn("Total Curvilinear Distance Traveled");
+		this.addDoubleValueColumn("Max Cumulative Straight Distance Traveled");
+		this.addDoubleValueColumn("Total Net Straight Distance Traveled");
+		this.addDoubleValueColumn("Confinement Ratio");
+		this.addDoubleValueColumn("Total Time Traveled");
 		// this.addDoubleValueColumn("Total time");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -787,11 +1016,24 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			final List<OmegaROI> rois = track.getROIs();
 			final int lastIndex = rois.get(rois.size() - 1).getFrameIndex() - 1;
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				final Double time = timeTraveled.get(segment).get(lastIndex);
 				final Double dist = localDistancesFromOrigin.get(segment).get(
 						lastIndex);
@@ -802,28 +1044,32 @@ OmegaFilterEventListener {
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
-				final Object[] row = { trackName, segmName, segmType, time,
-						dist, disp, maxDisp };
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
+				final Object[] row = { trackID, trackName, trackLen, segmID,
+						segmName, segmType, segmLen, dist, maxDisp, disp, time };
 				dtm.addRow(row);
 			}
 		}
 	}
-
+	
 	private void populateLocalDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final String windowDivisor,
 			final Map<OmegaSegment, Double[]> nyMap,
 			final Map<OmegaSegment, Double[][]> logMuMap,
 			final Map<OmegaSegment, Double[][]> muMap,
 			final Map<OmegaSegment, Double[][]> logDeltaTMap,
 			final Map<OmegaSegment, Double[][]> deltaTMap) {
-		this.addStringValueColumn("Track");
+		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addStringValueColumn("Nu");
-		this.addStringValueColumn("Interval");
-		this.addStringValueColumn("Mu");
+		// this.addStringValueColumn("Interval");
+		// this.addStringValueColumn("Max Calculation Window");
+		this.addStringValueColumn("Moment's Order");
 		this.addStringValueColumn("Delta T");
-		this.addStringValueColumn("Log Mu");
+		this.addStringValueColumn("Moment of Displacement");
 		this.addStringValueColumn("Log Delta T");
+		this.addStringValueColumn("Log Moment of Displacement");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -832,9 +1078,22 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				Double[] nus = null;
 				if ((nyMap != null) && nyMap.containsKey(segment)) {
 					nus = nyMap.get(segment);
@@ -858,6 +1117,8 @@ OmegaFilterEventListener {
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
 				if (nus == null) {
 					continue;
 				}
@@ -907,26 +1168,31 @@ OmegaFilterEventListener {
 							deltaT = String.valueOf(deltaTNu[i]);
 						}
 						final String nyVal = String.valueOf(ny);
-						final String intVal = String.valueOf(i + 1);
-						final Object[] row = { trackName, segmName, segmType,
-								nyVal, intVal, mu, deltaT, logMu, logDeltaT };
+						final Object[] row = { trackID, trackName, trackLen,
+								segmID, segmName, segmType, segmLen, nyVal,
+								deltaT, mu, logDeltaT, logMu };
 						dtm.addRow(row);
 					}
-
+					
 				}
-
+				
 			}
 		}
 	}
-
+	
 	private void populateGlobalGenericDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final String windowDivisor,
 			final Map<OmegaSegment, Double[]> nyMap,
 			final Map<OmegaSegment, Double[][]> gammaDFromLogMap,
 			final Map<OmegaSegment, Double[][]> gammaDMap) {
-		this.addStringValueColumn("Track");
+		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addStringValueColumn("Nu");
+		// this.addStringValueColumn("Max Calculation Window");
+		this.addStringValueColumn("Moment's Order");
+		this.addStringValueColumn("Slope Log-Log MSD");
+		this.addStringValueColumn("Intercept (y02)");
+		this.addStringValueColumn("Fits goodness");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -937,32 +1203,24 @@ OmegaFilterEventListener {
 		final OmegaTrajectory track1 = segments.keySet().iterator().next();
 		final OmegaSegment segment1 = segments.get(track1).get(0);
 		final Double nu1 = nyMap.get(segment1)[0];
-		final Integer ny1 = new BigDecimal(nu1).intValue();
-		int gammaDLogLength = 0;
-		if ((gammaDFromLogMap != null)
-				&& gammaDFromLogMap.containsKey(segment1)) {
-			final Double[][] array = gammaDFromLogMap.get(segment1);
-			if ((array != null) && (array[ny1] != null)) {
-				gammaDLogLength = array[ny1].length;
-			}
-		}
-		int gammaDLength = 0;
-		if ((gammaDMap != null) && gammaDMap.containsKey(segment1)) {
-			final Double[][] array = gammaDMap.get(segment1);
-			if ((array != null) && (array[ny1] != null)) {
-				gammaDLength = array[ny1].length;
-			}
-		}
-		for (int i = 0; i < gammaDLength; i++) {
-			this.addStringValueColumn("Gamma " + i);
-		}
-		for (int i = 0; i < gammaDLogLength; i++) {
-			this.addStringValueColumn("Gamma from Log " + i);
-		}
+		new BigDecimal(nu1).intValue();
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				Double[] nus = null;
 				if ((nyMap != null) && nyMap.containsKey(segment)) {
 					nus = nyMap.get(segment);
@@ -979,6 +1237,8 @@ OmegaFilterEventListener {
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
 				if (nus == null) {
 					continue;
 				}
@@ -988,45 +1248,31 @@ OmegaFilterEventListener {
 					int gammaLogLength = 0;
 					if (gammaDsFromLog != null) {
 						gammaDFromLog = gammaDsFromLog[ny];
-						gammaLogLength = gammaDFromLog.length;
+						gammaLogLength = gammaDFromLog.length - 1;
 					}
 					Double[] gammaD = null;
 					int gammaLength = 0;
 					if (gammaDs != null) {
 						gammaD = gammaDs[ny];
-						gammaLength = gammaD.length;
+						gammaLength = gammaD.length - 1;
 					}
-					final int size = 4 + gammaLogLength + gammaLength;
+					final int size = 6 + gammaLogLength + gammaLength;
 					final Object[] row = new Object[size];
-					row[0] = trackName;
-					row[1] = segmName;
-					row[2] = segmType;
-					row[3] = String.valueOf(ny);
-					int index = 4;
-					for (int i = 0; i < gammaLogLength; i++) {
-						// for (final Double gamma : gammaD) {
-						String gammaVal = OmegaGUIConstants.NOT_ASSIGNED;
-						if (gammaDFromLog != null) {
-							final Double gamma = gammaDFromLog[i];
-							if (Double.isNaN(gamma)) {
-								// row[index] = "NaN";
-								gammaVal = String.valueOf(gamma);
-								row[index] = gammaVal;
-							} else {
-								gammaVal = String.valueOf(gamma);
-								row[index] = gammaVal;
-							}
-						}
-						// rowObj.add(d);
-						index++;
-					}
-					for (int i = 0; i < gammaLength; i++) {
-						// for (final Double gamma : gammaDFromLog) {
+					row[0] = trackID;
+					row[1] = trackName;
+					row[2] = trackLen;
+					row[3] = segmID;
+					row[4] = segmName;
+					row[5] = segmType;
+					row[6] = segmLen;
+					// row[5] = windowDivisor;
+					row[7] = String.valueOf(ny);
+					int index = 8;
+					for (int i = 0; i < (gammaLength - 1); i++) {
 						String gammaVal = OmegaGUIConstants.NOT_ASSIGNED;
 						if (gammaD != null) {
 							final Double gamma = gammaD[i];
 							if (Double.isNaN(gamma)) {
-								// row[index] = "NaN";
 								gammaVal = String.valueOf(gamma);
 								row[index] = gammaVal;
 							} else {
@@ -1034,28 +1280,45 @@ OmegaFilterEventListener {
 								row[index] = gammaVal;
 							}
 						}
-						// rowObj.add(d);
+						index++;
+					}
+					for (int i = 0; i < (gammaLogLength - 1); i++) {
+						String gammaVal = OmegaGUIConstants.NOT_ASSIGNED;
+						if (gammaDFromLog != null) {
+							final Double gamma = gammaDFromLog[i];
+							if (Double.isNaN(gamma)) {
+								gammaVal = String.valueOf(gamma);
+								row[index] = gammaVal;
+							} else {
+								gammaVal = String.valueOf(gamma);
+								row[index] = gammaVal;
+							}
+						}
 						index++;
 					}
 					dtm.addRow(row);
-					// dtm.addRow(rowObj.toArray());
 				}
 			}
 		}
 	}
-
+	
 	private void populateGlobalSpecificDiffusivitySegmentsResults(
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final String windowDivisor,
 			final Map<OmegaSegment, Double[][]> gammaDFromLogResultsMap,
 			final Map<OmegaSegment, Double[]> smssFromLogResultsMap,
-			final Map<OmegaSegment, Double[]> errosFromLogResultsMap) {
-		this.addStringValueColumn("Track");
+			final Map<OmegaSegment, Double[]> errosFromLogResultsMap,
+			final Double minDetODC) {
+		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addStringValueColumn("SMSD");
-		this.addStringValueColumn("D");
-		this.addStringValueColumn("Error D");
-		this.addStringValueColumn("SMSS");
-		this.addStringValueColumn("Error SMSS");
+		this.addStringValueColumn("Max Calculation Window");
+		this.addStringValueColumn("Slope Log-Log MSD");
+		this.addStringValueColumn("Intercept (y02)");
+		this.addStringValueColumn("ODC2");
+		this.addStringValueColumn("Uncertainty ODC2");
+		this.addStringValueColumn("Slope MSS");
+		this.addStringValueColumn("Uncertainty SMSS");
+		this.addStringValueColumn("Min Detectable ODC");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -1064,9 +1327,22 @@ OmegaFilterEventListener {
 					.getSegmentationTypes();
 		}
 		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
 			final List<OmegaSegment> segmentList = segments.get(track);
 			final String trackName = track.getName();
+			final int trackLen = track.getLength();
 			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
 				Double[][] gammaFromLog = null;
 				if ((gammaDFromLogResultsMap != null)
 						&& gammaDFromLogResultsMap.containsKey(segment)) {
@@ -1085,12 +1361,16 @@ OmegaFilterEventListener {
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
 				new ArrayList<Object>();
 				String dVal = OmegaGUIConstants.NOT_ASSIGNED;
 				String smsdVal = OmegaGUIConstants.NOT_ASSIGNED;
+				String intercept = OmegaGUIConstants.NOT_ASSIGNED;
 				if ((gammaFromLog != null) && (gammaFromLog[2] != null)) {
 					dVal = String.valueOf(gammaFromLog[2][3]);
 					smsdVal = String.valueOf(gammaFromLog[2][0]);
+					intercept = String.valueOf(gammaFromLog[2][1]);
 				}
 				String dErr = OmegaGUIConstants.NOT_ASSIGNED;
 				if (errorFromLog != null) {
@@ -1104,13 +1384,20 @@ OmegaFilterEventListener {
 				if (errorFromLog != null) {
 					smssErr = String.valueOf(errorFromLog[1]);
 				}
-				final Object[] row = { trackName, segmName, segmType, smsdVal,
-						dVal, dErr, smssVal, smssErr };
+				String minDetODCString = OmegaGUIConstants.NOT_ASSIGNED;
+				if (minDetODC != null) {
+					minDetODCString = String.valueOf(minDetODC);
+				}
+
+				final Object[] row = { trackID, trackName, trackLen, segmID,
+						segmName, segmType, segmLen, windowDivisor, smsdVal,
+						intercept, dVal, dErr, smssVal, smssErr,
+						minDetODCString };
 				dtm.addRow(row);
 			}
 		}
 	}
-
+	
 	private void updateFilterPanel() {
 		final List<String> columNames = new ArrayList<String>();
 		for (int i = 0; i < this.table.getColumnCount(); i++) {
@@ -1118,7 +1405,7 @@ OmegaFilterEventListener {
 		}
 		this.filterPanel.updateCombo(columNames);
 	}
-
+	
 	private void resetResultsPanel() {
 		// this.table.setRowSorter(null)
 		this.ints.clear();
@@ -1132,44 +1419,47 @@ OmegaFilterEventListener {
 		this.table.revalidate();
 		this.table.repaint();
 	}
-
-	public void setAnalysisRun(final OmegaAnalysisRun analysisRun) {
-		this.setAnalysisRun(analysisRun, true);
-	}
-
+	
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
-			final boolean isLocal) {
-		this.setAnalysisRun(analysisRun, null, isLocal);
+			final String c, final String z) {
+		this.setAnalysisRun(analysisRun, true, c, z);
 	}
 	
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
-			final boolean isLocal, final boolean isSpecific) {
-		this.setAnalysisRun(analysisRun, null, isLocal, isSpecific);
+			final boolean isLocal, final String c, final String z) {
+		this.setAnalysisRun(analysisRun, null, isLocal, c, z);
 	}
-	
+
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
-			final OmegaAnalysisRun parentAnalysisRun, final boolean isLocal) {
-		this.setAnalysisRun(analysisRun, parentAnalysisRun, isLocal, true);
+			final boolean isLocal, final boolean isSpecific, final String c,
+			final String z) {
+		this.setAnalysisRun(analysisRun, null, isLocal, isSpecific, c, z);
 	}
 
 	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
 			final OmegaAnalysisRun parentAnalysisRun, final boolean isLocal,
-			final boolean isSpecific) {
+			final String c, final String z) {
+		this.setAnalysisRun(analysisRun, parentAnalysisRun, isLocal, true, c, z);
+	}
+	
+	public void setAnalysisRun(final OmegaAnalysisRun analysisRun,
+			final OmegaAnalysisRun parentAnalysisRun, final boolean isLocal,
+			final boolean isSpecific, final String c, final String z) {
 		this.isSpecific = isSpecific;
 		this.isLocal = isLocal;
 		this.parentAnalysisRun = parentAnalysisRun;
 		this.analysisRun = analysisRun;
-		this.infoPanel.update(analysisRun);
+		this.infoPanel.updateContent(analysisRun);
 		this.resetResultsPanel();
 		if (this.analysisRun != null) {
-			this.populateResultsPanel();
+			this.populateResultsPanel(c, z);
 		}
 	}
-
+	
 	public OmegaAnalysisRun getAnalysisRun() {
 		return this.analysisRun;
 	}
-
+	
 	@Override
 	public void handleFilterEvent(final OmegaFilterEvent event) {
 		final String key = event.getKey();
@@ -1204,7 +1494,7 @@ OmegaFilterEventListener {
 		}
 		this.rowSorter.setRowFilter(rf);
 	}
-	
+
 	@Override
 	public void updateParentContainer(final RootPaneContainer parent) {
 		super.updateParentContainer(parent);

@@ -183,7 +183,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				});
 		this.tbTrajectoriesPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent evt) {
+			public void mouseReleased(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
 								|| evt.isControlDown(), evt.isShiftDown(), true);
@@ -191,7 +191,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		});
 		this.tbNamesPanel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent evt) {
+			public void mouseReleased(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseClick(
 						evt.getPoint(), SwingUtilities.isRightMouseButton(evt)
 								|| evt.isControlDown(), evt.isShiftDown(),
@@ -438,8 +438,10 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				&& !trajectories.isEmpty()) {
 			int maxT = -1;
 			for (final OmegaTrajectory traj : trajectories) {
-				if (maxT < traj.getLength()) {
-					maxT = traj.getLength();
+				final int maxTmpT = traj.getROIs()
+						.get(traj.getROIs().size() - 1).getFrameIndex();
+				if (maxT < maxTmpT) {
+					maxT = maxTmpT;
 				}
 			}
 			this.setSizeT(maxT);

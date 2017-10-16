@@ -1,243 +1,202 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment" 
-    project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaSegment.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="163" y="-284"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI" 
+  <class id="1" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaROI.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="266" y="2"/>    
+    <position height="-1" width="-1" x="704" y="381"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaLink" 
+  <class id="2" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationType" 
+    project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaSegmentationType.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="580" width="368" x="1154" y="-72"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes" 
+    project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaSegmentationTypes.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="234" y="201"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaLink" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaLink.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="199" y="-179"/>    
+    <position height="-1" width="-1" x="940" y="-16"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="4" language="java" 
-    name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationType" project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaSegmentationType.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1035" y="-109"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory" 
+  <class id="5" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaTrajectory.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="475" y="237"/>    
+    <position height="-1" width="-1" x="640" y="41"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle" 
+  <class id="6" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle" 
     project="omega.commons" 
     file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaParticle.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="170" y="203"/>    
+    <position height="-1" width="-1" x="1010" y="422"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="7" language="java" 
-    name="main.java.edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes" project="omega.commons" 
-    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaSegmentationTypes.java" 
+  <class id="7" language="java" name="edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment" 
+    project="omega.commons" 
+    file="/omega.commons/src/main/java/edu/umassmed/omega/commons/data/trajectoryElements/OmegaSegment.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="657" y="-115"/>    
+    <position height="-1" width="-1" x="1015" y="124"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <generalization id="8">    
-    <bendpoint x="77" y="61"/>    
-    <bendpoint x="76" y="32"/>    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <association id="9">    
-    <bendpoint x="328" y="102"/>    
-    <bendpoint x="328" y="75"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="10" name="endingROI">        
-        <position height="18" width="57" x="330" y="65"/>      
-      </attribute>      
-      <multiplicity id="11" minimum="0" maximum="1">        
-        <position height="16" width="23" x="331" y="77"/>      
-      </multiplicity>    
+  <association id="8">    
+    <bendpoint x="465" y="250"/>    
+    <bendpoint x="1139" y="250"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="9" name="types"/>      
+      <multiplicity id="10" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="12">    
-    <bendpoint x="431" y="94"/>    
-    <bendpoint x="428" y="-181"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="13" name="links">        
-        <position height="18" width="29" x="354" y="-174"/>      
-      </attribute>      
-      <multiplicity id="14" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="356" y="-159"/>      
-      </multiplicity>    
+  <association id="11">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="12" name="defaultSegmTypes"/>      
+      <multiplicity id="13" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="15">    
-    <bendpoint x="631" y="139"/>    
-    <bendpoint x="739" y="142"/>    
-    <bendpoint x="737" y="104"/>    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="16" name="defaultSegmTypes">        
-        <position height="18" width="97" x="633" y="144"/>      
-      </attribute>      
-      <multiplicity id="17" minimum="0" maximum="1">        
-        <position height="16" width="23" x="699" y="163"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
-    <bendpoint x="791" y="133"/>    
-    <bendpoint x="923" y="133"/>    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="19" name="types">        
-        <position height="18" width="35" x="846" y="115"/>      
-      </attribute>      
-      <multiplicity id="20" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="887" y="117"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="21">    
-    <bendpoint x="185" y="-115"/>    
-    <bendpoint x="187" y="-75"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="22" name="endingROI">        
-        <position height="18" width="57" x="187" y="-116"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="16" width="23" x="194" y="-95"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
-    <bendpoint x="403" y="109"/>    
-    <bendpoint x="400" y="73"/>    
+  <association id="14">    
+    <bendpoint x="510" y="53"/>    
+    <bendpoint x="484" y="53"/>    
+    <bendpoint x="484" y="394"/>    
+    <bendpoint x="565" y="394"/>    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="25" name="startingROI">        
-        <position height="18" width="61" x="339" y="92"/>      
-      </attribute>      
-      <multiplicity id="26" minimum="0" maximum="1">        
-        <position height="16" width="23" x="379" y="108"/>      
-      </multiplicity>    
+      <attribute id="15" name="startingROI"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="27">    
-    <bendpoint x="776" y="146"/>    
-    <bendpoint x="934" y="146"/>    
+  <association id="17">    
+    <bendpoint x="979" y="193"/>    
+    <bendpoint x="979" y="313"/>    
+    <bendpoint x="839" y="313"/>    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="28" name="NOT_ASSIGNED_TYPE">        
-        <position height="18" width="121" x="772" y="148"/>      
-      </attribute>      
-      <multiplicity id="29" minimum="0" maximum="1">        
-        <position height="16" width="23" x="901" y="148"/>      
-      </multiplicity>    
+      <attribute id="18" name="to"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="30">    
-    <bendpoint x="18" y="-234"/>    
-    <bendpoint x="16" y="-2"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="31" name="to">        
-        <position height="18" width="17" x="65" y="2"/>      
-      </attribute>      
-      <multiplicity id="32" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+  <association id="20">    
+    <bendpoint x="464" y="215"/>    
+    <bendpoint x="1145" y="215"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="21" name="NOT_ASSIGNED_TYPE"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="23">    
+    <bendpoint x="819" y="45"/>    
+    <bendpoint x="819" y="255"/>    
+    <bendpoint x="596" y="255"/>    
+    <bendpoint x="596" y="292"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="24" name="endingROI"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <bendpoint x="1015" y="352"/>    
+    <bendpoint x="839" y="352"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="27" name="from"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="29">    
+    <bendpoint x="839" y="423"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <association id="30">    
+    <bendpoint x="473" y="39"/>    
+    <bendpoint x="473" y="427"/>    
+    <bendpoint x="567" y="427"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="31" name="endingROI"/>      
+      <multiplicity id="32" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="33">    
-    <bendpoint x="171" y="-116"/>    
-    <bendpoint x="171" y="-74"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="34" name="startingROI">        
-        <position height="18" width="61" x="107" y="-107"/>      
-      </attribute>      
-      <multiplicity id="35" minimum="0" maximum="1">        
-        <position height="16" width="23" x="146" y="-89"/>      
-      </multiplicity>    
+    <bendpoint x="770" y="-16"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="34" name="links"/>      
+      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="36">    
-    <bendpoint x="35" y="-227"/>    
-    <bendpoint x="36" y="-16"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="37" name="from">        
-        <position height="18" width="30" x="55" y="-35"/>      
-      </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1">        
-        <position height="16" width="23" x="88" y="-29"/>      
-      </multiplicity>    
+    <bendpoint x="512" y="70"/>    
+    <bendpoint x="500" y="70"/>    
+    <bendpoint x="500" y="348"/>    
+    <bendpoint x="566" y="348"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="37" name="ROIs"/>      
+      <multiplicity id="38" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="39">    
-    <bendpoint x="423" y="96"/>    
-    <bendpoint x="418" y="-76"/>    
-    <bendpoint x="259" y="-77"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="40" name="ROIs">        
-        <position height="18" width="31" x="267" y="-76"/>      
-      </attribute>      
-      <multiplicity id="41" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="300" y="-74"/>      
-      </multiplicity>    
+    <bendpoint x="841" y="45"/>    
+    <bendpoint x="841" y="268"/>    
+    <bendpoint x="703" y="268"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="40" name="startingROI"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 

@@ -27,24 +27,24 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
 
 public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
-
-	private static final long serialVersionUID = 313531450859107197L;
-
-	private final GenericBrowserPanel bPanel;
-
-	private final List<Point> checkboxes;
-	private final JCheckBox cb;
-
-	private final boolean isSelectionEnabled, isShowEnabled;
 	
-	private final Map<Point, OmegaTrajectory> posMap;
+	private static final long serialVersionUID = 313531450859107197L;
+	
+	protected final GenericBrowserPanel bPanel;
+	
+	protected final List<Point> checkboxes;
+	protected final JCheckBox cb;
+	
+	private final boolean isSelectionEnabled, isShowEnabled;
 
+	private final Map<Point, OmegaTrajectory> posMap;
+	
 	public GenericTrajectoriesBrowserNamesPanel(final RootPaneContainer parent,
-	        final GenericBrowserPanel bPanel, final boolean isSelectionEnabled,
+			final GenericBrowserPanel bPanel, final boolean isSelectionEnabled,
 			final boolean isShowEnabled) {
 		super(parent);
 		this.bPanel = bPanel;
-
+		
 		this.checkboxes = new ArrayList<Point>();
 		this.cb = new JCheckBox();
 		final InputStream s1 = OmegaFileUtilities
@@ -63,14 +63,14 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		this.isSelectionEnabled = isSelectionEnabled;
 		this.isShowEnabled = isShowEnabled;
 		this.posMap = new LinkedHashMap<Point, OmegaTrajectory>();
-		
+
 		ToolTipManager.sharedInstance().registerComponent(this);
 	}
-
+	
 	@Override
 	public String getToolTipText(final MouseEvent event) {
 		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT / 2;
@@ -85,22 +85,22 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 		}
 		return super.getToolTipText(event);
 	}
-
+	
 	protected boolean selectIfCheckbox(final Point clickP) {
 		final OmegaTrajectory selectedTraj = this.bPanel
-		        .getSelectedTrajectory();
+				.getSelectedTrajectory();
 		final int adjX = this.cb.getSelectedIcon().getIconWidth();
 		final int adjY = this.cb.getSelectedIcon().getIconHeight();
 		for (final Point p : this.checkboxes) {
 			if ((clickP.x < (p.x + adjX)) && (clickP.x > p.x)
-			        && (clickP.y < (p.y + adjY)) && (clickP.y > p.y)) {
+					&& (clickP.y < (p.y + adjY)) && (clickP.y > p.y)) {
 				selectedTraj.setVisible(!selectedTraj.isVisible());
 				return true;
 			}
 		}
 		return false;
 	}
-
+	
 	protected void drawCheckboxes(final Graphics2D g2D) {
 		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		this.checkboxes.clear();
@@ -121,7 +121,7 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			this.checkboxes.add(new Point(5, adjY));
 		}
 	}
-
+	
 	protected void drawIDsAndNames(final Graphics2D g2D) {
 		final int space = GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		this.posMap.clear();
@@ -140,7 +140,7 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			this.posMap.put(new Point(xPos, yPos), traj);
 		}
 	}
-
+	
 	protected void drawSelectedTrajectoryBackground(final Graphics2D g2D) {
 		for (int y = 0; y < this.bPanel.getNumberOfTrajectories(); y++) {
 			final OmegaTrajectory traj = this.bPanel.getShownTrajectories()
@@ -149,38 +149,38 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			final int adjY = yPos;
 			if (this.bPanel.getSelectedTrajectories().contains(traj)) {
 				g2D.setBackground(OmegaConstants
-				        .getDefaultSelectionBackgroundColor());
+						.getDefaultSelectionBackgroundColor());
 				g2D.clearRect(0, adjY, this.getWidth(),
-				        GenericBrowserPanel.SPOT_SPACE_DEFAULT);
+						GenericBrowserPanel.SPOT_SPACE_DEFAULT);
 				g2D.setBackground(Color.white);
 			}
 		}
 	}
-
+	
 	@Override
 	public void paint(final Graphics g) {
 		this.setPanelSize();
 		final Graphics2D g2D = (Graphics2D) g;
 		g2D.setBackground(Color.white);
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		        RenderingHints.VALUE_ANTIALIAS_ON);
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.setRenderingHint(RenderingHints.KEY_RENDERING,
-		        RenderingHints.VALUE_RENDER_QUALITY);
+				RenderingHints.VALUE_RENDER_QUALITY);
 		g2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-		        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g2D.clearRect(0, 0, this.getWidth(), this.getHeight());
-
+		
 		if (this.isSelectionEnabled) {
 			this.drawSelectedTrajectoryBackground(g2D);
 		}
-
+		
 		if (this.isShowEnabled) {
 			this.drawCheckboxes(g2D);
 		}
-
+		
 		this.drawIDsAndNames(g2D);
 	}
-
+	
 	protected void setPanelSize() {
 		final int numOfTraj = this.bPanel.getNumberOfTrajectories();
 		int height = this.getParent().getHeight();
@@ -192,20 +192,20 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			}
 		}
 		final int width = (GenericBrowserPanel.TRAJECTORY_NAME_SPACE_MODIFIER + 1)
-		        * GenericBrowserPanel.SPOT_SPACE_DEFAULT;
+				* GenericBrowserPanel.SPOT_SPACE_DEFAULT;
 		final Dimension dim = new Dimension(width, height);
 		this.setPreferredSize(dim);
 		this.setSize(dim);
 	}
-
+	
 	protected GenericBrowserPanel getPanel() {
 		return this.bPanel;
 	}
-
+	
 	protected List<Point> getCheckboxes() {
 		return this.checkboxes;
 	}
-
+	
 	protected JCheckBox getCheckbox() {
 		return this.cb;
 	}

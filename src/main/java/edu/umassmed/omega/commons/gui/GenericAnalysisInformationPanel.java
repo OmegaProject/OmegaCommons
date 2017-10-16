@@ -31,8 +31,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +47,7 @@ import javax.swing.text.StyleConstants;
 
 import edu.umassmed.omega.commons.OmegaLogFileManager;
 import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaConstantsAlgorithmParameters;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
@@ -63,11 +62,7 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrackingMeasures
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrackingMeasuresVelocityRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesRelinkingRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
-import edu.umassmed.omega.commons.data.coreElements.OmegaDataset;
-import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
-import edu.umassmed.omega.commons.data.coreElements.OmegaProject;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.utilities.OmegaAnalysisRunContainerUtilities;
@@ -187,7 +182,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		doc.remove(0, length);
 	}
 
-	public void update(final OmegaAnalysisRun analysisRun) {
+	public void updateContent(final OmegaAnalysisRun analysisRun) {
 		this.algoInfoDialog.updateAlgorithmInformation(null);
 		this.algoDetails_btt.setEnabled(false);
 		// updateDialog(null)
@@ -196,7 +191,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			if (analysisRun != null) {
 				this.algoDetails_btt.setEnabled(true);
 				this.algoInfoDialog.updateAlgorithmInformation(analysisRun
-				        .getAlgorithmSpec().getAlgorithmInfo());
+						.getAlgorithmSpec().getAlgorithmInfo());
 				// updateDialog(algo)
 				this.getGenericAnalysisInformation(analysisRun);
 				this.appendNewline();
@@ -209,7 +204,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 
-		this.resizePanel(this.getWidth(), this.getHeight());
+		// this.resizePanel(this.getWidth(), this.getHeight());
 		this.info_txt.revalidate();
 		this.info_txt.repaint();
 	}
@@ -219,11 +214,14 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		final SimpleDateFormat format = new SimpleDateFormat(
 				OmegaConstants.OMEGA_DATE_FORMAT);
 		final long id = analysisRun.getElementID();
-		final String clazz = analysisRun.getClass().getSimpleName()
-				.replace("Omega", "");
+		final String clazz = analysisRun.getDynamicDisplayName();
 		this.appendString(clazz, this.bold);
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ID, this.bold);
-		this.appendString(String.valueOf(id), this.normal);
+		if (id == -1) {
+			this.appendString(OmegaGUIConstants.NOT_ASSIGNED, this.normal);
+		} else {
+			this.appendString(String.valueOf(id), this.normal);
+		}
 		this.appendNewline();
 		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_OWNER, this.bold);
 		final String name = analysisRun.getExperimenter().getFirstName() + " "
@@ -244,7 +242,14 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			for (final OmegaParameter param : algoSpec.getParameters()) {
 				this.appendNewline();
 				this.appendString("-", this.normal);
-				this.appendString(param.getName(), this.normal);
+				String paramName = param.getName();
+				if (paramName
+						.equals(OmegaConstantsAlgorithmParameters.PARAM_ZSECTION)
+						|| paramName
+								.equals(OmegaConstantsAlgorithmParameters.PARAM_CHANNEL)) {
+					paramName = "Analyzed " + paramName;
+				}
+				this.appendString(paramName, this.normal);
 				this.appendString(": ", this.normal);
 				this.appendString(param.getStringValue(), this.normal);
 			}
@@ -261,7 +266,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 	}
 
 	private void getSpecificElementInformation(
-	        final OmegaAnalysisRun analysisRun) throws BadLocationException {
+			final OmegaAnalysisRun analysisRun) throws BadLocationException {
 		if (analysisRun instanceof OmegaSNRRun) {
 			this.appendAdditionaSNRInformation((OmegaSNRRun) analysisRun);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
@@ -283,41 +288,44 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		}
 	}
 
-	private void appendAdditionaSNRInformation(final OmegaSNRRun analysisRun) {
-
+	private void appendAdditionaSNRInformation(final OmegaSNRRun analysisRun)
+			throws BadLocationException {
+		this.appendString("Image mean SNR: ", this.bold);
+		final Double snr = analysisRun.getResultingAvgSNR();
+		this.appendString(String.valueOf(snr), this.normal);
 	}
 
 	private void appendAdditionalTMVInformation(
-	        final OmegaTrackingMeasuresVelocityRun analysisRun) {
+			final OmegaTrackingMeasuresVelocityRun analysisRun) {
 
 	}
 
 	private void appendAdditionalTMMInformation(
-	        final OmegaTrackingMeasuresMobilityRun analysisRun) {
+			final OmegaTrackingMeasuresMobilityRun analysisRun) {
 
 	}
 
 	private void appendAdditionalTMIInformation(
-	        final OmegaTrackingMeasuresIntensityRun analysisRun) {
+			final OmegaTrackingMeasuresIntensityRun analysisRun) {
 
 	}
 
 	private void appendAdditionalTMDInformation(
-	        final OmegaTrackingMeasuresDiffusivityRun analysisRun) {
+			final OmegaTrackingMeasuresDiffusivityRun analysisRun) {
 
 	}
 
 	private void appendAdditionalTSInformation(
-	        final OmegaTrajectoriesSegmentationRun analysisRun)
-					throws BadLocationException {
+			final OmegaTrajectoriesSegmentationRun analysisRun)
+			throws BadLocationException {
 		final Map<OmegaTrajectory, List<OmegaSegment>> segments = analysisRun
-		        .getResultingSegments();
-		this.appendString("Tracks: ", this.bold);
+				.getResultingSegments();
+		this.appendString("Total number of trajectories: ", this.bold);
 		final int tracksC = segments.keySet().size();
 		final String tracks = String.valueOf(tracksC);
 		this.appendString(tracks, this.normal);
 		this.appendNewline();
-		this.appendString("Segments total: ", this.bold);
+		this.appendString("Total number of segments: ", this.bold);
 		final Double segmentsN[] = new Double[tracksC];
 		int i = 0;
 		int segmentsT = 0;
@@ -329,142 +337,91 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		}
 		this.appendString(String.valueOf(segmentsT), this.normal);
 		this.appendNewline();
-		this.appendString("Mean segments per track: ", this.bold);
+		this.appendString("Average number of segments per trajectory: ",
+				this.bold);
 		final Double segmMean = OmegaMathsUtilities.mean(segmentsN);
 		this.appendString(String.valueOf(segmMean), this.normal);
 
 	}
 
 	private void appendAdditionalTEInformation(
-	        final OmegaTrajectoriesRelinkingRun analysisRun)
-	        throws BadLocationException {
-		this.appendString("Tracks: ", this.bold);
-		final String tracks = String.valueOf(analysisRun
-				.getResultingTrajectories().size());
-		this.appendString(tracks, this.normal);
+			final OmegaTrajectoriesRelinkingRun analysisRun)
+			throws BadLocationException {
+		this.appendAdditionalPLInformation(analysisRun);
 	}
 
 	private void appendAdditionalPLInformation(
-	        final OmegaParticleLinkingRun analysisRun)
-	        throws BadLocationException {
-		this.appendString("Tracks: ", this.bold);
-		final String tracks = String.valueOf(analysisRun
-				.getResultingTrajectories().size());
-		this.appendString(tracks, this.normal);
+			final OmegaParticleLinkingRun analysisRun)
+			throws BadLocationException {
+		final List<OmegaTrajectory> tracks = analysisRun
+				.getResultingTrajectories();
+		this.appendString("Total number of trajectories: ", this.bold);
+		final String tracksV = String.valueOf(tracks.size());
+		this.appendString(tracksV, this.normal);
+		this.appendNewline();
+
+		int maxTracksLength = 0;
+		int minTracksLength = 0;
+		double meanTracksLength = 0;
+		for (final OmegaTrajectory track : tracks) {
+			meanTracksLength += track.getLength();
+			if (maxTracksLength < track.getLength()) {
+				maxTracksLength = track.getLength();
+			}
+			if ((minTracksLength == 0) || (minTracksLength > track.getLength())) {
+				minTracksLength = track.getLength();
+			}
+		}
+		meanTracksLength /= tracks.size();
+
+		this.appendString("Average trajectory length: ", this.bold);
+		final String averagetl = String.valueOf(meanTracksLength);
+		this.appendString(averagetl, this.normal);
+		this.appendNewline();
+		this.appendString("Max trajectory length: ", this.bold);
+		final String maxtl = String.valueOf(maxTracksLength);
+		this.appendString(maxtl, this.normal);
+		this.appendNewline();
+		this.appendString("Min trajectory length: ", this.bold);
+		final String mintl = String.valueOf(minTracksLength);
+		this.appendString(mintl, this.normal);
 	}
 
 	private void appendAdditionalPDInformation(
 			final OmegaParticleDetectionRun analysisRun)
-					throws BadLocationException {
-		this.appendString("Mean spots found per frame: ", this.bold);
-		int numP = 0;
+			throws BadLocationException {
+		double numP = 0;
+		int maxNumP = 0;
+		int minNumP = 0;
 		int f = 0;
 		for (final OmegaPlane frame : analysisRun.getResultingParticles()
 				.keySet()) {
-			numP += analysisRun.getResultingParticles().get(frame).size();
+			final int localNumP = analysisRun.getResultingParticles()
+					.get(frame).size();
+			if (maxNumP < localNumP) {
+				maxNumP = localNumP;
+			}
+			if ((minNumP == 0) || (minNumP > localNumP)) {
+				minNumP = localNumP;
+			}
+			numP += localNumP;
 			f++;
 		}
-		final String mean = String.valueOf(numP / f);
+		numP /= f;
+		this.appendString("Average number of spots found per time point: ",
+				this.bold);
+		final String mean = String.valueOf(numP);
 		this.appendString(mean, this.normal);
-	}
-
-	private void addAdditionalDetectionInformation(final OmegaProject project)
-			throws BadLocationException {
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_DATASET,
-		        this.bold);
-		this.appendString(String.valueOf(project.getDatasets().size()),
-				this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
+		this.appendString("Max  number of spots found per time point: ",
 				this.bold);
-		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
-				.getAnalysisCount(project)), this.normal);
-	}
-
-	private void addAdditionalDatasetInformation(final OmegaDataset dataset)
-			throws BadLocationException {
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_IMAGES,
-		        this.bold);
-		this.appendString(String.valueOf(dataset.getImages().size()),
-				this.normal);
+		final String max = String.valueOf(maxNumP);
+		this.appendString(max, this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
+		this.appendString("Min  number of spots found per time point: ",
 				this.bold);
-		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
-				.getAnalysisCount(dataset)), this.normal);
-	}
-
-	private void addAdditionalImageInformation(final OmegaImage image)
-			throws BadLocationException {
-		final SimpleDateFormat format = new SimpleDateFormat(
-				OmegaConstants.OMEGA_DATE_FORMAT);
-		final OmegaImagePixels pixels = image.getDefaultPixels();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
-		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
-				.getAnalysisCount(image)), this.normal);
-		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ACQUIRED, this.bold);
-		final String acquiredDate = format.format(image.getAcquisitionDate());
-		this.appendString(acquiredDate.replace("_", " "), this.normal);
-		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_IMPORTED, this.bold);
-		final String importedDate = format.format(image.getImportedDate());
-		this.appendString(importedDate.replace("_", " "), this.normal);
-		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_DIM_XY, this.bold);
-		this.appendString(String.valueOf(pixels.getSizeX()), this.normal);
-		this.appendString(" x ", this.normal);
-		this.appendString(String.valueOf(pixels.getSizeY()), this.normal);
-		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_DIM_ZTC, this.bold);
-		final int sizeZ = pixels.getSizeZ();
-		final String sizeZs = String.valueOf(sizeZ);
-		this.appendString(sizeZs, this.normal);
-		this.appendString(" x ", this.normal);
-		final int sizeT = pixels.getSizeT();
-		final String sizeTs = String.valueOf(sizeT);
-		this.appendString(sizeTs, this.normal);
-		this.appendString(" x ", this.normal);
-		final int sizeC = pixels.getSizeC();
-		final String sizeCs = String.valueOf(sizeC);
-		this.appendString(sizeCs, this.normal);
-		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_PIXELTYPE, this.bold);
-		this.appendString(pixels.getPixelsType(), this.normal);
-		this.appendNewline();
-		final double pixelsSizeX = pixels.getPhysicalSizeX();
-		final double pixelsSizeY = pixels.getPhysicalSizeY();
-		final double pixelsSizeZ = pixels.getPhysicalSizeZ();
-		if ((pixelsSizeX != -1) && (pixelsSizeY != -1)) {
-			if (pixelsSizeZ != -1) {
-				this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES,
-				        this.bold);
-			} else {
-				this.appendString(
-				        OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES_Z,
-				        this.bold);
-			}
-			final BigDecimal bigX = new BigDecimal(pixelsSizeX).setScale(2,
-			        RoundingMode.HALF_UP);
-			final String pixelsSizeXs = bigX.toString();
-			this.appendString(pixelsSizeXs, this.normal);
-			this.appendString(" x ", this.normal);
-			final BigDecimal bigY = new BigDecimal(pixelsSizeY).setScale(2,
-			        RoundingMode.HALF_UP);
-			final String pixelsSizeYs = bigY.toString();
-			this.appendString(pixelsSizeYs, this.normal);
-			if (pixelsSizeZ != -1) {
-				this.appendString(" x ", this.normal);
-				final BigDecimal bigZ = new BigDecimal(pixelsSizeZ).setScale(2,
-						RoundingMode.HALF_UP);
-				final String pixelsSizeZs = bigZ.toString();
-				this.appendString(pixelsSizeZs, this.normal);
-			}
-			this.appendNewline();
-			// this.appendNewline();
-			// this.appendString("Channels: ", this.bold);
-		}
+		final String min = String.valueOf(minNumP);
+		this.appendString(min, this.normal);
 	}
 	
 	@Override

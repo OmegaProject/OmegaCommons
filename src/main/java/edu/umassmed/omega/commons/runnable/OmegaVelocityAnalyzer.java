@@ -17,9 +17,9 @@ import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInter
 import edu.umassmed.omega.commons.libraries.OmegaVelocityLibrary;
 
 public class OmegaVelocityAnalyzer implements Runnable {
-
+	
 	private final OmegaMessageDisplayerPanelInterface displayerPanel;
-
+	
 	private final int tMax;
 	private final Double physicalT;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
@@ -29,16 +29,16 @@ public class OmegaVelocityAnalyzer implements Runnable {
 	private final Map<OmegaSegment, Double> averagerCurvilinearSpeedMap;
 	private final Map<OmegaSegment, Double> averageStraightLineVelocityMap;
 	private final Map<OmegaSegment, Double> forwardProgressionLinearityMap;
-	
+
 	private final OmegaTrajectoriesSegmentationRun segmRun;
 	private final List<OmegaElement> selections;
-
+	
 	public OmegaVelocityAnalyzer(final double physicalT, final int tMax,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
 		this(null, physicalT, tMax, segmRun, segments, null);
 	}
-
+	
 	public OmegaVelocityAnalyzer(
 			final OmegaMessageDisplayerPanelInterface displayerPanel,
 			final double physicalT, final int tMax,
@@ -46,10 +46,10 @@ public class OmegaVelocityAnalyzer implements Runnable {
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final List<OmegaElement> selections) {
 		this.displayerPanel = displayerPanel;
-
+		
 		this.segmRun = segmRun;
 		this.selections = selections;
-
+		
 		this.tMax = tMax;
 		this.physicalT = physicalT;
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
@@ -61,7 +61,7 @@ public class OmegaVelocityAnalyzer implements Runnable {
 		this.averageStraightLineVelocityMap = new LinkedHashMap<OmegaSegment, Double>();
 		this.forwardProgressionLinearityMap = new LinkedHashMap<OmegaSegment, Double>();
 	}
-
+	
 	@Override
 	public void run() {
 		int counter = 1;
@@ -100,7 +100,7 @@ public class OmegaVelocityAnalyzer implements Runnable {
 						.put(segment, localSpeedsFromOrigin);
 				this.localVelocityFromOriginMap.put(segment,
 						localVelocitiesFromOrigin);
-
+				
 				final Double averagerCurvilinearSpeed = OmegaVelocityLibrary
 						.computeAveragerCurvilinearSpeed(this.physicalT,
 								segmentROIs);
@@ -123,49 +123,51 @@ public class OmegaVelocityAnalyzer implements Runnable {
 					false);
 		}
 	}
-
+	
 	public List<OmegaElement> getSelections() {
 		return this.selections;
 	}
-
+	
 	public OmegaTrajectoriesSegmentationRun getTrajectorySegmentationRun() {
 		return this.segmRun;
 	}
-
+	
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegments() {
 		return this.segments;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getLocalSpeedResults() {
 		return this.localSpeedMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getLocalSpeedFromOriginResults() {
 		return this.localSpeedFromOriginMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getLocalVelocityFromOriginResults() {
 		return this.localVelocityFromOriginMap;
 	}
-
+	
 	public Map<OmegaSegment, Double> getAverageCurvilinearSpeedResults() {
 		return this.averagerCurvilinearSpeedMap;
 	}
-
+	
 	public Map<OmegaSegment, Double> getAverageStraightLineVelocityResults() {
 		return this.averageStraightLineVelocityMap;
 	}
-
+	
 	public Map<OmegaSegment, Double> getForwardProgressionLinearityResults() {
 		return this.forwardProgressionLinearityMap;
 	}
-
+	
 	private void updateStatusSync(final String msg, final boolean ended,
 			final boolean dialog) {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
+					if (OmegaVelocityAnalyzer.this.displayerPanel == null)
+						return;
 					OmegaVelocityAnalyzer.this.displayerPanel
 							.updateMessageStatus(new AnalyzerEvent(msg, ended,
 									dialog));
@@ -177,12 +179,14 @@ public class OmegaVelocityAnalyzer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void updateStatusAsync(final String msg, final boolean ended,
 			final boolean dialog) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				if (OmegaVelocityAnalyzer.this.displayerPanel == null)
+					return;
 				OmegaVelocityAnalyzer.this.displayerPanel
 						.updateMessageStatus(new AnalyzerEvent(msg, ended,
 								dialog));

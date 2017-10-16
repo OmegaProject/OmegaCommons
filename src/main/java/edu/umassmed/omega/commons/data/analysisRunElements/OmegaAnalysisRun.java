@@ -38,61 +38,65 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public abstract class OmegaAnalysisRun extends OmegaNamedElement implements
-		OmegaAnalysisRunContainer {
-	
+		OmegaAnalysisRunContainerInterface {
+
+	private static String DISPLAY_NAME = "Analysis Run";
+
 	// private final String name;
-	
+
 	private final Date timeStamps;
-	
+
 	private OmegaExperimenter experimenter;
-	
+
 	// TODO aggiungere OmegaExperimenterGroup permissions
-	
+
 	private final OmegaRunDefinition algorithmSpec;
-	
+
 	private List<OmegaAnalysisRun> analysisRuns;
-	
+
 	private final AnalysisRunType type;
-	
+
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type) {
 		super(-1L, "");
-		
+
 		this.timeStamps = Calendar.getInstance().getTime();
-		
+
 		this.experimenter = owner;
-		
+
 		this.algorithmSpec = algorithmSpec;
-		
+
 		this.type = type;
-		
+
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
-		
+
 		final StringBuffer nameBuf = new StringBuffer();
 		final DateFormat format = new SimpleDateFormat(
 				OmegaConstants.OMEGA_DATE_FORMAT);
 		nameBuf.append(format.format(this.timeStamps));
-		nameBuf.append("_");
-		nameBuf.append(algorithmSpec.getAlgorithmInfo().getName());
+		if (algorithmSpec != null) {
+			nameBuf.append("_");
+			nameBuf.append(algorithmSpec.getAlgorithmInfo().getName());
+		}
 		// this.name = nameBuf.toString();
 		this.setName(nameBuf.toString());
 	}
-	
+
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
 			final String name) {
 		super(-1L, "");
-		
+
 		this.timeStamps = Calendar.getInstance().getTime();
-		
+
 		this.experimenter = owner;
-		
+
 		this.algorithmSpec = algorithmSpec;
-		
+
 		this.type = type;
-		
+
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
-		
+
 		final StringBuffer nameBuf = new StringBuffer();
 		final DateFormat format = new SimpleDateFormat(
 				OmegaConstants.OMEGA_DATE_FORMAT);
@@ -102,64 +106,64 @@ public abstract class OmegaAnalysisRun extends OmegaNamedElement implements
 		// this.name = nameBuf.toString();
 		this.setName(nameBuf.toString());
 	}
-	
+
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
 			final Date timeStamps, final String name) {
 		super(-1L, name);
-		
+
 		this.timeStamps = timeStamps;
-		
+
 		this.experimenter = owner;
-		
+
 		this.algorithmSpec = algorithmSpec;
-		
+
 		this.type = type;
-		
+
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
-		
+
 		// this.name = name;
 	}
-	
+
 	public OmegaAnalysisRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
 			final List<OmegaAnalysisRun> analysisRuns) {
 		this(owner, algorithmSpec, type);
-		
+
 		this.analysisRuns = analysisRuns;
 	}
-	
+
 	public AnalysisRunType getType() {
 		return this.type;
 	}
-	
+
 	public Date getTimeStamps() {
 		return this.timeStamps;
 	}
-	
+
 	public OmegaExperimenter getExperimenter() {
 		return this.experimenter;
 	}
-	
+
 	public OmegaRunDefinition getAlgorithmSpec() {
 		return this.algorithmSpec;
 	}
-	
+
 	@Override
 	public List<OmegaAnalysisRun> getAnalysisRuns() {
 		return this.analysisRuns;
 	}
-	
+
 	@Override
 	public void addAnalysisRun(final OmegaAnalysisRun analysisRun) {
 		this.analysisRuns.add(analysisRun);
 	}
-	
+
 	@Override
 	public void removeAnalysisRun(final OmegaAnalysisRun analysisRun) {
 		this.analysisRuns.remove(analysisRun);
 	}
-	
+
 	@Override
 	public boolean containsAnalysisRun(final long id) {
 		for (final OmegaAnalysisRun analysisRun : this.analysisRuns) {
@@ -168,8 +172,17 @@ public abstract class OmegaAnalysisRun extends OmegaNamedElement implements
 		}
 		return false;
 	}
-	
+
 	public void changeExperimenter(final OmegaExperimenter experimenter) {
 		this.experimenter = experimenter;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaAnalysisRun.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaAnalysisRun.getStaticDisplayName();
 	}
 }

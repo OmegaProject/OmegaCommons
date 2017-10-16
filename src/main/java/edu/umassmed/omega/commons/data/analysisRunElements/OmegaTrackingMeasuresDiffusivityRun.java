@@ -11,6 +11,8 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 public class OmegaTrackingMeasuresDiffusivityRun extends
 		OmegaTrackingMeasuresRun {
 	
+	private static String DISPLAY_NAME = "Diffusivity Measures Run";
+	
 	// Diffusivity
 	private final Map<OmegaSegment, Double[]> nyMap;
 	private final Map<OmegaSegment, Double[][]> logMuMap;
@@ -217,5 +219,14 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 	
 	public OmegaTrackingMeasuresDiffusivityRun getTrackingMeasuresDiffusivityRun() {
 		return this.diffusivityRun;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaTrackingMeasuresDiffusivityRun.DISPLAY_NAME;
+	}
+
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaTrackingMeasuresDiffusivityRun.getStaticDisplayName();
 	}
 }

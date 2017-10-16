@@ -1,57 +1,72 @@
 /*******************************************************************************
- * Copyright (C) 2014 University of Massachusetts Medical School
- * Alessandro Rigano (Program in Molecular Medicine)
- * Caterina Strambio De Castillia (Program in Molecular Medicine)
+ * Copyright (C) 2014 University of Massachusetts Medical School Alessandro
+ * Rigano (Program in Molecular Medicine) Caterina Strambio De Castillia
+ * (Program in Molecular Medicine)
  *
- * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team: 
- * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli, 
- * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban, 
+ * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
+ * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
+ * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
- * Key contacts:
- * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
+ * Key contacts: Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
  * Alex Rigano: alex.rigano@umassmed.edu
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package edu.umassmed.omega.commons.utilities;
 
 import java.util.List;
 import java.util.Map;
 
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
+import edu.umassmed.omega.commons.data.coreElements.OmegaDataset;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
+import edu.umassmed.omega.commons.data.coreElements.OmegaProject;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaAnalysisRunContainerUtilities {
 
-	public static int getAnalysisCount(
-	        final OmegaAnalysisRunContainer analysisRunContainer) {
+	public static int getImgAnalysisCount(final OmegaProject project) {
 		int count = 0;
-		for (final OmegaAnalysisRun analysisRun : analysisRunContainer
-		        .getAnalysisRuns()) {
-			count++;
+		for (final OmegaDataset dataset : project.getDatasets()) {
 			count += OmegaAnalysisRunContainerUtilities
-			        .getAnalysisCount(analysisRun);
+					.getImgAnalysisCount(dataset);
 		}
 		return count;
 	}
 
+	public static int getImgAnalysisCount(final OmegaDataset dataset) {
+		int count = 0;
+		for (final OmegaImage img : dataset.getImages()) {
+			if (img.getAnalysisRuns().size() != 0) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public static int getAnalysisCount(
+			final OmegaAnalysisRunContainerInterface analysisRunContainer) {
+		int count = 0;
+		count = analysisRunContainer.getAnalysisRuns().size();
+		return count;
+	}
+
 	public static boolean isTrajectoriesListEqual(
-	        final List<OmegaTrajectory> trajs,
-	        final List<OmegaTrajectory> trajs2) {
+			final List<OmegaTrajectory> trajs,
+			final List<OmegaTrajectory> trajs2) {
 		if (trajs.size() != trajs2.size())
 			return false;
 		for (final OmegaTrajectory traj : trajs) {
@@ -70,8 +85,8 @@ public class OmegaAnalysisRunContainerUtilities {
 	}
 
 	public static boolean isSegmentMapEqual(
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap2) {
+			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap2) {
 		if (segmentsMap.size() != segmentsMap2.size())
 			return false;
 		for (final OmegaTrajectory traj : segmentsMap.keySet()) {

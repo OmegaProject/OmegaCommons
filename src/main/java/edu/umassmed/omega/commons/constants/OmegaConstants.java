@@ -88,24 +88,24 @@ public class OmegaConstants {
 	public final static String OMEGA_DATE_FORMAT_LBL = "yyyy";
 
 	// ***RELINKING***
-	public final static String OMEGA_RELINKING_CURRENT = "Unsaved relinking";
+	public final static String OMEGA_RELINKING_CURRENT = "Unsaved Editing";
 
 	// ***SEGMENTATION***
-	public final static String OMEGA_SEGMENTATION_CURRENT = "Unsaved segmentation";
+	public final static String OMEGA_SEGMENTATION_CURRENT = "Unsaved Segmentation";
 
 	// ***DIFFUSIVITY***
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW = "Window size";
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION = "Log option";
+	public static final String PARAMETER_DIFFUSIVITY_WINDOW = "Maximum computation window size";
+	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION = "ODC estimation method";
 	public static final String PARAMETER_ERROR_OPTION = "Error option";
-	public static final String PARAMETER_ERROR_SNR = "Select SNR estimation";
+	public static final String PARAMETER_ERROR_SNR = "Select SNR Estimation Run";
 
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW_3 = "3";
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW_5 = "5";
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW_10 = "10";
+	public static final String PARAMETER_DIFFUSIVITY_WINDOW_3 = "L/3";
+	public static final String PARAMETER_DIFFUSIVITY_WINDOW_5 = "L/5";
+	public static final String PARAMETER_DIFFUSIVITY_WINDOW_10 = "L/10";
 
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY = "Log only";
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LINEAR_ONLY = "Linear only";
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_AND_LINEAR = "Log and linear";
+	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY = "Log-Log";
+	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LINEAR_ONLY = "Linear";
+	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_AND_LINEAR = "Linear and Log-Log";
 
 	public static final String PARAMETER_ERROR_OPTION_ENABLED = "Error enabled";
 	public static final String PARAMETER_ERROR_OPTION_DISABLED = "Error disabled";

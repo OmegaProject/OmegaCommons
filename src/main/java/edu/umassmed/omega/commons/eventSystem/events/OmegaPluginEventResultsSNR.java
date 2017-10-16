@@ -36,7 +36,10 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
-	
+
+	private final Double resultingAvgCenterSignal;
+	private final Double resultingAvgPeakSignal;
+	private final Double resultingAvgMeanSignal;
 	private final Double resultingBGR;
 	private final Double resultingNoise;
 	private final Double resultingAvgSNR;
@@ -45,6 +48,9 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 	private final Double resultingAvgErrorIndexSNR;
 	private final Double resultingMinErrorIndexSNR;
 	private final Double resultingMaxErrorIndexSNR;
+	private final Map<OmegaPlane, Double> resultingImageAvgCenterSignal;
+	private final Map<OmegaPlane, Double> resultingImageAvgPeakSignal;
+	private final Map<OmegaPlane, Double> resultingImageAvgMeanSignal;
 	private final Map<OmegaPlane, Double> resultingImageBGR;
 	private final Map<OmegaPlane, Double> resultingImageNoise;
 	private final Map<OmegaPlane, Double> resultingImageAvgSNR;
@@ -61,9 +67,12 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 	private final Map<OmegaROI, Double> resultingLocalNoises;
 	private final Map<OmegaROI, Double> resultingLocalSNRs;
 	private final Map<OmegaROI, Double> resultingLocalErrorIndexSNRs;
-	
+
 	public OmegaPluginEventResultsSNR(final List<OmegaElement> selections,
 			final OmegaElement element, final List<OmegaParameter> params,
+			final Map<OmegaPlane, Double> resultingImageAvgCenterSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgPeakSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgMeanSignal,
 			final Map<OmegaPlane, Double> resultingImageBGR,
 			final Map<OmegaPlane, Double> resultingImageNoise,
 			final Map<OmegaPlane, Double> resultingImageAverageSNR,
@@ -80,30 +89,37 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 			final Map<OmegaROI, Double> resultingLocalNoises,
 			final Map<OmegaROI, Double> resultingLocalSNRs,
 			final Map<OmegaROI, Double> resultingLocalErrorIndexSNRs,
-			final Double resultingBGR, final Double resultingNoise,
-			final Double resultingAvgSNR, final Double resultingMinSNR,
-			final Double resultingMaxSNR,
+			final Double resultingAvgCenterSignal,
+			final Double resultingAvgPeakSignal,
+			final Double resultingAvgMeanSignal, final Double resultingBGR,
+			final Double resultingNoise, final Double resultingAvgSNR,
+			final Double resultingMinSNR, final Double resultingMaxSNR,
 			final Double resultingAvgErrorIndexSNR,
 			final Double resultingMinErrorIndexSNR,
 			final Double resultingMaxErrorIndexSNR) {
-		this(null, selections, element, params, resultingImageBGR,
-				resultingImageNoise, resultingImageAverageSNR,
-				resultingImageMinimumSNR, resultingImageMaximumSNR,
-				resultingImageAverageErrorIndexSNR,
+		this(null, selections, element, params, resultingImageAvgCenterSignal,
+				resultingImageAvgPeakSignal, resultingImageAvgMeanSignal,
+				resultingImageBGR, resultingImageNoise,
+				resultingImageAverageSNR, resultingImageMinimumSNR,
+				resultingImageMaximumSNR, resultingImageAverageErrorIndexSNR,
 				resultingImageMinimumErrorIndexSNR,
 				resultingImageMaximumErrorIndexSNR, resultingLocalCenterSignal,
 				resultingLocalMeanSignals, resultingLocalSignalSizes,
 				resultingLocalPeakSignals, resultingLocalBackgrounds,
 				resultingLocalNoises, resultingLocalSNRs,
-				resultingLocalErrorIndexSNRs, resultingBGR, resultingNoise,
-				resultingAvgSNR, resultingMinSNR, resultingMaxSNR,
-				resultingAvgErrorIndexSNR, resultingMinErrorIndexSNR,
-				resultingMaxErrorIndexSNR);
+				resultingLocalErrorIndexSNRs, resultingAvgCenterSignal,
+				resultingAvgPeakSignal, resultingAvgMeanSignal, resultingBGR,
+				resultingNoise, resultingAvgSNR, resultingMinSNR,
+				resultingMaxSNR, resultingAvgErrorIndexSNR,
+				resultingMinErrorIndexSNR, resultingMaxErrorIndexSNR);
 	}
-	
+
 	public OmegaPluginEventResultsSNR(final OmegaPlugin source,
 			final List<OmegaElement> selections, final OmegaElement element,
 			final List<OmegaParameter> params,
+			final Map<OmegaPlane, Double> resultingImageAvgCenterSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgPeakSignal,
+			final Map<OmegaPlane, Double> resultingImageAvgMeanSignal,
 			final Map<OmegaPlane, Double> resultingImageBGR,
 			final Map<OmegaPlane, Double> resultingImageNoise,
 			final Map<OmegaPlane, Double> resultingImageAverageSNR,
@@ -120,14 +136,19 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 			final Map<OmegaROI, Double> resultingLocalNoises,
 			final Map<OmegaROI, Double> resultingLocalSNRs,
 			final Map<OmegaROI, Double> resultingLocalErrorIndexSNRs,
-			final Double resultingBGR, final Double resultingNoise,
-			final Double resultingAvgSNR, final Double resultingMinSNR,
-			final Double resultingMaxSNR,
+			final Double resultingAvgCenterSignal,
+			final Double resultingAvgPeakSignal,
+			final Double resultingAvgMeanSignal, final Double resultingBGR,
+			final Double resultingNoise, final Double resultingAvgSNR,
+			final Double resultingMinSNR, final Double resultingMaxSNR,
 			final Double resultingAvgErrorIndexSNR,
 			final Double resultingMinErrorIndexSNR,
 			final Double resultingMaxErrorIndexSNR) {
 		super(source, selections, element, params);
-		
+
+		this.resultingImageAvgCenterSignal = resultingImageAvgCenterSignal;
+		this.resultingImageAvgPeakSignal = resultingImageAvgPeakSignal;
+		this.resultingImageAvgMeanSignal = resultingImageAvgMeanSignal;
 		this.resultingImageBGR = resultingImageBGR;
 		this.resultingImageNoise = resultingImageNoise;
 		this.resultingImageAvgSNR = resultingImageAverageSNR;
@@ -144,6 +165,9 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 		this.resultingLocalNoises = resultingLocalNoises;
 		this.resultingLocalSNRs = resultingLocalSNRs;
 		this.resultingLocalErrorIndexSNRs = resultingLocalErrorIndexSNRs;
+		this.resultingAvgCenterSignal = resultingAvgCenterSignal;
+		this.resultingAvgPeakSignal = resultingAvgPeakSignal;
+		this.resultingAvgMeanSignal = resultingAvgMeanSignal;
 		this.resultingBGR = resultingBGR;
 		this.resultingNoise = resultingNoise;
 		this.resultingAvgSNR = resultingAvgSNR;
@@ -153,99 +177,123 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 		this.resultingMinErrorIndexSNR = resultingMinErrorIndexSNR;
 		this.resultingMaxErrorIndexSNR = resultingMaxErrorIndexSNR;
 	}
-	
+
+	public Double getResultingAverageCenterSignal() {
+		return this.resultingAvgCenterSignal;
+	}
+
+	public Double getResultingAveragePeakSignal() {
+		return this.resultingAvgPeakSignal;
+	}
+
+	public Double getResultingAverageMeanSignal() {
+		return this.resultingAvgMeanSignal;
+	}
+
 	public Double getResultingBackground() {
 		return this.resultingBGR;
 	}
-
+	
 	public Double getResultingNoise() {
 		return this.resultingNoise;
 	}
-
+	
 	public Double getResultingAvgSNR() {
 		return this.resultingAvgSNR;
 	}
-
+	
 	public Double getResultingMaxSNR() {
 		return this.resultingMaxSNR;
 	}
-
+	
 	public Double getResultingMinSNR() {
 		return this.resultingMinSNR;
 	}
-
+	
 	public Double getResultingAvgErrorIndexSNR() {
 		return this.resultingAvgErrorIndexSNR;
 	}
-
+	
 	public Double getResultingMaxErrorIndexSNR() {
 		return this.resultingMaxErrorIndexSNR;
 	}
-
+	
 	public Double getResultingMinErrorIndexSNR() {
 		return this.resultingMinErrorIndexSNR;
 	}
-	
+
+	public Map<OmegaPlane, Double> getResultingImageAverageCenterSignal() {
+		return this.resultingImageAvgCenterSignal;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageAveragePeakSignal() {
+		return this.resultingImageAvgPeakSignal;
+	}
+
+	public Map<OmegaPlane, Double> getResultingImageAverageMeanSignal() {
+		return this.resultingImageAvgMeanSignal;
+	}
+
 	public Map<OmegaPlane, Double> getResultingImageBGR() {
 		return this.resultingImageBGR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageNoise() {
 		return this.resultingImageNoise;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageAverageSNR() {
 		return this.resultingImageAvgSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMinimumSNR() {
 		return this.resultingImageMinSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMaximumSNR() {
 		return this.resultingImageMaxSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageAverageErrorIndexSNR() {
 		return this.resultingImageAvgErrorIndexSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMinimumErrorIndexSNR() {
 		return this.resultingImageMinErrorIndexSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMaximumErrorIndexSNR() {
 		return this.resultingImageMaxErrorIndexSNR;
 	}
-	
+
 	public Map<OmegaROI, Integer> getResultingLocalCenterSignals() {
 		return this.resultingLocalCenterSignals;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalMeanSignals() {
 		return this.resultingLocalMeanSignals;
 	}
-	
+
 	public Map<OmegaROI, Integer> getResultingLocalSignalSizes() {
 		return this.resultingLocalSignalSizes;
 	}
-	
+
 	public Map<OmegaROI, Integer> getResultingLocalPeakSignals() {
 		return this.resultingLocalPeakSignals;
 	}
-
+	
 	public Map<OmegaROI, Double> getResultingLocalBackgrounds() {
 		return this.resultingLocalBackgrounds;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalNoises() {
 		return this.resultingLocalNoises;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalSNRs() {
 		return this.resultingLocalSNRs;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalErrorIndexSNRs() {
 		return this.resultingLocalErrorIndexSNRs;
 	}

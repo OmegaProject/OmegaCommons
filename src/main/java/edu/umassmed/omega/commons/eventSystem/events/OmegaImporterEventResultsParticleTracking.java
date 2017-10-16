@@ -29,7 +29,7 @@ package edu.umassmed.omega.commons.eventSystem.events;
 import java.util.List;
 import java.util.Map;
 
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
@@ -42,7 +42,7 @@ public class OmegaImporterEventResultsParticleTracking extends
 	
 	public OmegaImporterEventResultsParticleTracking(
 	        final OmegaIOUtility source,
-			final OmegaAnalysisRunContainer container,
+			final OmegaAnalysisRunContainerInterface container,
 			final Map<String, String> analysisData,
 			final Map<String, String> paramData,
 	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,

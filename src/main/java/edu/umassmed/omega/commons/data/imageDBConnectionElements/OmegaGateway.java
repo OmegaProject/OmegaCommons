@@ -34,44 +34,48 @@ public abstract class OmegaGateway {
 
 	public abstract void connect(final OmegaLoginCredentials loginCred,
 			final OmegaServerInformation serverInfo) throws Exception;
-	
+
+	public abstract void disconnect() throws Exception;
+
 	public abstract byte[] getImageData(final Long pixelsID, final int z,
 			final int t, final int c) throws Exception;
-	
+
 	public abstract int getDefaultZ(final Long pixelsID) throws Exception;
-	
+
 	public abstract void setDefaultZ(final Long pixelsID, int z)
 			throws Exception;
-	
+
 	public abstract int getDefaultT(final Long pixelsID) throws Exception;
-	
+
 	public abstract void setDefaultT(final Long pixelsID, int t)
 			throws Exception;
-	
+
 	public abstract int[] renderAsPackedInt(final Long pixelsID)
 			throws Exception;
-	
+
 	public abstract int[] renderAsPackedInt(final Long pixelsID, int t, int z)
 			throws Exception;
-	
+
 	public abstract byte[] renderCompressed(final Long pixelsID)
 			throws Exception;
-	
+
 	public abstract byte[] renderCompressed(final Long pixelsID, int t, int z)
 			throws Exception;
-	
+
 	public abstract void setActiveChannel(final Long pixelsID, int channel,
 			boolean active) throws Exception;
-	
+
 	// TODO to be removed because unused
 	public abstract Double computeSizeT(final Long pixelsID, int sizeT,
 			int currentMaxT) throws Exception;
-	
+
 	public abstract void setCompressionLevel(final Long pixelsID,
 			float compression) throws Exception;
-	
+
 	public abstract double getDeltaT(final Long pixelsID, final int z,
 			final int t, final int c) throws Exception;
-	
+
 	public abstract int getByteWidth(Long pixelsID) throws Exception;
+
+	public abstract void cleanUpTemporaryData() throws Exception;
 }

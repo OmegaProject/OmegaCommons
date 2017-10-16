@@ -27,15 +27,19 @@
 package edu.umassmed.omega.commons.data.coreElements;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainer;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 
 public class OmegaImagePixels extends OmegaElement implements OmeroElement,
-		OmegaAnalysisRunContainer {
+		OmegaAnalysisRunContainerInterface {
+	
+	private static String DISPLAY_NAME = "Image Pixels";
 	
 	private OmegaImage image;
 	
@@ -226,6 +230,32 @@ public class OmegaImagePixels extends OmegaElement implements OmeroElement,
 		subMap.put(z, frameList);
 		this.frames.put(c, subMap);
 	}
+
+	public void orderFrames() {
+		for (final int c : this.frames.keySet()) {
+			final Map<Integer, List<OmegaPlane>> subMap = this.frames.get(c);
+			for (final int z : subMap.keySet()) {
+				final List<OmegaPlane> frameList = subMap.get(z);
+				Collections.sort(frameList, new Comparator<OmegaPlane>() {
+					
+					@Override
+					public int compare(final OmegaPlane o1, final OmegaPlane o2) {
+						final int i1 = o1.getIndex();
+						final int i2 = o2.getIndex();
+						if (i1 < i2)
+							return -1;
+						else if (i1 > i2)
+							return 1;
+						return 0;
+					}
+
+				});
+				subMap.put(z, frameList);
+			}
+			this.frames.put(c, subMap);
+		}
+		
+	}
 	
 	public OmegaPlane getFrame(final Integer c, final Integer z, final long id) {
 		List<OmegaPlane> frameList = null;
@@ -327,5 +357,14 @@ public class OmegaImagePixels extends OmegaElement implements OmeroElement,
 	
 	public Map<Integer, String> getChannelNames() {
 		return this.channelNames;
+	}
+
+	public static String getStaticDisplayName() {
+		return OmegaImagePixels.DISPLAY_NAME;
+	}
+	
+	@Override
+	public String getDynamicDisplayName() {
+		return OmegaImagePixels.getStaticDisplayName();
 	}
 }
