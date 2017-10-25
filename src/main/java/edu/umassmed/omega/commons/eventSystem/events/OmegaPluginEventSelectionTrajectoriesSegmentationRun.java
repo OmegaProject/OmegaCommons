@@ -9,24 +9,32 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventSelectionTrajectoriesSegmentationRun extends
-        OmegaPluginEventSelectionAnalysisRun {
-
+		OmegaPluginEventSelectionAnalysisRun {
+	
+	private final boolean isCurrent;
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap;
-
+	
 	public OmegaPluginEventSelectionTrajectoriesSegmentationRun(
-	        final OmegaAnalysisRun analysisRun,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap) {
-		this(null, analysisRun, segmentsMap);
+			final OmegaAnalysisRun analysisRun,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
+			final boolean isCurrent) {
+		this(null, analysisRun, segmentsMap, isCurrent);
 	}
-
+	
 	public OmegaPluginEventSelectionTrajectoriesSegmentationRun(
-	        final OmegaPlugin source, final OmegaAnalysisRun analysisRun,
-	        final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap) {
+			final OmegaPlugin source, final OmegaAnalysisRun analysisRun,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
+			final boolean isCurrent) {
 		super(source, null);
 		this.segmentsMap = segmentsMap;
+		this.isCurrent = isCurrent;
 	}
-
+	
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegmentsMap() {
 		return this.segmentsMap;
+	}
+
+	public boolean isCurrent() {
+		return this.isCurrent;
 	}
 }
