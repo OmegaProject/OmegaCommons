@@ -7,8 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaRunDefinition;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
@@ -24,6 +26,9 @@ public class OmegaAlgorithmsUtilities {
 	private static Date DEFAULT_IMPORTER_ALGO_DATE = new GregorianCalendar(
 			2015, 5, 16).getTime();
 	private static String DEFAULT_IMPORTER_ALGO_REFERENCE = OmegaGUIConstants.NOT_ASSIGNED;
+
+	public static List<OmegaParameter> DEFAULT_TRACKING_MEASURES_DIFF_PARAMS = new ArrayList<OmegaParameter>();
+	public static List<OmegaParameter> DEFAULT_TRACKING_MEASURES_INTE_PARAMS = new ArrayList<OmegaParameter>();
 
 	public static OmegaRunDefinition DEFAULT_TRACKING_MEASURES_DIFF_SPEC;
 	private static String DEFAULT_TRACKING_MEASURES_DIFF_ALGO_NAME = "OMEGA Diffusivity Measures";
@@ -76,6 +81,22 @@ public class OmegaAlgorithmsUtilities {
 	public static String DEFAULT_DEVELOPER = "Alex Rigano";
 
 	static {
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_PARAMS
+				.add(new OmegaParameter(
+						OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW,
+						OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW_3));
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_PARAMS
+				.add(new OmegaParameter(
+						OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION,
+						OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_AND_LINEAR));
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_DIFF_PARAMS
+				.add(new OmegaParameter(OmegaConstants.PARAMETER_ERROR_OPTION,
+						OmegaConstants.PARAMETER_ERROR_OPTION_DISABLED));
+
+		OmegaAlgorithmsUtilities.DEFAULT_TRACKING_MEASURES_INTE_PARAMS
+				.add(new OmegaParameter(OmegaConstants.PARAMETER_SNR_USE,
+						String.valueOf(false)));
+
 		// OmegaAlgorithmsUtilities.DEFAULT_DEVELOPER = new OmegaPerson("Alex",
 		// "Rigano");
 		final OmegaAlgorithmInformation algoInfoRelinking = new OmegaAlgorithmInformation(
