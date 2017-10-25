@@ -1,10 +1,10 @@
 package edu.umassmed.omega.commons.trajectoryTool;
 
 public class OmegaDataToolConstants {
-
+	
 	public static String RUN_NAME = "Run name";
 	public static String RUN_ON = "Run on";
-	public static String RUN_BY = "Run by";
+	public static String RUN_BY = "Owner";
 	public static String ALGORITHM = "Algorithm";
 	public static String AUTHOR = "Author";
 	public static String VERSION = "Version";
@@ -13,7 +13,7 @@ public class OmegaDataToolConstants {
 	public static String DESCRIPTION = "Description";
 	public static String PARAMETERS = "Parameters";
 	public static String PARAM = "Param";
-	
+
 	public static final String PARTICLE_TRACKINDEX = "track index";
 	public static final String PARTICLE_FRAMEINDEX = "identifier";
 	public static final String PARTICLE_XCOORD = "x";
@@ -21,7 +21,7 @@ public class OmegaDataToolConstants {
 	public static final String PARTICLE_CENT_INTENSITY = "centroid intensity";
 	public static final String PARTICLE_PEAK_INTENSITY = "peak intensity";
 	public static final String PARTICLE_SEPARATOR = "separator";
-
+	
 	public static final String FILE_IDENTIFIER_TT = "Enter a single file name or in case of multiple files to import, enter a regular expression (RegEx) capturing the file name pattern being used. For example for the following file name: SMSS_MIXED_1.txt. The correct RegEx is: SMSS_MIXED_[\\d].txt";
 	public static final String DATA_IDENTIFIER_TT = "In case all of your data is contained in a single file, enter the term describing the type of the data you wish to import. Examples are: Particle, Link, Trajectory, Edited Trajectory, Segment etc.";
 	public static final String PARTICLE_IDENTIFIER_TT = "If available, enter the character that in your file identifies lines containing particle data";
