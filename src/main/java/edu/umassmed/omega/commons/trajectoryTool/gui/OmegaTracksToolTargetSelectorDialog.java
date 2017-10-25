@@ -229,7 +229,7 @@ implements GenericElementInformationContainerInterface {
 		// if (!this.isHandlingEvent) {
 		// this.fireEventSelectionPluginImage();
 		// }
-		this.geip.update((OmegaElement) this.selectedImage);
+		this.geip.updateContent((OmegaElement) this.selectedImage);
 		this.populateParticlesCombo();
 		// this.populateTrajectoriesCombo();
 	}
