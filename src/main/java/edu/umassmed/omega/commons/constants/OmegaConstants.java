@@ -92,6 +92,9 @@ public class OmegaConstants {
 
 	// ***SEGMENTATION***
 	public final static String OMEGA_SEGMENTATION_CURRENT = "Unsaved Segmentation";
+	
+	// ***INTENSITY***
+	public static final String PARAMETER_SNR_USE = "Use SNR Estimation";
 
 	// ***DIFFUSIVITY***
 	public static final String PARAMETER_DIFFUSIVITY_WINDOW = "Maximum computation window size";
