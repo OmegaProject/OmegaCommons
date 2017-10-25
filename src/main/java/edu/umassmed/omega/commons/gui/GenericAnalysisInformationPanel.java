@@ -70,38 +70,38 @@ import edu.umassmed.omega.commons.utilities.OmegaMathsUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericAnalysisInformationPanel extends GenericScrollPane {
-
+	
 	private static final long serialVersionUID = -8599077833612345455L;
-
+	
 	private JTextPane info_txt;
-
+	
 	private final SimpleAttributeSet normal, bold;
-
+	
 	private JButton algoDetails_btt;
-
+	
 	private final GenericAlgorithmDetailsDialog algoInfoDialog;
 	private OmegaAlgorithmInformation algoInfo;
-
+	
 	public GenericAnalysisInformationPanel(final RootPaneContainer parent) {
 		super(parent);
-
+		
 		this.normal = new SimpleAttributeSet();
 		this.bold = new SimpleAttributeSet();
 		StyleConstants.setBold(this.bold, true);
-
+		
 		// this.setBorder(new TitledBorder("Information"));
-
+		
 		this.algoInfoDialog = new GenericAlgorithmDetailsDialog(parent);
-
+		
 		this.createAndAddWidgets();
-
+		
 		this.addListeners();
 	}
-
+	
 	private void createAndAddWidgets() {
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-
+		
 		this.info_txt = new JTextPane();
 		this.info_txt.setEditable(false);
 		this.info_txt.setEditorKit(new GenericWrapEditorKit());
@@ -112,22 +112,22 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		mainPanel.add(this.info_txt, BorderLayout.CENTER);
-
+		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
+		
 		this.algoDetails_btt = new JButton(
 				OmegaGUIConstants.ALGORITHM_INFORMATION);
 		this.algoDetails_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		this.algoDetails_btt.setSize(OmegaConstants.BUTTON_SIZE_LARGE);
 		this.algoDetails_btt.setEnabled(false);
 		buttonPanel.add(this.algoDetails_btt);
-
+		
 		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
+		
 		this.setViewportView(mainPanel);
 	}
-
+	
 	private void addListeners() {
 		this.algoDetails_btt.addActionListener(new ActionListener() {
 			@Override
@@ -136,11 +136,11 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			}
 		});
 	}
-
+	
 	private void handleShowAlgoDetails() {
 		this.algoInfoDialog.setVisible(true);
 	}
-
+	
 	public void resizePanel(final int width, final int height) {
 		final int lines = OmegaStringUtilities.countLines(this.info_txt,
 				this.info_txt.getDocument().getLength());
@@ -154,7 +154,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			// neededWidth -= 20;
 			// neededHeight += 17;
 		}
-
+		
 		final Dimension panelDim = new Dimension(width, height);
 		this.setPreferredSize(panelDim);
 		this.setSize(panelDim);
@@ -162,26 +162,26 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		this.info_txt.setPreferredSize(textDim);
 		this.info_txt.setSize(textDim);
 	}
-
+	
 	private void appendString(final String s, final AttributeSet style)
 			throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, s, style);
 	}
-
+	
 	private void appendNewline() throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, "\n", this.normal);
 	}
-
+	
 	private void reset() throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.remove(0, length);
 	}
-
+	
 	public void updateContent(final OmegaAnalysisRun analysisRun) {
 		this.algoInfoDialog.updateAlgorithmInformation(null);
 		this.algoDetails_btt.setEnabled(false);
@@ -203,12 +203,12 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		} catch (final BadLocationException ex) {
 			OmegaLogFileManager.handleCoreException(ex, true);
 		}
-
+		
 		// this.resizePanel(this.getWidth(), this.getHeight());
 		this.info_txt.revalidate();
 		this.info_txt.repaint();
 	}
-
+	
 	private void getGenericAnalysisInformation(
 			final OmegaAnalysisRun analysisRun) throws BadLocationException {
 		final SimpleDateFormat format = new SimpleDateFormat(
@@ -216,29 +216,34 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		final long id = analysisRun.getElementID();
 		final String clazz = analysisRun.getDynamicDisplayName();
 		this.appendString(clazz, this.bold);
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ID, this.bold);
+		this.appendString(" ", this.bold);
+		this.appendString(OmegaGUIConstants.INFO_ID, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		if (id == -1) {
 			this.appendString(OmegaGUIConstants.NOT_ASSIGNED, this.normal);
 		} else {
 			this.appendString(String.valueOf(id), this.normal);
 		}
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_OWNER, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_OWNER, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		final String name = analysisRun.getExperimenter().getFirstName() + " "
 				+ analysisRun.getExperimenter().getLastName();
 		this.appendString(name, this.normal);
 		this.appendNewline();
-		// this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NAME, this.bold);
-		// this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NOT_NAMED,
+		// this.appendString(OmegaGUIConstants.INFO_NAME, this.bold);
+		// this.appendString(OmegaGUIConstants.INFO_NOT_NAMED,
 		// this.normal);
 		// this.appendNewline();
-		this.appendString("Algorithm: ", this.bold);
+		this.appendString(OmegaGUIConstants.INFO_ALGO, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		final OmegaRunDefinition algoSpec = analysisRun.getAlgorithmSpec();
 		final String algoName = algoSpec.getAlgorithmInfo().getName();
 		this.appendString(algoName, this.normal);
 		this.appendNewline();
 		if (algoSpec.getParameters().size() > 0) {
-			this.appendString("Parameters: ", this.bold);
+			this.appendString(OmegaGUIConstants.INFO_PARAMS, this.bold);
+			this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 			for (final OmegaParameter param : algoSpec.getParameters()) {
 				this.appendNewline();
 				this.appendString("-", this.normal);
@@ -256,15 +261,16 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			this.appendNewline();
 		}
 		this.appendString(OmegaGUIConstants.INFO_EXECUTED, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		final String acquiredDate = format.format(analysisRun.getTimeStamps());
 		this.appendString(acquiredDate.replace("_", " "), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_ANALYSIS, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(analysisRun)), this.normal);
 	}
-
+	
 	private void getSpecificElementInformation(
 			final OmegaAnalysisRun analysisRun) throws BadLocationException {
 		if (analysisRun instanceof OmegaSNRRun) {
@@ -287,34 +293,37 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			this.appendAdditionalPDInformation((OmegaParticleDetectionRun) analysisRun);
 		}
 	}
-
+	
 	private void appendAdditionaSNRInformation(final OmegaSNRRun analysisRun)
 			throws BadLocationException {
 		this.appendString("Image mean SNR: ", this.bold);
 		final Double snr = analysisRun.getResultingAvgSNR();
 		this.appendString(String.valueOf(snr), this.normal);
 	}
-
+	
 	private void appendAdditionalTMVInformation(
 			final OmegaTrackingMeasuresVelocityRun analysisRun) {
-
+		
 	}
-
+	
 	private void appendAdditionalTMMInformation(
 			final OmegaTrackingMeasuresMobilityRun analysisRun) {
-
+		
 	}
-
+	
 	private void appendAdditionalTMIInformation(
 			final OmegaTrackingMeasuresIntensityRun analysisRun) {
-
+		
 	}
-
+	
 	private void appendAdditionalTMDInformation(
-			final OmegaTrackingMeasuresDiffusivityRun analysisRun) {
-
+			final OmegaTrackingMeasuresDiffusivityRun analysisRun)
+			throws BadLocationException {
+		this.appendString("Minimum Detectable ODC: ", this.bold);
+		final Double ODC = analysisRun.getMinimumDetectableODC();
+		this.appendString(String.valueOf(ODC), this.normal);
 	}
-
+	
 	private void appendAdditionalTSInformation(
 			final OmegaTrajectoriesSegmentationRun analysisRun)
 			throws BadLocationException {
@@ -341,15 +350,14 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 				this.bold);
 		final Double segmMean = OmegaMathsUtilities.mean(segmentsN);
 		this.appendString(String.valueOf(segmMean), this.normal);
-
 	}
-
+	
 	private void appendAdditionalTEInformation(
 			final OmegaTrajectoriesRelinkingRun analysisRun)
 			throws BadLocationException {
 		this.appendAdditionalPLInformation(analysisRun);
 	}
-
+	
 	private void appendAdditionalPLInformation(
 			final OmegaParticleLinkingRun analysisRun)
 			throws BadLocationException {
@@ -359,7 +367,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		final String tracksV = String.valueOf(tracks.size());
 		this.appendString(tracksV, this.normal);
 		this.appendNewline();
-
+		
 		int maxTracksLength = 0;
 		int minTracksLength = 0;
 		double meanTracksLength = 0;
@@ -373,7 +381,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 			}
 		}
 		meanTracksLength /= tracks.size();
-
+		
 		this.appendString("Average trajectory length: ", this.bold);
 		final String averagetl = String.valueOf(meanTracksLength);
 		this.appendString(averagetl, this.normal);
@@ -386,7 +394,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		final String mintl = String.valueOf(minTracksLength);
 		this.appendString(mintl, this.normal);
 	}
-
+	
 	private void appendAdditionalPDInformation(
 			final OmegaParticleDetectionRun analysisRun)
 			throws BadLocationException {
@@ -423,7 +431,7 @@ public class GenericAnalysisInformationPanel extends GenericScrollPane {
 		final String min = String.valueOf(minNumP);
 		this.appendString(min, this.normal);
 	}
-	
+
 	@Override
 	public void updateParentContainer(final RootPaneContainer parent) {
 		super.updateParentContainer(parent);

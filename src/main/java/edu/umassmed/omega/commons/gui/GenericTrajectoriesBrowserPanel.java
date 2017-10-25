@@ -43,11 +43,11 @@ import edu.umassmed.omega.commons.utilities.OmegaColorManagerUtilities;
 public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		implements OmegaFilterEventListener {
 	private static final long serialVersionUID = -4914198379223290679L;
-
+	
 	private final GenericTrajectoriesBrowserContainerInterface tbContainer;
-
+	
 	private GenericFilterPanel filterPanel;
-
+	
 	private GenericTrajectoriesBrowserHeaderPanel tbHeaderPanel;
 	private JScrollPane tbHeaderScrollPane;
 	private GenericTrajectoriesBrowserTrajectoriesPanel tbTrajectoriesPanel;
@@ -55,38 +55,38 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 	private GenericTrajectoriesBrowserNamesPanel tbNamesPanel;
 	private JScrollPane tbNamesScrollPane;
 	private GenericTrajectoriesBrowserLabelsPanel tbLabelsPanel;
-
+	
 	private JPopupMenu tbMenu;
 	private JMenuItem showParticles_itm, generateRandomColors_itm,
 			chooseColor_itm;
-
+	
 	private OmegaGateway gateway;
 	private OmegaImage img;
-
+	
 	public GenericTrajectoriesBrowserPanel(final RootPaneContainer parent,
 			final GenericTrajectoriesBrowserContainerInterface tbContainer,
 			final OmegaGateway gateway, final boolean showEnabled,
 			final boolean selectionEnabled) {
 		super(parent, showEnabled, selectionEnabled);
-
+		
 		this.tbContainer = tbContainer;
-
+		
 		this.gateway = gateway;
 		this.img = null;
-
+		
 		this.createPopupMenu();
-
+		
 		this.setLayout(new BorderLayout());
-
+		
 		this.createAndAddWidgets();
-
+		
 		this.addListeners();
 	}
-
+	
 	private void createAndAddWidgets() {
 		final JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
-
+		
 		final List<String> columNames = new ArrayList<String>();
 		columNames.add("ID");
 		columNames.add("Name");
@@ -95,11 +95,11 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.filterPanel.updateCombo(columNames);
 		this.filterPanel.addOmegaFilterListener(this);
 		topPanel.add(this.filterPanel, BorderLayout.NORTH);
-
+		
 		this.tbLabelsPanel = new GenericTrajectoriesBrowserLabelsPanel(
 				this.getParentContainer(), this.isShowEnabled());
 		topPanel.add(this.tbLabelsPanel, BorderLayout.WEST);
-
+		
 		this.tbHeaderPanel = new GenericTrajectoriesBrowserHeaderPanel(
 				this.getParentContainer(), this);
 		this.tbHeaderScrollPane = new JScrollPane(this.tbHeaderPanel);
@@ -108,9 +108,9 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.tbHeaderScrollPane
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		topPanel.add(this.tbHeaderScrollPane, BorderLayout.CENTER);
-
+		
 		this.add(topPanel, BorderLayout.NORTH);
-
+		
 		this.tbNamesPanel = new GenericTrajectoriesBrowserNamesPanel(
 				this.getParentContainer(), this, this.isSelectionEnabled(),
 				this.isShowEnabled());
@@ -120,7 +120,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.tbNamesScrollPane
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.add(this.tbNamesScrollPane, BorderLayout.WEST);
-
+		
 		this.tbTrajectoriesPanel = new GenericTrajectoriesBrowserTrajectoriesPanel(
 				this.getParentContainer(), this, this.gateway,
 				this.isSelectionEnabled());
@@ -128,7 +128,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				this.tbTrajectoriesPanel);
 		this.add(this.tbTrajectoriesScrollPane, BorderLayout.CENTER);
 	}
-
+	
 	private void createPopupMenu() {
 		this.tbMenu = new JPopupMenu();
 		this.showParticles_itm = new JMenuItem(
@@ -137,7 +137,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				OmegaGUIConstants.RANDOM_COLORS);
 		this.chooseColor_itm = new JMenuItem(OmegaGUIConstants.CHOSE_COLOR);
 	}
-
+	
 	private void addListeners() {
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -151,7 +151,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				GenericTrajectoriesBrowserPanel.this.handleMouseIn(evt
 						.getPoint());
 			}
-
+			
 			@Override
 			public void mouseExited(final MouseEvent evt) {
 				GenericTrajectoriesBrowserPanel.this.handleMouseOut();
@@ -218,37 +218,37 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 			}
 		});
 	}
-
+	
 	private void handleResize() {
 		this.tbTrajectoriesPanel.setPanelSize();
 		this.tbNamesPanel.setPanelSize();
 		this.tbHeaderPanel.setPanelSize();
 	}
-
+	
 	protected void handleMouseOut() {
-
+		
 	}
-
+	
 	protected void handleMouseIn(final Point pos) {
-
+		
 	}
-
+	
 	protected void handleMouseMovement(final Point pos) {
-
+		
 	}
-
+	
 	private void handleHorizontalScrollBarChanged() {
 		final int value = this.tbTrajectoriesScrollPane
 				.getHorizontalScrollBar().getValue();
 		this.tbHeaderScrollPane.getHorizontalScrollBar().setValue(value);
 	}
-
+	
 	private void handleVerticalScrollBarChanged() {
 		final int value = this.tbTrajectoriesScrollPane.getVerticalScrollBar()
 				.getValue();
 		this.tbNamesScrollPane.getVerticalScrollBar().setValue(value);
 	}
-
+	
 	protected void handleMouseClick(final Point clickP,
 			final boolean isRightButton, final boolean isShiftDown,
 			final boolean isTrackPanel) {
@@ -271,12 +271,12 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				this.getSelectedTrajectories().clear();
 			}
 		}
-
+		
 		if (selected) {
 			this.resetClickReferences();
 			this.getSelectedTrajectories().clear();
 		}
-
+		
 		// FIXME there is a bug when right click on a track already selected, it
 		// becomes unselected e when picked a item in the menu the methods does
 		// not find selectedtraj reference!
@@ -299,26 +299,31 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.repaint();
 	}
 
+	public void clearTrajectoriesSelection() {
+		this.getSelectedTrajectories().clear();
+		this.repaint();
+	}
+	
 	protected void resetClickReferences() {
 		this.setSelectedTrajectory(null);
 		this.setSelectedParticle(null);
 	}
-
+	
 	protected void findSelectedTrajectory(final Point clickP) {
 		this.tbTrajectoriesPanel.findSelectedTrajectory(clickP);
 	}
-
+	
 	protected boolean selectIfCheckbox(final Point clickP) {
 		return this.tbNamesPanel.selectIfCheckbox(clickP);
 	}
-
+	
 	protected void findSelectedParticle(final Point clickP) {
 		this.tbTrajectoriesPanel.findSelectedParticle(clickP);
 	}
-
+	
 	protected void createTrajectoryMenu() {
 		this.tbMenu.removeAll();
-
+		
 		final StringBuffer buf = new StringBuffer();
 		int frameIndex = -1;
 		if (this.getSelectedTrajectory() != null) {
@@ -341,7 +346,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 			this.tbMenu.add(this.chooseColor_itm);
 		}
 	}
-
+	
 	protected void showTrajectoryMenu(final Point clickP,
 			final boolean isTrackPanel) {
 		if (isTrackPanel) {
@@ -350,21 +355,21 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 			this.tbMenu.show(this.tbNamesPanel, clickP.x, clickP.y);
 		}
 	}
-
+	
 	protected void enabledShowSportsThumbnail() {
 		this.setShowParticlesAutomaticallyDisabled(false);
 		this.showParticles_itm
 				.setText(OmegaGUIConstants.TRACK_BROWSER_HIDE_SPOT_THUMB);
 		this.setShowParticles(!this.isShowParticles());
 	}
-
+	
 	protected void disableShowSportsThumbnail() {
 		this.setShowParticlesAutomaticallyDisabled(true);
 		this.showParticles_itm
 				.setText(OmegaGUIConstants.TRACK_BROWSER_SHOW_SPOT_THUMB);
 		this.setShowParticles(!this.isShowParticles());
 	}
-
+	
 	private void handleShowSpotsThumbnail() {
 		if (this.isShowParticles()) {
 			this.showParticles_itm
@@ -377,7 +382,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		}
 		this.repaint();
 	}
-
+	
 	private void handleGenerateRandomColors() {
 		final GenericConfirmationDialog dialog = new GenericConfirmationDialog(
 				this.getParentContainer(),
@@ -397,20 +402,20 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.repaint();
 		this.sendEventTrajectories(this.getTrajectories(), false);
 	}
-
+	
 	private void handlePickSingleColor() {
 		final StringBuffer buf1 = new StringBuffer();
 		buf1.append(OmegaGUIConstants.TRACK_CHOSE_COLOR_DIALOG_MSG);
 		buf1.append(this.getSelectedTrajectory().getName());
-
+		
 		final Color c = OmegaColorManagerUtilities.openPaletteColor(this,
 				buf1.toString(), this.getSelectedTrajectory().getColor());
-
+		
 		final StringBuffer buf2 = new StringBuffer();
 		buf2.append(OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM_MSG);
 		buf2.append(this.getSelectedTrajectory().getName());
 		buf2.append("?");
-
+		
 		final GenericConfirmationDialog dialog = new GenericConfirmationDialog(
 				this.getParentContainer(),
 				OmegaGUIConstants.TRACK_CHOSE_COLOR_CONFIRM, buf2.toString(),
@@ -418,7 +423,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		dialog.setVisible(true);
 		if (!dialog.getConfirmation())
 			return;
-
+		
 		this.getSelectedTrajectory().setColor(c);
 		this.getSelectedTrajectory().setColorChanged(true);
 		this.repaint();
@@ -426,12 +431,12 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		trajectories.addAll(this.getTrajectories());
 		this.sendEventTrajectories(trajectories, false);
 	}
-
+	
 	@Override
 	public void addToPaint(final Graphics2D g2D) {
-
+		
 	}
-
+	
 	public void updateTrajectories(final List<OmegaTrajectory> trajectories,
 			final boolean selection) {
 		if ((this.img == null) && (trajectories != null)
@@ -484,7 +489,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.handleResize();
 		this.repaint();
 	}
-
+	
 	private void centerOnTrajectory(final OmegaTrajectory traj) {
 		final Point p = this.tbTrajectoriesPanel.findTrajectoryLocation(traj);
 		if (p != null) {
@@ -497,12 +502,12 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 					xPos);
 		}
 	}
-
+	
 	public void addTrajectoriesToSelection(
 			final List<OmegaTrajectory> trajectories, final int index) {
 		this.getSelectedTrajectories().addAll(index, trajectories);
 	}
-
+	
 	public int removeTrajectoriesFromSelection(
 			final List<OmegaTrajectory> trajectories) {
 		if (trajectories.isEmpty())
@@ -514,7 +519,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		}
 		return index;
 	}
-
+	
 	private void setTrajectoriesValues() {
 		// TODO can be delegate to the superclass
 		this.setNumberOfTrajectories(this.getShownTrajectories().size());
@@ -528,7 +533,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 			}
 		}
 	}
-
+	
 	public void setGateway(final OmegaGateway gateway) {
 		this.gateway = gateway;
 		this.tbTrajectoriesPanel.setGateway(gateway);
@@ -549,7 +554,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.tbHeaderPanel.setPhysicalSizeT(physicalSizeT);
 		this.tbLabelsPanel.setHasPhysicalSizeT(physicalSizeT != null);
 	}
-
+	
 	public void setImage(final OmegaImage image) {
 		if (image == null) {
 			this.img = null;
@@ -575,7 +580,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		}
 		this.tbTrajectoriesPanel.setImage(image);
 	}
-
+	
 	@Override
 	public void updateMessageStatus(final OmegaMessageEvent evt) {
 		final OmegaMessageEventTBLoader specificEvt = (OmegaMessageEventTBLoader) evt;
@@ -584,25 +589,25 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 			this.tbTrajectoriesPanel.loadBufferedImages();
 		}
 	}
-
+	
 	protected Point getClickPosition() {
 		return this.tbTrajectoriesPanel.getClickPosition();
 	}
-
+	
 	protected JPopupMenu getMenu() {
 		return this.tbMenu;
 	}
-
+	
 	protected void sendEventTrajectories(
 			final List<OmegaTrajectory> selectedTrajectories,
 			final boolean selected) {
 		this.tbContainer.sendEventTrajectories(selectedTrajectories, selected);
 	}
-
+	
 	protected void updateStatus(final String message) {
 		this.tbContainer.updateStatus(message);
 	}
-
+	
 	@Override
 	public Dimension getTrajectoriesPanelSize() {
 		final Dimension size = this.getSize();
@@ -610,20 +615,20 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		return new Dimension(size.width - headerSize.width, size.height
 				- headerSize.height - 25);
 	}
-
+	
 	@Override
 	public void handleFilterEvent(final OmegaFilterEvent event) {
 		final String key = event.getKey();
 		final String val = event.getValue();
 		final boolean isExact = event.isExact();
 		// System.out.println(key + " " + val + " " + isExact);
-
+		
 		this.getShownTrajectories().clear();
 		if ((val == null) || val.equals("")) {
 			this.getShownTrajectories().addAll(this.getTrajectories());
 			return;
 		}
-
+		
 		if (key.equals("Length")) {
 			this.handleLengthFilter(val);
 		} else {
@@ -634,7 +639,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		this.repaint();
 		// USE COMPARATOR ON THE TRACKS LIST TO REORDER IT
 	}
-
+	
 	private void handleLengthFilter(final String value) {
 		final boolean equal = value.contains("=");
 		final boolean less = value.contains("<");
@@ -673,7 +678,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 				}
 		}
 	}
-
+	
 	private void handleNormalFilter(final String key, final String value,
 			final boolean isExact) {
 		String regex = value;
@@ -682,7 +687,7 @@ public class GenericTrajectoriesBrowserPanel extends GenericBrowserPanel
 		} else {
 			regex = ".*" + value + ".*";
 		}
-
+		
 		for (final OmegaTrajectory track : this.getTrajectories())
 			if (key.equals("ID")) {
 				if (track.getElementID().toString().matches(regex)) {

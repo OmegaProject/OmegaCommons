@@ -198,28 +198,28 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 	}
 	
 	private void addParticleColumns(final boolean needIndex) {
-		this.addStringValueColumn("Particle ID");
-		this.addIntValueColumn("Frame");
-		this.addDoubleValueColumn("X");
-		this.addDoubleValueColumn("Y");
-		this.addStringValueColumn("Z");
-		this.addStringValueColumn("C");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_PARTICLE_ID);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_FRAME);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_X);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_Y);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_Z);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_C);
 		if (needIndex) {
-			this.addIntValueColumn("Index");
+			this.addIntValueColumn(OmegaGUIConstants.RESULTS_INDEX);
 		}
 	}
 	
 	private void addTrajectoryColumns() {
-		this.addStringValueColumn("Trajectory ID");
-		this.addStringValueColumn("Trajectory Name");
-		this.addIntValueColumn("Trajectory Length");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_TRACK_ID);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_TRACK_NAME);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_TRACK_LENGTH);
 	}
 
 	private void addSegmentColumns() {
-		this.addStringValueColumn("Segment ID");
-		this.addStringValueColumn("Segment Name");
-		this.addStringValueColumn("Motion Type");
-		this.addIntValueColumn("Segment Length");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_SEGM_ID);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_SEGM_NAME);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_SEGM_TYPE);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_SEGM_LENGTH);
 	}
 	
 	private void addIntValueColumn(final String name) {
@@ -347,13 +347,27 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			this.rowSorter.toggleSortOrder(4);
 		} else if (this.analysisRun instanceof OmegaTrackingMeasuresIntensityRun) {
 			final OmegaTrackingMeasuresIntensityRun intRun = (OmegaTrackingMeasuresIntensityRun) this.analysisRun;
-			this.populateGlobalIntensitySegmentsResults(intRun.getSegments(),
-					intRun.getPeakSignalsResults(),
-					intRun.getCentroidSignalsResults(),
-					intRun.getSNRRun() != null, intRun.getMeanSignalsResults(),
-					intRun.getBackgroundsResults(), intRun.getNoisesResults(),
-					intRun.getSNRsResults());
-			this.rowSorter.toggleSortOrder(1);
+			if (this.isLocal) {
+				this.populateLocalIntensitySegmentsResults(
+						intRun.getSegments(),
+						intRun.getPeakSignalsLocalResults(),
+						intRun.getCentroidSignalsLocalResults(),
+						intRun.getSNRRun() != null,
+						intRun.getMeanSignalsLocalResults(),
+						intRun.getBackgroundsLocalResults(),
+						intRun.getNoisesLocalResults(),
+						intRun.getSNRsLocalResults());
+				this.rowSorter.toggleSortOrder(4);
+			} else {
+				this.populateGlobalIntensitySegmentsResults(
+						intRun.getSegments(), intRun.getPeakSignalsResults(),
+						intRun.getCentroidSignalsResults(),
+						intRun.getSNRRun() != null,
+						intRun.getMeanSignalsResults(),
+						intRun.getBackgroundsResults(),
+						intRun.getNoisesResults(), intRun.getSNRsResults());
+				this.rowSorter.toggleSortOrder(1);
+			}
 		} else if (this.analysisRun instanceof OmegaTrackingMeasuresVelocityRun) {
 			final OmegaTrackingMeasuresVelocityRun velRun = (OmegaTrackingMeasuresVelocityRun) this.analysisRun;
 			if (this.isLocal) {
@@ -387,6 +401,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 						mobRun.getMaxDisplacementsFromOriginResults(),
 						mobRun.getDistancesFromOriginResults(),
 						mobRun.getDisplacementsFromOriginResults(),
+						mobRun.getConfinementRatioResults(),
 						mobRun.getTimeTraveledResults());
 				this.rowSorter.toggleSortOrder(1);
 			}
@@ -403,16 +418,13 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 						difRun.getSegments(), LD, difRun.getNyResults(),
 						difRun.getLogMuResults(), difRun.getMuResults(),
 						difRun.getLogDeltaTResults(), difRun.getDeltaTResults());
-				// this.rowSorter.toggleSortOrder(1);
 			} else {
-				difRun.getMinimumDetectableODC();
 				if (this.isSpecific) {
 					this.populateGlobalSpecificDiffusivitySegmentsResults(
 							difRun.getSegments(), LD,
 							difRun.getGammaDFromLogResults(),
 							difRun.getSmssFromLogResults(),
-							difRun.getErrosFromLogResults(),
-							difRun.getMinimumDetectableODC());
+							difRun.getErrosFromLogResults());
 				} else {
 					this.populateGlobalGenericDiffusivitySegmentsResults(
 							difRun.getSegments(), LD, difRun.getNyResults(),
@@ -559,13 +571,13 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaROI, Double> snr,
 			final Map<OmegaROI, Double> indexSNR) {
 		this.addParticleColumns(false);
-		this.addDoubleValueColumn("Center Intensity");
-		this.addDoubleValueColumn("Peak Intensity");
-		this.addDoubleValueColumn("Mean Intensity");
-		this.addDoubleValueColumn("Local Background");
-		this.addDoubleValueColumn("Local Noise");
-		this.addDoubleValueColumn("Local SNR");
-		this.addDoubleValueColumn("Particle Area");
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_PEAK);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_MEAN);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_BACKGROUND);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_NOISE);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_SNR);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_AREA);
 		// this.addDoubleValueColumn("Index SNR");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -605,19 +617,16 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaPlane, Double> minIndexSNR,
 			final Map<OmegaPlane, Double> avgIndexSNR,
 			final Map<OmegaPlane, Double> maxIndexSNR) {
-		this.addStringValueColumn("Plane ID");
-		this.addIntValueColumn("Plane Index");
-		this.addDoubleValueColumn("Average Center Intesity");
-		this.addDoubleValueColumn("Average Peak Intesity");
-		this.addDoubleValueColumn("Average Mean Intesity");
-		this.addDoubleValueColumn("Background");
-		this.addDoubleValueColumn("Noise");
-		this.addDoubleValueColumn("Avg SNR");
-		this.addDoubleValueColumn("Min SNR");
-		this.addDoubleValueColumn("Max SNR");
-		// this.addDoubleValueColumn("Min Index SNR");
-		// this.addDoubleValueColumn("Avg Index SNR");
-		// this.addDoubleValueColumn("Max Index SNR");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_PLANE_ID);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_PLANE_INDEX);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID_AVG);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_PEAK_AVG);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_MEAN_AVG);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_SNR_BACKGROUND);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_SNR_NOISE);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_SNR_AVG);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_SNR_MIN);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_SNR_MAX);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		for (final OmegaPlane plane : bgr.keySet()) {
@@ -635,14 +644,10 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Double localMinSNR = minSNR.get(plane);
 			final Double localAvgSNR = avgSNR.get(plane);
 			final Double localMaxSNR = maxSNR.get(plane);
-			// final Double localMinIndexSNR = minIndexSNR.get(plane);
-			// final Double localAvgIndexSNR = avgIndexSNR.get(plane);
-			// final Double localMaxIndexSNR = maxIndexSNR.get(plane);
-			final Object[] row = { planeID, plane.getIndex(),
+			final Object[] row = { planeID, plane.getIndex() + 1,
 					localAvgCenterSignal, localAvgPeakSignal,
 					localAvgMeanSignal, localBGR, localNoise, localAvgSNR,
 					localMinSNR, localMaxSNR };
-			// localMinIndexSNR, localAvgIndexSNR, localMaxIndexSNR
 			dtm.addRow(row);
 		}
 	}
@@ -652,21 +657,18 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Double bgr, final Double noise, final Double minSNR,
 			final Double avgSNR, final Double maxSNR, final Double minIndexSNR,
 			final Double avgIndexSNR, final Double maxIndexSNR) {
-		this.addStringValueColumn("Image ID");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_IMAGE_ID);
 		// this.addDoubleValueColumn("T");
-		this.addStringValueColumn("Z");
-		this.addStringValueColumn("C");
-		this.addDoubleValueColumn("Average Center Intesity");
-		this.addDoubleValueColumn("Average Peak Intesity");
-		this.addDoubleValueColumn("Average Mean Intesity");
-		this.addDoubleValueColumn("Background");
-		this.addDoubleValueColumn("Noise");
-		this.addDoubleValueColumn("Avg SNR");
-		this.addDoubleValueColumn("Min SNR");
-		this.addDoubleValueColumn("Max SNR");
-		// this.addDoubleValueColumn("Min Index SNR");
-		// this.addDoubleValueColumn("Avg Index SNR");
-		// this.addDoubleValueColumn("Max Index SNR");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_Z);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_C);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID_AVG);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_PEAK_AVG);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_MEAN_AVG);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_SNR_BACKGROUND);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_SNR_NOISE);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_SNR_AVG);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_SNR_MIN);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_SNR_SNR_MAX);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		final OmegaParticleDetectionRun detRun = (OmegaParticleDetectionRun) this.parentAnalysisRun;
@@ -684,11 +686,91 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		} else {
 			imageID = String.valueOf(img.getElementID());
 		}
-		final Object[] row = { imageID, /* img.getDefaultPixels().getSizeT(), */
-		this.z, this.c, avgCenterSignal, avgPeakSignal, avgMeanSignal, bgr,
-				noise, avgSNR, minSNR, maxSNR };
-		// localMinIndexSNR, localAvgIndexSNR, localMaxIndexSNR
+		final Object[] row = { imageID, this.z, this.c, avgCenterSignal,
+				avgPeakSignal, avgMeanSignal, bgr, noise, avgSNR, minSNR,
+				maxSNR };
 		dtm.addRow(row);
+	}
+	
+	private void populateLocalIntensitySegmentsResults(
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final Map<OmegaROI, Double> peakSignals,
+			final Map<OmegaROI, Double> centroidSignals, final boolean hasSNR,
+			final Map<OmegaROI, Double> meanSignals,
+			final Map<OmegaROI, Double> backgrounds,
+			final Map<OmegaROI, Double> noises, final Map<OmegaROI, Double> snrs) {
+		this.addTrajectoryColumns();
+		this.addSegmentColumns();
+		this.addIntValueColumn("Centroid Intensity");
+		this.addIntValueColumn("Peak Intensity");
+		if (hasSNR) {
+			this.addDoubleValueColumn("Mean Intensity");
+			this.addDoubleValueColumn("Local Background");
+			this.addDoubleValueColumn("Local Noise");
+			this.addDoubleValueColumn("Local SNR");
+		}
+		this.updateFilterPanel();
+		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
+		OmegaSegmentationTypes types = null;
+		if (this.analysisRun != null) {
+			types = ((OmegaTrajectoriesSegmentationRun) this.parentAnalysisRun)
+					.getSegmentationTypes();
+		}
+		for (final OmegaTrajectory track : segments.keySet()) {
+			String trackID;
+			if (track.getElementID() == -1) {
+				trackID = OmegaGUIConstants.NOT_ASSIGNED;
+			} else {
+				trackID = String.valueOf(track.getElementID());
+			}
+			final List<OmegaSegment> segmentList = segments.get(track);
+			final String trackName = track.getName();
+			final int trackLen = track.getLength();
+			final List<OmegaROI> rois = track.getROIs();
+			for (final OmegaSegment segment : segmentList) {
+				String segmID;
+				if (segment.getElementID() == -1) {
+					segmID = OmegaGUIConstants.NOT_ASSIGNED;
+				} else {
+					segmID = String.valueOf(segment.getElementID());
+				}
+				final int start = segment.getStartingROI().getFrameIndex();
+				final int end = segment.getEndingROI().getFrameIndex();
+				final String segmName = segment.getName();
+				final String segmType = types.getSegmentationName(segment
+						.getSegmentationType());
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
+				for (final OmegaROI roi : rois) {
+					if (roi.getElementID() == -1) {
+					} else {
+						String.valueOf(roi.getElementID());
+					}
+					final int index = roi.getFrameIndex();
+					if ((index < start) || (index >= end)) {
+						continue;
+					}
+					final Double centroid = centroidSignals.get(roi);
+					final Double peak = peakSignals.get(roi);
+					
+					if (hasSNR) {
+						final Double mean = meanSignals.get(roi);
+						final Double background = backgrounds.get(roi);
+						final Double noise = noises.get(roi);
+						final Double snr = snrs.get(roi);
+						final Object[] row = { trackID, trackName, trackLen,
+								segmID, segmName, segmType, segmLen, centroid,
+								peak, mean, background, noise, snr };
+						dtm.addRow(row);
+					} else {
+						final Object[] row = { trackID, trackName, trackLen,
+								segmID, segmName, segmType, segmLen, centroid,
+								peak };
+						dtm.addRow(row);
+					}
+				}
+			}
+		}
 	}
 
 	private void populateGlobalIntensitySegmentsResults(
@@ -702,25 +784,25 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaSegment, Double[]> snrs) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addIntValueColumn("Avg Centroid Intensity");
-		this.addIntValueColumn("Min Centroid Intensity");
-		this.addIntValueColumn("Max Centroid Intensity");
-		this.addIntValueColumn("Avg Peak Intensity");
-		this.addIntValueColumn("Min Peak Intensity");
-		this.addIntValueColumn("Max Peak Intensity");
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID_AVG);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID_MIN);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID_MAX);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_PEAK_AVG);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_PEAK_MIN);
+		this.addIntValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_PEAK_MAX);
 		if (hasSNR) {
-			this.addDoubleValueColumn("Avg Mean Intensity");
-			this.addDoubleValueColumn("Min Mean Intensity");
-			this.addDoubleValueColumn("Max Mean Intensity");
-			this.addDoubleValueColumn("Avg Local Background");
-			this.addDoubleValueColumn("Min Local Background");
-			this.addDoubleValueColumn("Max Local Background");
-			this.addDoubleValueColumn("Avg Local Noise");
-			this.addDoubleValueColumn("Min Local Noise");
-			this.addDoubleValueColumn("Max Local Noise");
-			this.addDoubleValueColumn("Avg Local SNR");
-			this.addDoubleValueColumn("Min Local SNR");
-			this.addDoubleValueColumn("Max Local SNR");
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_MEAN_AVG);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_MEAN_MIN);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_MEAN_MAX);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_BACKGROUND_AVG);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_BACKGROUND_MIN);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_BACKGROUND_MAX);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_NOISE_AVG);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_NOISE_MIN);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_NOISE_MAX);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_SNR_AVG);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_SNR_MIN);
+			this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_INTENSITY_SNR_MAX);
 		}
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -784,9 +866,9 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Instantaneous Speed");
-		this.addDoubleValueColumn("Instantaneous Cumulative Curvilinear Speed");
-		this.addDoubleValueColumn("Instantaneous Cumulative Straight Speed");
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_VELOCITY_SPEED);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_VELOCITY_CUM_SPEED);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_VELOCITY_CUM_VELO);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -859,9 +941,9 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaSegment, Double> forwardProgressions) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Average Curvilinear Speed");
-		this.addDoubleValueColumn("Average Straight Speed");
-		this.addDoubleValueColumn("Forward Progression Linearity");
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_VELOCITY_AVG_SPEED);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_VELOCITY_AVG_VELO);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_VELOCITY_PROG);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -914,13 +996,13 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		this.addParticleColumns(false);
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Distance Traveled");
-		this.addDoubleValueColumn("Cumulative Curvilinear Distance Traveled");
-		this.addDoubleValueColumn("Cumulative Straight Distance Traveled");
-		this.addDoubleValueColumn("Cumulative Confinement Ratio");
-		this.addDoubleValueColumn("Instantaneous Angle");
-		this.addDoubleValueColumn("Directional Change");
-		this.addDoubleValueColumn("Cumulative Time Traveled");
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_DIST);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_CUM_CURV_DIST);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_CUM_STR_DIST);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_CUM_CONF_RATIO);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_CUM_INSTA_ANGLE);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_DIR_CHANGE);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_CUM_TIME);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -946,6 +1028,12 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 				} else {
 					segmID = String.valueOf(segment.getElementID());
 				}
+
+				final String segmName = segment.getName();
+				final String segmType = types.getSegmentationName(segment
+						.getSegmentationType());
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
 				final List<Double> times = timeTraveled.get(segment);
 				final List<Double> instDist = localDistances.get(segment);
 				final List<Double> distances = localDistancesFromOrigin
@@ -967,7 +1055,6 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 						roiID = String.valueOf(roi.getElementID());
 					}
 					final int index = roi.getFrameIndex();
-					i++;
 					if ((index < start) || (index >= end)) {
 						continue;
 					}
@@ -977,12 +1064,8 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 					final Double displ = displacements.get(i);
 					final Double conf = confiments.get(i);
 					final Double[] angles = anglesAndDirectionalChanges.get(i);
-
-					final String segmName = segment.getName();
-					final String segmType = types.getSegmentationName(segment
-							.getSegmentationType());
-					final int segmLen = OmegaTrajectoryUtilities
-							.computeSegmentLength(track, segment);
+					i++;
+					
 					final Object[] row = { roiID, roi.getFrameIndex(),
 							roi.getX(), roi.getY(), this.z, this.c, trackID,
 							trackName, trackLen, segmID, segmName, segmType,
@@ -999,14 +1082,15 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaSegment, Double> maxDisplacementes,
 			final Map<OmegaSegment, List<Double>> localDistancesFromOrigin,
 			final Map<OmegaSegment, List<Double>> localDisplacementsFromOrigin,
+			final Map<OmegaSegment, List<Double>> confinementRatios,
 			final Map<OmegaSegment, List<Double>> timeTraveled) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addDoubleValueColumn("Total Curvilinear Distance Traveled");
-		this.addDoubleValueColumn("Max Cumulative Straight Distance Traveled");
-		this.addDoubleValueColumn("Total Net Straight Distance Traveled");
-		this.addDoubleValueColumn("Confinement Ratio");
-		this.addDoubleValueColumn("Total Time Traveled");
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_TOT_CURV_DIST);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_MAX_STR_DIST);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_TOT_STR_DIST);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_CONF_RATIO);
+		this.addDoubleValueColumn(OmegaGUIConstants.RESULTS_MOBILITY_TOT_TIME);
 		// this.addDoubleValueColumn("Total time");
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -1034,20 +1118,23 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 				} else {
 					segmID = String.valueOf(segment.getElementID());
 				}
+				final String segmName = segment.getName();
+				final String segmType = types.getSegmentationName(segment
+						.getSegmentationType());
+				final int segmLen = OmegaTrajectoryUtilities
+						.computeSegmentLength(track, segment);
 				final Double time = timeTraveled.get(segment).get(lastIndex);
+				final Double confRatio = confinementRatios.get(segment).get(
+						lastIndex);
 				final Double dist = localDistancesFromOrigin.get(segment).get(
 						lastIndex);
 				final Double disp = localDisplacementsFromOrigin.get(segment)
 						.get(lastIndex);
 				final Double maxDisp = maxDisplacementes.get(segment);
 				// final Double disp = maxDisplacementes.get(segment);
-				final String segmName = segment.getName();
-				final String segmType = types.getSegmentationName(segment
-						.getSegmentationType());
-				final int segmLen = OmegaTrajectoryUtilities
-						.computeSegmentLength(track, segment);
 				final Object[] row = { trackID, trackName, trackLen, segmID,
-						segmName, segmType, segmLen, dist, maxDisp, disp, time };
+						segmName, segmType, segmLen, dist, maxDisp, disp,
+						confRatio, time };
 				dtm.addRow(row);
 			}
 		}
@@ -1064,12 +1151,12 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
 		// this.addStringValueColumn("Interval");
-		// this.addStringValueColumn("Max Calculation Window");
-		this.addStringValueColumn("Moment's Order");
-		this.addStringValueColumn("Delta T");
-		this.addStringValueColumn("Moment of Displacement");
-		this.addStringValueColumn("Log Delta T");
-		this.addStringValueColumn("Log Moment of Displacement");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_WIN_SIZE);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MOMENT_ORDER);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_DELTA);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MU);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_DELTA_LOG);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MU_LOG);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -1169,8 +1256,9 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 						}
 						final String nyVal = String.valueOf(ny);
 						final Object[] row = { trackID, trackName, trackLen,
-								segmID, segmName, segmType, segmLen, nyVal,
-								deltaT, mu, logDeltaT, logMu };
+								segmID, segmName, segmType, segmLen,
+								windowDivisor, nyVal, deltaT, mu, logDeltaT,
+								logMu };
 						dtm.addRow(row);
 					}
 					
@@ -1184,15 +1272,15 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final String windowDivisor,
 			final Map<OmegaSegment, Double[]> nyMap,
-			final Map<OmegaSegment, Double[][]> gammaDFromLogMap,
-			final Map<OmegaSegment, Double[][]> gammaDMap) {
+			final Map<OmegaSegment, Double[][]> gammaDFromLogResultsMap,
+			final Map<OmegaSegment, Double[][]> gammaDResultsMap) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		// this.addStringValueColumn("Max Calculation Window");
-		this.addStringValueColumn("Moment's Order");
-		this.addStringValueColumn("Slope Log-Log MSD");
-		this.addStringValueColumn("Intercept (y02)");
-		this.addStringValueColumn("Fits goodness");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_WIN_SIZE);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MOMENT_ORDER);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_GAMMA);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_Y0);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_FIT);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -1200,10 +1288,10 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			types = ((OmegaTrajectoriesSegmentationRun) this.parentAnalysisRun)
 					.getSegmentationTypes();
 		}
-		final OmegaTrajectory track1 = segments.keySet().iterator().next();
-		final OmegaSegment segment1 = segments.get(track1).get(0);
-		final Double nu1 = nyMap.get(segment1)[0];
-		new BigDecimal(nu1).intValue();
+		// final OmegaTrajectory track1 = segments.keySet().iterator().next();
+		// final OmegaSegment segment1 = segments.get(track1).get(0);
+		// final Double nu1 = nyMap.get(segment1)[0];
+		// new BigDecimal(nu1).intValue();
 		for (final OmegaTrajectory track : segments.keySet()) {
 			String trackID;
 			if (track.getElementID() == -1) {
@@ -1226,13 +1314,14 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 					nus = nyMap.get(segment);
 				}
 				Double[][] gammaDsFromLog = null;
-				if ((gammaDFromLogMap != null)
-						&& gammaDFromLogMap.containsKey(segment)) {
-					gammaDsFromLog = gammaDFromLogMap.get(segment);
+				if ((gammaDFromLogResultsMap != null)
+						&& gammaDFromLogResultsMap.containsKey(segment)) {
+					gammaDsFromLog = gammaDFromLogResultsMap.get(segment);
 				}
 				Double[][] gammaDs = null;
-				if ((gammaDMap != null) && gammaDMap.containsKey(segment)) {
-					gammaDs = gammaDMap.get(segment);
+				if ((gammaDResultsMap != null)
+						&& gammaDResultsMap.containsKey(segment)) {
+					gammaDs = gammaDResultsMap.get(segment);
 				}
 				final String segmName = segment.getName();
 				final String segmType = types.getSegmentationName(segment
@@ -1256,7 +1345,7 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 						gammaD = gammaDs[ny];
 						gammaLength = gammaD.length - 1;
 					}
-					final int size = 6 + gammaLogLength + gammaLength;
+					final int size = 8 + gammaLogLength + gammaLength;
 					final Object[] row = new Object[size];
 					row[0] = trackID;
 					row[1] = trackName;
@@ -1265,9 +1354,9 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 					row[4] = segmName;
 					row[5] = segmType;
 					row[6] = segmLen;
-					// row[5] = windowDivisor;
-					row[7] = String.valueOf(ny);
-					int index = 8;
+					row[7] = windowDivisor;
+					row[8] = String.valueOf(ny);
+					int index = 9;
 					for (int i = 0; i < (gammaLength - 1); i++) {
 						String gammaVal = OmegaGUIConstants.NOT_ASSIGNED;
 						if (gammaD != null) {
@@ -1307,18 +1396,16 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 			final String windowDivisor,
 			final Map<OmegaSegment, Double[][]> gammaDFromLogResultsMap,
 			final Map<OmegaSegment, Double[]> smssFromLogResultsMap,
-			final Map<OmegaSegment, Double[]> errosFromLogResultsMap,
-			final Double minDetODC) {
+			final Map<OmegaSegment, Double[]> errosFromLogResultsMap) {
 		this.addTrajectoryColumns();
 		this.addSegmentColumns();
-		this.addStringValueColumn("Max Calculation Window");
-		this.addStringValueColumn("Slope Log-Log MSD");
-		this.addStringValueColumn("Intercept (y02)");
-		this.addStringValueColumn("ODC2");
-		this.addStringValueColumn("Uncertainty ODC2");
-		this.addStringValueColumn("Slope MSS");
-		this.addStringValueColumn("Uncertainty SMSS");
-		this.addStringValueColumn("Min Detectable ODC");
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_WIN_SIZE);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MSD);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_Y02);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_ODC);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_SMSS);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_ODC_ERR);
+		this.addStringValueColumn(OmegaGUIConstants.RESULTS_DIFFUSIVITY_SMSS_ERR);
 		this.updateFilterPanel();
 		final DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
 		OmegaSegmentationTypes types = null;
@@ -1363,7 +1450,6 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 						.getSegmentationType());
 				final int segmLen = OmegaTrajectoryUtilities
 						.computeSegmentLength(track, segment);
-				new ArrayList<Object>();
 				String dVal = OmegaGUIConstants.NOT_ASSIGNED;
 				String smsdVal = OmegaGUIConstants.NOT_ASSIGNED;
 				String intercept = OmegaGUIConstants.NOT_ASSIGNED;
@@ -1384,15 +1470,10 @@ public class GenericTrackingResultsPanel extends GenericScrollPane implements
 				if (errorFromLog != null) {
 					smssErr = String.valueOf(errorFromLog[1]);
 				}
-				String minDetODCString = OmegaGUIConstants.NOT_ASSIGNED;
-				if (minDetODC != null) {
-					minDetODCString = String.valueOf(minDetODC);
-				}
 
 				final Object[] row = { trackID, trackName, trackLen, segmID,
 						segmName, segmType, segmLen, windowDivisor, smsdVal,
-						intercept, dVal, dErr, smssVal, smssErr,
-						minDetODCString };
+						intercept, dVal, smssVal, dErr, smssErr };
 				dtm.addRow(row);
 			}
 		}

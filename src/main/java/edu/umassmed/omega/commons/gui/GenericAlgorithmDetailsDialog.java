@@ -94,7 +94,8 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 		// this.topIconPanel.add(icon_lbl);
 		// }
 
-		this.name_lbl = new JLabel(OmegaGUIConstants.SIDEPANEL_INFO_NAME);
+		this.name_lbl = new JLabel(OmegaGUIConstants.INFO_NAME
+				+ OmegaGUIConstants.INFO_COLUMN_SEP);
 		this.auth_lbl = new JLabel(OmegaGUIConstants.AUTHOR);
 		this.date_lbl = new JLabel(OmegaGUIConstants.RELEASED);
 		this.version_lbl = new JLabel(OmegaGUIConstants.VERSION);
@@ -151,7 +152,8 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 	public void updateAlgorithmInformation(
 			final OmegaAlgorithmInformation algoInfo) {
 		if (algoInfo != null) {
-			this.name_lbl.setText(OmegaGUIConstants.SIDEPANEL_INFO_NAME
+			this.name_lbl.setText(OmegaGUIConstants.INFO_NAME
+					+ OmegaGUIConstants.INFO_COLUMN_SEP
 					+ algoInfo.getName());
 			final String authors = OmegaStringUtilities.getHtmlString(
 					OmegaGUIConstants.AUTHOR + algoInfo.getAuthors(), " ",
@@ -173,7 +175,7 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 			this.desc_ta.setText(desc);
 			this.mainPanel.setViewportView(this.desc_ta);
 		} else {
-			this.name_lbl.setText(OmegaGUIConstants.SIDEPANEL_INFO_NAME);
+			this.name_lbl.setText(OmegaGUIConstants.INFO_NAME);
 			this.auth_lbl.setText(OmegaGUIConstants.AUTHOR);
 			this.date_lbl.setText(OmegaGUIConstants.RELEASED);
 			this.version_lbl.setText(OmegaGUIConstants.VERSION);

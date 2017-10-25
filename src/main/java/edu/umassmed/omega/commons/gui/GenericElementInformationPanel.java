@@ -60,39 +60,39 @@ import edu.umassmed.omega.commons.utilities.OmegaAnalysisRunContainerUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericElementInformationPanel extends GenericScrollPane {
-
+	
 	private static final long serialVersionUID = -8599077833612345455L;
-
+	
 	private JTextPane info_txt;
-
+	
 	private final SimpleAttributeSet normal, bold;
-
+	
 	private JButton details_btt;
-
+	
 	private final GenericElementDetailsDialog detailsDialog;
-
+	
 	public GenericElementInformationPanel(final RootPaneContainer parent,
 			final GenericElementInformationContainerInterface infoContainer) {
 		super(parent);
-
+		
 		this.normal = new SimpleAttributeSet();
 		this.bold = new SimpleAttributeSet();
 		StyleConstants.setBold(this.bold, true);
-
+		
 		// this.setBorder(new TitledBorder("Information"));
-
+		
 		this.detailsDialog = new GenericElementDetailsDialog(parent,
 				infoContainer);
-
+		
 		this.createAndAddWidgets();
-
+		
 		this.addListeners();
 	}
-
+	
 	private void createAndAddWidgets() {
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-
+		
 		this.info_txt = new JTextPane();
 		this.info_txt.setEditable(false);
 		this.info_txt.setEditorKit(new GenericWrapEditorKit());
@@ -103,7 +103,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		mainPanel.add(this.info_txt, BorderLayout.CENTER);
-
+		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		this.details_btt = new JButton(OmegaGUIConstants.EDIT_DETAILS);
@@ -112,10 +112,10 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		this.details_btt.setSize(OmegaConstants.BUTTON_SIZE);
 		buttonPanel.add(this.details_btt);
 		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
+		
 		this.setViewportView(mainPanel);
 	}
-
+	
 	private void addListeners() {
 		this.details_btt.addActionListener(new ActionListener() {
 			@Override
@@ -124,11 +124,11 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			}
 		});
 	}
-
+	
 	private void handleShowDetails() {
 		this.detailsDialog.setVisible(true);
 	}
-
+	
 	public void resizePanel(final int width, final int height) {
 		final int lines = OmegaStringUtilities.countLines(this.info_txt,
 				this.info_txt.getDocument().getLength());
@@ -142,7 +142,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			// neededWidth -= 20;
 			// neededHeight += 17;
 		}
-
+		
 		final Dimension panelDim = new Dimension(width, height);
 		this.setPreferredSize(panelDim);
 		this.setSize(panelDim);
@@ -150,27 +150,27 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		this.info_txt.setPreferredSize(textDim);
 		this.info_txt.setSize(textDim);
 	}
-
+	
 	private void appendString(final String s, final AttributeSet style)
 			throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, s, style);
 	}
-
+	
 	private void appendNewline() throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, "\n", this.normal);
 	}
-
+	
 	private void reset() throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.remove(0, length);
 	}
-
-	public void update(final OmegaElement element) {
+	
+	public void updateContent(final OmegaElement element) {
 		this.details_btt.setEnabled(false);
 		this.detailsDialog.updateImage(null);
 		try {
@@ -198,13 +198,14 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			this.detailsDialog.repaint();
 		}
 	}
-
+	
 	private void getGenericElementInformation(final OmegaElement element)
 			throws BadLocationException {
 		final long id = element.getElementID();
 		final String clazz = element.getDynamicDisplayName();
 		this.appendString(clazz, this.bold);
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ID, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_ID, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		if (id == -1) {
 			this.appendString(OmegaGUIConstants.NOT_ASSIGNED, this.normal);
 		} else {
@@ -212,22 +213,23 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		}
 		this.appendNewline();
 		// TODO add owner
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_OWNER, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_OWNER, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		if (element instanceof OmegaImage) {
 			this.appendString(((OmegaImage) element).getExperimenter()
 					.printName(), this.normal);
 		}
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NAME, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NAME, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		if (element instanceof OmegaNamedElement) {
 			this.appendString(((OmegaNamedElement) element).getName(),
 					this.normal);
 		} else {
-			this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NOT_NAMED,
-					this.normal);
+			this.appendString(OmegaGUIConstants.INFO_NOT_NAMED, this.normal);
 		}
 	}
-
+	
 	private void getSpecificElementInformation(final OmegaElement element)
 			throws BadLocationException {
 		if (element instanceof OmegaProject) {
@@ -241,64 +243,66 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			// TODO throw error?
 		}
 	}
-
+	
 	private void addAdditionalProjectInformation(final OmegaProject project)
 			throws BadLocationException {
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_DATASET,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_DATASET, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(project.getDatasets().size()),
 				this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_IMG_ANALYSIS,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_IMG_ANALYSIS, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getImgAnalysisCount(project)), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_ANALYSIS, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(project)), this.normal);
 	}
-
+	
 	private void addAdditionalDatasetInformation(final OmegaDataset dataset)
 			throws BadLocationException {
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_IMAGES,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_IMAGES, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(dataset.getImages().size()),
 				this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_IMG_ANALYSIS,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_IMG_ANALYSIS, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getImgAnalysisCount(dataset)), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_ANALYSIS, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(dataset)), this.normal);
 	}
-
+	
 	private void addAdditionalImageInformation(final OmegaImage image)
 			throws BadLocationException {
 		final SimpleDateFormat format = new SimpleDateFormat(
 				OmegaConstants.OMEGA_DATE_FORMAT);
 		final OmegaImagePixels pixels = image.getDefaultPixels();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_NUM_ANALYSIS,
-				this.bold);
+		this.appendString(OmegaGUIConstants.INFO_NUM_ANALYSIS, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(image)), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_ACQUIRED, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_ACQUIRED, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		final String acquiredDate;
 		if (image.getAcquisitionDate() != null) {
 			acquiredDate = format.format(image.getAcquisitionDate());
-			
+
 		} else {
 			acquiredDate = OmegaGUIConstants.NOT_ASSIGNED;
 		}
 		this.appendString(acquiredDate.replace("_", " "), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_IMPORTED, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_IMPORTED, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		final String importedDate;
 		if (image.getImportedDate() != null) {
 			importedDate = format.format(image.getImportedDate());
@@ -307,12 +311,14 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		}
 		this.appendString(importedDate.replace("_", " "), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_DIM_XY, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_DIM_XY, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(String.valueOf(pixels.getSizeX()), this.normal);
 		this.appendString(" x ", this.normal);
 		this.appendString(String.valueOf(pixels.getSizeY()), this.normal);
 		this.appendNewline();
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_PIXELTYPE, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_PIXELTYPE, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		this.appendString(pixels.getPixelsType(), this.normal);
 		this.appendNewline();
 		final double pixelsSizeX = pixels.getPhysicalSizeX();
@@ -320,13 +326,12 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		final double pixelsSizeZ = pixels.getPhysicalSizeZ();
 		if ((pixelsSizeX != -1) && (pixelsSizeY != -1)) {
 			if (pixelsSizeZ != -1) {
-				this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES,
-						this.bold);
+				this.appendString(OmegaGUIConstants.INFO_PIXELSIZES, this.bold);
 			} else {
-				this.appendString(
-						OmegaGUIConstants.SIDEPANEL_INFO_PIXELSIZES_Z,
+				this.appendString(OmegaGUIConstants.INFO_PIXELSIZES_Z,
 						this.bold);
 			}
+			this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 			final BigDecimal bigX = new BigDecimal(pixelsSizeX).setScale(2,
 					RoundingMode.HALF_UP);
 			final String pixelsSizeXs = bigX.toString();
@@ -347,7 +352,8 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			// this.appendNewline();
 			// this.appendString("Channels: ", this.bold);
 		}
-		this.appendString(OmegaGUIConstants.SIDEPANEL_INFO_DIM_ZTC, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_DIM_ZTC, this.bold);
+		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		final int sizeZ = pixels.getSizeZ();
 		final String sizeZs = String.valueOf(sizeZ);
 		this.appendString(sizeZs, this.normal);
@@ -360,7 +366,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		final String sizeCs = String.valueOf(sizeC);
 		this.appendString(sizeCs, this.normal);
 	}
-
+	
 	@Override
 	public void updateParentContainer(final RootPaneContainer parent) {
 		super.updateParentContainer(parent);
