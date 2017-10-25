@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
@@ -45,22 +47,31 @@ public class OmegaIntensityAnalyzer implements Runnable {
 	private final OmegaTrajectoriesSegmentationRun segmRun;
 	
 	private final List<OmegaElement> selections;
+	
+	private final List<OmegaParameter> params;
+
+	private boolean useSNR;
 
 	public OmegaIntensityAnalyzer(
 			final OmegaTrajectoriesSegmentationRun segmRun,
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		this(null, segmRun, segments, null);
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final List<OmegaParameter> params) {
+		this(null, segmRun, segments, params, null);
 	}
 
 	public OmegaIntensityAnalyzer(
 			final OmegaMessageDisplayerPanelInterface displayerPanel,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final List<OmegaParameter> params,
 			final List<OmegaElement> selections) {
 		this.displayerPanel = displayerPanel;
 		
 		this.segmRun = segmRun;
+		this.params = params;
 		this.selections = selections;
+
+		this.useSNR = false;
 
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
 				segments);
@@ -108,8 +119,19 @@ public class OmegaIntensityAnalyzer implements Runnable {
 		}
 	}
 
+	private void initializeParameters() {
+		for (final OmegaParameter param : this.params) {
+			if (param.getName().equals(OmegaConstants.PARAMETER_SNR_USE)) {
+				if (param.getStringValue() == String.valueOf(true)) {
+					this.useSNR = true;
+				}
+			}
+		}
+	}
+
 	@Override
 	public void run() {
+		this.initializeParameters();
 		int counter = 1;
 		final int max = this.segments.keySet().size();
 		for (final OmegaTrajectory track : this.segments.keySet()) {
@@ -166,7 +188,7 @@ public class OmegaIntensityAnalyzer implements Runnable {
 					}
 					
 					// SNR related START
-					if (this.snrRun != null) {
+					if (this.useSNR && (this.snrRun != null)) {
 						// Integer centerSignal =
 						// snrRun.getResultingLocalCenterSignals().get(roi);
 						final Double meanSignal = this.snrRun
@@ -252,6 +274,10 @@ public class OmegaIntensityAnalyzer implements Runnable {
 			this.updateStatusAsync("Processing intensity analysis ended", true,
 					false);
 		}
+	}
+
+	public List<OmegaParameter> getParameters() {
+		return this.params;
 	}
 	
 	public List<OmegaElement> getSelections() {

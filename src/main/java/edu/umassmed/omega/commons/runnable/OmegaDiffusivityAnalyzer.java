@@ -87,16 +87,6 @@ public class OmegaDiffusivityAnalyzer implements Runnable {
 			final double physicalT,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
-			final List<OmegaParameter> params, final OmegaSNRRun snrRun) {
-		this(displayerPanel, physicalT, segmRun, segments, params, snrRun,
-				null, null);
-	}
-
-	public OmegaDiffusivityAnalyzer(
-			final OmegaMessageDisplayerPanelInterface displayerPanel,
-			final double physicalT,
-			final OmegaTrajectoriesSegmentationRun segmRun,
-			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final List<OmegaParameter> params, final OmegaSNRRun snrRun,
 			final OmegaTrackingMeasuresDiffusivityRun diffRun,
 			final List<OmegaElement> selections) {

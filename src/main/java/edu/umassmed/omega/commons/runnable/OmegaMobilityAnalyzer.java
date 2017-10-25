@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
@@ -28,16 +29,26 @@ public class OmegaMobilityAnalyzer implements Runnable {
 	private final Map<OmegaSegment, List<Double>> displacementsFromOriginMap;
 	private final Map<OmegaSegment, Double> maxDisplacementesFromOriginMap;
 	private final Map<OmegaSegment, List<Double>> timeTraveledMap;
+	private final Map<OmegaSegment, Double> confinementRatio;
 	private final Map<OmegaSegment, List<Double>> confinementRatioMap;
 	private final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap;
 
 	private final OmegaTrajectoriesSegmentationRun segmRun;
 	private final List<OmegaElement> selections;
 	
+	private final List<OmegaParameter> params;
+	
+	public OmegaMobilityAnalyzer(final double physicalT, final int tMax,
+			final OmegaTrajectoriesSegmentationRun segmRun,
+			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final List<OmegaParameter> params) {
+		this(null, physicalT, tMax, segmRun, segments, params, null);
+	}
+	
 	public OmegaMobilityAnalyzer(final double physicalT, final int tMax,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		this(null, physicalT, tMax, segmRun, segments, null);
+		this(null, physicalT, tMax, segmRun, segments, null, null);
 	}
 	
 	public OmegaMobilityAnalyzer(
@@ -45,6 +56,7 @@ public class OmegaMobilityAnalyzer implements Runnable {
 			final double physicalT, final int tMax,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final List<OmegaParameter> params,
 			final List<OmegaElement> selections) {
 
 		this.displayerPanel = displayerPanel;
@@ -52,6 +64,7 @@ public class OmegaMobilityAnalyzer implements Runnable {
 		this.tMax = tMax;
 
 		this.segmRun = segmRun;
+		this.params = params;
 		this.selections = selections;
 		
 		this.segments = new LinkedHashMap<OmegaTrajectory, List<OmegaSegment>>(
@@ -61,6 +74,7 @@ public class OmegaMobilityAnalyzer implements Runnable {
 		this.displacementsFromOriginMap = new LinkedHashMap<OmegaSegment, List<Double>>();
 		this.maxDisplacementesFromOriginMap = new LinkedHashMap<OmegaSegment, Double>();
 		this.timeTraveledMap = new LinkedHashMap<OmegaSegment, List<Double>>();
+		this.confinementRatio = new LinkedHashMap<OmegaSegment, Double>();
 		this.confinementRatioMap = new LinkedHashMap<OmegaSegment, List<Double>>();
 		this.anglesAndDirectionalChangesMap = new LinkedHashMap<OmegaSegment, List<Double[]>>();
 	}
@@ -137,6 +151,9 @@ public class OmegaMobilityAnalyzer implements Runnable {
 					anglesAndDirectionalChanges.add(angleAndDirectionalChange);
 					timeTraveled.add(localTimeTraveled);
 				}
+
+				// TODO compute confinment ratio global and put it in the map
+
 				this.distancesMap.put(segment, distances);
 				this.distancesFromOriginMap.put(segment, distancesFromOrigin);
 				this.displacementsFromOriginMap.put(segment,

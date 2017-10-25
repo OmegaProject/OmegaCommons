@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
@@ -33,10 +34,12 @@ public class OmegaVelocityAnalyzer implements Runnable {
 	private final OmegaTrajectoriesSegmentationRun segmRun;
 	private final List<OmegaElement> selections;
 	
+	private final List<OmegaParameter> params;
+	
 	public OmegaVelocityAnalyzer(final double physicalT, final int tMax,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		this(null, physicalT, tMax, segmRun, segments, null);
+		this(null, physicalT, tMax, segmRun, segments, null, null);
 	}
 	
 	public OmegaVelocityAnalyzer(
@@ -44,10 +47,12 @@ public class OmegaVelocityAnalyzer implements Runnable {
 			final double physicalT, final int tMax,
 			final OmegaTrajectoriesSegmentationRun segmRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			final List<OmegaParameter> params,
 			final List<OmegaElement> selections) {
 		this.displayerPanel = displayerPanel;
 		
 		this.segmRun = segmRun;
+		this.params = params;
 		this.selections = selections;
 		
 		this.tMax = tMax;
