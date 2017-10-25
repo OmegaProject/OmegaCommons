@@ -8,8 +8,10 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public interface OmegaSelectSegmentsInterface extends
-OmegaSelectTrajectoriesInterface {
+		OmegaSelectTrajectoriesInterface {
 	public void updateSegments(
-	        Map<OmegaTrajectory, List<OmegaSegment>> segments,
-	        OmegaSegmentationTypes segmTypes, boolean isSelection);
+			Map<OmegaTrajectory, List<OmegaSegment>> segments,
+			OmegaSegmentationTypes segmTypes, boolean isSelection);
+
+	public void clearSegmentsSelection();
 }
