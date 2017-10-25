@@ -9,9 +9,9 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
-	
-	private static String DISPLAY_NAME = "Mobility Measures Run";
-	
+
+	private static String DISPLAY_NAME = "Mobility Tracking Measures Run";
+
 	// Mobility
 	private final Map<OmegaSegment, List<Double>> distancesMap;
 	private final Map<OmegaSegment, List<Double>> distancesFromOriginMap;
@@ -20,7 +20,7 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 	private final Map<OmegaSegment, List<Double>> timeTraveledMap;
 	private final Map<OmegaSegment, List<Double>> confinementRatioMap;
 	private final Map<OmegaSegment, List<Double[]>> anglesAndDirectionalChangesMap;
-	
+
 	public OmegaTrackingMeasuresMobilityRun(
 			final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
@@ -43,7 +43,7 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 		this.confinementRatioMap = confinementRatioMap;
 		this.anglesAndDirectionalChangesMap = anglesAndDirectionalChangesMap;
 	}
-	
+
 	public OmegaTrackingMeasuresMobilityRun(
 			final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
@@ -67,7 +67,7 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 		this.confinementRatioMap = confinementRatioMap;
 		this.anglesAndDirectionalChangesMap = anglesAndDirectionalChangesMap;
 	}
-	
+
 	public OmegaTrackingMeasuresMobilityRun(
 			final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
@@ -92,39 +92,39 @@ public class OmegaTrackingMeasuresMobilityRun extends OmegaTrackingMeasuresRun {
 		this.confinementRatioMap = confinementRatioMap;
 		this.anglesAndDirectionalChangesMap = anglesAndDirectionalChangesMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getDistancesResults() {
 		return this.distancesMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getDistancesFromOriginResults() {
 		return this.distancesFromOriginMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getDisplacementsFromOriginResults() {
 		return this.displacementsFromOriginMap;
 	}
-	
+
 	public Map<OmegaSegment, Double> getMaxDisplacementsFromOriginResults() {
 		return this.maxDisplacementesFromOriginMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getTimeTraveledResults() {
 		return this.timeTraveledMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getConfinementRatioResults() {
 		return this.confinementRatioMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double[]>> getAnglesAndDirectionalChangesResults() {
 		return this.anglesAndDirectionalChangesMap;
 	}
-
+	
 	public static String getStaticDisplayName() {
 		return OmegaTrackingMeasuresMobilityRun.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaTrackingMeasuresMobilityRun.getStaticDisplayName();

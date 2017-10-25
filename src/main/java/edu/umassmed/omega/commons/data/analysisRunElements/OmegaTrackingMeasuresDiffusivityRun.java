@@ -10,9 +10,9 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresDiffusivityRun extends
 		OmegaTrackingMeasuresRun {
-	
-	private static String DISPLAY_NAME = "Diffusivity Measures Run";
-	
+
+	private static String DISPLAY_NAME = "Diffusivity Tracking Measures Run";
+
 	// Diffusivity
 	private final Map<OmegaSegment, Double[]> nyMap;
 	private final Map<OmegaSegment, Double[][]> logMuMap;
@@ -27,12 +27,12 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 	// private final Map<OmegaSegment, Double[]> smssMap;
 	// private final Map<OmegaSegment, Double[]> errorsMap;
 	private final Map<OmegaSegment, Double[]> errorsFromLogMap;
-	
+
 	private final OmegaSNRRun snrRun;
 	private final OmegaTrackingMeasuresDiffusivityRun diffusivityRun;
-
-	private final Double minDetectableODC;
 	
+	private final Double minDetectableODC;
+
 	public OmegaTrackingMeasuresDiffusivityRun(
 			final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
@@ -70,10 +70,10 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		this.errorsFromLogMap = errorsLog;
 		this.snrRun = snrRun;
 		this.diffusivityRun = diffusivityRun;
-
+		
 		this.minDetectableODC = minDetectableODC;
 	}
-	
+
 	public OmegaTrackingMeasuresDiffusivityRun(
 			final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
@@ -114,7 +114,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		this.diffusivityRun = diffusivityRun;
 		this.minDetectableODC = minDetectableODC;
 	}
-	
+
 	public OmegaTrackingMeasuresDiffusivityRun(
 			final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
@@ -156,75 +156,75 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		this.diffusivityRun = diffusivityRun;
 		this.minDetectableODC = minDetectableODC;
 	}
-	
+
 	public Map<OmegaSegment, Double[]> getNyResults() {
 		return this.nyMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[]> getGammaFromLogResults() {
 		return this.gammaFromLogMap;
 	}
-	
+
 	// public Map<OmegaSegment, Double[]> getGammaResults() {
 	// return this.gammaMap;
 	// }
-	
+
 	public Map<OmegaSegment, Double[][]> getGammaDFromLogResults() {
 		return this.gammaDFromLogMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[][]> getGammaDResults() {
 		return this.gammaDMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[][]> getLogMuResults() {
 		return this.logMuMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[][]> getMuResults() {
 		return this.muMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[][]> getLogDeltaTResults() {
 		return this.logDeltaTMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[][]> getDeltaTResults() {
 		return this.deltaTMap;
 	}
-	
+
 	public Map<OmegaSegment, Double[]> getSmssFromLogResults() {
 		return this.smssFromLogMap;
 	}
-	
+
 	// public Map<OmegaSegment, Double[]> getSmssResults() {
 	// return this.smssMap;
 	// }
-	
+
 	// public Map<OmegaSegment, Double[]> getErrorsResults() {
 	// return this.errorsMap;
 	// }
-	
+
 	public Map<OmegaSegment, Double[]> getErrosFromLogResults() {
 		return this.errorsFromLogMap;
 	}
-
+	
 	public Double getMinimumDetectableODC() {
 		return this.minDetectableODC;
 	}
-	
+
 	public OmegaSNRRun getSNRRun() {
 		return this.snrRun;
 	}
-	
+
 	public OmegaTrackingMeasuresDiffusivityRun getTrackingMeasuresDiffusivityRun() {
 		return this.diffusivityRun;
 	}
-
+	
 	public static String getStaticDisplayName() {
 		return OmegaTrackingMeasuresDiffusivityRun.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaTrackingMeasuresDiffusivityRun.getStaticDisplayName();

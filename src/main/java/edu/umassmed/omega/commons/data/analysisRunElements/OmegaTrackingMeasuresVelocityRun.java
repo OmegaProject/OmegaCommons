@@ -9,9 +9,9 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
-	
-	private static String DISPLAY_NAME = "Velocity Measures Run";
-	
+
+	private static String DISPLAY_NAME = "Velocity Tracking Measures Run";
+
 	// Velocity
 	private final Map<OmegaSegment, List<Double>> localSpeedMap;
 	private final Map<OmegaSegment, List<Double>> localSpeedFromOriginMap;
@@ -19,7 +19,7 @@ public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
 	private final Map<OmegaSegment, Double> averageCurvilinearSpeedMap;
 	private final Map<OmegaSegment, Double> averageStraightLineVelocityMap;
 	private final Map<OmegaSegment, Double> forwardProgressionLinearityMap;
-	
+
 	public OmegaTrackingMeasuresVelocityRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
@@ -39,7 +39,7 @@ public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
 		this.averageStraightLineVelocityMap = averageStraightLineVelocityMap;
 		this.forwardProgressionLinearityMap = forwardProgressionLinearityMap;
 	}
-	
+
 	public OmegaTrackingMeasuresVelocityRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final String name,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
@@ -59,7 +59,7 @@ public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
 		this.averageStraightLineVelocityMap = averageStraightLineVelocityMapMap;
 		this.forwardProgressionLinearityMap = forwardProgressionLinearityMap;
 	}
-	
+
 	public OmegaTrackingMeasuresVelocityRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final Date timeStamps,
 			final String name,
@@ -80,35 +80,35 @@ public class OmegaTrackingMeasuresVelocityRun extends OmegaTrackingMeasuresRun {
 		this.averageStraightLineVelocityMap = averageStraightLineVelocityMap;
 		this.forwardProgressionLinearityMap = forwardProgressionLinearityMap;
 	}
-
+	
 	public Map<OmegaSegment, List<Double>> getLocalSpeedResults() {
 		return this.localSpeedMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getLocalSpeedFromOriginResults() {
 		return this.localSpeedFromOriginMap;
 	}
-	
+
 	public Map<OmegaSegment, List<Double>> getLocalVelocityFromOriginResults() {
 		return this.localVelocityFromOriginMap;
 	}
-	
+
 	public Map<OmegaSegment, Double> getAverageCurvilinearSpeedMapResults() {
 		return this.averageCurvilinearSpeedMap;
 	}
-	
+
 	public Map<OmegaSegment, Double> getAverageStraightLineVelocityMapResults() {
 		return this.averageStraightLineVelocityMap;
 	}
-	
+
 	public Map<OmegaSegment, Double> getForwardProgressionLinearityMapResults() {
 		return this.forwardProgressionLinearityMap;
 	}
-
+	
 	public static String getStaticDisplayName() {
 		return OmegaTrackingMeasuresVelocityRun.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaTrackingMeasuresVelocityRun.getStaticDisplayName();
