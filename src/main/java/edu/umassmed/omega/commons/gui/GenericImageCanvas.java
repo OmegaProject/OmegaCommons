@@ -58,9 +58,9 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 
 import edu.umassmed.omega.commons.OmegaLogFileManager;
-import edu.umassmed.omega.commons.constants.OmegaConstants;
-import edu.umassmed.omega.commons.constants.OmegaConstantsMathSymbols;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
+import edu.umassmed.omega.commons.constants.OmegaMathSymbolConstants;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
 import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
@@ -108,7 +108,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 	private int selectedTrajectoryIndex, selectedSegmentIndex;
 
 	/** Graphics2D stroke used. **/
-	private final int currentStroke;
+	private int currentStroke;
 	/** Current frame. **/
 	private int currentT, currentZ;
 	/** The radius of the pixel **/
@@ -123,26 +123,26 @@ public class GenericImageCanvas extends GenericScrollPane {
 
 	private Point mousePosition;
 
-	/**
-	 * Creates a new instance.
-	 */
+	// private final Integer drawLineWidth;
+	
 	// final JPanelViewer jPanelViewer
 	public GenericImageCanvas(final RootPaneContainer parent,
-			final GenericImageCanvasContainer canvasContainer) {
+			final GenericImageCanvasContainer canvasContainer,
+			final Integer drawLineWidth) {
 		super(parent);
 
 		this.canvasContainer = canvasContainer;
-
+		
 		this.pixels = null;
 		this.gateway = null;
 
 		this.image = null;
 		this.scaledImage = null;
 
-		this.radius = OmegaConstants.DRAWING_POINTSIZE;
+		this.radius = OmegaGUIConstants.DRAWING_POINTSIZE;
 		this.currentT = 0;
 		this.scale = 1.0;
-		this.currentStroke = 1;
+		this.currentStroke = drawLineWidth;
 
 		// this.jPanelViewer = jPanelViewer;
 
@@ -814,7 +814,6 @@ public class GenericImageCanvas extends GenericScrollPane {
 								&& (roi.getFrameIndex() <= segment
 										.getEndingROI().getFrameIndex())) {
 							if (segment.isVisible()) {
-
 								final Color tmpCol = GenericImageCanvas.this.segmTypes
 										.getSegmentationColor(segment
 												.getSegmentationType());
@@ -824,6 +823,9 @@ public class GenericImageCanvas extends GenericScrollPane {
 								}
 							}
 						}
+					}
+					if (segm == null) {
+						continue;
 					}
 
 					final double x1D = roi.getX() * this.imagePanel.scale;
@@ -876,7 +878,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 							tmpSegments = allSegments.get(trajectory);
 						}
 						if (tmpSegments.contains(segment)) {
-							g2D.setColor(OmegaConstants
+							g2D.setColor(OmegaGenericConstants
 									.getDefaultSelectionBackgroundColor());
 							g2D.setStroke(new BasicStroke(
 									this.imagePanel.currentStroke));
@@ -965,7 +967,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 					g2D.drawLine(x1, y1, x2, y2);
 				}
 				if (this.imagePanel.selectedTrajectories.contains(trajectory)) {
-					g2D.setColor(OmegaConstants
+					g2D.setColor(OmegaGenericConstants
 							.getDefaultSelectionBackgroundColor());
 					minX -= 3;
 					maxX += 3;
@@ -1030,7 +1032,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				final String micron = OmegaStringUtilities.doubleToString(
 						physicalSizeX * imgWidth, 2);
 				g2D.drawString(micron, 0, height + 15);
-				g2D.drawString(OmegaConstantsMathSymbols.MU + "m", 0,
+				g2D.drawString(OmegaMathSymbolConstants.MU + "m", 0,
 						height + 30);
 			} else {
 				g2D.drawString(String.valueOf(imgWidth), 0, height + 15);
@@ -1042,7 +1044,7 @@ public class GenericImageCanvas extends GenericScrollPane {
 				final String micron = OmegaStringUtilities.doubleToString(
 						physicalSizeY * imgHeight, 2);
 				g2D.drawString(micron, width, 25);
-				g2D.drawString(OmegaConstantsMathSymbols.MU + "m", width, 35);
+				g2D.drawString(OmegaMathSymbolConstants.MU + "m", width, 35);
 			} else {
 				g2D.drawString(String.valueOf(imgHeight), width, 25);
 				g2D.drawString("px", width, 35);
@@ -1189,6 +1191,11 @@ public class GenericImageCanvas extends GenericScrollPane {
 	public void setShowTrajectoriesOnlyActive(final boolean enabled) {
 		this.showTrajectoriesOnlyActive = enabled;
 		this.revalidate();
+		this.repaint();
+	}
+	
+	public void setTrackLineSize(final int lineSize) {
+		this.currentStroke = lineSize;
 		this.repaint();
 	}
 }

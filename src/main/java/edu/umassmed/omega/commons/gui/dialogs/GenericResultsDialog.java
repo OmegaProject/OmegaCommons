@@ -11,8 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
-import edu.umassmed.omega.commons.constants.StatsConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
@@ -45,7 +44,7 @@ public class GenericResultsDialog extends GenericDialog {
 			final String title, final boolean modal) {
 		super(parentContainer, title, modal);
 		
-		final Dimension dim = new Dimension(600, 600);
+		final Dimension dim = new Dimension(800, 800);
 		this.setSize(dim);
 		this.setPreferredSize(dim);
 		this.revalidate();
@@ -68,8 +67,8 @@ public class GenericResultsDialog extends GenericDialog {
 		buttonPanel.setLayout(new FlowLayout());
 		
 		this.ok_btt = new JButton("Close");
-		this.ok_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.ok_btt.setSize(OmegaConstants.BUTTON_SIZE);
+		this.ok_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.ok_btt.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.ok_btt);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
@@ -97,10 +96,10 @@ public class GenericResultsDialog extends GenericDialog {
 		if (analysisRun == null)
 			return;
 		if (analysisRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
-			this.pane.add(StatsConstants.TAB_RESULTS_LOCAL, this.resPanel1);
-			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL + " Gamma",
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_LOCAL, this.resPanel1);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_GLOBAL + " Gamma",
 					this.resPanel2);
-			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL + " D & SMSS",
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_GLOBAL + " D & SMSS",
 					this.resPanel3);
 			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
 					c, z);
@@ -109,23 +108,26 @@ public class GenericResultsDialog extends GenericDialog {
 			this.resPanel3.setAnalysisRun(analysisRun, parentAnalysisRun,
 					false, true, c, z);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresMobilityRun) {
-			this.pane.add(StatsConstants.TAB_RESULTS_LOCAL, this.resPanel1);
-			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_LOCAL, this.resPanel1);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
 			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
 					c, z);
 			this.resPanel2.setAnalysisRun(analysisRun, parentAnalysisRun,
 					false, c, z);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresVelocityRun) {
-			this.pane.add(StatsConstants.TAB_RESULTS_LOCAL, this.resPanel1);
-			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_LOCAL, this.resPanel1);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
 			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
 					c, z);
 			this.resPanel2.setAnalysisRun(analysisRun, parentAnalysisRun,
 					false, c, z);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresIntensityRun) {
-			this.pane.add(StatsConstants.TAB_RESULTS_GLOBAL, this.resPanel1);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_LOCAL, this.resPanel1);
+			this.pane.add(OmegaGUIConstants.TAB_RESULTS_GLOBAL, this.resPanel2);
 			this.resPanel1.setAnalysisRun(analysisRun, parentAnalysisRun, true,
 					c, z);
+			this.resPanel2.setAnalysisRun(analysisRun, parentAnalysisRun,
+					false, c, z);
 		} else if (analysisRun instanceof OmegaSNRRun) {
 			this.pane.add(GenericResultsDialog.TAB_SNR_ROI, this.resPanel1);
 			this.pane.add(GenericResultsDialog.TAB_SNR_PLANE, this.resPanel2);

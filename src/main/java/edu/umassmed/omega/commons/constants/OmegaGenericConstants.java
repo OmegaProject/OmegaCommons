@@ -27,26 +27,32 @@
 package edu.umassmed.omega.commons.constants;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.io.File;
 
 import javax.swing.UIDefaults;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 
-public class OmegaConstants {
-
+public class OmegaGenericConstants {
+	
 	public final static OmegaExperimenter OMEGA_DEFAULT_EXPERIMENTER = new OmegaExperimenter(
 			"Default", "Experimenter");
-
-	// ***BUILD AND INFO
+	
+	// BUILD AND INFO
 	public final static String OMEGA_TITLE = "OMEGA pre beta release";
-	public final static String OMEGA_BUILD = "build 0.02";
+	public final static String OMEGA_BUILD = "build 0.39";
 	public final static String OMEGA_WEBSITE = "http://omega.umassmed.edu/";
 	public final static String OMEGA_AUTHOR = "UMass Medical School";
 	public final static String OMEGA_DESCRIPTION = "<html>Open Microscopy Environment inteGrated Analysis</html>";
-
-	// ***PATHS AND FILENAMES
+	
+	public static String PREF_GRAPH_LINE_SIZE = "Graphics Line Size";
+	public static Integer PREF_GRAPH_LINE_SIZE_VAL = 2;
+	public static String PREF_GRAPH_SHAPE_SIZE = "Graphics Shape Size";
+	public static Integer PREF_GRAPH_SHAPE_SIZE_VAL = 2;
+	public static String PREF_TRACK_LINE_SIZE = "Trajectory Line Size";
+	public static Integer PREF_TRACK_LINE_SIZE_VAL = 2;
+	
+	// PATHS AND FILENAMES
 	public final static String OMEGA_IMGS_FOLDER_2 = "." + File.separator
 			+ "src" + File.separator + "main" + File.separator + "resources"
 			+ File.separator + "images";
@@ -59,80 +65,38 @@ public class OmegaConstants {
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER_2 = "."
 			+ File.separator + "src" + File.separator + "main" + File.separator
 			+ "resources" + File.separator + "errorInterpolation";
+	
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER = "errorInterpolation";
+	public final static String OMEGA_ERROR_INTERPOLATION_DATA = "2018-05-10";
 	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE = "D_interpolation_data_old.csv";
+	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE_L3 = "D_interpolation_data_L3.csv";
+	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE_L5 = "D_interpolation_data_L5.csv";
+	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE_L10 = "D_interpolation_data_L10.csv";
 	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE = "SMSS_interpolation_data_old.csv";
-
-	// ***LOGS***
+	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L3 = "SMSS_interpolation_data_L3.csv";
+	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L5 = "SMSS_interpolation_data_L5.csv";
+	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L10 = "SMSS_interpolation_data_L10.csv";
+	
+	// LOGS
 	public final static String LOG_TRAIN_CALLED = "DLL train method called";
 	public final static String LOG_SEGMENT_CALLED = "DLL segment method called";
 	public final static String LOG_SET_INI_FAILED = "Cannot set the INI file";
-
-	// ***SIZES***
-	public final static int THUMBNAIL_SIZE = 100;
-	public final static int DRAWING_POINTSIZE = 4;
-	public final static Dimension BUTTON_SIZE_SMALL = new Dimension(60, 20);
-	public final static Dimension BUTTON_SIZE = new Dimension(120, 20);
-	public final static Dimension BUTTON_SIZE_LARGE = new Dimension(180, 20);
-	public final static Dimension BUTTON_SIZE_LARGE_DOUBLE_HEIGHT = new Dimension(
-			180, 40);
-	public final static Dimension TEXT_SIZE = new Dimension(200, 20);
-	public final static Dimension LARGE_TEXT_SIZE = new Dimension(300, 20);
-	public final static Dimension LARGE_LIST_SIZE = new Dimension(300, 100);
-
-	// COMBO BOX
-	public final static int COMBOBOX_MAX_OPTIONS = 5;
-
-	// ***DATE FORMATTING***
+	
+	// DATE FORMATTING
 	public final static String OMEGA_DATE_FORMAT = "yyyy-MM-dd_hh-mm-ss";
 	public final static String OMEGA_DATE_FORMAT_LBL = "yyyy";
-
-	// ***RELINKING***
-	public final static String OMEGA_RELINKING_CURRENT = "Unsaved Editing";
-
-	// ***SEGMENTATION***
-	public final static String OMEGA_SEGMENTATION_CURRENT = "Unsaved Segmentation";
 	
-	// ***INTENSITY***
-	public static final String PARAMETER_SNR_USE = "Use SNR Estimation";
-
-	// ***DIFFUSIVITY***
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW = "Maximum computation window size";
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION = "ODC estimation method";
-	public static final String PARAMETER_ERROR_OPTION = "Error option";
-	public static final String PARAMETER_ERROR_SNR = "Select SNR Estimation Run";
-
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW_3 = "L/3";
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW_5 = "L/5";
-	public static final String PARAMETER_DIFFUSIVITY_WINDOW_10 = "L/10";
-
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY = "Log-Log";
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LINEAR_ONLY = "Linear";
-	public static final String PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_AND_LINEAR = "Linear and Log-Log";
-
-	public static final String PARAMETER_ERROR_OPTION_ENABLED = "Error enabled";
-	public static final String PARAMETER_ERROR_OPTION_DISABLED = "Error disabled";
-	public static final String PARAMETER_ERROR_OPTION_ONLY = "Error only";
-
-	// ***COLORS***
-	/**
-	 *
-	 * @return
-	 */
+	// COLORS
 	public final static Color getDefaultSelectionBackgroundColor() {
 		final UIDefaults defaults = javax.swing.UIManager.getDefaults();
 		return defaults.getColor("List.selectionBackground");
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	public final static Color getDefaultSelectionForegroundColor() {
 		final UIDefaults defaults = javax.swing.UIManager.getDefaults();
 		return defaults.getColor("List.selectionForeground");
 	}
-
+	
 	public static Color getDefaultBackgroundColor() {
 		final UIDefaults defaults = javax.swing.UIManager.getDefaults();
 		return defaults.getColor("List.background");

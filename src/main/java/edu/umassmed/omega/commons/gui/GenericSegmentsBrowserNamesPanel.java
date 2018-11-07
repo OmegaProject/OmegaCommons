@@ -13,7 +13,7 @@ import javax.swing.Icon;
 import javax.swing.RootPaneContainer;
 import javax.swing.ToolTipManager;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
@@ -123,7 +123,7 @@ public class GenericSegmentsBrowserNamesPanel extends
 			final int adjY = yPos;
 			if (sbPanel.getSelectedSegments().containsKey(track)) {
 				if (sbPanel.getSelectedSegments().get(track).contains(segment)) {
-					g2D.setBackground(OmegaConstants
+					g2D.setBackground(OmegaGenericConstants
 							.getDefaultSelectionBackgroundColor());
 					g2D.clearRect(0, adjY, this.getWidth(),
 							GenericBrowserPanel.SPOT_SPACE_DEFAULT);

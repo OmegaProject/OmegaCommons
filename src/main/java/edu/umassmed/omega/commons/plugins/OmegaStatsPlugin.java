@@ -19,74 +19,78 @@ import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectTrajectoriesReli
 import edu.umassmed.omega.commons.plugins.interfaces.OmegaSelectTrajectoriesSegmentationRunPluginInterface;
 
 public abstract class OmegaStatsPlugin extends OmegaAlgorithmPlugin implements
-        OmegaSelectImagePluginInterface,
-OmegaSelectParticleDetectionRunPluginInterface,
-OmegaSelectParticleLinkingRunPluginInterface,
-OmegaSelectTrajectoriesRelinkingRunPluginInterface,
-OmegaSelectTrajectoriesSegmentationRunPluginInterface,
-OmegaSelectTrackingMeasuresRunPluginInterface,
-OmegaLoadedAnalysisConsumerPluginInterface,
-OmegaImageConsumerPluginInterface,
-OmegaOrphanedAnalysisConsumerPluginInterface,
-OmegaLoaderPluginInterface, OmegaSelectSegmentsInterface {
-	
+		OmegaSelectImagePluginInterface,
+		OmegaSelectParticleDetectionRunPluginInterface,
+		OmegaSelectParticleLinkingRunPluginInterface,
+		OmegaSelectTrajectoriesRelinkingRunPluginInterface,
+		OmegaSelectTrajectoriesSegmentationRunPluginInterface,
+		OmegaSelectTrackingMeasuresRunPluginInterface,
+		OmegaLoadedAnalysisConsumerPluginInterface,
+		OmegaImageConsumerPluginInterface,
+		OmegaOrphanedAnalysisConsumerPluginInterface,
+		OmegaLoaderPluginInterface, OmegaSelectSegmentsInterface {
+
 	private List<OmegaAnalysisRun> loadedAnalysisRuns;
 	private OrphanedAnalysisContainer orphanedAnalysis;
 	private List<OmegaImage> loadedImages;
 	private OmegaGateway gateway;
-	
+
 	public OmegaStatsPlugin() {
 		this(1);
 	}
-	
+
 	public OmegaStatsPlugin(final int numOfPanels) {
 		super(numOfPanels);
-		
+
 		this.loadedAnalysisRuns = null;
 		this.orphanedAnalysis = null;
 		this.loadedImages = null;
 		this.gateway = null;
 	}
-	
+
 	@Override
 	public List<OmegaImage> getLoadedImages() {
 		return this.loadedImages;
 	}
-	
+
 	@Override
 	public void setLoadedImages(final List<OmegaImage> images) {
 		this.loadedImages = images;
 	}
-	
+
 	@Override
 	public void setOrphanedAnalysis(
 			final OrphanedAnalysisContainer orphanedAnalysis) {
 		this.orphanedAnalysis = orphanedAnalysis;
 	}
-	
+
 	@Override
 	public OrphanedAnalysisContainer getOrphanedAnalysis() {
 		return this.orphanedAnalysis;
 	}
-	
+
 	@Override
 	public void setLoadedAnalysisRun(
 			final List<OmegaAnalysisRun> loadedAnalysisRuns) {
 		this.loadedAnalysisRuns = loadedAnalysisRuns;
 	}
-	
+
 	@Override
 	public List<OmegaAnalysisRun> getLoadedAnalysisRuns() {
 		return this.loadedAnalysisRuns;
 	}
-	
+
 	@Override
 	public void setGateway(final OmegaGateway gateway) {
 		this.gateway = gateway;
 	}
-	
+
 	@Override
 	public OmegaGateway getGateway() {
 		return this.gateway;
 	}
+
+	public abstract void setGraphLineSize(int lineSize);
+
+	public abstract void setGraphShapeSize(int shapeSize);
 }

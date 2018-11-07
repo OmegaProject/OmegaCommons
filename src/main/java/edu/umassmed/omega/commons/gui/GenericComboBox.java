@@ -16,7 +16,7 @@ import javax.swing.plaf.synth.SynthComboBoxUI;
 import com.sun.java.swing.plaf.motif.MotifComboBoxUI;
 import com.sun.java.swing.plaf.windows.WindowsComboBoxUI;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericComboBox<T> extends JComboBox<T> {
@@ -27,7 +27,7 @@ public class GenericComboBox<T> extends JComboBox<T> {
 	public GenericComboBox(final RootPaneContainer parent) {
 		super();
 		this.parent = parent;
-		this.setMaximumRowCount(OmegaConstants.COMBOBOX_MAX_OPTIONS);
+		this.setMaximumRowCount(OmegaGUIConstants.COMBOBOX_MAX_OPTIONS);
 		final ComboBoxUI cbUI = this.getUI();
 		if (cbUI instanceof WindowsComboBoxUI) {
 			this.setUI(new OmegaWindowsComboBoxUI());

@@ -9,13 +9,13 @@ import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 
 public class OmegaTrackingMeasuresRun extends OmegaAnalysisRun {
-	
+
 	private static String DISPLAY_NAME = "Tracking Measures Run";
-
+	
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
-
+	
 	private final TrackingMeasuresType measuresType;
-
+	
 	public OmegaTrackingMeasuresRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
@@ -24,7 +24,7 @@ public class OmegaTrackingMeasuresRun extends OmegaAnalysisRun {
 		this.segments = segments;
 		this.measuresType = measuresType;
 	}
-
+	
 	public OmegaTrackingMeasuresRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
 			final String name,
@@ -34,7 +34,7 @@ public class OmegaTrackingMeasuresRun extends OmegaAnalysisRun {
 		this.segments = segments;
 		this.measuresType = measuresType;
 	}
-
+	
 	public OmegaTrackingMeasuresRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final AnalysisRunType type,
 			final Date timeStamps, final String name,
@@ -44,19 +44,19 @@ public class OmegaTrackingMeasuresRun extends OmegaAnalysisRun {
 		this.segments = segments;
 		this.measuresType = measuresType;
 	}
-
+	
 	public Map<OmegaTrajectory, List<OmegaSegment>> getSegments() {
 		return this.segments;
 	}
-
+	
 	public TrackingMeasuresType getMeasureType() {
 		return this.measuresType;
 	}
-	
+
 	public static String getStaticDisplayName() {
 		return OmegaTrackingMeasuresRun.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaTrackingMeasuresRun.getStaticDisplayName();

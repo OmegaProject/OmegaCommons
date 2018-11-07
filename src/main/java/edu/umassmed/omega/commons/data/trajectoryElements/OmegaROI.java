@@ -34,7 +34,17 @@ public class OmegaROI extends OmegaElement {
 	
 	private int frameIndex;
 	private final double x, y;
-	private final double realX, realY;
+	private double realX, realY;
+
+	public OmegaROI(final int frameIndex, final double x, final double y) {
+		super(-1L);
+
+		this.frameIndex = frameIndex;
+		this.x = x;
+		this.y = y;
+		this.realX = x;
+		this.realY = y;
+	}
 
 	public OmegaROI(final int frameIndex, final double x, final double y,
 			final double realX, final double realY) {
@@ -66,9 +76,17 @@ public class OmegaROI extends OmegaElement {
 	public double getRealX() {
 		return this.realX;
 	}
+	
+	public void setRealX(final Double realX) {
+		this.realX = realX;
+	}
 
 	public double getRealY() {
 		return this.realY;
+	}
+	
+	public void setRealY(final Double realY) {
+		this.realY = realY;
 	}
 	
 	public static String getStaticDisplayName() {

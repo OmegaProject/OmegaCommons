@@ -1,7 +1,7 @@
 package edu.umassmed.omega.commons.plugins.interfaces;
 
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 
 public interface OmegaSelectImagePluginInterface {
-	public void selectImage(OmegaAnalysisRunContainerInterface image);
+	public void selectImage(OmegaImage image);
 }

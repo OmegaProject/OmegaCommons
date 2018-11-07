@@ -4,13 +4,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaAlgorithmParameterConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
@@ -22,27 +23,27 @@ import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 
 public class OmegaTracksCalculator extends OmegaIOUtility implements
 		OmegaMessageDisplayerPanelInterface {
-	
+
 	public static void main(final String[] args) {
 		final OmegaTracksCalculator otc = new OmegaTracksCalculator();
 		otc.computeAndWriteValues();
 	}
-	
+
 	final Map<Double, Map<Integer, Map<Double, Map<Double, List<Double>>>>> smssOutput;
 	final Map<Double, Map<Integer, Map<Double, Map<Double, List<Double>>>>> dOutput;
-	
+
 	private final String readDirName, writeDirName, subDirName1, subDirName2,
 			fileName, trajIdent, particleIdent, nonParticleIdent, particleSep;
 	private final File dir, omegaSMSSDir, omegaDDir;
 	private final List<String> dataOrder;
-	
+
 	private final String windowDivisor, logOption, computeError;
 	private final OmegaTracksImporter oti;
-	
+
 	public OmegaTracksCalculator() {
-		this.windowDivisor = OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW_3;
-		this.logOption = OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION_LOG_ONLY;
-		this.computeError = OmegaConstants.PARAMETER_ERROR_OPTION_DISABLED;
+		this.windowDivisor = OmegaAlgorithmParameterConstants.PARAM_DIFFUSIVITY_WINDOW_3;
+		this.logOption = OmegaAlgorithmParameterConstants.PARAM_DIFFUSIVITY_LOG_OPTION_LOG_ONLY;
+		this.computeError = OmegaAlgorithmParameterConstants.PARAM_ERROR_OPTION_DISABLED;
 		this.readDirName = "E:\\2014-10-06_TrajectoryGeneratorValidation_NoNoise";
 		this.writeDirName = "E:\\2016-01-15_OmegaSMSSAndDValidation_NoNoise_WD3_Fixed_FullSim";
 		this.dir = new File(this.readDirName);
@@ -68,12 +69,12 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 		this.smssOutput = new LinkedHashMap<>();
 		this.dOutput = new LinkedHashMap<>();
 	}
-	
+
 	public void computeAndWriteValues() {
 		this.computeValues();
 		this.writeValues();
 	}
-	
+
 	private void computeValues() {
 		try {
 			for (final File f1 : this.dir.listFiles()) {
@@ -108,13 +109,14 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 					// + SMSS + " D " + D);
 					this.oti.reset();
 					this.oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
-					this.oti.importData(false, this.fileName, this.trajIdent,
-							this.particleIdent, false, this.nonParticleIdent,
-							this.particleSep, this.dataOrder, f2);
+					this.oti.importData(false, this.fileName, false,
+							this.trajIdent, this.particleIdent, false,
+							this.nonParticleIdent, this.particleSep,
+							this.dataOrder, f2);
 					final List<OmegaTrajectory> tracks = this.oti.getTracks();
 					// System.out.println(Calendar.getInstance().getTime() + " "
 					// + tracks.size() + " trajectory imported...");
-					
+
 					Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap;
 					if (this.smssOutput.containsKey(snr)) {
 						lSMSSMap = this.smssOutput.get(snr);
@@ -139,7 +141,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 					} else {
 						outputSMSS = new ArrayList<>();
 					}
-					
+
 					Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap;
 					if (this.dOutput.containsKey(snr)) {
 						lDMap = this.dOutput.get(snr);
@@ -164,7 +166,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 					} else {
 						outputD = new ArrayList<>();
 					}
-					
+
 					final Map<OmegaTrajectory, List<OmegaSegment>> segments = OmegaAlgorithmsUtilities
 							.createDefaultSegmentation(tracks);
 					// if (segments.keySet().size() > 1000) {
@@ -176,13 +178,13 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 					// + " segments created...");
 					final List<OmegaParameter> params = new ArrayList<OmegaParameter>();
 					params.add(new OmegaParameter(
-							OmegaConstants.PARAMETER_DIFFUSIVITY_WINDOW,
+							OmegaAlgorithmParameterConstants.PARAM_DIFFUSIVITY_WINDOW,
 							this.windowDivisor));
 					params.add(new OmegaParameter(
-							OmegaConstants.PARAMETER_DIFFUSIVITY_LOG_OPTION,
+							OmegaAlgorithmParameterConstants.PARAM_DIFFUSIVITY_LOG_OPTION,
 							this.logOption));
 					params.add(new OmegaParameter(
-							OmegaConstants.PARAMETER_ERROR_OPTION,
+							OmegaAlgorithmParameterConstants.PARAM_ERROR_OPTION,
 							this.computeError));
 					final OmegaDiffusivityAnalyzer analyzer = new OmegaDiffusivityAnalyzer(
 							this, 1.0, segments, params);
@@ -194,7 +196,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 							+ SMSS + "_D_" + D);
 					// System.out.println(Calendar.getInstance().getTime()
 					// + " analyzer started...");
-					
+
 					while (t.isAlive()) {
 						try {
 							Thread.sleep(60000);
@@ -214,12 +216,12 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 					// + " analyzer finished, lasted " + counter
 					// + " mins");
 					// System.out.println();
-					
+
 					final Map<OmegaSegment, Double[][]> segmentD = analyzer
 							.getGammaDFromLogResults();
 					final Map<OmegaSegment, Double[]> segmentSMSS = analyzer
 							.getSmssFromLogResults();
-					
+
 					for (final OmegaTrajectory traj : tracks) {
 						final List<OmegaSegment> trajSegments = segments
 								.get(traj);
@@ -230,7 +232,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 							outputD.add(omegaD);
 						}
 					}
-					
+
 					dDMap.put(D, outputD);
 					dSMSSMap.put(D, outputSMSS);
 					smssDMap.put(SMSS, dDMap);
@@ -245,9 +247,12 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 			// TODO should I do something here?
 		} catch (final IOException ex) {
 			// TODO should I do something here?
+		} catch (final ParseException ex) {
+			// TODO Auto-generated catch block
+			// e1.printStackTrace();
 		}
 	}
-	
+
 	private void writeValues() {
 		int snrCounter = 0, lCounter = 0;
 		String snrString = "", lString = "";
@@ -319,7 +324,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 								row.toString());
 						final StringBuffer dRow = new StringBuffer(
 								row.toString());
-						
+
 						for (final Double val : smssValues) {
 							smssRow.append(String.valueOf(val));
 							smssRow.append(";");
@@ -337,7 +342,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 							bw.write(smssRow.toString());
 							bw.close();
 							fw.close();
-							
+
 							final File dFile = new File(dFileName);
 							fw = new FileWriter(dFile, true);
 							bw = new BufferedWriter(fw);
@@ -352,7 +357,7 @@ public class OmegaTracksCalculator extends OmegaIOUtility implements
 			}
 		}
 	}
-	
+
 	@Override
 	public void updateMessageStatus(final OmegaMessageEvent evt) {
 		// System.out.println(evt.getMessage());

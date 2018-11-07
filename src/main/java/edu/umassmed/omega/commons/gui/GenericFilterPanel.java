@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.eventSystem.OmegaFilterEventListener;
 import edu.umassmed.omega.commons.eventSystem.events.OmegaFilterEvent;
 
@@ -45,26 +45,26 @@ public class GenericFilterPanel extends GenericPanel {
 		final JLabel lbl1 = new JLabel("Search");
 		mainPanel.add(lbl1);
 		this.cmb = new JComboBox<String>();
-		this.cmb.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.cmb.setMinimumSize(OmegaConstants.BUTTON_SIZE);
+		this.cmb.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.cmb.setMinimumSize(OmegaGUIConstants.BUTTON_SIZE);
 		mainPanel.add(this.cmb);
 		final JLabel lbl2 = new JLabel("for");
 		mainPanel.add(lbl2);
 		this.txt = new JTextField();
-		this.txt.setPreferredSize(OmegaConstants.BUTTON_SIZE_LARGE);
-		this.txt.setMinimumSize(OmegaConstants.BUTTON_SIZE_LARGE);
+		this.txt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE_LARGE);
+		this.txt.setMinimumSize(OmegaGUIConstants.BUTTON_SIZE_LARGE);
 		mainPanel.add(this.txt);
 		final JLabel lbl3 = new JLabel("exact match?");
 		mainPanel.add(lbl3);
 		this.ckb = new JCheckBox();
 		mainPanel.add(this.ckb);
 		this.searchBtt = new JButton("Search");
-		this.searchBtt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.searchBtt.setMinimumSize(OmegaConstants.BUTTON_SIZE);
+		this.searchBtt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.searchBtt.setMinimumSize(OmegaGUIConstants.BUTTON_SIZE);
 		mainPanel.add(this.searchBtt);
 		this.resetBtt = new JButton("Reset");
-		this.resetBtt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.resetBtt.setMinimumSize(OmegaConstants.BUTTON_SIZE);
+		this.resetBtt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.resetBtt.setMinimumSize(OmegaGUIConstants.BUTTON_SIZE);
 		mainPanel.add(this.resetBtt);
 
 		final JPanel spacePanel = new JPanel();

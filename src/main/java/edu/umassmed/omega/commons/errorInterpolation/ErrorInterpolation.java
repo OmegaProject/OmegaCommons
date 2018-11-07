@@ -6,15 +6,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
 
 public class ErrorInterpolation {
 
-	public static final InputStream DEFAULT_D_FILE = OmegaFileUtilities
-			.getErrorInterpolationFilename(OmegaConstants.OMEGA_ERROR_INTERPOLATION_D_FILE);
-	public static final InputStream DEFAULT_SMSS_FILE = OmegaFileUtilities
-			.getErrorInterpolationFilename(OmegaConstants.OMEGA_ERROR_INTERPOLATION_SMSS_FILE);
+	public static final InputStream L3_D_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_D_FILE_L3);
+	public static final InputStream L3_SMSS_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L3);
+	public static final InputStream L5_D_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_D_FILE_L5);
+	public static final InputStream L5_SMSS_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L5);
+	public static final InputStream L10_D_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_D_FILE_L10);
+	public static final InputStream L10_SMSS_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L10);
+	public static final InputStream OLD_D_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_D_FILE);
+	public static final InputStream OLD_SMSS_FILE = OmegaFileUtilities
+			.getErrorInterpolationFilename(OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_SMSS_FILE);
+	
 	private final InterpolationFileLoader ifl;
 
 	public ErrorInterpolation(final String path)

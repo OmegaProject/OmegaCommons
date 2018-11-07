@@ -31,15 +31,16 @@ import java.util.Date;
 import edu.umassmed.omega.commons.data.coreElements.OmegaNamedElement;
 
 public class OmegaAlgorithmInformation extends OmegaNamedElement {
-
+	
 	private static String DISPLAY_NAME = "Algorithm Information";
-
+	
+	private final String shortName;
 	private final String version;
 	private final String description;
 	private final Date publicationDate;
 	private final String reference;
 	private String authors;
-
+	
 	// public OmegaAlgorithmInformation(final String name, final double version,
 	// final String description) {
 	// super(-1L, name);
@@ -49,57 +50,64 @@ public class OmegaAlgorithmInformation extends OmegaNamedElement {
 	// this.description = description;
 	// this.publicationDate = Calendar.getInstance().getTime();
 	// }
-
+	
 	// public OmegaAlgorithmInformation(final String name, final double version,
 	// final String description, final OmegaPerson author,String reference) {
 	// this(name, version, description, reference);
 	//
 	// this.author = author;
 	// }
-
-	public OmegaAlgorithmInformation(final String name, final String version,
-			final String description, final String authors,
-			final Date publicationDate, final String reference) {
+	
+	public OmegaAlgorithmInformation(final String name, final String shortName,
+			final String version, final String description,
+			final String authors, final Date publicationDate,
+			final String reference) {
 		super(-1L, name);
-
+		
+		this.shortName = shortName;
+		
 		this.version = version;
 		this.description = description;
-
+		
 		this.authors = authors;
-
+		
 		this.publicationDate = publicationDate;
-
+		
 		this.reference = reference;
 	}
 
+	public String getShortName() {
+		return this.shortName;
+	}
+	
 	public String getDescription() {
 		return this.description;
 	}
-
+	
 	public String getVersion() {
 		return this.version;
 	}
-
+	
 	public Date getPublicationData() {
 		return this.publicationDate;
 	}
-
+	
 	public String getAuthors() {
 		return this.authors;
 	}
-
+	
 	public void changeAuthor(final String string) {
 		this.authors = string;
 	}
-
+	
 	public String getReference() {
 		return this.reference;
 	}
-
+	
 	public static String getStaticDisplayName() {
 		return OmegaAlgorithmInformation.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaAlgorithmInformation.getStaticDisplayName();

@@ -24,36 +24,8 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package edu.umassmed.omega.commons.eventSystem.events;
+package edu.umassmed.omega.commons.constants;
 
-import java.util.List;
-import java.util.Map;
-
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
-import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
-import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
-
-public class OmegaImporterEventResultsParticleTracking extends
-        OmegaImporterEventResultsParticleDetection {
-	
-	private final List<OmegaTrajectory> resultingTrajectories;
-	
-	public OmegaImporterEventResultsParticleTracking(
-	        final OmegaIOUtility source,
-			final OmegaAnalysisRunContainerInterface container,
-			final Map<String, String> analysisData,
-			final Map<String, String> paramData,
-	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
-			final List<OmegaTrajectory> resultingTrajectories,
-	        final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
-		super(source, container, analysisData, paramData, resultingParticles,
-		        resultingParticlesValues);
-		this.resultingTrajectories = resultingTrajectories;
-	}
-	
-	public List<OmegaTrajectory> getResultingTrajectories() {
-		return this.resultingTrajectories;
-	}
+public class OmegaEventConstants {
+	public static String PROPERTY_CONNECTION = "Connection";
 }

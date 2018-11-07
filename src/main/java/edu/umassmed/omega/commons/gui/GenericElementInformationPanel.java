@@ -46,8 +46,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import edu.umassmed.omega.commons.OmegaLogFileManager;
-import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OrphanedAnalysisContainer;
 import edu.umassmed.omega.commons.data.coreElements.OmegaDataset;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
@@ -60,39 +60,39 @@ import edu.umassmed.omega.commons.utilities.OmegaAnalysisRunContainerUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericElementInformationPanel extends GenericScrollPane {
-	
+
 	private static final long serialVersionUID = -8599077833612345455L;
-	
+
 	private JTextPane info_txt;
-	
+
 	private final SimpleAttributeSet normal, bold;
-	
+
 	private JButton details_btt;
-	
+
 	private final GenericElementDetailsDialog detailsDialog;
-	
+
 	public GenericElementInformationPanel(final RootPaneContainer parent,
 			final GenericElementInformationContainerInterface infoContainer) {
 		super(parent);
-		
+
 		this.normal = new SimpleAttributeSet();
 		this.bold = new SimpleAttributeSet();
 		StyleConstants.setBold(this.bold, true);
-		
+
 		// this.setBorder(new TitledBorder("Information"));
-		
+
 		this.detailsDialog = new GenericElementDetailsDialog(parent,
 				infoContainer);
-		
+
 		this.createAndAddWidgets();
-		
+
 		this.addListeners();
 	}
-	
+
 	private void createAndAddWidgets() {
 		final JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		
+
 		this.info_txt = new JTextPane();
 		this.info_txt.setEditable(false);
 		this.info_txt.setEditorKit(new GenericWrapEditorKit());
@@ -103,19 +103,19 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			OmegaLogFileManager.handleCoreException(ex, true);
 		}
 		mainPanel.add(this.info_txt, BorderLayout.CENTER);
-		
+
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		this.details_btt = new JButton(OmegaGUIConstants.EDIT_DETAILS);
 		this.details_btt.setEnabled(false);
-		this.details_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.details_btt.setSize(OmegaConstants.BUTTON_SIZE);
+		this.details_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.details_btt.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.details_btt);
 		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-		
+
 		this.setViewportView(mainPanel);
 	}
-	
+
 	private void addListeners() {
 		this.details_btt.addActionListener(new ActionListener() {
 			@Override
@@ -124,11 +124,11 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			}
 		});
 	}
-	
+
 	private void handleShowDetails() {
 		this.detailsDialog.setVisible(true);
 	}
-	
+
 	public void resizePanel(final int width, final int height) {
 		final int lines = OmegaStringUtilities.countLines(this.info_txt,
 				this.info_txt.getDocument().getLength());
@@ -142,7 +142,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			// neededWidth -= 20;
 			// neededHeight += 17;
 		}
-		
+
 		final Dimension panelDim = new Dimension(width, height);
 		this.setPreferredSize(panelDim);
 		this.setSize(panelDim);
@@ -150,26 +150,26 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		this.info_txt.setPreferredSize(textDim);
 		this.info_txt.setSize(textDim);
 	}
-	
+
 	private void appendString(final String s, final AttributeSet style)
 			throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, s, style);
 	}
-	
+
 	private void appendNewline() throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.insertString(length, "\n", this.normal);
 	}
-	
+
 	private void reset() throws BadLocationException {
 		final Document doc = this.info_txt.getDocument();
 		final int length = doc.getLength();
 		doc.remove(0, length);
 	}
-	
+
 	public void updateContent(final OmegaElement element) {
 		this.details_btt.setEnabled(false);
 		this.detailsDialog.updateImage(null);
@@ -198,12 +198,13 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			this.detailsDialog.repaint();
 		}
 	}
-	
+
 	private void getGenericElementInformation(final OmegaElement element)
 			throws BadLocationException {
 		final long id = element.getElementID();
 		final String clazz = element.getDynamicDisplayName();
 		this.appendString(clazz, this.bold);
+		this.appendString(" ", this.bold);
 		this.appendString(OmegaGUIConstants.INFO_ID, this.bold);
 		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
 		if (id == -1) {
@@ -229,7 +230,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			this.appendString(OmegaGUIConstants.INFO_NOT_NAMED, this.normal);
 		}
 	}
-	
+
 	private void getSpecificElementInformation(final OmegaElement element)
 			throws BadLocationException {
 		if (element instanceof OmegaProject) {
@@ -243,7 +244,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 			// TODO throw error?
 		}
 	}
-	
+
 	private void addAdditionalProjectInformation(final OmegaProject project)
 			throws BadLocationException {
 		this.appendString(OmegaGUIConstants.INFO_NUM_DATASET, this.bold);
@@ -261,7 +262,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(project)), this.normal);
 	}
-	
+
 	private void addAdditionalDatasetInformation(final OmegaDataset dataset)
 			throws BadLocationException {
 		this.appendString(OmegaGUIConstants.INFO_NUM_IMAGES, this.bold);
@@ -279,11 +280,11 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		this.appendString(String.valueOf(OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(dataset)), this.normal);
 	}
-	
+
 	private void addAdditionalImageInformation(final OmegaImage image)
 			throws BadLocationException {
 		final SimpleDateFormat format = new SimpleDateFormat(
-				OmegaConstants.OMEGA_DATE_FORMAT);
+				OmegaGenericConstants.OMEGA_DATE_FORMAT);
 		final OmegaImagePixels pixels = image.getDefaultPixels();
 		this.appendString(OmegaGUIConstants.INFO_NUM_ANALYSIS, this.bold);
 		this.appendString(OmegaGUIConstants.INFO_COLUMN_SEP, this.bold);
@@ -295,7 +296,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		final String acquiredDate;
 		if (image.getAcquisitionDate() != null) {
 			acquiredDate = format.format(image.getAcquisitionDate());
-
+			
 		} else {
 			acquiredDate = OmegaGUIConstants.NOT_ASSIGNED;
 		}
@@ -366,7 +367,7 @@ public class GenericElementInformationPanel extends GenericScrollPane {
 		final String sizeCs = String.valueOf(sizeC);
 		this.appendString(sizeCs, this.normal);
 	}
-	
+
 	@Override
 	public void updateParentContainer(final RootPaneContainer parent) {
 		super.updateParentContainer(parent);

@@ -18,27 +18,33 @@ import edu.umassmed.omega.commons.gui.interfaces.OmegaMessageDisplayerPanelInter
 import edu.umassmed.omega.commons.utilities.OmegaImageUtilities;
 
 public class TBROIThumbnailLoader implements Runnable {
-
+	
 	private final OmegaMessageDisplayerPanelInterface displayerPanel;
-
+	
 	private final OmegaGateway gateway;
 	private final OmegaImage img;
 	private final List<BufferedImage> buffImages;
 
+	private final Integer c, z;
+	
 	private boolean killed;
-
+	
 	public TBROIThumbnailLoader(
 			final OmegaMessageDisplayerPanelInterface displayerPanel,
-			final OmegaGateway gateway, final OmegaImage img) {
+			final OmegaGateway gateway, final OmegaImage img, final Integer c,
+			final Integer z) {
 		this.displayerPanel = displayerPanel;
 		this.gateway = gateway;
 		this.img = img;
 
+		this.c = c;
+		this.z = z;
+		
 		this.buffImages = new ArrayList<BufferedImage>();
-
+		
 		this.killed = false;
 	}
-
+	
 	@Override
 	public void run() {
 		final OmegaGateway gateway = this.gateway;
@@ -48,13 +54,25 @@ public class TBROIThumbnailLoader implements Runnable {
 			return;
 		final OmegaImagePixels pixels = img.getDefaultPixels();
 		final int maxT = pixels.getSizeT();
+		// for (int chan = 0; chan < pixels.getSizeC(); chan++) {
+		// boolean active = false;
+		// if (chan == this.c) {
+		// active = true;
+		// }
+		// try {
+		// gateway.setActiveChannel(pixels.getOmeroId(), chan, active);
+		// } catch (final Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
 		for (int x = 0; x < maxT; x++) {
 			if (this.killed) {
 				break;
 			}
 			try {
 				final byte[] values = gateway.renderCompressed(
-						pixels.getOmeroId(), x, pixels.getSelectedZ());
+						pixels.getOmeroId(), x, this.z);
 				final ByteArrayInputStream stream = new ByteArrayInputStream(
 						values);
 				final BufferedImage bufferedImage = ImageIO.read(stream);
@@ -73,13 +91,24 @@ public class TBROIThumbnailLoader implements Runnable {
 						.add(OmegaImageUtilities.getNoImagePlaceholder());
 			}
 		}
+		// final Boolean[] prevChannels = pixels.getSelectedC();
+		// for (int chan = 0; chan < prevChannels.length; chan++) {
+		// try {
+		// gateway.setActiveChannel(pixels.getOmeroId(), chan,
+		// prevChannels[chan]);
+		// } catch (final Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
 		if (this.killed)
 			return;
 		final StringBuffer buffer = new StringBuffer();
 		buffer.append("All frames loaded");
 		this.updateStatus(buffer.toString(), true);
-	}
 
+	}
+	
 	public void updateStatus(final String status, final boolean repaint) {
 		if (this.killed)
 			return;
@@ -88,19 +117,31 @@ public class TBROIThumbnailLoader implements Runnable {
 				@Override
 				public void run() {
 					TBROIThumbnailLoader.this.displayerPanel
-					.updateMessageStatus(new OmegaMessageEventTBLoader(
-							status, repaint));
+							.updateMessageStatus(new OmegaMessageEventTBLoader(
+									status, repaint,
+									TBROIThumbnailLoader.this.img.getOmeroId(),
+									TBROIThumbnailLoader.this.c,
+									TBROIThumbnailLoader.this.z,
+									TBROIThumbnailLoader.this.buffImages));
 				}
 			});
 		} catch (final InvocationTargetException | InterruptedException ex) {
 			OmegaLogFileManager.handleUncaughtException(ex, true);
 		}
 	}
-
+	
 	public List<BufferedImage> getImages() {
 		return this.buffImages;
 	}
 
+	public Integer getChannel() {
+		return this.c;
+	}
+
+	public int getZPlane() {
+		return this.z;
+	}
+	
 	public void kill() {
 		this.killed = true;
 	}

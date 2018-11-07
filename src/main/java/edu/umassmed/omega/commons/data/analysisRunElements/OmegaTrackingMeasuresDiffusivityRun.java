@@ -21,7 +21,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 	private final Map<OmegaSegment, Double[][]> deltaTMap;
 	private final Map<OmegaSegment, Double[][]> gammaDFromLogMap;
 	private final Map<OmegaSegment, Double[][]> gammaDMap;
-	private final Map<OmegaSegment, Double[]> gammaFromLogMap;
+	// private final Map<OmegaSegment, Double[]> gammaFromLogMap;
 	// private final Map<OmegaSegment, Double[]> gammaMap;
 	private final Map<OmegaSegment, Double[]> smssFromLogMap;
 	// private final Map<OmegaSegment, Double[]> smssMap;
@@ -45,7 +45,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 			final Map<OmegaSegment, Double[][]> gammaD,
 			final Map<OmegaSegment, Double[][]> gammaDLog,
 			// final Map<OmegaSegment, Double[]> gamma,
-			final Map<OmegaSegment, Double[]> gammaLog,
+			// final Map<OmegaSegment, Double[]> gammaLog,
 			// final Map<OmegaSegment, Double[]> smss,
 			final Map<OmegaSegment, Double[]> smssLog,
 			// final Map<OmegaSegment, Double[]> errors,
@@ -63,7 +63,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		this.gammaDMap = gammaD;
 		this.gammaDFromLogMap = gammaDLog;
 		// this.gammaMap = gamma;
-		this.gammaFromLogMap = gammaLog;
+		// this.gammaFromLogMap = gammaLog;
 		// this.smssMap = smss;
 		this.smssFromLogMap = smssLog;
 		// this.errorsMap = errors;
@@ -87,7 +87,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 			final Map<OmegaSegment, Double[][]> gammaD,
 			final Map<OmegaSegment, Double[][]> gammaDLog,
 			// final Map<OmegaSegment, Double[]> gamma,
-			final Map<OmegaSegment, Double[]> gammaLog,
+			// final Map<OmegaSegment, Double[]> gammaLog,
 			// final Map<OmegaSegment, Double[]> smss,
 			final Map<OmegaSegment, Double[]> smssLog,
 			// final Map<OmegaSegment, Double[]> errors,
@@ -105,7 +105,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		this.gammaDMap = gammaD;
 		this.gammaDFromLogMap = gammaDLog;
 		// this.gammaMap = gamma;
-		this.gammaFromLogMap = gammaLog;
+		// this.gammaFromLogMap = gammaLog;
 		// this.smssMap = smss;
 		this.smssFromLogMap = smssLog;
 		// this.errorsMap = errors;
@@ -129,7 +129,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 			final Map<OmegaSegment, Double[][]> gammaD,
 			final Map<OmegaSegment, Double[][]> gammaDLog,
 			// final Map<OmegaSegment, Double[]> gamma,
-			final Map<OmegaSegment, Double[]> gammaLog,
+			// final Map<OmegaSegment, Double[]> gammaLog,
 			// final Map<OmegaSegment, Double[]> smss,
 			final Map<OmegaSegment, Double[]> smssLog,
 			// final Map<OmegaSegment, Double[]> errors,
@@ -147,7 +147,7 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		this.gammaDMap = gammaD;
 		this.gammaDFromLogMap = gammaDLog;
 		// this.gammaMap = gamma;
-		this.gammaFromLogMap = gammaLog;
+		// this.gammaFromLogMap = gammaLog;
 		// this.smssMap = smss;
 		this.smssFromLogMap = smssLog;
 		// this.errorsMap = errors;
@@ -161,9 +161,9 @@ public class OmegaTrackingMeasuresDiffusivityRun extends
 		return this.nyMap;
 	}
 
-	public Map<OmegaSegment, Double[]> getGammaFromLogResults() {
-		return this.gammaFromLogMap;
-	}
+	// public Map<OmegaSegment, Double[]> getGammaFromLogResults() {
+	// return this.gammaFromLogMap;
+	// }
 
 	// public Map<OmegaSegment, Double[]> getGammaResults() {
 	// return this.gammaMap;

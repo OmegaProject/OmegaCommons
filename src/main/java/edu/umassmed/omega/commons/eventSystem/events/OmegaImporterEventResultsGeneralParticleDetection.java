@@ -34,47 +34,48 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.utilities.OmegaIOUtility;
 
-public class OmegaImporterEventResultsParticleDetection extends
-        OmegaTrajectoryIOEvent {
-
+public class OmegaImporterEventResultsGeneralParticleDetection extends
+		OmegaTrajectoryIOEvent {
+	
 	private final OmegaAnalysisRunContainerInterface container;
-	
+
 	private final Map<String, String> analysisData, paramData;
-	
+
 	private final Map<OmegaPlane, List<OmegaROI>> resultingParticles;
 	private final Map<OmegaROI, Map<String, Object>> resultingParticlesValues;
-
-	public OmegaImporterEventResultsParticleDetection(
+	
+	public OmegaImporterEventResultsGeneralParticleDetection(
 			final OmegaIOUtility source,
-	        final OmegaAnalysisRunContainerInterface container,
-	        final Map<String, String> analysisData,
-	        final Map<String, String> paramData,
+			final OmegaAnalysisRunContainerInterface container,
+			final Map<String, String> analysisData,
+			final Map<String, String> paramData,
 			final Map<OmegaPlane, List<OmegaROI>> resultingParticles,
-			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues) {
-		super(source, OmegaTrajectoryIOEvent.INPUT);
+			final Map<OmegaROI, Map<String, Object>> resultingParticlesValues,
+			final boolean completeChainAfterImport) {
+		super(source, OmegaTrajectoryIOEvent.INPUT, completeChainAfterImport);
 		this.container = container;
 		this.analysisData = analysisData;
 		this.paramData = paramData;
 		this.resultingParticles = resultingParticles;
 		this.resultingParticlesValues = resultingParticlesValues;
 	}
-
+	
 	public OmegaAnalysisRunContainerInterface getContainer() {
 		return this.container;
 	}
-
+	
 	public Map<String, String> getAnalysisData() {
 		return this.analysisData;
 	}
-
+	
 	public Map<String, String> getParamData() {
 		return this.paramData;
 	}
-
+	
 	public Map<OmegaPlane, List<OmegaROI>> getResultingParticles() {
 		return this.resultingParticles;
 	}
-
+	
 	public Map<OmegaROI, Map<String, Object>> getResultingParticlesValues() {
 		return this.resultingParticlesValues;
 	}

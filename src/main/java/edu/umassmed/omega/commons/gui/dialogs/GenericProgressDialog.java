@@ -40,7 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 
 public class GenericProgressDialog extends GenericDialog {
 
@@ -135,8 +135,8 @@ public class GenericProgressDialog extends GenericDialog {
 		buttonPanel.setLayout(new FlowLayout());
 		this.close = new JButton("Close");
 		this.close.setEnabled(false);
-		this.close.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.close.setSize(OmegaConstants.BUTTON_SIZE);
+		this.close.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.close.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.close);
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}

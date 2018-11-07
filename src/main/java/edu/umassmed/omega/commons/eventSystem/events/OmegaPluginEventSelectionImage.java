@@ -1,23 +1,23 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
-import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
+import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.plugins.OmegaPlugin;
 
 public class OmegaPluginEventSelectionImage extends OmegaPluginEvent {
-
-	private final OmegaAnalysisRunContainerInterface img;
-
-	public OmegaPluginEventSelectionImage(final OmegaAnalysisRunContainerInterface img) {
-		this(null, img);
+	
+	private final OmegaImage image;
+	
+	public OmegaPluginEventSelectionImage(final OmegaImage image) {
+		this(null, image);
 	}
-
+	
 	public OmegaPluginEventSelectionImage(final OmegaPlugin source,
-			final OmegaAnalysisRunContainerInterface img) {
+			final OmegaImage img) {
 		super(source);
-		this.img = img;
+		this.image = img;
 	}
-
-	public OmegaAnalysisRunContainerInterface getImage() {
-		return this.img;
+	
+	public OmegaImage getImage() {
+		return this.image;
 	}
 }

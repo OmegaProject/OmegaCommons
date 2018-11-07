@@ -67,7 +67,8 @@ public class OmegaTrajectory extends OmegaNamedElement implements
 		this.ROIs = new ArrayList<OmegaROI>();
 		this.links = new ArrayList<OmegaLink>();
 
-		this.color = Color.yellow;
+		// this.color = new Color(0xCCF8F6);
+		this.color = new Color(0x999999);
 		this.isVisible = true;
 		this.isColorChanged = false;
 

@@ -17,7 +17,7 @@ import javax.swing.RootPaneContainer;
 
 import edu.umassmed.omega.commons.OmegaImageManager;
 import edu.umassmed.omega.commons.OmegaLogFileManager;
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.data.imageDBConnectionElements.OmegaGateway;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
@@ -43,12 +43,14 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 	private OmegaImage img;
 	// private final List<BufferedImage> buffImages;
 	
-	private Thread frameLoaderThread;
-	private TBROIThumbnailLoader frameLoader;
+	private final Thread frameLoaderThread;
+	private final TBROIThumbnailLoader frameLoader;
 	
 	private Point clickPosition;
 	private final boolean invertTrackSegmColor;
 	private final boolean isSelectionEnabled, isDoubleColorEnabled;
+
+	private Integer c, z;
 	
 	public GenericSegmentsBrowserTrajectoriesPanel(
 			final RootPaneContainer parent,
@@ -76,6 +78,9 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 		this.isSelectionEnabled = isSelectionEnabled;
 		this.isDoubleColorEnabled = true;
 		this.invertTrackSegmColor = false;
+
+		this.z = null;
+		this.c = null;
 	}
 	
 	protected Point findTrajectoryLocation(final OmegaTrajectory trajectory) {
@@ -165,7 +170,7 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 					.getSelectedSegments();
 			if (segments.containsKey(track)) {
 				if (segments.get(track).contains(segment)) {
-					g2D.setBackground(OmegaConstants
+					g2D.setBackground(OmegaGenericConstants
 							.getDefaultSelectionBackgroundColor());
 					g2D.clearRect(0, adjY, this.getWidth(),
 							GenericBrowserPanel.SPOT_SPACE_DEFAULT);
@@ -173,7 +178,7 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 				}
 			}
 			// if (this.sbPanel.getSelectedTrajectories().contains(traj)) {
-			// g2D.setBackground(OmegaConstants
+			// g2D.setBackground(OmegaGenericConstants
 			// .getDefaultSelectionBackgroundColor());
 			// g2D.clearRect(0, adjY, this.getWidth(),
 			// GenericBrowserPanel.SPOT_SPACE_DEFAULT);
@@ -213,8 +218,8 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 					BufferedImage bufferedImage = null;
 					List<BufferedImage> buffImages = null;
 					if (this.img != null) {
-						buffImages = OmegaImageManager.getImages(this.img
-								.getOmeroId());
+						buffImages = OmegaImageManager.getImages(
+								this.img.getOmeroId(), this.c, this.z);
 					}
 					// if (this.buffImages.size() > roiIndex) {
 					// bufferedImage = this.buffImages.get(roiIndex);
@@ -413,46 +418,63 @@ public class GenericSegmentsBrowserTrajectoriesPanel extends GenericPanel {
 		this.gateway = gateway;
 	}
 	
-	protected void setImage(final OmegaImage img) {
-		if ((this.img == img))
+	protected void setImage(final OmegaImage img, final Boolean[] c,
+			final Integer z) {
+		Integer chan = null;
+		if (c != null) {
+			chan = 0;
+			for (final Boolean b : c) {
+				if ((b == null) || !b) {
+					chan++;
+				} else {
+					break;
+				}
+			}
+		}
+		if ((this.img == img) && (this.c == chan) && (this.z == z))
 			return;
 		this.img = img;
-		// this.buffImages.clear();
-		if ((this.frameLoaderThread != null)
-				&& this.frameLoaderThread.isAlive()) {
-			this.frameLoader.kill();
-			// try {
-			// this.frameLoaderThread.join();
-			// } catch (final InterruptedException ex) {
-			// OmegaLogFileManager.handleCoreException(ex);
-			// }
-		}
+		this.c = chan;
+		this.z = z;
+		// // this.buffImages.clear();
+		// if ((this.frameLoaderThread != null)
+		// && this.frameLoaderThread.isAlive()) {
+		// this.frameLoader.kill();
+		// // try {
+		// // this.frameLoaderThread.join();
+		// // } catch (final InterruptedException ex) {
+		// // OmegaLogFileManager.handleCoreException(ex);
+		// // }
+		// }
 		if ((img != null)
-				&& (OmegaImageManager.getImages(img.getOmeroId()) != null)) {
+				&& (OmegaImageManager.getImages(img.getOmeroId(), chan, z) != null)) {
 			this.sbPanel.updateMessageStatus(new OmegaMessageEventTBLoader(
 					"All frames loaded", false));
-			this.frameLoader = null;
+			// this.frameLoader = null;
 			return;
 		}
-		this.frameLoader = new TBROIThumbnailLoader(this.sbPanel, this.gateway,
-				this.img);
-		this.frameLoaderThread = new Thread(this.frameLoader);
-		this.frameLoaderThread.setName(this.frameLoader.getClass()
-				.getSimpleName());
+		final TBROIThumbnailLoader frameLoader = new TBROIThumbnailLoader(
+				this.sbPanel, this.gateway, this.img, chan, z);
+		final Thread frameLoaderThread = new Thread(frameLoader);
+		frameLoaderThread.setName(frameLoader.getClass().getSimpleName());
 		OmegaLogFileManager
-				.registerAsExceptionHandlerOnThread(this.frameLoaderThread);
-		this.frameLoaderThread.start();
+				.registerAsExceptionHandlerOnThread(frameLoaderThread);
+		frameLoaderThread.start();
+		// this.frameLoader = new TBROIThumbnailLoader(this.sbPanel,
+		// this.gateway,
+		// this.img, chan, z);
+		// this.frameLoaderThread = new Thread(this.frameLoader);
+		// this.frameLoaderThread.setName(this.frameLoader.getClass()
+		// .getSimpleName());
+		// OmegaLogFileManager
+		// .registerAsExceptionHandlerOnThread(this.frameLoaderThread);
+		// this.frameLoaderThread.start();
 	}
 	
-	public void loadBufferedImages() {
-		// TODO find a way to 'cache' images during the thread instead of here
-		// this.buffImages.clear();
-		if (this.frameLoader != null) {
-			final List<BufferedImage> images = this.frameLoader.getImages();
-			OmegaImageManager.clearImagesForID(this.img.getOmeroId());
-			OmegaImageManager.saveImages(this.img.getOmeroId(), images);
-		}
-		// this.buffImages.addAll(this.frameLoader.getImages());
+	public void loadBufferedImages(final Long imageID, final Integer c,
+			final Integer z, final List<BufferedImage> images) {
+		OmegaImageManager.clearImagesForID(imageID, c, z);
+		OmegaImageManager.saveImages(imageID, c, z, images);
 		this.repaint();
 	}
 	

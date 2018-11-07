@@ -15,8 +15,7 @@ import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
-import edu.umassmed.omega.commons.constants.OmegaConstantsMathSymbols;
+import edu.umassmed.omega.commons.constants.OmegaMathSymbolConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
 import edu.umassmed.omega.commons.data.coreElements.OmegaImagePixels;
@@ -44,7 +43,7 @@ public class GenericElementDetailsDialog extends GenericDialog {
 	public static final String CHANNEL = "C:";
 	
 	public static final String PX = "pixel";
-	public static final String UM = OmegaConstantsMathSymbols.MU + "m";
+	public static final String UM = OmegaMathSymbolConstants.MU + "m";
 	public static final String SEC = "sec";
 	public static final String SEC_T = GenericElementDetailsDialog.SEC + "/"
 	        + GenericElementDetailsDialog.TIMEPOINT;
@@ -286,11 +285,11 @@ public class GenericElementDetailsDialog extends GenericDialog {
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		this.save_btt = new JButton(OmegaGUIConstants.SAVE);
-		this.save_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
+		this.save_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.save_btt);
 		
 		this.close_btt = new JButton(OmegaGUIConstants.MENU_FILE_CLOSE);
-		this.close_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
+		this.close_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.close_btt);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);

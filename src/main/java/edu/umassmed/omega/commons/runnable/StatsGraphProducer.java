@@ -2,14 +2,15 @@ package edu.umassmed.omega.commons.runnable;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,6 +32,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.Plot;
@@ -54,7 +56,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
 
-import edu.umassmed.omega.commons.constants.StatsConstants;
+import edu.umassmed.omega.commons.constants.GraphLabelConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaParticle;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
@@ -82,9 +85,12 @@ public abstract class StatsGraphProducer implements Runnable {
 	
 	private final Map<OmegaSegment, Shape> symbols;
 	
+	private final int lineSize, shapeSize;
+	
 	public StatsGraphProducer(final int graphType,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
-			final OmegaSegmentationTypes segmTypes) {
+			final OmegaSegmentationTypes segmTypes, final int lineSize,
+			final int shapeSize) {
 		this.segmentsMap = segmentsMap;
 		this.segmTypes = segmTypes;
 		
@@ -100,13 +106,23 @@ public abstract class StatsGraphProducer implements Runnable {
 		this.legendPanel = null;
 		
 		this.symbols = new LinkedHashMap<OmegaSegment, Shape>();
+		
+		this.lineSize = lineSize;
+		this.shapeSize = shapeSize;
+
+		// System.out.println("@@@@@@@@@@@@@@@@@@@");
+		// for (final Shape s : DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE) {
+		// System.out.println(s);
+		// }
 	}
 	
 	public JPanel getGraphPanel() {
+		// this.graphPanel.setPreferredSize(new Dimension(500, 500));
 		return this.graphPanel;
 	}
 	
 	public JPanel getGraphLegendPanel() {
+		// this.legendPanel.setPreferredSize(new Dimension(200, 200));
 		return this.legendPanel;
 	}
 	
@@ -196,7 +212,22 @@ public abstract class StatsGraphProducer implements Runnable {
 	private void createTracksLineRenderer() {
 		this.categoryItemRenderer = new DefaultCategoryItemRenderer() {
 			private static final long serialVersionUID = 3343456141507762482L;
-			
+
+			@Override
+			public Stroke getItemStroke(final int row, final int column) {
+				return new BasicStroke(StatsGraphProducer.this.lineSize);
+			}
+
+			@Override
+			public Shape getItemShape(final int row, final int column) {
+				final Shape s = super.getItemShape(row, column);
+				final AffineTransform at = AffineTransform.getScaleInstance(
+						StatsGraphProducer.this.shapeSize,
+						StatsGraphProducer.this.shapeSize);
+				final Shape s2 = at.createTransformedShape(s);
+				return s2;
+			}
+
 			@Override
 			public Paint getItemPaint(final int row, final int column) {
 				final String trackName = (String) this.getPlot().getDataset()
@@ -327,7 +358,7 @@ public abstract class StatsGraphProducer implements Runnable {
 			final Map<String, Map<Integer, Boolean>> renderingMap) {
 		this.xyLineAndShapeRenderer = new DefaultCategoryItemRenderer() {
 			private static final long serialVersionUID = 1071820316920620277L;
-			
+
 			// @Override
 			// public boolean getItemLineVisible(final int series, final int
 			// item) {
@@ -356,7 +387,7 @@ public abstract class StatsGraphProducer implements Runnable {
 			// return false;
 			// return renderingList.get(item);
 			// }
-			
+
 			@Override
 			public boolean getItemShapeVisible(final int series, final int item) {
 				final DefaultCategoryDataset dataset = (DefaultCategoryDataset) this
@@ -369,33 +400,43 @@ public abstract class StatsGraphProducer implements Runnable {
 				final boolean bool = renderingList.get(item);
 				return bool;
 			}
-			
+
+			@Override
+			public Shape getItemShape(final int row, final int column) {
+				final Shape s = super.getItemShape(row, column);
+				final AffineTransform at = AffineTransform.getScaleInstance(
+						StatsGraphProducer.this.shapeSize,
+						StatsGraphProducer.this.shapeSize);
+				final Shape s2 = at.createTransformedShape(s);
+				return s2;
+			}
+
 			@Override
 			public Stroke getItemStroke(final int row, final int column) {
 				if ((column - 1) < 0)
-					return new BasicStroke(1.0f);
-				
+					return new BasicStroke(StatsGraphProducer.this.lineSize);
+
 				final DefaultCategoryDataset dataset = (DefaultCategoryDataset) this
 						.getPlot().getDataset();
 				final String name = (String) dataset.getRowKey(row);
 				final Map<Integer, Boolean> renderingList = renderingMap
 						.get(name);
-				
+
 				if (!renderingList.containsKey(column)
 						|| !renderingList.containsKey(column - 1))
-					return new BasicStroke(1.0f);
-				
+					return new BasicStroke(StatsGraphProducer.this.lineSize);
+
 				final Boolean bool1 = renderingList.get(column);
 				final Boolean bool2 = renderingList.get(column - 1);
-				
+
 				if (!bool1 || !bool2)
-					return new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-							BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f,
-									5.0f }, 0.0f);
+					return new BasicStroke(StatsGraphProducer.this.lineSize,
+							BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+							new float[] { 5.0f, 5.0f }, 0.0f);
 				else
-					return new BasicStroke(1.0f);
+					return new BasicStroke(StatsGraphProducer.this.lineSize);
 			}
-			
+
 			@Override
 			public Paint getSeriesPaint(final int series) {
 				final String trackName = (String) this.getPlot().getDataset()
@@ -567,7 +608,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 		
 		final CategoryAxis xAxis = new CategoryAxis(
-				StatsConstants.GRAPH_LAB_X_TRACK);
+				GraphLabelConstants.GRAPH_LAB_X_TRACK);
 		final NumberAxis yAxis = new NumberAxis(this.getYAxisTitle());
 		
 		// renderer.setSeriesFillPaint(0, Color.black);
@@ -576,7 +617,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		if (dataset instanceof HistogramDataset) {
 			final HistogramDataset histDataset = (HistogramDataset) dataset;
 			chart = ChartFactory.createHistogram(title, this.getYAxisTitle(),
-					StatsConstants.GRAPH_LAB_Y_FREQ, histDataset,
+					GraphLabelConstants.GRAPH_LAB_Y_FREQ, histDataset,
 					PlotOrientation.VERTICAL, true, true, true);
 			plot = chart.getPlot();
 		} else {
@@ -586,7 +627,8 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 		plot.setBackgroundPaint(Color.WHITE);
 		
-		final JPanel panel = new ChartPanel(chart);
+		final JPanel panel = new ChartPanel(chart, 400, 400, 400, 400, 800,
+				800, false, true, true, true, true, true);
 		this.createLegendPanel(plot);
 		chart.removeLegend();
 		this.graphPanel = panel;
@@ -683,7 +725,7 @@ public abstract class StatsGraphProducer implements Runnable {
 				.getTimepointsRenderer(renderingMap);
 		
 		final CategoryAxis xAxis = new CategoryAxis(
-				StatsConstants.GRAPH_LAB_X_TIME);
+				GraphLabelConstants.GRAPH_LAB_X_TIME);
 		// xAxis.setTickUnit(new NumberTickUnit(1.0));
 		final NumberAxis yAxis = new NumberAxis(this.getYAxisTitle());
 		
@@ -692,7 +734,7 @@ public abstract class StatsGraphProducer implements Runnable {
 		if (dataset instanceof HistogramDataset) {
 			final HistogramDataset histDataset = (HistogramDataset) dataset;
 			chart = ChartFactory.createHistogram(title, this.getYAxisTitle(),
-					StatsConstants.GRAPH_LAB_Y_FREQ, histDataset,
+					GraphLabelConstants.GRAPH_LAB_Y_FREQ, histDataset,
 					PlotOrientation.VERTICAL, true, true, true);
 			plot = chart.getPlot();
 		} else {
@@ -703,14 +745,15 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 		plot.setBackgroundPaint(Color.WHITE);
 		
-		final JPanel panel = new ChartPanel(chart);
+		final JPanel panel = new ChartPanel(chart, 400, 400, 400, 400, 800,
+				800, false, true, true, true, true, true);
 		this.createLegendPanel(plot);
 		chart.removeLegend();
 		this.graphPanel = panel;
 	}
 	
 	public void prepareMSDGraph() {
-		final String title = StatsConstants.GRAPH_MTC_NAME_MSD;
+		final String title = GraphLabelConstants.GRAPH_MTC_NAME_MSD;
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
 				RoundingMode.HALF_UP).doubleValue();
@@ -757,11 +800,29 @@ public abstract class StatsGraphProducer implements Runnable {
 		}
 		
 		final NumberAxis xAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSD_X);
+				GraphLabelConstants.GRAPH_MTC_LAB_MSD_X);
 		final NumberAxis yAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSD_Y);
+				GraphLabelConstants.GRAPH_MTC_LAB_MSD_Y);
 		
-		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer() {
+			
+			private static final long serialVersionUID = 3155799968408507795L;
+			
+			@Override
+			public Stroke getItemStroke(final int row, final int column) {
+				return new BasicStroke(StatsGraphProducer.this.lineSize);
+			}
+			
+			@Override
+			public Shape getItemShape(final int row, final int column) {
+				final Shape s = super.getItemShape(row, column);
+				final AffineTransform at = AffineTransform.getScaleInstance(
+						StatsGraphProducer.this.shapeSize,
+						StatsGraphProducer.this.shapeSize);
+				final Shape s2 = at.createTransformedShape(s);
+				return s2;
+			}
+		};
 		
 		final XYPlot plot = new XYPlot(xySeriesCollection, xAxis, yAxis,
 				renderer);
@@ -789,7 +850,8 @@ public abstract class StatsGraphProducer implements Runnable {
 		
 		final JFreeChart chart = new JFreeChart(title, plot);
 		
-		final JPanel panel = new ChartPanel(chart);
+		final JPanel panel = new ChartPanel(chart, 400, 400, 400, 400, 800,
+				800, false, true, true, true, true, true);
 		this.createLegendPanel(plot);
 		chart.removeLegend();
 		this.graphPanel = panel;
@@ -800,7 +862,7 @@ public abstract class StatsGraphProducer implements Runnable {
 	}
 	
 	public void prepareMSSGraph() {
-		final String title = StatsConstants.GRAPH_MTC_NAME_MSS;
+		final String title = GraphLabelConstants.GRAPH_MTC_NAME_MSS;
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
 				RoundingMode.HALF_UP).doubleValue();
@@ -866,11 +928,29 @@ public abstract class StatsGraphProducer implements Runnable {
 		boundsCollection.addSeries(lowerbound);
 		
 		final NumberAxis xAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSS_X);
+				GraphLabelConstants.GRAPH_MTC_LAB_MSS_X);
 		final NumberAxis yAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_MSS_Y);
+				GraphLabelConstants.GRAPH_MTC_LAB_MSS_Y);
 		
-		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer() {
+			
+			private static final long serialVersionUID = 3155799968408507795L;
+			
+			@Override
+			public Stroke getItemStroke(final int row, final int column) {
+				return new BasicStroke(StatsGraphProducer.this.lineSize);
+			}
+
+			@Override
+			public Shape getItemShape(final int row, final int column) {
+				final Shape s = super.getItemShape(row, column);
+				final AffineTransform at = AffineTransform.getScaleInstance(
+						StatsGraphProducer.this.shapeSize,
+						StatsGraphProducer.this.shapeSize);
+				final Shape s2 = at.createTransformedShape(s);
+				return s2;
+			}
+		};
 		
 		final XYPlot plot = new XYPlot(xySeriesCollection, xAxis, yAxis,
 				renderer);
@@ -899,10 +979,10 @@ public abstract class StatsGraphProducer implements Runnable {
 		final XYDifferenceRenderer diffRenderer = new XYDifferenceRenderer(
 				Color.lightGray, Color.white, false);
 		
-		diffRenderer.setSeriesStroke(0, new BasicStroke(1.0f,
+		diffRenderer.setSeriesStroke(0, new BasicStroke(1f,
 				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 				new float[] { 5.0f, 5.0f }, 0.0f));
-		diffRenderer.setSeriesStroke(1, new BasicStroke(1.0f,
+		diffRenderer.setSeriesStroke(1, new BasicStroke(1f,
 				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 				new float[] { 5.0f, 5.0f }, 0.0f));
 		
@@ -911,14 +991,15 @@ public abstract class StatsGraphProducer implements Runnable {
 		
 		final JFreeChart chart = new JFreeChart(title, plot);
 		
-		final JPanel panel = new ChartPanel(chart);
+		final JPanel panel = new ChartPanel(chart, 400, 400, 400, 400, 800,
+				800, false, true, true, true, true, true);
 		this.createLegendPanel(plot);
 		chart.removeLegend();
 		this.graphPanel = panel;
 	}
 	
 	public void prepareSMSSvsDGraph() {
-		final String title = StatsConstants.GRAPH_MTC_NAME_SMSS_D;
+		final String title = GraphLabelConstants.GRAPH_MTC_NAME_SMSS_D;
 		// final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
@@ -946,15 +1027,18 @@ public abstract class StatsGraphProducer implements Runnable {
 				}
 				final Double d = values[0];
 				final Double smss = values[1];
-				final double errorD = values[2];
-				final double errorSMSS = values[3];
-				// System.out.println(track.getName() + " - " + errorD + " - "
-				// + errorSMSS);
-				final double dMinus = d - errorD;
-				final double dPlus = d + errorD;
-				final double smssMinus = smss - errorSMSS;
-				final double smssPlus = smss + errorSMSS;
-				serie.add(d, dMinus, dPlus, smss, smssMinus, smssPlus);
+				if ((values[2] != null) && (values[3] != null)) {
+					final double errorD = values[2];
+					final double errorSMSS = values[3];
+					// System.out.println(track.getName() + " - " + errorD +
+					// " - "
+					// + errorSMSS);
+					final double dMinus = d - errorD;
+					final double dPlus = d + errorD;
+					final double smssMinus = smss - errorSMSS;
+					final double smssPlus = smss + errorSMSS;
+					serie.add(d, dMinus, dPlus, smss, smssMinus, smssPlus);
+				}
 				this.updateStatus(false);
 				this.completed += increase;
 				if (this.completed > 100.0) {
@@ -967,49 +1051,63 @@ public abstract class StatsGraphProducer implements Runnable {
 				}
 			}
 		}
-		
+
 		// dataset2.addSeries(series);
 		// dataset.addValue(dVal, title, smssVal);
-		
+
 		// X axis NumberAxis or LogarithmicAxis
 		final NumberAxis numberaxisX = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_SMSS_D_X);
+				GraphLabelConstants.GRAPH_MTC_LAB_SMSS_D_X);
 		// numberaxisX.setTickUnit(new NumberTickUnit(0.1));
 		final NumberAxis numberaxisY = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_SMSS_D_Y);
+				GraphLabelConstants.GRAPH_MTC_LAB_SMSS_D_Y);
 		numberaxisY.setRange(0.0, 1.0);
 		// numberaxisY.setTickUnit(new NumberTickUnit(0.1));
-		
+
 		// error bars customization
-		final XYErrorRenderer renderer = new XYErrorRenderer();
+		final XYErrorRenderer renderer = new XYErrorRenderer() {
+			private static final long serialVersionUID = -8711512313973827160L;
+
+			@Override
+			public Shape getItemShape(final int row, final int column) {
+				final Shape s = super.getItemShape(row, column);
+				final AffineTransform at = AffineTransform.getScaleInstance(
+						StatsGraphProducer.this.shapeSize,
+						StatsGraphProducer.this.shapeSize);
+				final Shape s2 = at.createTransformedShape(s);
+				return s2;
+			}
+		};
 		// renderer.setErrorPaint(Color.black);
-		renderer.setErrorStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-				BasicStroke.JOIN_MITER, 1.0f, new float[] { 5.0f, 5.0f }, 0.0f));
+		renderer.setErrorStroke(new BasicStroke(this.lineSize,
+				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+				new float[] { 5.0f, 5.0f }, 0.0f));
 		// }
 		final XYPlot plot = new XYPlot(xySeriesCollection, numberaxisX,
 				numberaxisY, renderer);
 		plot.setBackgroundPaint(Color.WHITE);
-		
+
 		// ADD min det ODC
 		// position is the value on the axis
 		final Double minDetectableODC = this.getValue(null, null)[0];
 		if (minDetectableODC != null) {
 			final ValueMarker odcMarker = new ValueMarker(minDetectableODC);
 			odcMarker.setPaint(Color.red);
-			odcMarker.setLabel("Minimum Detectable ODC");
+			odcMarker
+					.setLabel(OmegaGUIConstants.RESULTS_DIFFISIVITY_MIN_DET_ODC);
 			plot.addDomainMarker(odcMarker);
 		}
-		
+
 		// series
 		final Shape cross = ShapeUtilities.createDiagonalCross(1, 1);
-		
+
 		// series shape
 		// for (int i = 0; i < series.le; i++) {
 		renderer.setSeriesLinesVisible(0, false);
 		renderer.setSeriesShapesVisible(0, true);
 		renderer.setSeriesShape(0, cross);
 		// }
-		
+
 		// for (int i = 0; i < this.series.length; i++) {
 		for (final OmegaSegment segment : segmentSeriesMap.keySet()) {
 			final int index = segmentSeriesMap.get(segment);
@@ -1020,7 +1118,7 @@ public abstract class StatsGraphProducer implements Runnable {
 			} else {
 				c = trackMap.get(segment).getColor();
 			}
-			
+
 			renderer.setSeriesPaint(index, c);
 			if (this.symbols.containsKey(segment)) {
 				renderer.setSeriesShape(index, this.symbols.get(segment));
@@ -1030,25 +1128,43 @@ public abstract class StatsGraphProducer implements Runnable {
 			}
 		}
 		plot.setRenderer(renderer);
-		
+
 		final Marker halfPlotMarker = new ValueMarker(0.5);
 		halfPlotMarker.setPaint(Color.BLACK);
-		halfPlotMarker
-				.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-						BasicStroke.JOIN_MITER, 1.0f,
-						new float[] { 5.0f, 5.0f }, 0.0f));
+		halfPlotMarker.setStroke(new BasicStroke(this.lineSize,
+				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+				new float[] { 5.0f, 5.0f }, 0.0f));
 		plot.addRangeMarker(halfPlotMarker);
-		
+
+		final Marker halfPlotMarker2 = new ValueMarker(0.0);
+		halfPlotMarker.setPaint(Color.BLACK);
+		halfPlotMarker.setStroke(new BasicStroke(this.lineSize,
+				BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+				new float[] { 5.0f, 5.0f }, 0.0f));
+		plot.addDomainMarker(halfPlotMarker2);
+
+		if (minDetectableODC != null) {
+			final ValueAxis valueAxis = plot.getDomainAxis();
+			// final Range oldRange = plot.getDataRange(valueAxis);
+			final double marker = minDetectableODC + (minDetectableODC / 5);
+			valueAxis.setAutoRangeMinimumSize(marker * 2);
+			// final Range newRange = Range.expand(oldRange, -marker,
+			// marker);
+			// valueAxis.setRange(newRange);
+			// plot.setDomainAxis(valueAxis);
+		}
+
 		final JFreeChart chart = new JFreeChart(title, plot);
-		
-		final JPanel panel = new ChartPanel(chart);
+
+		final JPanel panel = new ChartPanel(chart, 400, 400, 400, 400, 800,
+				800, false, true, true, true, true, true);
 		this.createLegendPanel(plot);
 		chart.removeLegend();
 		this.graphPanel = panel;
 	}
 	
 	public void prepareTrackGraph() {
-		final String title = StatsConstants.GRAPH_MTC_NAME_TRACK;
+		final String title = GraphLabelConstants.GRAPH_MTC_NAME_TRACK;
 		final double partial = 100.0 / this.getSegmentsMap().keySet().size();
 		final double increase = new BigDecimal(partial).setScale(2,
 				RoundingMode.HALF_UP).doubleValue();
@@ -1136,13 +1252,32 @@ public abstract class StatsGraphProducer implements Runnable {
 		max += 2.5;
 		
 		final NumberAxis xAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_TRACK_X);
+				GraphLabelConstants.GRAPH_MTC_LAB_TRACK_X);
 		xAxis.setRange(min, max);
 		final NumberAxis yAxis = new NumberAxis(
-				StatsConstants.GRAPH_MTC_LAB_TRACK_Y);
+				GraphLabelConstants.GRAPH_MTC_LAB_TRACK_Y);
 		yAxis.setRange(min, max);
 		
-		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer() {
+			
+			private static final long serialVersionUID = -7531692887659755402L;
+			
+			@Override
+			public Stroke getItemStroke(final int row, final int column) {
+				final int lineSize = StatsGraphProducer.this.lineSize;
+				return new BasicStroke(lineSize);
+			}
+
+			@Override
+			public Shape getItemShape(final int row, final int column) {
+				final int shapeSize = StatsGraphProducer.this.shapeSize;
+				final Shape s = super.getItemShape(row, column);
+				final AffineTransform at = AffineTransform.getScaleInstance(
+						shapeSize, shapeSize);
+				final Shape s2 = at.createTransformedShape(s);
+				return s2;
+			}
+		};
 		
 		final XYPlot plot = new XYPlot(xySeriesCollection, xAxis, yAxis,
 				renderer);
@@ -1170,7 +1305,8 @@ public abstract class StatsGraphProducer implements Runnable {
 		
 		final JFreeChart chart = new JFreeChart(title, plot);
 		
-		final JPanel panel = new ChartPanel(chart);
+		final JPanel panel = new ChartPanel(chart, 400, 400, 400, 400, 800,
+				800, false, true, true, true, true, true);
 		this.createLegendPanel(plot);
 		chart.removeLegend();
 		this.graphPanel = panel;
@@ -1214,22 +1350,23 @@ public abstract class StatsGraphProducer implements Runnable {
 		legendPanel.setBackground(Color.white);
 		legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
 		final Iterator iterator = plot.getLegendItems().iterator();
+		// System.out.println("###");
 		while (iterator.hasNext()) {
 			final LegendItem item = (LegendItem) iterator.next();
 			
 			final JLabel label = new JLabel(item.getLabel());
 			legendPanel.add(label);
 			Shape s = null;
-			int x = 5, y = 5, w = 10, h = 10;
+			int y = 5, w = 10, h = 10;
 			if (item.isShapeVisible()) {
 				s = item.getShape();
-				System.out.println(s);
 				final Rectangle r = s.getBounds();
-				System.out.println(r);
+				// System.out.println(item.getLabel() + " -> "
+				// + s.getClass().getName() + "[x=" + r.x + ",y=" + r.y
+				// + ",w=" + r.width + ",h=" + r.height + "]");
 				w = r.width;
 				h = r.height;
-				x = w / 2;
-				y = h / 2;
+				y = r.y;
 			}
 			final Paint p = item.getFillPaint();
 			final Color c = (Color) p;
@@ -1237,33 +1374,48 @@ public abstract class StatsGraphProducer implements Runnable {
 			final BufferedImage image = new BufferedImage(w, h,
 					BufferedImage.TYPE_INT_RGB);
 			final Graphics2D gr = image.createGraphics();
+			gr.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			gr.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+					java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+			gr.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+					RenderingHints.VALUE_STROKE_PURE);
 			// move the shape in the region of the image
 			gr.setBackground(Color.WHITE);
 			gr.clearRect(0, 0, w, h);
-			if (s != null) {
-				gr.translate(x, y);
-			}
 			// gr.setPaint(p);
 			gr.setColor(c);
 			if (s != null) {
+				gr.translate((w / 2), (h / 2));
 				gr.fill(s);
+			} else {
+				gr.translate(0, 0);
+				gr.drawLine(0, y, w, y);
 			}
-			gr.translate(0, 0);
-			gr.drawLine(0, y, w, y);
 			
 			// gr.scale(5, 5);
 			gr.dispose();
-			label.setIcon(new ImageIcon(image.getScaledInstance(10, 10,
-					Image.SCALE_SMOOTH)));
+			final Image scaled = image.getScaledInstance(10, 10,
+					Image.SCALE_AREA_AVERAGING);
+			
+			label.setIcon(new ImageIcon(scaled));
+			// label.addMouseListener(new MouseAdapter() {
+			// @Override
+			// public void mouseReleased(final MouseEvent evt) {
+			// if (SwingUtilities.isRightMouseButton(evt)) {
+			// System.out.println("RIGHT CLICK ON " + label);
+			// } else {
+			// System.out.println("LEFT CLICK ON " + label);
+			// }
+			// }
+			// });
 			// legendPanel.add(label);
 		}
 		final JScrollPane pane = new JScrollPane(legendPanel);
-		// pane.setMaximumSize(new Dimension(100, 100));
-		pane.setPreferredSize(new Dimension(200, 200));
-		pane.setSize(new Dimension(200, 200));
 		sidePanel.add(new JLabel(""));
 		sidePanel.add(pane);
 		sidePanel.add(new JLabel(""));
 		this.legendPanel = sidePanel;
+		
 	}
 }

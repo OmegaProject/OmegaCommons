@@ -31,36 +31,42 @@ import java.util.List;
 
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesRelinkingRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
+import edu.umassmed.omega.commons.trajectoryTool.OmegaDataToolConstants;
 
 public class OmegaProject extends OmegaNamedElement implements OmeroElement,
 		OmegaAnalysisRunContainerInterface {
-
+	
 	private static String DISPLAY_NAME = "Project";
-	
+
 	private final List<OmegaDataset> datasets;
-	
+
 	private final List<OmegaAnalysisRun> analysisRuns;
-	
+
 	private Long omeroId;
-	
+
 	public OmegaProject(final String name) {
 		super(-1L, name);
 		this.omeroId = -1L;
 		this.datasets = new ArrayList<OmegaDataset>();
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
-	
+
 	public OmegaProject(final String name, final List<OmegaDataset> datasets) {
 		super(-1L, name);
 		this.omeroId = -1L;
 		this.datasets = datasets;
 		this.analysisRuns = new ArrayList<OmegaAnalysisRun>();
 	}
-	
+
 	public List<OmegaDataset> getDatasets() {
 		return this.datasets;
 	}
-	
+
 	public boolean containsDataset(final long id, final boolean gatewayId) {
 		for (final OmegaDataset dataset : this.datasets) {
 			if (gatewayId) {
@@ -73,26 +79,26 @@ public class OmegaProject extends OmegaNamedElement implements OmeroElement,
 		}
 		return false;
 	}
-	
+
 	public void addDataset(final OmegaDataset dataset) {
 		this.datasets.add(dataset);
 	}
-	
+
 	@Override
 	public List<OmegaAnalysisRun> getAnalysisRuns() {
 		return this.analysisRuns;
 	}
-	
+
 	@Override
 	public void addAnalysisRun(final OmegaAnalysisRun analysisRun) {
 		this.analysisRuns.add(analysisRun);
 	}
-	
+
 	@Override
 	public void removeAnalysisRun(final OmegaAnalysisRun analysisRun) {
 		this.analysisRuns.remove(analysisRun);
 	}
-	
+
 	@Override
 	public boolean containsAnalysisRun(final long id) {
 		for (final OmegaAnalysisRun analysisRun : this.analysisRuns) {
@@ -101,23 +107,62 @@ public class OmegaProject extends OmegaNamedElement implements OmeroElement,
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void setOmeroId(final Long omeroId) {
 		this.omeroId = omeroId;
 	}
-	
+
 	@Override
 	public Long getOmeroId() {
 		return this.omeroId;
 	}
-	
+
 	public static String getStaticDisplayName() {
 		return OmegaProject.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaProject.getStaticDisplayName();
+	}
+	
+	@Override
+	public OmegaAnalysisRunContainerInterface findSpecificAnalysis(
+			final String name, final int parentType) {
+		OmegaAnalysisRunContainerInterface parent = null;
+		Class<?> clazz;
+		switch (parentType) {
+			case OmegaDataToolConstants.PARENT_DETECTION:
+				clazz = OmegaParticleDetectionRun.class;
+				break;
+			case OmegaDataToolConstants.PARENT_LINKING:
+				clazz = OmegaParticleLinkingRun.class;
+				break;
+			case OmegaDataToolConstants.PARENT_RELINKING:
+				clazz = OmegaTrajectoriesRelinkingRun.class;
+				break;
+			case OmegaDataToolConstants.PARENT_SEGMENTATION:
+				clazz = OmegaTrajectoriesSegmentationRun.class;
+				break;
+			case OmegaDataToolConstants.PARENT_SNR:
+				clazz = OmegaSNRRun.class;
+				break;
+			default:
+				clazz = null;
+		}
+		if (clazz == null)
+			return parent;
+		for (final OmegaAnalysisRun analysis : this.analysisRuns) {
+			if (analysis.getName().equals(name)) {
+				parent = analysis;
+			} else {
+				parent = analysis.findSpecificAnalysis(name, parentType);
+			}
+			if (parent != null) {
+				break;
+			}
+		}
+		return parent;
 	}
 }

@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 
 public class GenericInsertDialog extends GenericDialog {
 	
@@ -59,20 +59,20 @@ public class GenericInsertDialog extends GenericDialog {
 	@Override
 	protected void createAndAddWidgets() {
 		this.field = new JTextField();
-		this.field.setPreferredSize(OmegaConstants.LARGE_TEXT_SIZE);
+		this.field.setPreferredSize(OmegaGUIConstants.LARGE_TEXT_SIZE);
 		this.add(this.field, BorderLayout.CENTER);
 		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		
 		this.confirm = new JButton("Confirm");
-		this.confirm.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.confirm.setSize(OmegaConstants.BUTTON_SIZE);
+		this.confirm.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.confirm.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.confirm);
 		
 		this.cancel = new JButton("Cancel");
-		this.cancel.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.cancel.setSize(OmegaConstants.BUTTON_SIZE);
+		this.cancel.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.cancel.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.cancel);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);

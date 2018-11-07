@@ -1,29 +1,28 @@
 /*******************************************************************************
- * Copyright (C) 2014 University of Massachusetts Medical School
- * Alessandro Rigano (Program in Molecular Medicine)
- * Caterina Strambio De Castillia (Program in Molecular Medicine)
+ * Copyright (C) 2014 University of Massachusetts Medical School Alessandro
+ * Rigano (Program in Molecular Medicine) Caterina Strambio De Castillia
+ * (Program in Molecular Medicine)
  *
  * Created by the Open Microscopy Environment inteGrated Analysis (OMEGA) team:
  * Alex Rigano, Caterina Strambio De Castillia, Jasmine Clark, Vanni Galli,
  * Raffaello Giulietti, Loris Grossi, Eric Hunter, Tiziano Leidi, Jeremy Luban,
  * Ivo Sbalzarini and Mario Valle.
  *
- * Key contacts:
- * Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
+ * Key contacts: Caterina Strambio De Castillia: caterina.strambio@umassmed.edu
  * Alex Rigano: alex.rigano@umassmed.edu
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 package edu.umassmed.omega.commons.utilities;
 
@@ -35,14 +34,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.exceptions.OmegaCoreExceptionFileManager;
 
 public class OmegaFileUtilities {
 
 	// TODO need to throw exceptions here instead of hard fail
 	public static InputStream getSptDllFilename(final String fileName) {
-		final String s = OmegaConstants.OMEGA_SPT_FOLDER + "/" + fileName;
+		final String s = OmegaGenericConstants.OMEGA_SPT_FOLDER + "/"
+				+ fileName;
 		// System.out.println(s);
 		final ClassLoader cl = OmegaFileUtilities.class.getClassLoader();
 		return cl.getResourceAsStream(s);
@@ -50,15 +50,17 @@ public class OmegaFileUtilities {
 
 	public static InputStream getErrorInterpolationFilename(
 			final String fileName) {
-		final String s = OmegaConstants.OMEGA_ERROR_INTERPOLATION_FOLDER + "/"
-		        + fileName;
+		final String s = OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_FOLDER
+				+ "/" + OmegaGenericConstants.OMEGA_ERROR_INTERPOLATION_DATA
+				+ "_" + fileName;
 		// System.out.println(s);
 		final ClassLoader cl = OmegaFileUtilities.class.getClassLoader();
 		return cl.getResourceAsStream(s);
 	}
 
 	public static InputStream getImageFilename(final String imageName) {
-		final String s = OmegaConstants.OMEGA_IMGS_FOLDER + "/" + imageName;
+		final String s = OmegaGenericConstants.OMEGA_IMGS_FOLDER + "/"
+				+ imageName;
 		// System.out.println(s);
 		final ClassLoader cl = OmegaFileUtilities.class.getClassLoader();
 		return cl.getResourceAsStream(s);

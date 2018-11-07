@@ -21,7 +21,7 @@ import javax.swing.JCheckBox;
 import javax.swing.RootPaneContainer;
 import javax.swing.ToolTipManager;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
@@ -148,7 +148,7 @@ public class GenericTrajectoriesBrowserNamesPanel extends GenericPanel {
 			final int yPos = GenericBrowserPanel.SPOT_SPACE_DEFAULT * y;
 			final int adjY = yPos;
 			if (this.bPanel.getSelectedTrajectories().contains(traj)) {
-				g2D.setBackground(OmegaConstants
+				g2D.setBackground(OmegaGenericConstants
 						.getDefaultSelectionBackgroundColor());
 				g2D.clearRect(0, adjY, this.getWidth(),
 						GenericBrowserPanel.SPOT_SPACE_DEFAULT);

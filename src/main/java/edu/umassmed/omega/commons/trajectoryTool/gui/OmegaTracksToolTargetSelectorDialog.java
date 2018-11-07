@@ -15,8 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
-import edu.umassmed.omega.commons.constants.OmegaConstantsAlgorithmParameters;
+import edu.umassmed.omega.commons.constants.OmegaAlgorithmParameterConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
@@ -92,10 +91,10 @@ implements GenericElementInformationContainerInterface {
 		final JPanel p1 = new JPanel();
 		p1.setLayout(new BorderLayout());
 		final JLabel lbl1 = new JLabel(OmegaGUIConstants.SELECT_IMAGE);
-		lbl1.setPreferredSize(OmegaConstants.TEXT_SIZE);
+		lbl1.setPreferredSize(OmegaGUIConstants.TEXT_SIZE);
 		p1.add(lbl1, BorderLayout.WEST);
 		this.images_cmb = new JComboBox<String>();
-		this.images_cmb.setMaximumRowCount(OmegaConstants.COMBOBOX_MAX_OPTIONS);
+		this.images_cmb.setMaximumRowCount(OmegaGUIConstants.COMBOBOX_MAX_OPTIONS);
 		this.images_cmb.setEnabled(false);
 		p1.add(this.images_cmb, BorderLayout.CENTER);
 		topPanel.add(p1);
@@ -103,11 +102,11 @@ implements GenericElementInformationContainerInterface {
 		final JPanel p2 = new JPanel();
 		p2.setLayout(new BorderLayout());
 		final JLabel lbl2 = new JLabel(OmegaGUIConstants.SELECT_TRACKS_SPOT);
-		lbl2.setPreferredSize(OmegaConstants.TEXT_SIZE);
+		lbl2.setPreferredSize(OmegaGUIConstants.TEXT_SIZE);
 		p2.add(lbl2, BorderLayout.WEST);
 		this.particles_cmb = new JComboBox<String>();
 		this.particles_cmb
-		.setMaximumRowCount(OmegaConstants.COMBOBOX_MAX_OPTIONS);
+		.setMaximumRowCount(OmegaGUIConstants.COMBOBOX_MAX_OPTIONS);
 		this.particles_cmb.setEnabled(false);
 		p2.add(this.particles_cmb, BorderLayout.CENTER);
 		topPanel.add(p2);
@@ -115,11 +114,11 @@ implements GenericElementInformationContainerInterface {
 		final JPanel p3 = new JPanel();
 		p3.setLayout(new BorderLayout());
 		final JLabel lbl3 = new JLabel(OmegaGUIConstants.SELECT_TRACKS_LINKING);
-		lbl3.setPreferredSize(OmegaConstants.TEXT_SIZE);
+		lbl3.setPreferredSize(OmegaGUIConstants.TEXT_SIZE);
 		p3.add(lbl3, BorderLayout.WEST);
 		this.trajectories_cmb = new JComboBox<String>();
 		this.trajectories_cmb
-		.setMaximumRowCount(OmegaConstants.COMBOBOX_MAX_OPTIONS);
+		.setMaximumRowCount(OmegaGUIConstants.COMBOBOX_MAX_OPTIONS);
 		this.trajectories_cmb.setEnabled(false);
 		p3.add(this.trajectories_cmb, BorderLayout.CENTER);
 		topPanel.add(p3);
@@ -143,11 +142,11 @@ implements GenericElementInformationContainerInterface {
 		buttPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		this.action_btt = new JButton("Next");
-		this.action_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
+		this.action_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttPanel.add(this.action_btt);
 
 		this.close_btt = new JButton(OmegaGUIConstants.MENU_FILE_CLOSE);
-		this.close_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
+		this.close_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttPanel.add(this.close_btt);
 
 		this.add(buttPanel, BorderLayout.SOUTH);
@@ -272,7 +271,7 @@ implements GenericElementInformationContainerInterface {
 		// this.fireEventSelectionParticleLinkingRun();
 		// }
 		this.selectedParticleLinkingRun.getAlgorithmSpec().getParameter(
-		        OmegaConstantsAlgorithmParameters.PARAM_RADIUS);
+		        OmegaAlgorithmParameterConstants.PARAM_RADIUS);
 		// if ((radius != null)
 		// && radius.getClazz().equals(Integer.class.getName())) {
 		// this.setRadius((int) radius.getValue());

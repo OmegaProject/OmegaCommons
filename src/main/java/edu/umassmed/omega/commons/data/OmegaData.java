@@ -346,12 +346,12 @@ public class OmegaData {
 										.get(s)[i][k]);
 							}
 						}
-						buf.append(space1 + "GammaLog:");
-						for (int i = 0; i < diffRun.getGammaFromLogResults()
-								.get(s).length; i++) {
-							buf.append("\t");
-							buf.append(diffRun.getGammaFromLogResults().get(s)[i]);
-						}
+						// buf.append(space1 + "GammaLog:");
+						// for (int i = 0; i < diffRun.getGammaFromLogResults()
+						// .get(s).length; i++) {
+						// buf.append("\t");
+						// buf.append(diffRun.getGammaFromLogResults().get(s)[i]);
+						// }
 						buf.append("\n");
 						buf.append(space1 + "SMSS:");
 						for (int i = 0; i < diffRun.getSmssFromLogResults()
@@ -545,6 +545,14 @@ public class OmegaData {
 	public void addOrphanedAnalysis(final OmegaAnalysisRun analysisRun) {
 		this.orphanedAnalysis.addAnalysisRun(analysisRun);
 	}
+	
+	public void findAnalysisParent(final OmegaImage img, final String parentName) {
+		
+	}
+	
+	public void findAnalysisParent(final String parentName) {
+		
+	}
 
 	public void consolidateData() {
 		if (OmegaLogFileManager.isDebug()) {
@@ -606,7 +614,8 @@ public class OmegaData {
 		}
 	}
 
-	private void consolidateData(final OmegaAnalysisRunContainerInterface container) {
+	private void consolidateData(
+			final OmegaAnalysisRunContainerInterface container) {
 		for (final OmegaAnalysisRun analysisRun : container.getAnalysisRuns()) {
 			final OmegaExperimenter exp = analysisRun.getExperimenter();
 			final OmegaExperimenter sameExperimenter = this

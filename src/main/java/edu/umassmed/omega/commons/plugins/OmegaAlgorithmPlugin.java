@@ -35,17 +35,17 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.utilities.OperatingSystemEnum;
 
 public abstract class OmegaAlgorithmPlugin extends OmegaPlugin {
-
+	
 	private OmegaAlgorithmInformation algoInfo;
-
+	
 	public OmegaAlgorithmPlugin() {
 		this(1);
 	}
-
+	
 	public OmegaAlgorithmPlugin(final int maxNumOfPanels) {
 		super(maxNumOfPanels);
 	}
-
+	
 	public List<OperatingSystemEnum> getSupportedPlatforms() {
 		final List<OperatingSystemEnum> supportedPlatforms = new ArrayList<OperatingSystemEnum>();
 		for (final OperatingSystemEnum os : OperatingSystemEnum.values()) {
@@ -53,31 +53,36 @@ public abstract class OmegaAlgorithmPlugin extends OmegaPlugin {
 		}
 		return supportedPlatforms;
 	}
-
+	
 	public OmegaAlgorithmInformation getAlgorithmInformation() {
 		if (this.algoInfo == null) {
 			this.algoInfo = new OmegaAlgorithmInformation(
-					this.getAlgorithmName(), this.getAlgorithmVersion(),
-					this.getAlgorithmDescription(), this.getAlgorithmAuthors(),
+					this.getAlgorithmName(), this.getAlgorithmShortName(),
+					this.getAlgorithmVersion(), this.getAlgorithmDescription(),
+					this.getAlgorithmAuthors(),
 					this.getAlgorithmPublicationDate(), this.getReference());
 		}
 		return this.algoInfo;
 	}
-
+	
 	public String getAlgorithmName() {
 		return this.getName();
 	}
 
+	public String getAlgorithmShortName() {
+		return this.getShortName();
+	}
+	
 	public abstract String getAlgorithmDescription();
-
+	
 	public abstract String getAlgorithmAuthors();
-
+	
 	public abstract String getAlgorithmVersion();
-
+	
 	public abstract Date getAlgorithmPublicationDate();
-
+	
 	public abstract String getReference();
-
+	
 	public boolean checkIfThisAlgorithm(final OmegaAnalysisRun analysisRun) {
 		final OmegaAlgorithmInformation algoInfo = analysisRun
 				.getAlgorithmSpec().getAlgorithmInfo();

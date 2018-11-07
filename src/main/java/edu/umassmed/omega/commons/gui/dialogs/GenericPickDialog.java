@@ -36,7 +36,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 
 public class GenericPickDialog extends GenericDialog {
 	
@@ -59,20 +59,20 @@ public class GenericPickDialog extends GenericDialog {
 	@Override
 	protected void createAndAddWidgets() {
 		this.list = new JList<String>();
-		this.list.setPreferredSize(OmegaConstants.LARGE_LIST_SIZE);
+		this.list.setPreferredSize(OmegaGUIConstants.LARGE_LIST_SIZE);
 		this.add(this.list, BorderLayout.CENTER);
 		
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		
 		this.confirm = new JButton("Confirm");
-		this.confirm.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.confirm.setSize(OmegaConstants.BUTTON_SIZE);
+		this.confirm.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.confirm.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.confirm);
 		
 		this.cancel = new JButton("Cancel");
-		this.cancel.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.cancel.setSize(OmegaConstants.BUTTON_SIZE);
+		this.cancel.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.cancel.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.cancel);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);

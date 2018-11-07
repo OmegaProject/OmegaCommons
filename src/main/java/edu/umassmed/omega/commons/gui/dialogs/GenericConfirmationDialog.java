@@ -37,7 +37,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 
 public class GenericConfirmationDialog extends GenericDialog {
 
@@ -67,13 +67,13 @@ public class GenericConfirmationDialog extends GenericDialog {
 		buttonPanel.setLayout(new FlowLayout());
 
 		this.confirm = new JButton("Confirm");
-		this.confirm.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.confirm.setSize(OmegaConstants.BUTTON_SIZE);
+		this.confirm.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.confirm.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.confirm);
 
 		this.cancel = new JButton("Cancel");
-		this.cancel.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.cancel.setSize(OmegaConstants.BUTTON_SIZE);
+		this.cancel.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.cancel.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttonPanel.add(this.cancel);
 
 		this.add(buttonPanel, BorderLayout.SOUTH);

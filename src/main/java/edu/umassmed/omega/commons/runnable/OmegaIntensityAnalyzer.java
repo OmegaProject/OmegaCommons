@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaAlgorithmParameterConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaSNRRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrajectoriesSegmentationRun;
@@ -121,7 +121,7 @@ public class OmegaIntensityAnalyzer implements Runnable {
 
 	private void initializeParameters() {
 		for (final OmegaParameter param : this.params) {
-			if (param.getName().equals(OmegaConstants.PARAMETER_SNR_USE)) {
+			if (param.getName().equals(OmegaAlgorithmParameterConstants.PARAM_SNR_USE)) {
 				if (param.getStringValue() == String.valueOf(true)) {
 					this.useSNR = true;
 				}

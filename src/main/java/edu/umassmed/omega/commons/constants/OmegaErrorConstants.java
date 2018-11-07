@@ -1,8 +1,6 @@
 package edu.umassmed.omega.commons.constants;
 
-public class OmegaConstantsError {
-
-	// ***ERRORS***
+public class OmegaErrorConstants {
 	public final static String ERROR_PORT_IS_NUMBER = "Port must be a number!";
 	public final static String ERROR_CANNOT_CONNECT_TO_OMERO = "cannot connect to server";
 	public final static String ERROR_LOADING_THE_DS = "Unable to load the Dataset!";
@@ -30,5 +28,5 @@ public class OmegaConstantsError {
 	public final static String ERROR_INTERPOLATION_CALCULATION = "Something went wrong during the bilinear interpolation.";
 	public final static String ERROR_INTERPOLATION_CALCULATION_SNR = "The SNR is out of range. Impossible to interpolate.";
 	public final static String ERROR_INTERPOLATION_CALCULATION_L = "The length is out of range. Impossible to interpolate.";
-
+	
 }

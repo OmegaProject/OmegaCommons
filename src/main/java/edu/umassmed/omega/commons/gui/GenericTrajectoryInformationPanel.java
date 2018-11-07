@@ -18,7 +18,6 @@ import javax.swing.RootPaneContainer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
 import edu.umassmed.omega.commons.gui.interfaces.GenericTrajectoriesBrowserContainerInterface;
@@ -181,7 +180,7 @@ public class GenericTrajectoryInformationPanel extends GenericPanel {
 	
 	private void resizeFields() {
 		final Dimension dim = this.mainPanel.getSize();
-		final int width = dim.width - (OmegaConstants.BUTTON_SIZE.width * 2);
+		final int width = dim.width - (OmegaGUIConstants.BUTTON_SIZE.width * 2);
 		if (this.oldMainPanelWidth == width)
 			return;
 		

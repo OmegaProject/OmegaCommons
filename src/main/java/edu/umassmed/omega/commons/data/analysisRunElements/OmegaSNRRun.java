@@ -34,9 +34,9 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 
 public class OmegaSNRRun extends OmegaAnalysisRun {
-	
-	private static String DISPLAY_NAME = "SNR Estimation Run";
 
+	private static String DISPLAY_NAME = "SNR Estimation Run";
+	
 	private final Double resultingAvgCenterSignal;
 	private final Double resultingAvgPeakSignal;
 	private final Double resultingAvgMeanSignal;
@@ -48,7 +48,7 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 	private final Double resultingAvgErrorIndexSNR;
 	private final Double resultingMinErrorIndexSNR;
 	private final Double resultingMaxErrorIndexSNR;
-	
+
 	private final Map<OmegaPlane, Double> resultingImageAvgCenterSignal;
 	private final Map<OmegaPlane, Double> resultingImageAvgPeakSignal;
 	private final Map<OmegaPlane, Double> resultingImageAvgMeanSignal;
@@ -70,7 +70,7 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 	private final Map<OmegaROI, Double> resultingLocalNoise;
 	private final Map<OmegaROI, Double> resultingLocalSNR;
 	private final Map<OmegaROI, Double> resultingLocalErrorIndexSNR;
-	
+
 	public OmegaSNRRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec,
 			final Map<OmegaPlane, Double> resultingImageAvgCenterSignal,
@@ -101,7 +101,7 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 			final Double resultingMinErrorIndexSNR,
 			final Double resultingMaxErrorIndexSNR) {
 		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun);
-		
+
 		this.resultingImageAvgCenterSignal = resultingImageAvgCenterSignal;
 		this.resultingImageAvgPeakSignal = resultingImageAvgPeakSignal;
 		this.resultingImageAvgMeanSignal = resultingImageAvgMeanSignal;
@@ -133,7 +133,7 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingMinErrorIndexSNR = resultingMinErrorIndexSNR;
 		this.resultingMaxErrorIndexSNR = resultingMaxErrorIndexSNR;
 	}
-	
+
 	public OmegaSNRRun(final OmegaExperimenter owner,
 			final OmegaRunDefinition algorithmSpec, final Date timeStamps,
 			final String name,
@@ -166,7 +166,7 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 			final Double resultingMaxErrorIndexSNR) {
 		super(owner, algorithmSpec, AnalysisRunType.OmegaSNRRun, timeStamps,
 				name);
-		
+
 		this.resultingImageAvgCenterSignal = resultingImageAvgCenterSignal;
 		this.resultingImageAvgPeakSignal = resultingImageAvgPeakSignal;
 		this.resultingImageAvgMeanSignal = resultingImageAvgMeanSignal;
@@ -198,131 +198,131 @@ public class OmegaSNRRun extends OmegaAnalysisRun {
 		this.resultingMinErrorIndexSNR = resultingMinErrorIndexSNR;
 		this.resultingMaxErrorIndexSNR = resultingMaxErrorIndexSNR;
 	}
-
+	
 	public Double getResultingAverageCenterSignal() {
 		return this.resultingAvgCenterSignal;
 	}
-
+	
 	public Double getResultingAveragePeakSignal() {
 		return this.resultingAvgPeakSignal;
 	}
-
+	
 	public Double getResultingAverageMeanSignal() {
 		return this.resultingAvgMeanSignal;
 	}
-	
+
 	public Double getResultingBackground() {
 		return this.resultingBGR;
 	}
-
+	
 	public Double getResultingNoise() {
 		return this.resultingNoise;
 	}
-
+	
 	public Double getResultingAvgSNR() {
 		return this.resultingAvgSNR;
 	}
-
+	
 	public Double getResultingMaxSNR() {
 		return this.resultingMaxSNR;
 	}
-
+	
 	public Double getResultingMinSNR() {
 		return this.resultingMinSNR;
 	}
-
+	
 	public Double getResultingAvgErrorIndexSNR() {
 		return this.resultingAvgErrorIndexSNR;
 	}
-
+	
 	public Double getResultingMaxErrorIndexSNR() {
 		return this.resultingMaxErrorIndexSNR;
 	}
-
+	
 	public Double getResultingMinErrorIndexSNR() {
 		return this.resultingMinErrorIndexSNR;
 	}
-
+	
 	public Map<OmegaPlane, Double> getResultingImageAverageCenterSignal() {
 		return this.resultingImageAvgCenterSignal;
 	}
-
+	
 	public Map<OmegaPlane, Double> getResultingImageAveragePeakSignal() {
 		return this.resultingImageAvgPeakSignal;
 	}
-
+	
 	public Map<OmegaPlane, Double> getResultingImageAverageMeanSignal() {
 		return this.resultingImageAvgMeanSignal;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageBGR() {
 		return this.resultingImageBGR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageNoise() {
 		return this.resultingImageNoise;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageAverageSNR() {
 		return this.resultingImageAvgSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMinimumSNR() {
 		return this.resultingImageMinSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMaximumSNR() {
 		return this.resultingImageMaxSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageAverageErrorIndexSNR() {
 		return this.resultingImageAvgErrorIndexSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMinimumErrorIndexSNR() {
 		return this.resultingImageMinErrorIndexSNR;
 	}
-	
+
 	public Map<OmegaPlane, Double> getResultingImageMaximumErrorIndexSNR() {
 		return this.resultingImageMaxErrorIndexSNR;
 	}
-	
+
 	public Map<OmegaROI, Integer> getResultingLocalCenterSignals() {
 		return this.resultingLocalCenterSignal;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalMeanSignals() {
 		return this.resultingLocalMeanSignal;
 	}
-	
+
 	public Map<OmegaROI, Integer> getResultingLocalParticleArea() {
 		return this.resultingLocalParticleArea;
 	}
-	
+
 	public Map<OmegaROI, Integer> getResultingLocalPeakSignals() {
 		return this.resultingLocalPeakSignal;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalBackgrounds() {
 		return this.resultingLocalBackgrounds;
 	}
-
+	
 	public Map<OmegaROI, Double> getResultingLocalNoises() {
 		return this.resultingLocalNoise;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalSNRs() {
 		return this.resultingLocalSNR;
 	}
-	
+
 	public Map<OmegaROI, Double> getResultingLocalErrorIndexSNRs() {
 		return this.resultingLocalErrorIndexSNR;
 	}
-
+	
 	public static String getStaticDisplayName() {
 		return OmegaSNRRun.DISPLAY_NAME;
 	}
-
+	
 	@Override
 	public String getDynamicDisplayName() {
 		return OmegaSNRRun.getStaticDisplayName();

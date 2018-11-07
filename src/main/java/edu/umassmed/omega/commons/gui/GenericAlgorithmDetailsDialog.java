@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAlgorithmInformation;
 import edu.umassmed.omega.commons.gui.dialogs.GenericDialog;
@@ -82,7 +82,7 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 		buttPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		this.close_btt = new JButton(OmegaGUIConstants.MENU_FILE_CLOSE);
-		this.close_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
+		this.close_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
 		buttPanel.add(this.close_btt);
 
 		this.add(buttPanel, BorderLayout.SOUTH);
@@ -96,10 +96,14 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 
 		this.name_lbl = new JLabel(OmegaGUIConstants.INFO_NAME
 				+ OmegaGUIConstants.INFO_COLUMN_SEP);
-		this.auth_lbl = new JLabel(OmegaGUIConstants.AUTHOR);
-		this.date_lbl = new JLabel(OmegaGUIConstants.RELEASED);
-		this.version_lbl = new JLabel(OmegaGUIConstants.VERSION);
-		this.ref_lbl = new JLabel(OmegaGUIConstants.REFERENCE);
+		this.auth_lbl = new JLabel(OmegaGUIConstants.INFO_ALGO_AUTHOR
+				+ OmegaGUIConstants.INFO_COLUMN_SEP);
+		this.date_lbl = new JLabel(OmegaGUIConstants.INFO_ALGO_RELEASED
+				+ OmegaGUIConstants.INFO_COLUMN_SEP);
+		this.version_lbl = new JLabel(OmegaGUIConstants.INFO_ALGO_VERSION
+				+ OmegaGUIConstants.INFO_COLUMN_SEP);
+		this.ref_lbl = new JLabel(OmegaGUIConstants.INFO_ALGO_REF
+				+ OmegaGUIConstants.INFO_COLUMN_SEP);
 		// final JLabel reference_lbl = new JLabel(OmegaGUIConstants.REFERENCE
 		// + this.plugin.getAlgorithmReference());
 		this.topInfoPanel.setBorder(new EmptyBorder(10, 0, 0, 10));
@@ -114,7 +118,8 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 		this.topInfoPanel.add(this.ref_lbl);
 		this.topInfoPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
 		// this.topInfoPanel.add(this.ref_lbl);
-		this.topInfoPanel.add(new JLabel(OmegaGUIConstants.DESCRIPTION));
+		this.topInfoPanel.add(new JLabel(OmegaGUIConstants.INFO_ALGO_DESC
+				+ OmegaGUIConstants.INFO_COLUMN_SEP));
 		this.desc_ta = new JTextPane();
 		this.desc_ta.setContentType("text/html");
 		this.desc_ta.setBackground(this.name_lbl.getBackground());
@@ -153,20 +158,26 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 			final OmegaAlgorithmInformation algoInfo) {
 		if (algoInfo != null) {
 			this.name_lbl.setText(OmegaGUIConstants.INFO_NAME
-					+ OmegaGUIConstants.INFO_COLUMN_SEP
-					+ algoInfo.getName());
+					+ OmegaGUIConstants.INFO_COLUMN_SEP + algoInfo.getName());
 			final String authors = OmegaStringUtilities.getHtmlString(
-					OmegaGUIConstants.AUTHOR + algoInfo.getAuthors(), " ",
+					OmegaGUIConstants.INFO_ALGO_AUTHOR
+							+ OmegaGUIConstants.INFO_COLUMN_SEP
+							+ algoInfo.getAuthors(), " ",
 					SwingConstants.LEADING);
 			this.auth_lbl.setText(authors);
 			final DateFormat format = new SimpleDateFormat(
-					OmegaConstants.OMEGA_DATE_FORMAT_LBL);
-			this.date_lbl.setText(OmegaGUIConstants.RELEASED
+					OmegaGenericConstants.OMEGA_DATE_FORMAT_LBL);
+			this.date_lbl.setText(OmegaGUIConstants.INFO_ALGO_RELEASED
+					+ OmegaGUIConstants.INFO_COLUMN_SEP + " "
 					+ format.format(algoInfo.getPublicationData()));
-			this.version_lbl.setText(OmegaGUIConstants.VERSION
-					+ algoInfo.getVersion());
+			this.version_lbl
+					.setText(OmegaGUIConstants.INFO_ALGO_VERSION
+							+ OmegaGUIConstants.INFO_COLUMN_SEP
+							+ algoInfo.getVersion());
 			final String ref = OmegaStringUtilities.getHtmlString(
-					OmegaGUIConstants.REFERENCE + algoInfo.getReference(), " ",
+					OmegaGUIConstants.INFO_ALGO_REF
+							+ OmegaGUIConstants.INFO_COLUMN_SEP
+							+ algoInfo.getReference(), " ",
 					SwingConstants.LEADING);
 			this.ref_lbl.setText(ref);
 			final String desc = OmegaStringUtilities.getHtmlString(
@@ -175,11 +186,16 @@ public class GenericAlgorithmDetailsDialog extends GenericDialog {
 			this.desc_ta.setText(desc);
 			this.mainPanel.setViewportView(this.desc_ta);
 		} else {
-			this.name_lbl.setText(OmegaGUIConstants.INFO_NAME);
-			this.auth_lbl.setText(OmegaGUIConstants.AUTHOR);
-			this.date_lbl.setText(OmegaGUIConstants.RELEASED);
-			this.version_lbl.setText(OmegaGUIConstants.VERSION);
-			this.ref_lbl.setText(OmegaGUIConstants.REFERENCE);
+			this.name_lbl.setText(OmegaGUIConstants.INFO_NAME
+					+ OmegaGUIConstants.INFO_COLUMN_SEP);
+			this.auth_lbl.setText(OmegaGUIConstants.INFO_ALGO_AUTHOR
+					+ OmegaGUIConstants.INFO_COLUMN_SEP);
+			this.date_lbl.setText(OmegaGUIConstants.INFO_ALGO_RELEASED
+					+ OmegaGUIConstants.INFO_COLUMN_SEP);
+			this.version_lbl.setText(OmegaGUIConstants.INFO_ALGO_VERSION
+					+ OmegaGUIConstants.INFO_COLUMN_SEP);
+			this.ref_lbl.setText(OmegaGUIConstants.INFO_ALGO_REF
+					+ OmegaGUIConstants.INFO_COLUMN_SEP);
 			// this.desc_lbl.setText("");
 			this.desc_ta.setText("");
 			this.mainPanel.setViewportView(this.desc_ta);

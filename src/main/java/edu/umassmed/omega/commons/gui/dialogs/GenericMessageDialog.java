@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingConstants;
 
-import edu.umassmed.omega.commons.constants.OmegaConstants;
+import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 
 public class GenericMessageDialog extends GenericDialog {
@@ -87,8 +87,8 @@ public class GenericMessageDialog extends GenericDialog {
 
 		this.close_btt = new JButton("Ok");
 		this.close_btt.setEnabled(false);
-		this.close_btt.setPreferredSize(OmegaConstants.BUTTON_SIZE);
-		this.close_btt.setSize(OmegaConstants.BUTTON_SIZE);
+		this.close_btt.setPreferredSize(OmegaGUIConstants.BUTTON_SIZE);
+		this.close_btt.setSize(OmegaGUIConstants.BUTTON_SIZE);
 		bottomPanel.add(this.close_btt);
 		this.add(bottomPanel, BorderLayout.SOUTH);
 	}

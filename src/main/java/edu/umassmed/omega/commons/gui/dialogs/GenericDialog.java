@@ -13,32 +13,32 @@ import javax.swing.WindowConstants;
 
 public abstract class GenericDialog extends JDialog {
 	private static final long serialVersionUID = -3182818498954948942L;
-
+	
 	private RootPaneContainer parentContainer;
-
+	
 	public GenericDialog(final RootPaneContainer parentContainer,
-	        final String title, final boolean modal) {
+			final String title, final boolean modal) {
 		this.parentContainer = parentContainer;
-
+		
 		this.setTitle(title);
 		this.setModal(modal);
-
+		
 		this.setLayout(new BorderLayout());
-
+		
 		this.createAndAddWidgets();
-
+		
 		this.addListeners();
-
+		
 		this.setAlwaysOnTop(true);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.pack();
 	}
-
+	
 	protected abstract void createAndAddWidgets();
-
+	
 	protected abstract void addListeners();
-
+	
 	public void setPosition() {
 		Point parentLocOnScren = null;
 		Dimension parentSize = null;
@@ -56,12 +56,12 @@ public abstract class GenericDialog extends JDialog {
 			parentLocOnScren = new Point(0, 0);
 			parentSize = new Dimension(500, 500);
 		}
-
+		
 		final int x = parentLocOnScren.x;
 		final int y = parentLocOnScren.y;
 		final int xOffset = (parentSize.width / 2) - (this.getSize().width / 2);
 		final int yOffset = (parentSize.height / 2)
-		        - (this.getSize().height / 2);
+				- (this.getSize().height / 2);
 		int newX = x + xOffset;
 		int newY = y + yOffset;
 		if (newX < 0) {
@@ -73,7 +73,7 @@ public abstract class GenericDialog extends JDialog {
 		final Point dialogPos = new Point(newX, newY);
 		this.setLocation(dialogPos);
 	}
-
+	
 	@Override
 	public void setVisible(final boolean isVisible) {
 		if (isVisible) {
@@ -81,11 +81,11 @@ public abstract class GenericDialog extends JDialog {
 		}
 		super.setVisible(isVisible);
 	}
-
+	
 	public void updateParentContainer(final RootPaneContainer parentContainer) {
 		this.parentContainer = parentContainer;
 	}
-
+	
 	protected RootPaneContainer getParentContainer() {
 		return this.parentContainer;
 	}

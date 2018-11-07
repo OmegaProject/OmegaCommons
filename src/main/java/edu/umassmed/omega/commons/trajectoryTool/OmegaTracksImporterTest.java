@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,14 +62,15 @@ public class OmegaTracksImporterTest {
 					final String[] vals2 = fName2.split("_");
 					final Integer L = Integer.valueOf(vals2[1]);
 					final Double SMSS = Double.valueOf(vals2[3].replace("-",
-					        "."));
+							"."));
 					final Double D = Double.valueOf(vals2[5].replace("-", "."));
 					// System.out.println("Import SNR " + snr + " L " + L
 					// + " SMSS " + SMSS + " D " + D);
 					oti.reset();
 					oti.setMode(OmegaTracksImporter.IMPORTER_MODE_TRACKS);
-					oti.importData(false, fileName, trajIdent, particleIdent,
-							false, nonParticleIdent, particleSep, dataOrder, f2);
+					oti.importData(false, fileName, false, trajIdent,
+							particleIdent, false, nonParticleIdent,
+							particleSep, dataOrder, f2);
 					final List<OmegaTrajectory> tracks = oti.getTracks();
 					oti.getParticles();
 					oti.getParticlesValues();
@@ -127,10 +129,10 @@ public class OmegaTracksImporterTest {
 						final List<OmegaAlgorithmPoint> points = new ArrayList<>();
 						for (final OmegaROI roi : traj.getROIs()) {
 							points.add(new OmegaAlgorithmPoint(roi.getX(), roi
-							        .getY(), roi.getFrameIndex()));
+									.getY(), roi.getFrameIndex()));
 						}
 						final OmegaTrajectoryStatistics stats = new OmegaTrajectoryStatistics(
-						        points, 1.0, 3);
+								points, 1.0, 3);
 						stats.setOutputFile("L_" + L + "_D_" + D + "_SMMS_"
 								+ SMSS);
 						stats.setTrack(traj.getName());
@@ -154,6 +156,8 @@ public class OmegaTracksImporterTest {
 			// TODO should I do something here?
 		} catch (final IOException ex) {
 			// TODO should I do something here?
+		} catch (final ParseException ex) {
+			// TODO should I do something here?
 		}
 
 		int snrCounter = 0, lCounter = 0;
@@ -166,9 +170,9 @@ public class OmegaTracksImporterTest {
 				snrString = String.valueOf(snrCounter);
 			}
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lSMSSMap = smssOutput
-			        .get(snr);
+					.get(snr);
 			final Map<Integer, Map<Double, Map<Double, List<Double>>>> lDMap = dOutput
-			        .get(snr);
+					.get(snr);
 			for (final Integer l : lSMSSMap.keySet()) {
 				lCounter++;
 				if (lCounter < 10) {
@@ -178,12 +182,12 @@ public class OmegaTracksImporterTest {
 				}
 				int rowCounter = 0;
 				final Map<Double, Map<Double, List<Double>>> smssSMSSMap = lSMSSMap
-				        .get(l);
+						.get(l);
 				final Map<Double, Map<Double, List<Double>>> smssDMap = lDMap
-				        .get(l);
+						.get(l);
 				for (final Double smss : smssSMSSMap.keySet()) {
 					final Map<Double, List<Double>> dSMSSMap = smssSMSSMap
-					        .get(smss);
+							.get(smss);
 					final Map<Double, List<Double>> dDMap = smssDMap.get(smss);
 					for (final Double d : dSMSSMap.keySet()) {
 						rowCounter++;
@@ -192,10 +196,10 @@ public class OmegaTracksImporterTest {
 						final List<Double> smssValues = dSMSSMap.get(d);
 						final List<Double> dValues = dDMap.get(d);
 						final String smssFileName = omegaSMSSDir
-						        + "\\SMSS_values_SNR_" + snrString + "_L_"
-						        + lString + ".csv";
+								+ "\\SMSS_values_SNR_" + snrString + "_L_"
+								+ lString + ".csv";
 						final String dFileName = omegaDDir + "\\D_values_SNR_"
-						        + snrString + "_L_" + lString + ".csv";
+								+ snrString + "_L_" + lString + ".csv";
 						final StringBuffer row = new StringBuffer();
 						row.append(String.valueOf(rowCounter));
 						row.append(" ");
@@ -210,9 +214,9 @@ public class OmegaTracksImporterTest {
 						row.append("***");
 						row.append(";");
 						final StringBuffer smssRow = new StringBuffer(
-						        row.toString());
+								row.toString());
 						final StringBuffer dRow = new StringBuffer(
-						        row.toString());
+								row.toString());
 
 						for (final Double val : smssValues) {
 							smssRow.append(String.valueOf(val));
