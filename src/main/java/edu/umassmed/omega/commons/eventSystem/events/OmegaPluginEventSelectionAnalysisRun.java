@@ -1,7 +1,7 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionAnalysisRun extends OmegaPluginEvent {
 
@@ -12,7 +12,7 @@ public class OmegaPluginEventSelectionAnalysisRun extends OmegaPluginEvent {
 		this(null, analysisRun);
 	}
 
-	public OmegaPluginEventSelectionAnalysisRun(final OmegaPlugin source,
+	public OmegaPluginEventSelectionAnalysisRun(final OmegaPluginArchetype source,
 	        final OmegaAnalysisRun analysisRun) {
 		super(source);
 		this.analysisRun = analysisRun;

@@ -27,21 +27,21 @@
  *******************************************************************************/
 package edu.umassmed.omega.commons.eventSystem.events;
 
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEvent {
 
-	private final OmegaPlugin source;
+	private final OmegaPluginArchetype source;
 
 	public OmegaPluginEvent() {
 		this(null);
 	}
 
-	public OmegaPluginEvent(final OmegaPlugin source) {
+	public OmegaPluginEvent(final OmegaPluginArchetype source) {
 		this.source = source;
 	}
 
-	public OmegaPlugin getSource() {
+	public OmegaPluginArchetype getSource() {
 		return this.source;
 	}
 }

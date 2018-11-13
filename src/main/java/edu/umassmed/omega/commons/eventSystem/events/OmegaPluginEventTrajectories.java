@@ -3,7 +3,7 @@ package edu.umassmed.omega.commons.eventSystem.events;
 import java.util.List;
 
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventTrajectories extends OmegaPluginEvent {
 
@@ -16,7 +16,7 @@ public class OmegaPluginEventTrajectories extends OmegaPluginEvent {
 		this(null, trajs, selection);
 	}
 
-	public OmegaPluginEventTrajectories(final OmegaPlugin source,
+	public OmegaPluginEventTrajectories(final OmegaPluginArchetype source,
 	        final List<OmegaTrajectory> trajs, final boolean selection) {
 		super(source);
 		this.trajectories = trajs;

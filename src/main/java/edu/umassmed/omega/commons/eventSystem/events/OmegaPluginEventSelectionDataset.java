@@ -1,7 +1,7 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaDataset;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionDataset extends OmegaPluginEvent {
 
@@ -11,7 +11,7 @@ public class OmegaPluginEventSelectionDataset extends OmegaPluginEvent {
 		this(null, dataset);
 	}
 
-	public OmegaPluginEventSelectionDataset(final OmegaPlugin source,
+	public OmegaPluginEventSelectionDataset(final OmegaPluginArchetype source,
 			final OmegaDataset dataset) {
 		super(source);
 		this.dataset = dataset;

@@ -41,7 +41,7 @@ import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 import edu.umassmed.omega.commons.utilities.OmegaTrajectoryUtilities;
 
 public class OmegaTracksExporter extends OmegaIOUtility {
-	
+
 	private Map<Integer, OmegaImage> images;
 	private Map<Integer, Map<Integer, OmegaParticleDetectionRun>> detRuns;
 	private Map<Integer, Map<Integer, OmegaParticleLinkingRun>> linkRuns;
@@ -52,16 +52,16 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 	private Map<Integer, Map<Integer, OmegaTrackingMeasuresVelocityRun>> veloRuns;
 	private Map<Integer, Map<Integer, OmegaTrackingMeasuresDiffusivityRun>> diffRuns;
 	private Map<Integer, Map<Integer, OmegaSNRRun>> snrRuns;
-
-	private Map<OmegaAnalysisRun, String> runPaths;
 	
+	private Map<OmegaAnalysisRun, String> runPaths;
+
 	private boolean exportLastOnly;
 	// private final Map<OmegaPlane, List<OmegaROI>> particles;
 	// private final Map<OmegaROI, Map<String, Object>> particlesValues;
 	// private final List<OmegaTrajectory> tracks;
-	
+
 	private OmegaTracksToolDialog dialog;
-	
+
 	public OmegaTracksExporter(final RootPaneContainer parent) {
 		// this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		// this.particlesValues = new LinkedHashMap<OmegaROI, Map<String,
@@ -79,7 +79,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		this.snrRuns = null;
 		this.dialog = new OmegaTracksToolDialog(parent, true, false, this);
 	}
-	
+
 	public OmegaTracksExporter() {
 		// this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		// this.particlesValues = new LinkedHashMap<OmegaROI, Map<String,
@@ -98,7 +98,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		this.snrRuns = null;
 		this.dialog = null;
 	}
-	
+
 	public void showDialog(final RootPaneContainer parent) {
 		if (this.dialog == null) {
 			this.dialog = new OmegaTracksToolDialog(parent, true, false, this);
@@ -110,9 +110,9 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			prefix = this.images.get(0).getName();
 			this.dialog.setPrefix(prefix);
 		}
-
+		
 		this.dialog.enableFileName();
-
+		
 		// final String name = null;
 		if (!this.exportLastOnly) {
 			this.dialog.disableFileName();
@@ -148,11 +148,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			this.dialog.disableFileName();
 		}
 		// this.dialog.setFileName(name);
-
+		
 		this.dialog.updateParentContainer(parent);
 		this.dialog.setVisible(true);
 	}
-	
+
 	public void export(final boolean multifile,
 			final String fileNameIdentifier, final String extension,
 			final boolean addImageName, final boolean createSubFolders,
@@ -160,11 +160,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			final boolean startAtOne, final String commentIdentifier,
 			final String dataSeparator, final File sourceFolder)
 			throws IOException {
-
+		
 		if (!sourceFolder.isDirectory())
 			throw new IllegalArgumentException("The source folder "
 					+ sourceFolder + " has to be a valid directory");
-
+		
 		String newTargetIdent = "";
 		if (targetIdentifier != null) {
 			newTargetIdent = targetIdentifier;
@@ -177,7 +177,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			newDataIdent = newDataIdent.replace("TAB", "\t");
 			newDataIdent = newDataIdent.replace("SPACE", " ");
 		}
-		
+
 		// TODO if csv this needs to be set to ,
 		String newDataSep = "\t";
 		if (dataSeparator != null) {
@@ -755,7 +755,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 		}
 	}
-	
+
 	private void exportAnalysisMetadata(final String path,
 			final String filename, final OmegaAnalysisRun analysisRun,
 			final boolean multifile, final boolean createSubFolders,
@@ -776,10 +776,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		String[] parents = null;
 		if ((path != null) && !path.isEmpty()) {
-			final String sep = File.separatorChar + "" + File.separatorChar;
+			String sep = "\\"; // Added beginning escape
+			sep += String.valueOf(File.separatorChar);
 			parents = path.split(sep);
 		}
-		
+
 		if (multifile) {
 			f1 = new File(targetDir.getPath() + File.separatorChar + filename
 					+ "_metadata." + extension);
@@ -838,22 +839,22 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		final StringBuffer buf = new StringBuffer();
 		final StringBuffer buf2 = new StringBuffer();
 		final StringBuffer buf3 = new StringBuffer();
-
+		
 		final StringBuffer tmpBuf = new StringBuffer();
-
+		
 		final String newline = "\n";
-
+		
 		// buf.append(newCommentIdent);
 		// buf.append("Summary");
 		// buf.append(newline);
-
+		
 		String id;
 		if (analysisRun.getElementID() == -1) {
 			id = OmegaGUIConstants.NOT_ASSIGNED;
 		} else {
 			id = String.valueOf(analysisRun.getElementID());
 		}
-
+		
 		buf.append(newCommentIdent);
 		buf.append(analysisRun.getDynamicDisplayName());
 		buf.append(" ");
@@ -861,14 +862,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		buf.append(newDataSep);
 		buf.append(id);
 		buf.append(newline);
-
+		
 		buf.append(newCommentIdent);
 		buf.append(OmegaGUIConstants.INFO_FILE_TYPE);
 		buf.append(newDataSep);
-
+		
 		buf2.append(buf);
 		buf3.append(buf);
-
+		
 		if (analysisRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
 			buf.append(OmegaGUIConstants.INFO_FILE_TYPE_DM_DDT);
 			buf2.append(OmegaGUIConstants.INFO_FILE_TYPE_DM_MSS);
@@ -885,14 +886,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			buf.append(OmegaGUIConstants.INFO_FILE_TYPE_REGULAR);
 		}
-
+		
 		tmpBuf.append(newline);
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_NAME);
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(analysisRun.getName());
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_OWNER);
 		tmpBuf.append(newDataSep);
@@ -900,7 +901,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		tmpBuf.append(" ");
 		tmpBuf.append(analysisRun.getExperimenter().getLastName());
 		tmpBuf.append(newline);
-
+		
 		if (parents != null) {
 			tmpBuf.append(newline);
 			tmpBuf.append(newCommentIdent);
@@ -917,10 +918,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				counter++;
 			}
 		}
-
+		
 		tmpBuf.append(newline);
 		final OmegaRunDefinition runDef = analysisRun.getAlgorithmSpec();
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO);
 		tmpBuf.append(newDataSep);
@@ -930,19 +931,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		tmpBuf.append(runDef.getAlgorithmInfo().getShortName());
 		tmpBuf.append("]");
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_AUTHOR);
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(runDef.getAlgorithmInfo().getAuthors());
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_VERSION);
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(runDef.getAlgorithmInfo().getVersion());
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_RELEASED);
 		tmpBuf.append(newDataSep);
@@ -951,21 +952,21 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		released = released.replace("_", " ");
 		tmpBuf.append(released);
 		tmpBuf.append(newline);
-		
+
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_REF);
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(runDef.getAlgorithmInfo().getReference());
 		tmpBuf.append(newline);
-		
+
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_DESC);
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(runDef.getAlgorithmInfo().getDescription());
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newline);
-
+		
 		if (runDef.getParameters().size() > 0) {
 			tmpBuf.append(newCommentIdent);
 			tmpBuf.append(OmegaGUIConstants.INFO_PARAMS);
@@ -988,7 +989,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			tmpBuf.append(newline);
 			tmpBuf.append(newline);
 		}
-
+		
 		String acquiredDate = format.format(analysisRun.getTimeStamps());
 		acquiredDate = acquiredDate.replace("_", " ");
 		tmpBuf.append(newCommentIdent);
@@ -996,7 +997,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(acquiredDate);
 		tmpBuf.append(newline);
-
+		
 		final int counter = OmegaAnalysisRunContainerUtilities
 				.getAnalysisCount(analysisRun);
 		tmpBuf.append(newCommentIdent);
@@ -1004,16 +1005,16 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(counter);
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newline);
-
+		
 		this.addSpecificMetadata(analysisRun, tmpBuf, newDataSep,
 				newCommentIdent, newline);
-
+		
 		buf.append(tmpBuf);
 		buf2.append(tmpBuf);
 		buf3.append(tmpBuf);
-
+		
 		final FileWriter fw1 = new FileWriter(f1, false);
 		final BufferedWriter bw1 = new BufferedWriter(fw1);
 		bw1.write(buf.toString());
@@ -1034,12 +1035,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		bw3.close();
 		fw3.close();
 	}
-	
+
 	private void addSpecificMetadata(final OmegaAnalysisRun analysisRun,
 			final StringBuffer buf, final String newDataSep,
 			final String newCommentIdent, final String newline) {
 		if (analysisRun instanceof OmegaSNRRun) {
-			
+
 		} else if (analysisRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
 			buf.append(newCommentIdent);
 			buf.append(OmegaGUIConstants.RESULTS_DIFFISIVITY_MIN_DET_ODC);
@@ -1049,11 +1050,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			buf.append(String.valueOf(ODC));
 			buf.append(newline);
 		} else if (analysisRun instanceof OmegaTrackingMeasuresIntensityRun) {
-			
+
 		} else if (analysisRun instanceof OmegaTrackingMeasuresMobilityRun) {
-			
+
 		} else if (analysisRun instanceof OmegaTrackingMeasuresVelocityRun) {
-			
+
 		} else if (analysisRun instanceof OmegaTrajectoriesSegmentationRun) {
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments = ((OmegaTrajectoriesSegmentationRun) analysisRun)
 					.getResultingSegments();
@@ -1064,7 +1065,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			final String tracks = String.valueOf(tracksC);
 			buf.append(tracks);
 			buf.append(newline);
-			
+
 			buf.append(newCommentIdent);
 			buf.append("Total number of segments");
 			buf.append(newDataSep);
@@ -1079,7 +1080,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 			buf.append(String.valueOf(segmentsT));
 			buf.append(newline);
-			
+
 			buf.append(newCommentIdent);
 			buf.append("Average number of segments per trajectory");
 			buf.append(newDataSep);
@@ -1111,21 +1112,21 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				f++;
 			}
 			numP /= f;
-			
+
 			buf.append(newCommentIdent);
 			buf.append("Average number of spots found per time point");
 			buf.append(newDataSep);
 			final String mean = String.valueOf(numP);
 			buf.append(mean);
 			buf.append(newline);
-			
+
 			buf.append(newCommentIdent);
 			buf.append("Max  number of spots found per time point");
 			buf.append(newDataSep);
 			final String max = String.valueOf(maxNumP);
 			buf.append(max);
 			buf.append(newline);
-			
+
 			buf.append(newCommentIdent);
 			buf.append("Min  number of spots found per time point");
 			buf.append(newDataSep);
@@ -1136,7 +1137,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		buf.append(newline);
 		buf.append(newline);
 	}
-	
+
 	private void addTrajectoriesMetadata(final OmegaAnalysisRun analysisRun,
 			final StringBuffer buf, final String newCommentIdent,
 			final String newDataSep, final String newline) {
@@ -1148,7 +1149,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		final String tracksV = String.valueOf(tracks.size());
 		buf.append(tracksV);
 		buf.append(newline);
-
+		
 		int maxTracksLength = 0;
 		int minTracksLength = 0;
 		double meanTracksLength = 0;
@@ -1162,21 +1163,21 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 		}
 		meanTracksLength /= tracks.size();
-
+		
 		buf.append(newCommentIdent);
 		buf.append("Average trajectory length");
 		buf.append(newDataSep);
 		final String averagetl = String.valueOf(meanTracksLength);
 		buf.append(averagetl);
 		buf.append(newline);
-
+		
 		buf.append(newCommentIdent);
 		buf.append("Max trajectory length");
 		buf.append(newDataSep);
 		final String maxtl = String.valueOf(maxTracksLength);
 		buf.append(maxtl);
 		buf.append(newline);
-
+		
 		buf.append(newCommentIdent);
 		buf.append("Min trajectory length");
 		buf.append(newDataSep);
@@ -1184,7 +1185,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		buf.append(mintl);
 		buf.append(newline);
 	}
-	
+
 	private void exportSNR(final String path, final String filename,
 			final OmegaImage image, final OmegaSNRRun snrRun,
 			final Map<OmegaPlane, List<OmegaROI>> particles,
@@ -1198,7 +1199,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-
+		
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -1209,7 +1210,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-
+		
 		final Double imageAvgCenterSignal = snrRun
 				.getResultingAverageCenterSignal();
 		final Double imageAvgPeakSignal = snrRun
@@ -1224,7 +1225,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		final Double imageAvgIndexSNR = snrRun.getResultingAvgErrorIndexSNR();
 		final Double imageMinIndexSNR = snrRun.getResultingMinErrorIndexSNR();
 		final Double imageMaxIndexSNR = snrRun.getResultingMaxErrorIndexSNR();
-
+		
 		final Map<OmegaPlane, Double> frameAvgCenterSignal = snrRun
 				.getResultingImageAverageCenterSignal();
 		final Map<OmegaPlane, Double> frameAvgPeakSignal = snrRun
@@ -1246,7 +1247,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				.getResultingImageMinimumErrorIndexSNR();
 		final Map<OmegaPlane, Double> frameMaxIndexSNR = snrRun
 				.getResultingImageMaximumErrorIndexSNR();
-
+		
 		final Map<OmegaROI, Integer> localCenterSignal = snrRun
 				.getResultingLocalCenterSignals();
 		final Map<OmegaROI, Double> localMeanSignal = snrRun
@@ -1261,7 +1262,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		snrRun.getResultingLocalErrorIndexSNRs();
 		final Map<OmegaROI, Integer> localArea = snrRun
 				.getResultingLocalParticleArea();
-
+		
 		final File globalFile = new File(targetDir.getPath()
 				+ File.separatorChar + filename + "_"
 				+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_IMAGE + "." + extension);
@@ -1270,7 +1271,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		final FileWriter fw3 = new FileWriter(globalFile, append);
 		final BufferedWriter bw3 = new BufferedWriter(fw3);
-
+		
 		final StringBuffer headerBuf = new StringBuffer();
 		headerBuf.append(newCommentIdent);
 		headerBuf.append(OmegaGUIConstants.RESULTS_PARTICLE_ID);
@@ -1300,7 +1301,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		headerBuf.append(OmegaGUIConstants.RESULTS_SNR_SNR_INDEX);
 		headerBuf.append(newDataSep);
 		headerBuf.append(OmegaGUIConstants.RESULTS_SNR_AREA);
-		
+
 		final StringBuffer headerBuf2 = new StringBuffer();
 		headerBuf2.append(newCommentIdent);
 		headerBuf2.append(OmegaGUIConstants.RESULTS_PLANE_ID);
@@ -1328,7 +1329,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		headerBuf2.append(OmegaGUIConstants.RESULTS_SNR_SNR_INDEX_MIN);
 		headerBuf2.append(newDataSep);
 		headerBuf2.append(OmegaGUIConstants.RESULTS_SNR_SNR_INDEX_MAX);
-
+		
 		final StringBuffer headerBuf3 = new StringBuffer();
 		headerBuf3.append(newCommentIdent);
 		headerBuf3.append(OmegaGUIConstants.RESULTS_IMAGE_ID);
@@ -1358,16 +1359,16 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		headerBuf3.append(OmegaGUIConstants.RESULTS_SNR_SNR_INDEX_MIN);
 		headerBuf3.append(newDataSep);
 		headerBuf3.append(OmegaGUIConstants.RESULTS_SNR_SNR_INDEX_MAX);
-
+		
 		headerBuf.append("\n");
 		headerBuf2.append("\n");
 		headerBuf3.append("\n");
-
+		
 		bw3.write(newCommentIdent);
 		bw3.write("Image");
 		bw3.write("\n");
 		bw3.write(headerBuf3.toString());
-
+		
 		String imageID;
 		if (image.getElementID() == -1) {
 			imageID = OmegaGUIConstants.NOT_ASSIGNED;
@@ -1380,7 +1381,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		final Integer z = (Integer) snrRun.getAlgorithmSpec()
 				.getParameter(OmegaAlgorithmParameterConstants.PARAM_ZSECTION)
 				.getValue();
-
+		
 		bw3.write(imageID);
 		bw3.write(newDataSep);
 		bw3.write(String.valueOf(c));
@@ -1409,15 +1410,15 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		bw3.write(newDataSep);
 		bw3.write(String.valueOf(imageMaxIndexSNR));
 		bw3.write("\n");
-
+		
 		bw3.close();
 		fw3.close();
-
+		
 		int counter = 0;
 		if (startAtOne) {
 			counter += 1;
 		}
-
+		
 		int max = particles.size() - 1;
 		if (startAtOne) {
 			max += 1;
@@ -1466,19 +1467,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				if (!localFile2.exists()) {
 					localFile1.createNewFile();
 				}
-
+				
 				String planeID;
 				if (plane.getElementID() == -1) {
 					planeID = OmegaGUIConstants.NOT_ASSIGNED;
 				} else {
 					planeID = String.valueOf(plane.getElementID());
 				}
-
+				
 				final FileWriter fw = new FileWriter(localFile1, append);
 				final BufferedWriter bw = new BufferedWriter(fw);
 				final FileWriter fw2 = new FileWriter(localFile2, append);
 				final BufferedWriter bw2 = new BufferedWriter(fw2);
-
+				
 				String planeIdent = newCommentIdent;
 				if (newTargetIdent.equals("")) {
 					planeIdent += "Frame" + newDataSep + "[" + planeID + "]"
@@ -1489,10 +1490,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				bw.write(planeIdent);
 				bw2.write(planeIdent);
-
+				
 				bw.write(headerBuf.toString());
 				bw2.write(headerBuf2.toString());
-
+				
 				final Double fAvgCenterSignal = frameAvgCenterSignal.get(plane);
 				final Double fAvgPeakSignal = frameAvgPeakSignal.get(plane);
 				final Double fAvgMeanSignal = frameAvgMeanSignal.get(plane);
@@ -1504,7 +1505,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				final Double fAvgIndexSNR = frameAvgIndexSNR.get(plane);
 				final Double fMinIndexSNR = frameMinIndexSNR.get(plane);
 				final Double fMaxIndexSNR = frameMaxIndexSNR.get(plane);
-
+				
 				bw2.write(planeID);
 				bw2.write(newDataSep);
 				bw2.write(String.valueOf(index));
@@ -1534,7 +1535,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw2.write("\n");
 				bw2.close();
 				fw2.close();
-
+				
 				final List<OmegaROI> parts = particles.get(plane);
 				for (final OmegaROI roi : parts) {
 					// System.out.println("PLANE INDEX: " + index + "FI: "
@@ -1574,7 +1575,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 		}
 	}
-	
+
 	private void exportTrackingMeasuresDiffusivity(final String path,
 			final String filename,
 			final OmegaTrackingMeasuresDiffusivityRun diffRun,
@@ -1611,7 +1612,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-		
+
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -1622,7 +1623,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-		
+
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File localIntervalFile, localFile, globalFile;
 			if (multifile) {
@@ -1658,21 +1659,21 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (!localFile.exists()) {
 				localFile.createNewFile();
 			}
-			
+
 			String trackID;
 			if (track.getElementID() == -1) {
 				trackID = OmegaGUIConstants.NOT_ASSIGNED;
 			} else {
 				trackID = String.valueOf(track.getElementID());
 			}
-			
+
 			final FileWriter fw = new FileWriter(localIntervalFile, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(localFile, append);
 			final BufferedWriter bw2 = new BufferedWriter(fw2);
 			final FileWriter fw3 = new FileWriter(globalFile, true);
 			final BufferedWriter bw3 = new BufferedWriter(fw3);
-			
+
 			String trackIdent = newCommentIdent;
 			if (newTargetIdent.equals("")) {
 				trackIdent += "Trajectory" + newDataSep + "[" + trackID + "]"
@@ -1684,7 +1685,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			bw.write(trackIdent);
 			bw2.write(trackIdent);
 			bw3.write(trackIdent);
-			
+
 			final StringBuffer headerBuf = new StringBuffer();
 			headerBuf.append(newCommentIdent);
 			headerBuf.append(OmegaGUIConstants.RESULTS_TRACK_ID);
@@ -1702,7 +1703,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			headerBuf.append(OmegaGUIConstants.RESULTS_SEGM_LENGTH);
 			headerBuf.append(newDataSep);
 			headerBuf.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_WIN_SIZE);
-			
+
 			final StringBuffer headerBuf2 = new StringBuffer();
 			headerBuf2.append(headerBuf);
 			headerBuf2.append(newDataSep);
@@ -1731,7 +1732,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				headerBuf2
 						.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_ODC_LOG);
 			}
-			
+
 			final StringBuffer headerBuf3 = new StringBuffer();
 			headerBuf3.append(headerBuf);
 			headerBuf3.append(newDataSep);
@@ -1746,7 +1747,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			headerBuf3.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_ODC_ERR);
 			headerBuf3.append(newDataSep);
 			headerBuf3.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_SMSS_ERR);
-
+			
 			headerBuf.append(newDataSep);
 			headerBuf
 					.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MOMENT_ORDER);
@@ -1758,11 +1759,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			headerBuf.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_DELTA_LOG);
 			headerBuf.append(newDataSep);
 			headerBuf.append(OmegaGUIConstants.RESULTS_DIFFUSIVITY_MU_LOG);
-
+			
 			headerBuf.append("\n");
 			headerBuf2.append("\n");
 			headerBuf3.append("\n");
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				String segmID;
 				if (segment.getElementID() == -1) {
@@ -1776,7 +1777,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						.computeSegmentLength(track, segment);
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
-				
+
 				String segmIdent = newCommentIdent;
 				if (newTargetIdent.equals("")) {
 					segmIdent += "Segment" + newDataSep + "[" + segmID + "]"
@@ -1787,11 +1788,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				bw.write(segmIdent);
 				bw2.write(segmIdent);
-				
+
 				bw.write(headerBuf.toString());
 				bw2.write(headerBuf2.toString());
 				bw3.write(headerBuf3.toString());
-				
+
 				final StringBuffer buf = new StringBuffer();
 				buf.append(newDataIdent);
 				buf.append(trackID);
@@ -1807,7 +1808,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				buf.append(segmType);
 				buf.append(newDataSep);
 				buf.append(segmLength);
-
+				
 				Double[][] gammaFromLog = null;
 				if ((gammaDFromLogResultsMap != null)
 						&& gammaDFromLogResultsMap.containsKey(segment)) {
@@ -1843,7 +1844,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				if (errorFromLog != null) {
 					smssErr = String.valueOf(errorFromLog[1]);
 				}
-				
+
 				bw3.write(buf.toString());
 				bw3.write(newDataSep);
 				bw3.write(windowSize);
@@ -1860,7 +1861,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw3.write(newDataSep);
 				bw3.write(smssErr);
 				bw3.write("\n");
-				
+
 				Double[] nus = null;
 				if ((nyMap != null) && nyMap.containsKey(segment)) {
 					nus = nyMap.get(segment);
@@ -1894,7 +1895,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				if (nus == null) {
 					continue;
 				}
-				
+
 				for (final Double nu : nus) {
 					final Integer ny = new BigDecimal(nu).intValue();
 					Double[] gammaDFromLog = null;
@@ -1909,7 +1910,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						gammaD = gammaDs[ny];
 						gammaLength = gammaD.length;
 					}
-					
+
 					bw2.write(buf.toString());
 					bw2.write(newDataSep);
 					bw2.write(windowSize);
@@ -2017,7 +2018,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			fw3.close();
 		}
 	}
-	
+
 	private void exportTrackingMeasuresVelocity(final String path,
 			final String filename,
 			final OmegaTrackingMeasuresVelocityRun veloRun,
@@ -2045,7 +2046,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-		
+
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -2056,7 +2057,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-		
+
 		final int counter = 1;
 		final int max = segments.keySet().size();
 		final int maxDigits = String.valueOf(max).length();
@@ -2084,19 +2085,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (!localFile.exists()) {
 				localFile.createNewFile();
 			}
-			
+
 			String trackID;
 			if (track.getElementID() == -1) {
 				trackID = OmegaGUIConstants.NOT_ASSIGNED;
 			} else {
 				trackID = String.valueOf(track.getElementID());
 			}
-			
+
 			final FileWriter fw = new FileWriter(localFile, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(globalFile, true);
 			final BufferedWriter bw2 = new BufferedWriter(fw2);
-			
+
 			String trackIdent = newCommentIdent;
 			if (newTargetIdent.equals("")) {
 				trackIdent += "Trajectory" + newDataSep + "[" + trackID + "]"
@@ -2107,7 +2108,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 			bw.write(trackIdent);
 			bw2.write(trackIdent);
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				String segmID;
 				if (segment.getElementID() == -1) {
@@ -2122,7 +2123,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						.computeSegmentLength(track, segment);
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
-				
+
 				String segmIdent = newCommentIdent;
 				if (newTargetIdent.equals("")) {
 					segmIdent += "Segment" + newDataSep + "[" + segmID + "]"
@@ -2133,7 +2134,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				bw.write(segmIdent);
 				bw2.write(segmIdent);
-
+				
 				final StringBuffer headerBuf = new StringBuffer();
 				headerBuf.append(newCommentIdent);
 				headerBuf.append(OmegaGUIConstants.RESULTS_PARTICLE_ID);
@@ -2148,7 +2149,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_C);
 				headerBuf.append(newDataSep);
-
+				
 				final StringBuffer tempBuf = new StringBuffer();
 				// headerBuf2.append(newCommentIdent);
 				tempBuf.append(OmegaGUIConstants.RESULTS_TRACK_ID);
@@ -2164,35 +2165,35 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				tempBuf.append(OmegaGUIConstants.RESULTS_SEGM_TYPE);
 				tempBuf.append(newDataSep);
 				tempBuf.append(OmegaGUIConstants.RESULTS_SEGM_LENGTH);
-
+				
 				headerBuf.append(tempBuf);
-
+				
 				final StringBuffer headerBuf2 = new StringBuffer();
 				headerBuf2.append(newCommentIdent);
 				headerBuf2.append(tempBuf);
-
+				
 				headerBuf2.append(newDataSep);
 				headerBuf2.append(OmegaGUIConstants.RESULTS_VELOCITY_AVG_SPEED);
 				headerBuf2.append(newDataSep);
 				headerBuf2.append(OmegaGUIConstants.RESULTS_VELOCITY_AVG_VELO);
 				headerBuf2.append(newDataSep);
 				headerBuf2.append(OmegaGUIConstants.RESULTS_VELOCITY_PROG);
-
+				
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_VELOCITY_SPEED);
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_VELOCITY_CUM_SPEED);
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_VELOCITY_CUM_VELO);
-
+				
 				headerBuf.append("\n");
 				headerBuf2.append("\n");
-
+				
 				bw.write(headerBuf.toString());
 				bw2.write(headerBuf2.toString());
-				
+
 				bw2.write(newDataIdent);
-				
+
 				final StringBuffer buf = new StringBuffer();
 				buf.append(trackID);
 				buf.append(newDataSep);
@@ -2207,12 +2208,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				buf.append(segmType);
 				buf.append(newDataSep);
 				buf.append(segmLength);
-
+				
 				final Double gSpeed = globalSpeeds.get(segment);
 				final Double gVelo = globalVelocities.get(segment);
 				final Double forwardProgression = forwardProgressions
 						.get(segment);
-				
+
 				bw2.write(buf.toString());
 				bw2.write(newDataSep);
 				bw2.write(String.valueOf(gSpeed));
@@ -2221,12 +2222,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw2.write(newDataSep);
 				bw2.write(String.valueOf(forwardProgression));
 				bw2.write("\n");
-				
+
 				final List<Double> speedsO = localOriginSpeeds.get(segment);
 				final List<Double> velocitiesO = localOriginVelocities
 						.get(segment);
 				final List<Double> speeds = localSpeeds.get(segment);
-				
+
 				int i = 0;
 				for (final OmegaROI roi : track.getROIs()) {
 					speeds.get(i);
@@ -2273,7 +2274,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			fw2.close();
 		}
 	}
-	
+
 	private void exportTrackingMeasuresMobility(final String path,
 			final String filename,
 			final OmegaTrackingMeasuresMobilityRun mobiRun,
@@ -2289,7 +2290,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-		
+
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -2300,7 +2301,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-		
+
 		final Map<OmegaSegment, List<Double>> localDistancesFromOrigin = mobiRun
 				.getDistancesFromOriginResults();
 		final Map<OmegaSegment, List<Double>> localDisplacementsFromOrigin = mobiRun
@@ -2315,11 +2316,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				.getMaxDisplacementsFromOriginResults();
 		final Map<OmegaSegment, List<Double>> localDistances = mobiRun
 				.getDistancesResults();
-		
+
 		final int counter = 1;
 		final int max = segments.keySet().size();
 		final int maxDigits = String.valueOf(max).length();
-		
+
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File localFile, globalFile;
 			OmegaStringUtilities.getMultiDigitsCounter(counter, maxDigits);
@@ -2344,19 +2345,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (!localFile.exists()) {
 				localFile.createNewFile();
 			}
-			
+
 			String trackID;
 			if (track.getElementID() == -1) {
 				trackID = OmegaGUIConstants.NOT_ASSIGNED;
 			} else {
 				trackID = String.valueOf(track.getElementID());
 			}
-			
+
 			final FileWriter fw = new FileWriter(localFile, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(globalFile, true);
 			final BufferedWriter bw2 = new BufferedWriter(fw2);
-			
+
 			String trackIdent = newCommentIdent;
 			if (newTargetIdent.equals("")) {
 				trackIdent += "Trajectory" + newDataSep + "[" + trackID + "]"
@@ -2367,7 +2368,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 			bw.write(trackIdent);
 			bw2.write(trackIdent);
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				String segmID;
 				if (segment.getElementID() == -1) {
@@ -2382,7 +2383,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						.computeSegmentLength(track, segment);
 				final String segmType = types.getSegmentationName(segment
 						.getSegmentationType());
-
+				
 				String segmIdent = newCommentIdent;
 				if (newTargetIdent.equals("")) {
 					segmIdent += "Segment" + newDataSep + "[" + segmID + "]"
@@ -2393,7 +2394,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				bw.write(segmIdent);
 				bw2.write(segmIdent);
-
+				
 				final StringBuffer headerBuf = new StringBuffer();
 				headerBuf.append(newCommentIdent);
 				headerBuf.append(OmegaGUIConstants.RESULTS_PARTICLE_ID);
@@ -2408,7 +2409,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_C);
 				headerBuf.append(newDataSep);
-
+				
 				final StringBuffer tempBuf = new StringBuffer();
 				tempBuf.append(OmegaGUIConstants.RESULTS_TRACK_ID);
 				tempBuf.append(newDataSep);
@@ -2423,13 +2424,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				tempBuf.append(OmegaGUIConstants.RESULTS_SEGM_TYPE);
 				tempBuf.append(newDataSep);
 				tempBuf.append(OmegaGUIConstants.RESULTS_SEGM_LENGTH);
-
-				headerBuf.append(tempBuf);
 				
+				headerBuf.append(tempBuf);
+
 				final StringBuffer headerBuf2 = new StringBuffer();
 				headerBuf2.append(newCommentIdent);
 				headerBuf2.append(tempBuf);
-
+				
 				headerBuf2.append(newDataSep);
 				headerBuf2
 						.append(OmegaGUIConstants.RESULTS_MOBILITY_TOT_CURV_DIST);
@@ -2444,7 +2445,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						.append(OmegaGUIConstants.RESULTS_MOBILITY_CONF_RATIO);
 				headerBuf2.append(newDataSep);
 				headerBuf2.append(OmegaGUIConstants.RESULTS_MOBILITY_TOT_TIME);
-
+				
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_MOBILITY_DIST);
 				headerBuf.append(newDataSep);
@@ -2463,13 +2464,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				headerBuf.append(OmegaGUIConstants.RESULTS_MOBILITY_DIR_CHANGE);
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_MOBILITY_CUM_TIME);
-
+				
 				headerBuf.append("\n");
 				headerBuf2.append("\n");
-
+				
 				bw.write(headerBuf.toString());
 				bw2.write(headerBuf2.toString());
-				
+
 				final StringBuffer buf = new StringBuffer();
 				buf.append(trackID);
 				buf.append(newDataSep);
@@ -2484,7 +2485,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				buf.append(segmType);
 				buf.append(newDataSep);
 				buf.append(segmLength);
-				
+
 				final List<Double> times = timeTraveled.get(segment);
 				final List<Double> instDist = localDistances.get(segment);
 				final List<Double> distances = localDistancesFromOrigin
@@ -2495,7 +2496,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						.get(segment);
 				final List<Double[]> anglesAndDirectionalChanges = localAnglesAndDirectionalChanges
 						.get(segment);
-				
+
 				final List<OmegaROI> rois = track.getROIs();
 				final int lastIndex = rois.get(rois.size() - 1).getFrameIndex() - 1;
 				final Double dist = distances.get(lastIndex);
@@ -2503,7 +2504,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				final Double disp = displacements.get(lastIndex);
 				final Double confRatio = confiments.get(lastIndex);
 				final Double time = times.get(lastIndex);
-				
+
 				bw2.write(newDataIdent);
 				bw2.write(buf.toString());
 				bw2.write(newDataSep);
@@ -2517,7 +2518,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw2.write(newDataSep);
 				bw2.write(String.valueOf(time));
 				bw2.write("\n");
-				
+
 				int i = 0;
 				for (final OmegaROI roi : rois) {
 					boolean write = false;
@@ -2574,7 +2575,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			fw2.close();
 		}
 	}
-	
+
 	private void exportTrackingMeasuresIntensity(final String path,
 			final String filename,
 			final OmegaTrackingMeasuresIntensityRun inteRun,
@@ -2590,7 +2591,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-		
+
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -2601,7 +2602,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-
+		
 		final Map<OmegaROI, Double> centroidLocalResults = inteRun
 				.getCentroidSignalsLocalResults();
 		final Map<OmegaROI, Double> peakLocalResults = inteRun
@@ -2628,7 +2629,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		final Map<OmegaSegment, Double[]> snrGlobalResults = inteRun
 				.getSNRsResults();
 		// inteRun.getAreasResults();
-
+		
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File localFile, globalFile;
 			if (multifile) {
@@ -2652,19 +2653,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (!localFile.exists()) {
 				localFile.createNewFile();
 			}
-
+			
 			String trackID;
 			if (track.getElementID() == -1) {
 				trackID = OmegaGUIConstants.NOT_ASSIGNED;
 			} else {
 				trackID = String.valueOf(track.getElementID());
 			}
-
+			
 			final FileWriter fw = new FileWriter(localFile, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			final FileWriter fw2 = new FileWriter(globalFile, true);
 			final BufferedWriter bw2 = new BufferedWriter(fw2);
-			
+
 			String trackIdent = newCommentIdent;
 			if (newTargetIdent.equals("")) {
 				trackIdent += "Trajectory" + newDataSep + "[" + trackID + "]"
@@ -2675,7 +2676,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 			bw.write(trackIdent);
 			bw2.write(trackIdent);
-
+			
 			for (final OmegaSegment segment : segments.get(track)) {
 				String segmID;
 				if (segment.getElementID() == -1) {
@@ -2700,7 +2701,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				bw.write(segmIdent);
 				bw2.write(segmIdent);
-				
+
 				final StringBuffer headerBuf = new StringBuffer();
 				headerBuf.append(newCommentIdent);
 				headerBuf.append(OmegaGUIConstants.RESULTS_PARTICLE_ID);
@@ -2715,7 +2716,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_C);
 				headerBuf.append(newDataSep);
-
+				
 				final StringBuffer tempBuf = new StringBuffer();
 				tempBuf.append(OmegaGUIConstants.RESULTS_TRACK_ID);
 				tempBuf.append(newDataSep);
@@ -2730,13 +2731,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				tempBuf.append(OmegaGUIConstants.RESULTS_SEGM_TYPE);
 				tempBuf.append(newDataSep);
 				tempBuf.append(OmegaGUIConstants.RESULTS_SEGM_LENGTH);
-
+				
 				headerBuf.append(tempBuf);
-
+				
 				final StringBuffer headerBuf2 = new StringBuffer();
 				headerBuf2.append(newCommentIdent);
 				headerBuf2.append(tempBuf);
-
+				
 				headerBuf2.append(newDataSep);
 				headerBuf2
 						.append(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID_AVG);
@@ -2790,7 +2791,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					headerBuf2
 							.append(OmegaGUIConstants.RESULTS_INTENSITY_SNR_MAX);
 				}
-
+				
 				headerBuf.append(newDataSep);
 				headerBuf.append(OmegaGUIConstants.RESULTS_INTENSITY_CENTROID);
 				headerBuf.append(newDataSep);
@@ -2806,13 +2807,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					headerBuf.append(newDataSep);
 					headerBuf.append(OmegaGUIConstants.RESULTS_INTENSITY_SNR);
 				}
-
+				
 				headerBuf.append("\n");
 				headerBuf2.append("\n");
-
+				
 				bw.write(headerBuf.toString());
 				bw2.write(headerBuf2.toString());
-
+				
 				final StringBuffer buf = new StringBuffer();
 				buf.append(newDataIdent);
 				buf.append(trackID);
@@ -2828,10 +2829,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				buf.append(segmType);
 				buf.append(newDataSep);
 				buf.append(segmLength);
-
+				
 				final Double[] centroids = centroidGlobalResults.get(segment);
 				final Double[] peaks = peakGlobalResults.get(segment);
-				
+
 				bw2.write(buf.toString());
 				bw2.write(newDataSep);
 				bw2.write(String.valueOf(centroids[1]));
@@ -2845,13 +2846,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw2.write(String.valueOf(peaks[0]));
 				bw2.write(newDataSep);
 				bw2.write(String.valueOf(peaks[2]));
-
+				
 				if (inteRun.getSNRRun() != null) {
 					final Double[] means = meanGlobalResults.get(segment);
 					final Double[] backgrounds = bgGlobalResults.get(segment);
 					final Double[] noises = noiseGlobalResults.get(segment);
 					final Double[] snr = snrGlobalResults.get(segment);
-
+					
 					bw2.write(newDataSep);
 					bw2.write(String.valueOf(means[1]));
 					bw2.write(newDataSep);
@@ -2923,7 +2924,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							break;
 						}
 					}
-
+					
 				}
 			}
 			bw.write("\n");
@@ -2934,7 +2935,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			fw2.close();
 		}
 	}
-	
+
 	private void exportSegments(final String path, final String filename,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final OmegaSegmentationTypes types,
@@ -2948,7 +2949,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-
+		
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -2959,7 +2960,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-
+		
 		for (final OmegaTrajectory track : segments.keySet()) {
 			String trackID;
 			if (track.getElementID() == -1) {
@@ -2967,7 +2968,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			} else {
 				trackID = String.valueOf(track.getElementID());
 			}
-
+			
 			final File f;
 			if (multifile) {
 				f = new File(targetDir.getPath() + File.separatorChar
@@ -2982,10 +2983,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-			
+
 			final FileWriter fw = new FileWriter(f, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
-			
+
 			for (final OmegaSegment segment : segments.get(track)) {
 				String segmID;
 				if (segment.getElementID() == -1) {
@@ -3009,7 +3010,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ "]" + newDataSep + segment.getName() + "\n";
 				}
 				bw.write(segmIdent);
-
+				
 				bw.write(newCommentIdent);
 				bw.write(OmegaGUIConstants.RESULTS_PARTICLE_ID);
 				bw.write(newDataSep);
@@ -3037,7 +3038,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				bw.write(newDataSep);
 				bw.write(OmegaGUIConstants.RESULTS_SEGM_LENGTH);
 				bw.write("\n");
-				
+
 				for (final OmegaROI roi : track.getROIs()) {
 					final OmegaPlane frame = frames
 							.get(roi.getFrameIndex() - 1);
@@ -3081,7 +3082,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			fw.close();
 		}
 	}
-	
+
 	private void exportTrajectories(final String path, final String filename,
 			final List<OmegaTrajectory> tracks,
 			final Map<Integer, OmegaPlane> frames, final boolean multifile,
@@ -3094,7 +3095,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (newTargetIdent != null) {
 			append = true;
 		}
-
+		
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -3105,7 +3106,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-
+		
 		for (final OmegaTrajectory track : tracks) {
 			final File f;
 			if (multifile) {
@@ -3121,7 +3122,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-
+			
 			final FileWriter fw = new FileWriter(f, append);
 			final BufferedWriter bw = new BufferedWriter(fw);
 			String trackID;
@@ -3130,7 +3131,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			} else {
 				trackID = String.valueOf(track.getElementID());
 			}
-
+			
 			String trackIdent = newCommentIdent;
 			if (newTargetIdent.equals("")) {
 				trackIdent += "Trajectory" + newDataSep + "[" + trackID + "]"
@@ -3140,7 +3141,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						+ newDataSep + track.getName() + "\n";
 			}
 			bw.write(trackIdent);
-			
+
 			bw.write(newCommentIdent);
 			bw.write(OmegaGUIConstants.RESULTS_PARTICLE_ID);
 			bw.write(newDataSep);
@@ -3160,7 +3161,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			bw.write(newDataSep);
 			bw.write(OmegaGUIConstants.RESULTS_TRACK_LENGTH);
 			bw.write("\n");
-
+			
 			for (final OmegaROI roi : track.getROIs()) {
 				final OmegaPlane frame = frames.get(roi.getFrameIndex() - 1);
 				this.exportParticle(bw, startAtOne, newDataIdent, newDataSep,
@@ -3178,7 +3179,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			fw.close();
 		}
 	}
-	
+
 	private void exportParticles(final String path, final String filename,
 			final Map<OmegaPlane, List<OmegaROI>> particles,
 			final Map<OmegaROI, Map<String, Object>> particleValues,
@@ -3199,7 +3200,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (startAtOne) {
 			max++;
 		}
-
+		
 		File targetDir = null;
 		if (createSubFolders) {
 			targetDir = new File(sourceFolder.getPath() + File.separatorChar
@@ -3210,7 +3211,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		} else {
 			targetDir = sourceFolder;
 		}
-		
+
 		while (counter < max) {
 			for (final OmegaPlane plane : particles.keySet()) {
 				final int c = plane.getChannel();
@@ -3236,19 +3237,19 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				if (!f.exists()) {
 					f.createNewFile();
 				}
-				
+
 				final FileWriter fw = new FileWriter(f, append);
 				final BufferedWriter bw = new BufferedWriter(fw);
-				
+
 				String planeID;
 				if (plane.getElementID() == -1) {
 					planeID = OmegaGUIConstants.NOT_ASSIGNED;
 				} else {
 					planeID = String.valueOf(plane.getElementID());
 				}
-				
+
 				final List<OmegaROI> rois = particles.get(plane);
-				
+
 				String planeIdent = newCommentIdent;
 				if (newTargetIdent.equals("")) {
 					planeIdent += "Frame" + newDataSep + "[" + planeID + "]"
@@ -3258,7 +3259,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ "]" + newDataSep + index + "\n";
 				}
 				bw.write(planeIdent);
-				
+
 				bw.write(newCommentIdent);
 				bw.write(OmegaGUIConstants.RESULTS_PARTICLE_ID);
 				bw.write(newDataSep);
@@ -3277,13 +3278,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					bw.write(key);
 				}
 				bw.write("\n");
-				
+
 				for (final OmegaROI roi : rois) {
 					this.exportParticle(bw, startAtOne, newDataIdent,
 							newDataSep, roi, c, z, particleValues.get(roi));
 					bw.write("\n");
 				}
-				
+
 				bw.write("\n");
 				bw.close();
 				fw.close();
@@ -3292,7 +3293,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			}
 		}
 	}
-	
+
 	private void exportParticle(final BufferedWriter bw,
 			final boolean startAtOne, final String newDataIdent,
 			final String newDataSep, final OmegaROI roi, final int c,
@@ -3304,14 +3305,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		if (!startAtOne) {
 			frameIndex--;
 		}
-		
+
 		String roiID;
 		if (roi.getElementID() == -1) {
 			roiID = OmegaGUIConstants.NOT_ASSIGNED;
 		} else {
 			roiID = String.valueOf(roi.getElementID());
 		}
-		
+
 		buf.append(roiID);
 		buf.append(newDataSep);
 		buf.append(String.valueOf(frameIndex));
@@ -3331,55 +3332,55 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		bw.write(buf.toString());
 	}
-	
+
 	public void setImages(final Map<Integer, OmegaImage> images) {
 		this.images = images;
 	}
-	
+
 	public void setParticleDetectionRun(
 			final Map<Integer, Map<Integer, OmegaParticleDetectionRun>> detRuns) {
 		this.detRuns = detRuns;
 	}
-	
+
 	public void setParticleLinkingRun(
 			final Map<Integer, Map<Integer, OmegaParticleLinkingRun>> linkRuns) {
 		this.linkRuns = linkRuns;
 	}
-	
+
 	public void setTrackRelinkingRun(
 			final Map<Integer, Map<Integer, OmegaTrajectoriesRelinkingRun>> relinkRuns) {
 		this.relinkRuns = relinkRuns;
 	}
-	
+
 	public void setTrackSegmentationRun(
 			final Map<Integer, Map<Integer, OmegaTrajectoriesSegmentationRun>> segmRuns) {
 		this.segmRuns = segmRuns;
 	}
-	
+
 	public void setIntensityTrackingMeasuresRun(
 			final Map<Integer, Map<Integer, OmegaTrackingMeasuresIntensityRun>> measuresRuns) {
 		this.inteRuns = measuresRuns;
 	}
-	
+
 	public void setVelocityTrackingMeasuresRun(
 			final Map<Integer, Map<Integer, OmegaTrackingMeasuresVelocityRun>> measuresRuns) {
 		this.veloRuns = measuresRuns;
 	}
-	
+
 	public void setMobilityTrackingMeasuresRun(
 			final Map<Integer, Map<Integer, OmegaTrackingMeasuresMobilityRun>> measuresRuns) {
 		this.mobiRuns = measuresRuns;
 	}
-	
+
 	public void setDiffusivityTrackingMeasuresRun(
 			final Map<Integer, Map<Integer, OmegaTrackingMeasuresDiffusivityRun>> measuresRuns) {
 		this.diffRuns = measuresRuns;
 	}
-	
+
 	public void setSNRRun(final Map<Integer, Map<Integer, OmegaSNRRun>> snrRuns) {
 		this.snrRuns = snrRuns;
 	}
-	
+
 	public void resetAll() {
 		this.detRuns = null;
 		this.linkRuns = null;
@@ -3390,11 +3391,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		this.mobiRuns = null;
 		this.diffRuns = null;
 	}
-	
+
 	public void setExportLastOnly() {
 		this.exportLastOnly = true;
 	}
-	
+
 	public void setAnalysisRunPaths(final Map<OmegaAnalysisRun, String> paths) {
 		this.runPaths = paths;
 	}

@@ -31,7 +31,7 @@ import java.util.List;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsParticleLinking extends
         OmegaPluginEventAlgorithm {
@@ -45,7 +45,7 @@ public class OmegaPluginEventResultsParticleLinking extends
 		this(null, selections, element, params, resultingTrajectories);
 	}
 	
-	public OmegaPluginEventResultsParticleLinking(final OmegaPlugin source,
+	public OmegaPluginEventResultsParticleLinking(final OmegaPluginArchetype source,
 	        final List<OmegaElement> selections, final OmegaElement element,
 	        final List<OmegaParameter> params,
 			final List<OmegaTrajectory> resultingTrajectories) {

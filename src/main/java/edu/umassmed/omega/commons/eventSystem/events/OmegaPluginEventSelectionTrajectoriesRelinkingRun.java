@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionTrajectoriesRelinkingRun extends
 		OmegaPluginEventSelectionAnalysisRun {
@@ -19,7 +19,7 @@ public class OmegaPluginEventSelectionTrajectoriesRelinkingRun extends
 	}
 	
 	public OmegaPluginEventSelectionTrajectoriesRelinkingRun(
-			final OmegaPlugin source, final OmegaAnalysisRun analysisRun,
+			final OmegaPluginArchetype source, final OmegaAnalysisRun analysisRun,
 			final List<OmegaTrajectory> trajectories, final boolean isCurrent) {
 		super(source, analysisRun);
 		this.trajectories = trajectories;

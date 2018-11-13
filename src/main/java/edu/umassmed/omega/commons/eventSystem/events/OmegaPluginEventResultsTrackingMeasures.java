@@ -7,7 +7,7 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsTrackingMeasures extends
         OmegaPluginEventAlgorithm {
@@ -15,7 +15,7 @@ public class OmegaPluginEventResultsTrackingMeasures extends
 	// Diffusivity
 	private final Map<OmegaTrajectory, List<OmegaSegment>> segments;
 	
-	public OmegaPluginEventResultsTrackingMeasures(final OmegaPlugin source,
+	public OmegaPluginEventResultsTrackingMeasures(final OmegaPluginArchetype source,
 	        final List<OmegaElement> selections, final OmegaElement element,
 	        final List<OmegaParameter> params,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {

@@ -34,7 +34,7 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsParticleTracking extends
         OmegaPluginEventAlgorithm {
@@ -53,7 +53,7 @@ public class OmegaPluginEventResultsParticleTracking extends
 		        resultingTrajectories, resultingParticlesValues);
 	}
 	
-	public OmegaPluginEventResultsParticleTracking(final OmegaPlugin source,
+	public OmegaPluginEventResultsParticleTracking(final OmegaPluginArchetype source,
 	        final List<OmegaElement> selections, final OmegaElement element,
 	        final List<OmegaParameter> params,
 	        final Map<OmegaPlane, List<OmegaROI>> resultingParticles,

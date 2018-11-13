@@ -1,7 +1,7 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaImage;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionImage extends OmegaPluginEvent {
 	
@@ -11,7 +11,7 @@ public class OmegaPluginEventSelectionImage extends OmegaPluginEvent {
 		this(null, image);
 	}
 	
-	public OmegaPluginEventSelectionImage(final OmegaPlugin source,
+	public OmegaPluginEventSelectionImage(final OmegaPluginArchetype source,
 			final OmegaImage img) {
 		super(source);
 		this.image = img;

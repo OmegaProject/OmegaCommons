@@ -27,13 +27,13 @@
  *******************************************************************************/
 package edu.umassmed.omega.commons.exceptions;
 
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaCoreExceptionPluginMissingData extends OmegaCoreExceptionPlugin {
 
 	private static final long serialVersionUID = -8169438237589027577L;
 
-	public OmegaCoreExceptionPluginMissingData(final OmegaPlugin plugin) {
+	public OmegaCoreExceptionPluginMissingData(final OmegaPluginArchetype plugin) {
 		super(plugin, "missing omega data");
 	}
 }

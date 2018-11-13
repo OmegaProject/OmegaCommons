@@ -30,7 +30,7 @@ package edu.umassmed.omega.commons.eventSystem.events;
 import java.util.List;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventDataChanged extends OmegaPluginEvent {
 
@@ -40,13 +40,13 @@ public class OmegaPluginEventDataChanged extends OmegaPluginEvent {
 		this(null);
 	}
 
-	public OmegaPluginEventDataChanged(final OmegaPlugin source) {
+	public OmegaPluginEventDataChanged(final OmegaPluginArchetype source) {
 		super(source);
 
 		this.selectedData = null;
 	}
 
-	public OmegaPluginEventDataChanged(final OmegaPlugin source,
+	public OmegaPluginEventDataChanged(final OmegaPluginArchetype source,
 	        final List<OmegaElement> selectedData) {
 		super(source);
 		this.selectedData = selectedData;

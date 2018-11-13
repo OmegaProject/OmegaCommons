@@ -1,10 +1,10 @@
 package edu.umassmed.omega.commons.utilities;
 
-import edu.umassmed.omega.commons.plugins.OmegaAlgorithmPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaAlgorithmPluginArchetype;
 
 public class OperatingSystemUtilities {
 
-	public static boolean isPluginSupported(final OmegaAlgorithmPlugin plugin) {
+	public static boolean isPluginSupported(final OmegaAlgorithmPluginArchetype plugin) {
 		if (plugin.getSupportedPlatforms().contains(
 		        OperatingSystemUtilities.getOS()))
 			return true;

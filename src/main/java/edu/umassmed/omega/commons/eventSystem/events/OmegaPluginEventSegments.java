@@ -6,7 +6,7 @@ import java.util.Map;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSegments extends OmegaPluginEvent {
 
@@ -21,7 +21,7 @@ public class OmegaPluginEventSegments extends OmegaPluginEvent {
 		this(null, segments, segmTypes, selection);
 	}
 
-	public OmegaPluginEventSegments(final OmegaPlugin source,
+	public OmegaPluginEventSegments(final OmegaPluginArchetype source,
 	        final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final OmegaSegmentationTypes segmTypes, final boolean selection) {
 		super(source);

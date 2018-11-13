@@ -1,7 +1,7 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
 import edu.umassmed.omega.commons.data.analysisRunElements.OrphanedAnalysisContainer;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionOrphaned extends OmegaPluginEvent {
 
@@ -12,7 +12,7 @@ public class OmegaPluginEventSelectionOrphaned extends OmegaPluginEvent {
 		this(null, container);
 	}
 
-	public OmegaPluginEventSelectionOrphaned(final OmegaPlugin source,
+	public OmegaPluginEventSelectionOrphaned(final OmegaPluginArchetype source,
 			final OrphanedAnalysisContainer container) {
 		super(source);
 		this.container = container;

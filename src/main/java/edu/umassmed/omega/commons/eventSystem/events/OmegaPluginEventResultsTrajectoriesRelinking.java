@@ -30,7 +30,7 @@ import java.util.List;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsTrajectoriesRelinking extends
 OmegaPluginEventResultsParticleLinking {
@@ -42,7 +42,7 @@ OmegaPluginEventResultsParticleLinking {
 	}
 	
 	public OmegaPluginEventResultsTrajectoriesRelinking(
-	        final OmegaPlugin source, final List<OmegaElement> selections,
+	        final OmegaPluginArchetype source, final List<OmegaElement> selections,
 	        final OmegaElement element,
 			final List<OmegaTrajectory> resultingTrajectories) {
 		super(source, selections, element, null, resultingTrajectories);

@@ -1,7 +1,7 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaProject;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionProject extends OmegaPluginEvent {
 
@@ -11,7 +11,7 @@ public class OmegaPluginEventSelectionProject extends OmegaPluginEvent {
 		this(null, project);
 	}
 
-	public OmegaPluginEventSelectionProject(final OmegaPlugin source,
+	public OmegaPluginEventSelectionProject(final OmegaPluginArchetype source,
 			final OmegaProject project) {
 		super(source);
 		this.project = project;

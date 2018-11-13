@@ -28,7 +28,7 @@
 package edu.umassmed.omega.commons.eventSystem.events;
 
 import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventGateway extends OmegaPluginEvent {
 	public static final int STATUS_CREATED = 1;
@@ -40,11 +40,11 @@ public class OmegaPluginEventGateway extends OmegaPluginEvent {
 
 	private final OmegaExperimenter experimenter;
 
-	public OmegaPluginEventGateway(final OmegaPlugin source, final int status) {
+	public OmegaPluginEventGateway(final OmegaPluginArchetype source, final int status) {
 		this(source, status, null);
 	}
 
-	public OmegaPluginEventGateway(final OmegaPlugin source, final int status,
+	public OmegaPluginEventGateway(final OmegaPluginArchetype source, final int status,
 	        final OmegaExperimenter experimenter) {
 		super(source);
 		this.status = status;

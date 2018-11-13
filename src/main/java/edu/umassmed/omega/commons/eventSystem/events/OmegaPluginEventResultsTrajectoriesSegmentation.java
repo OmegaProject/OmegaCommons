@@ -33,7 +33,7 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegmentationTypes;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsTrajectoriesSegmentation extends
 OmegaPluginEventAlgorithm {
@@ -51,7 +51,7 @@ OmegaPluginEventAlgorithm {
 	}
 	
 	public OmegaPluginEventResultsTrajectoriesSegmentation(
-	        final OmegaPlugin source, final List<OmegaElement> selections,
+	        final OmegaPluginArchetype source, final List<OmegaElement> selections,
 	        final OmegaElement element,
 			final Map<OmegaTrajectory, List<OmegaSegment>> resultingSegments,
 			final OmegaSegmentationTypes segmentationTypes) {

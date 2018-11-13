@@ -33,7 +33,7 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 
@@ -114,7 +114,7 @@ public class OmegaPluginEventResultsSNR extends OmegaPluginEventAlgorithm {
 				resultingMinErrorIndexSNR, resultingMaxErrorIndexSNR);
 	}
 
-	public OmegaPluginEventResultsSNR(final OmegaPlugin source,
+	public OmegaPluginEventResultsSNR(final OmegaPluginArchetype source,
 			final List<OmegaElement> selections, final OmegaElement element,
 			final List<OmegaParameter> params,
 			final Map<OmegaPlane, Double> resultingImageAvgCenterSignal,

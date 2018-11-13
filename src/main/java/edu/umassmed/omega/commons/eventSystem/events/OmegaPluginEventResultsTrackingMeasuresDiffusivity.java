@@ -9,7 +9,7 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaTrackingMeasures
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsTrackingMeasuresDiffusivity extends
 		OmegaPluginEventResultsTrackingMeasures {
@@ -35,7 +35,7 @@ public class OmegaPluginEventResultsTrackingMeasuresDiffusivity extends
 	private final Double minDetectableODC;
 	
 	public OmegaPluginEventResultsTrackingMeasuresDiffusivity(
-			final OmegaPlugin source,
+			final OmegaPluginArchetype source,
 			final List<OmegaElement> selections,
 			final OmegaElement element,
 			final List<OmegaParameter> params,

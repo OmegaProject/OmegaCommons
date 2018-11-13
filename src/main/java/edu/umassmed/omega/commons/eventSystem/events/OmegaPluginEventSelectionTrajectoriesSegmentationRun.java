@@ -6,7 +6,7 @@ import java.util.Map;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventSelectionTrajectoriesSegmentationRun extends
 		OmegaPluginEventSelectionAnalysisRun {
@@ -22,7 +22,7 @@ public class OmegaPluginEventSelectionTrajectoriesSegmentationRun extends
 	}
 	
 	public OmegaPluginEventSelectionTrajectoriesSegmentationRun(
-			final OmegaPlugin source, final OmegaAnalysisRun analysisRun,
+			final OmegaPluginArchetype source, final OmegaAnalysisRun analysisRun,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segmentsMap,
 			final boolean isCurrent) {
 		super(source, null);

@@ -32,7 +32,7 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.coreElements.OmegaPlane;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventPreviewParticleDetection extends
 OmegaPluginEventAlgorithm {
@@ -47,7 +47,7 @@ OmegaPluginEventAlgorithm {
 		this(null, selections, element, params, frame, resultingParticles);
 	}
 	
-	public OmegaPluginEventPreviewParticleDetection(final OmegaPlugin source,
+	public OmegaPluginEventPreviewParticleDetection(final OmegaPluginArchetype source,
 	        final List<OmegaElement> selections, final OmegaElement element,
 	        final List<OmegaParameter> params, final OmegaPlane frame,
 	        final List<OmegaROI> resultingParticles) {

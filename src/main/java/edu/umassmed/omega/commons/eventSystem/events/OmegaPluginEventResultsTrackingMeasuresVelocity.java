@@ -7,7 +7,7 @@ import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsTrackingMeasuresVelocity extends
 		OmegaPluginEventResultsTrackingMeasures {
@@ -21,7 +21,7 @@ public class OmegaPluginEventResultsTrackingMeasuresVelocity extends
 	private final Map<OmegaSegment, Double> forwardProgressionLinearityMap;
 
 	public OmegaPluginEventResultsTrackingMeasuresVelocity(
-			final OmegaPlugin source, final List<OmegaElement> selections,
+			final OmegaPluginArchetype source, final List<OmegaElement> selections,
 			final OmegaElement element, final List<OmegaParameter> params,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, List<Double>> localSpeedMap,

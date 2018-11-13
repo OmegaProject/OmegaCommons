@@ -49,28 +49,28 @@ import edu.umassmed.omega.commons.utilities.OmegaStringUtilities;
 // TODO just copied from the importer, needs to be review to export a list of
 // tracks
 public class OmegaTracksImporter extends OmegaIOUtility {
-	
+
 	private final Map<Integer, OmegaPlane> frames;
 	private final Map<OmegaPlane, List<OmegaROI>> particles;
 	private final Map<OmegaROI, Map<String, Object>> particlesValues;
 	private final List<OmegaTrajectory> tracks;
-	
+
 	private final Map<Integer, String> parents;
 	private final Map<String, String> analysisDataMap, paramMap;
 	private boolean isReadingParams, isReadingParents;
-	
+
 	private OmegaTracksToolDialog dialog;
-	
+
 	private OmegaAnalysisRunContainerInterface container;
-	
+
 	private OmegaSegmentationTypes segmTypes;
-	
+
 	public static int IMPORTER_MODE_NOT_SET = -1;
 	public static int IMPORTER_MODE_PARTICLES = 0;
 	public static int IMPORTER_MODE_TRACKS = 1;
 	public static int IMPORTER_MODE_OMEGA = 2;
 	private int mode;
-	
+
 	private static List<String> dataNames = new ArrayList<String>();
 	static {
 		OmegaTracksImporter.dataNames.add(OmegaParticleDetectionRun
@@ -91,49 +91,49 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				.getStaticDisplayName());
 		OmegaTracksImporter.dataNames.add(OmegaSNRRun.getStaticDisplayName());
 	}
-	
+
 	public OmegaTracksImporter(final RootPaneContainer parent) {
 		this.frames = new LinkedHashMap<Integer, OmegaPlane>();
 		this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		this.particlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>();
 		this.tracks = new ArrayList<OmegaTrajectory>();
-		
+
 		this.dialog = new OmegaTracksToolDialog(parent, true, true, this);
-		
+
 		this.container = null;
-		
+
 		this.mode = OmegaTracksImporter.IMPORTER_MODE_NOT_SET;
-		
+
 		this.parents = new LinkedHashMap<Integer, String>();
 		this.analysisDataMap = new LinkedHashMap<String, String>();
 		this.paramMap = new LinkedHashMap<String, String>();
 		this.isReadingParams = false;
 		this.isReadingParents = false;
-		
+
 		this.segmTypes = null;
 	}
-	
+
 	public OmegaTracksImporter() {
 		this.frames = new LinkedHashMap<Integer, OmegaPlane>();
 		this.particles = new LinkedHashMap<OmegaPlane, List<OmegaROI>>();
 		this.particlesValues = new LinkedHashMap<OmegaROI, Map<String, Object>>();
 		this.tracks = new ArrayList<OmegaTrajectory>();
-		
+
 		this.dialog = null;
-		
+
 		this.container = null;
-		
+
 		this.mode = OmegaTracksImporter.IMPORTER_MODE_NOT_SET;
-		
+
 		this.parents = new LinkedHashMap<Integer, String>();
 		this.analysisDataMap = new LinkedHashMap<String, String>();
 		this.paramMap = new LinkedHashMap<String, String>();
 		this.isReadingParams = false;
 		this.isReadingParents = false;
-		
+
 		this.segmTypes = null;
 	}
-	
+
 	public void showDialog(final RootPaneContainer parent) {
 		if (this.dialog == null) {
 			this.dialog = new OmegaTracksToolDialog(parent, true, true, this);
@@ -143,7 +143,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		this.dialog.updateParentContainer(parent);
 		this.dialog.setVisible(true);
 	}
-	
+
 	public void setMode(final int mode) {
 		if ((mode != OmegaTracksImporter.IMPORTER_MODE_PARTICLES)
 				&& (mode != OmegaTracksImporter.IMPORTER_MODE_TRACKS)
@@ -153,14 +153,14 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					+ OmegaTracksImporter.class.getName());
 		this.mode = mode;
 	}
-	
+
 	public void importData(final boolean multifile, final String fileNameIdent,
 			final boolean hasSubFolders, final String dataIdentifier,
 			final String particleIdent, final boolean startAtOne,
 			final String commentIdent, final String lineSep,
 			final List<String> particleDataOrder, final File sourceFolder)
 			throws IllegalArgumentException, IOException, ParseException {
-		
+
 		this.particles.clear();
 		this.particlesValues.clear();
 		this.tracks.clear();
@@ -169,7 +169,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		this.paramMap.clear();
 		this.isReadingParams = false;
 		this.isReadingParents = false;
-		
+
 		String newTargetIdent = "";
 		if (dataIdentifier != null) {
 			newTargetIdent = dataIdentifier;
@@ -190,7 +190,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			newCommentIdent = commentIdent;
 			newCommentIdent = newCommentIdent.replace("TAB", "\t");
 		}
-		
+
 		if (this.mode == OmegaTracksImporter.IMPORTER_MODE_NOT_SET)
 			throw new IllegalArgumentException(
 					OmegaTracksImporter.class.getName()
@@ -209,7 +209,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					newLineSep, sourceFolder, this.segmTypes);
 		}
 	}
-	
+
 	private Map<String, List<File>> listAllFilesByType(final File sourceFolder,
 			final String newCommentIdent, final String newLineSep)
 			throws IOException {
@@ -238,7 +238,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		}
 		return files;
 	}
-	
+
 	private Map<File, String> listAllFiles(final File sourceFolder) {
 		final Map<File, String> files = new LinkedHashMap<File, String>();
 		for (final File f : sourceFolder.listFiles()) {
@@ -248,7 +248,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final String name = f.getName().substring(0,
 					f.getName().lastIndexOf("."));
 			files.put(f, name);
-			
+
 		}
 		for (final File f : sourceFolder.listFiles()) {
 			if (f.isFile()) {
@@ -258,7 +258,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		}
 		return files;
 	}
-	
+
 	private void importData(final boolean multifile,
 			final String fileNameIdent, final boolean hasSubFolders,
 			final String newTargetIdent, final String newDataIdent,
@@ -276,7 +276,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		final Map<String, List<File>> filesByType = this.listAllFilesByType(
 				sourceFolder, newCommentIdent, newLineSep);
 		final Map<String, OmegaImporterEventResultsOmegaData> events = new LinkedHashMap<String, OmegaImporterEventResultsOmegaData>();
-		
+
 		// TODO need to check which files are necessary
 		for (final File f : filesByType.get(OmegaParticleDetectionRun
 				.getStaticDisplayName())) {
@@ -377,14 +377,14 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					segmTypes, startAtOne);
 			events.put(fileName, evt);
 		}
-
-		System.out.println(events);
 		
+		System.out.println(events);
+
 		for (final String evtName : events.keySet()) {
 			final OmegaImporterEventResultsOmegaData evt = events.get(evtName);
 			this.fireEvent(evt);
 		}
-
+		
 		// for (final File f1 : sourceFolder.listFiles()) {
 		// isValid = true;
 		// }
@@ -393,26 +393,28 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		// sourceFolder +
 		// " has to contain at least 1 file containing the given file name identifier");
 	}
-	
+
 	private Map<String, List<File>> getFilesGroup(final List<File> fileList,
 			final Map<File, String> fileNames) {
 		final Map<String, List<File>> groupedFiles = new LinkedHashMap<String, List<File>>();
-		for (final File f : fileList) {
-			final String name = fileNames.get(f);
-			final int index = name.lastIndexOf("_");
-			final String originalName = name.substring(0, index);
-			List<File> files;
-			if (groupedFiles.containsKey(originalName)) {
-				files = groupedFiles.get(originalName);
-			} else {
-				files = new ArrayList<File>();
+		if (fileList != null) {
+			for (final File f : fileList) {
+				final String name = fileNames.get(f);
+				final int index = name.lastIndexOf("_");
+				final String originalName = name.substring(0, index);
+				List<File> files;
+				if (groupedFiles.containsKey(originalName)) {
+					files = groupedFiles.get(originalName);
+				} else {
+					files = new ArrayList<File>();
+				}
+				files.add(f);
+				groupedFiles.put(originalName, files);
 			}
-			files.add(f);
-			groupedFiles.put(originalName, files);
 		}
 		return groupedFiles;
 	}
-	
+
 	private String getDataType(final File f, final String newCommentIdent,
 			final String newLineSep) throws IOException {
 		final FileReader fr = new FileReader(f);
@@ -438,7 +440,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		fr.close();
 		return dynamicDisplayName;
 	}
-
+	
 	private String getFileType(final File f, final String newCommentIdent,
 			final String newLineSep) throws IOException {
 		final FileReader fr = new FileReader(f);
@@ -463,7 +465,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		fr.close();
 		return null;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaData importAnalysis(
 			final List<File> files, final String dynamicDisplayName,
 			final String newDataIdent, final String newCommentIdent,
@@ -471,20 +473,20 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final Map<String, OmegaImporterEventResultsOmegaData> events,
 			final OmegaSegmentationTypes segmTypes, final boolean startAtOne)
 			throws IOException, ParseException {
-		
+
 		final Map<String, String> analysisDataMap = new LinkedHashMap<String, String>();
 		final Map<String, String> paramDataMap = new LinkedHashMap<String, String>();
 		final Map<Integer, String> parents = new LinkedHashMap<Integer, String>();
-		
+
 		final List<Map<Integer, List<String[]>>> data = new ArrayList<Map<Integer, List<String[]>>>();
 		final List<String> lineHeaders = new ArrayList<String>();
 		for (final File f : files) {
-			
+
 			final String fileType = this.getFileType(f, newCommentIdent,
 					newLineSep);
 			final String typeIdentifier = this.findTypeIdentifier(fileType,
 					dynamicDisplayName);
-			
+
 			final FileReader fr = new FileReader(f);
 			final BufferedReader br = new BufferedReader(fr);
 			boolean isDataLineNext = false;
@@ -547,7 +549,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			data.add(localData);
 			lineHeaders.add(lineHeader);
 		}
-		
+
 		if (dynamicDisplayName.equals(OmegaTrackingMeasuresIntensityRun
 				.getStaticDisplayName())) {
 			final String detectionName = parents
@@ -639,7 +641,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					parents, startAtOne);
 		return null;
 	}
-
+	
 	private OmegaImporterEventResultsOmegaTrackingMeasuresDiffusivity importTrackingMeasuresDiffusivityAnalysis(
 			final List<String> lineHeaders,
 			final List<Map<Integer, List<String[]>>> dataList,
@@ -647,7 +649,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final Map<String, String> paramDataMap,
 			final Map<Integer, String> parents,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		
+
 		Double minDetectableODC = null;
 		if (paramDataMap
 				.containsKey(OmegaGUIConstants.RESULTS_DIFFISIVITY_MIN_DET_ODC)) {
@@ -655,11 +657,11 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					.get(OmegaGUIConstants.RESULTS_DIFFISIVITY_MIN_DET_ODC);
 			minDetectableODC = Double.valueOf(minDetODCS);
 		}
-
+		
 		final Map<OmegaSegment, Double[]> gammaLog = new LinkedHashMap<OmegaSegment, Double[]>();
 		final Map<OmegaSegment, Double[]> smssLog = new LinkedHashMap<OmegaSegment, Double[]>();
 		final Map<OmegaSegment, Double[]> errorsLog = new LinkedHashMap<OmegaSegment, Double[]>();
-
+		
 		final Map<OmegaSegment, List<Double>> nyList = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, Map<Double, List<Double>>> muList = new LinkedHashMap<OmegaSegment, Map<Double, List<Double>>>();
 		final Map<OmegaSegment, Map<Double, List<Double>>> logMuList = new LinkedHashMap<OmegaSegment, Map<Double, List<Double>>>();
@@ -667,7 +669,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		final Map<OmegaSegment, Map<Double, List<Double>>> logDeltaTList = new LinkedHashMap<OmegaSegment, Map<Double, List<Double>>>();
 		final Map<OmegaSegment, Map<Double, List<Double>>> gammaDList = new LinkedHashMap<OmegaSegment, Map<Double, List<Double>>>();
 		final Map<OmegaSegment, Map<Double, List<Double>>> gammaDLogList = new LinkedHashMap<OmegaSegment, Map<Double, List<Double>>>();
-
+		
 		for (int k = 0; k < lineHeaders.size(); k++) {
 			final String[] headers = lineHeaders.get(k).split(newLineSep);
 			final Map<Integer, List<String[]>> data = dataList.get(k);
@@ -852,7 +854,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 							nyListLocal.add(nu);
 						}
 						nyList.put(segm, nyListLocal);
-						
+
 						if ((gammaLoc1 != null) && (gammaLoc2 != null)
 								&& (gammaLoc3 != null) && (gammaLoc4 != null)) {
 							final List<Double> gammaD = new ArrayList<Double>();
@@ -869,7 +871,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 							gammaListLocal.put(nu, gammaD);
 							gammaDList.put(segm, gammaListLocal);
 						}
-						
+
 						if ((gammaLogLoc1 != null) && (gammaLogLoc2 != null)
 								&& (gammaLogLoc3 != null)
 								&& (gammaLogLoc4 != null)) {
@@ -887,7 +889,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 							gammaLogListLocal.put(nu, gammaDLog);
 							gammaDLogList.put(segm, gammaLogListLocal);
 						}
-						
+
 						if (muLoc != null) {
 							Map<Double, List<Double>> muListLocal;
 							if (muList.containsKey(segm)) {
@@ -960,7 +962,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				}
 			}
 		}
-		
+
 		final Map<OmegaSegment, Double[]> ny = this.transformMap(nyList);
 		Map<OmegaSegment, Double[][]> mu = null;
 		if (!muList.isEmpty()) {
@@ -986,7 +988,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		if (!gammaDLogList.isEmpty()) {
 			gammaDLog = this.transformDoubleMap(gammaDLogList, true);
 		}
-
+		
 		final OmegaImporterEventResultsOmegaTrackingMeasuresDiffusivity evt = new OmegaImporterEventResultsOmegaTrackingMeasuresDiffusivity(
 				this, this.container, parents, analysisDataMap, paramDataMap,
 				segments, ny, mu, logMu, deltaT, logDeltaT, gammaD, gammaDLog,
@@ -994,7 +996,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaTrackingMeasuresMobility importTrackingMeasuresMobilityAnalysis(
 			final List<String> lineHeaders,
 			final List<Map<Integer, List<String[]>>> dataList,
@@ -1002,7 +1004,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final Map<String, String> paramDataMap,
 			final Map<Integer, String> parents,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		
+
 		final Map<OmegaSegment, List<Double>> localDistancesFromOrigin = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, List<Double>> localDisplacementsFromOrigin = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, List<Double>> localConfinementRatios = new LinkedHashMap<OmegaSegment, List<Double>>();
@@ -1010,7 +1012,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		final Map<OmegaSegment, List<Double>> timeTraveled = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, Double> maxDisplacementes = new LinkedHashMap<OmegaSegment, Double>();
 		final Map<OmegaSegment, List<Double>> localDistances = new LinkedHashMap<OmegaSegment, List<Double>>();
-		
+
 		for (int k = 0; k < lineHeaders.size(); k++) {
 			final String[] headers = lineHeaders.get(k).split(newLineSep);
 			final Map<Integer, List<String[]>> data = dataList.get(k);
@@ -1202,7 +1204,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				}
 			}
 		}
-		
+
 		final OmegaImporterEventResultsOmegaTrackingMeasuresMobility evt = new OmegaImporterEventResultsOmegaTrackingMeasuresMobility(
 				this, this.container, parents, analysisDataMap, paramDataMap,
 				segments, localDistances, localDistancesFromOrigin,
@@ -1211,7 +1213,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-
+	
 	private OmegaImporterEventResultsOmegaTrackingMeasuresVelocity importTrackingMeasuresVelocityAnalysis(
 			final List<String> lineHeaders,
 			final List<Map<Integer, List<String[]>>> dataList,
@@ -1219,14 +1221,14 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final Map<String, String> paramDataMap,
 			final Map<Integer, String> parents,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments) {
-		
+
 		final Map<OmegaSegment, List<Double>> localSpeedMap = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, List<Double>> localSpeedFromOriginMap = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, List<Double>> localVelocityFromOriginMap = new LinkedHashMap<OmegaSegment, List<Double>>();
 		final Map<OmegaSegment, Double> averageCurvilinearSpeedMap = new LinkedHashMap<OmegaSegment, Double>();
 		final Map<OmegaSegment, Double> averageStraightLineVelocityMap = new LinkedHashMap<OmegaSegment, Double>();
 		final Map<OmegaSegment, Double> forwardProgressionLinearityMap = new LinkedHashMap<OmegaSegment, Double>();
-		
+
 		for (int k = 0; k < lineHeaders.size(); k++) {
 			final String[] headers = lineHeaders.get(k).split(newLineSep);
 			final Map<Integer, List<String[]>> data = dataList.get(k);
@@ -1381,7 +1383,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaTrackingMeasuresIntensity importTrackingMeasuresIntensityAnalysis(
 			final List<String> lineHeaders,
 			final List<Map<Integer, List<String[]>>> dataList,
@@ -1391,12 +1393,12 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			final Map<OmegaPlane, List<OmegaROI>> particles,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final boolean startAtOne) {
-		
+
 		final Map<OmegaSegment, Double[]> peakSignalsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		final Map<OmegaSegment, Double[]> centroidSignalsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		final Map<OmegaROI, Double> peakSignalsLocMap = new LinkedHashMap<OmegaROI, Double>();
 		final Map<OmegaROI, Double> centroidSignalsLocMap = new LinkedHashMap<OmegaROI, Double>();
-		
+
 		final Map<OmegaSegment, Double[]> meanSignalsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		final Map<OmegaSegment, Double[]> backgroundsMap = new LinkedHashMap<OmegaSegment, Double[]>();
 		final Map<OmegaSegment, Double[]> noisesMap = new LinkedHashMap<OmegaSegment, Double[]>();
@@ -1407,7 +1409,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		final Map<OmegaROI, Double> noisesLocMap = new LinkedHashMap<OmegaROI, Double>();
 		final Map<OmegaROI, Double> areasLocMap = new LinkedHashMap<OmegaROI, Double>();
 		final Map<OmegaROI, Double> snrsLocMap = new LinkedHashMap<OmegaROI, Double>();
-		
+
 		for (int k = 0; k < lineHeaders.size(); k++) {
 			final String[] headers = lineHeaders.get(k).split(newLineSep);
 			final Map<Integer, List<String[]>> data = dataList.get(k);
@@ -1624,7 +1626,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 									snrMax });
 						}
 					}
-					
+
 					if (particleID != null) {
 						if (peak != null) {
 							peakSignalsLocMap.put(roiMatch, peak);
@@ -1658,7 +1660,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaTrajectoriesSegmentation importTrajectoriesSegmentationAnalysis(
 			final String lineHeader, final Map<Integer, List<String[]>> data,
 			final String newLineSep, final Map<String, String> analysisDataMap,
@@ -1776,7 +1778,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaTrajectoriesRelinking importTrajectoriesRelinkingAnalysis(
 			final String lineHeader, final Map<Integer, List<String[]>> data,
 			final String newLineSep, final Map<String, String> analysisDataMap,
@@ -1795,7 +1797,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return relinkingEvt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaParticleLinking importParticleLinkingAnalysis(
 			final String lineHeader, final Map<Integer, List<String[]>> data,
 			final String newLineSep, final Map<String, String> analysisDataMap,
@@ -1889,7 +1891,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				tracks, OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaSNR importSNRAnalysis(
 			final List<String> lineHeaders,
 			final List<Map<Integer, List<String[]>>> dataList,
@@ -1932,7 +1934,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		Double resultingAvgErrorIndexSNR = null;
 		Double resultingMinErrorIndexSNR = null;
 		Double resultingMaxErrorIndexSNR = null;
-
+		
 		for (int k = 0; k < lineHeaders.size(); k++) {
 			final String[] headers = lineHeaders.get(k).split(newLineSep);
 			final Map<Integer, List<String[]>> data = dataList.get(k);
@@ -2105,7 +2107,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 									errorIndexSNRMax);
 						}
 					}
-					
+
 					if (imageID != null) {
 						resultingAvgCenterSignal = centroidAvg;
 						resultingAvgPeakSignal = peakAvg;
@@ -2122,7 +2124,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				}
 			}
 		}
-		
+
 		final OmegaImporterEventResultsOmegaSNR evt = new OmegaImporterEventResultsOmegaSNR(
 				this, this.container, parents, analysisDataMap, paramDataMap,
 				resultingImageAvgCenterSignal, resultingImageAvgPeakSignal,
@@ -2143,7 +2145,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private OmegaImporterEventResultsOmegaParticleDetection importParticleDetectionAnalysis(
 			final String lineHeader, final Map<Integer, List<String[]>> data,
 			final String newLineSep, final Map<String, String> analysisDataMap,
@@ -2206,7 +2208,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		return evt;
 	}
-	
+
 	private Map<OmegaSegment, Double[][]> transformDoubleMap(
 			final Map<OmegaSegment, Map<Double, List<Double>>> map,
 			final boolean keyIsDouble) {
@@ -2235,7 +2237,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		}
 		return newMap;
 	}
-	
+
 	private Map<OmegaSegment, Double[]> transformMap(
 			final Map<OmegaSegment, List<Double>> map) {
 		final Map<OmegaSegment, Double[]> newMap = new LinkedHashMap<OmegaSegment, Double[]>();
@@ -2249,7 +2251,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		}
 		return newMap;
 	}
-	
+
 	private void addValueInMap(final Map<OmegaSegment, List<Double[]>> map,
 			final OmegaSegment segm, final Double[] value) {
 		List<Double[]> locValues;
@@ -2261,7 +2263,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		locValues.add(value);
 		map.put(segm, locValues);
 	}
-	
+
 	private void addValueInMap(final Map<OmegaSegment, List<Double>> map,
 			final OmegaSegment segm, final Double value) {
 		List<Double> locValues;
@@ -2273,7 +2275,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		locValues.add(value);
 		map.put(segm, locValues);
 	}
-	
+
 	private String findTypeIdentifier(final String fileType,
 			final String dynamicDisplayName) {
 		for (final String dynName : OmegaTracksImporter.dataNames) {
@@ -2304,7 +2306,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					return "Trajectory";
 				else
 					return "Segment";
-
+			
 			else if (dynName.equals(OmegaSNRRun.getStaticDisplayName()))
 				if (fileType.equals(OmegaGUIConstants.INFO_FILE_TYPE_SNR_IMAGE))
 					return "Image";
@@ -2313,7 +2315,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		}
 		return null;
 	}
-	
+
 	private void importParticles(final String fileNameIdent,
 			final String planeIdentifier, final String particleIdent,
 			final boolean startAtOne, final String commentIdent,
@@ -2327,7 +2329,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			throw new IllegalArgumentException("The destination folder: "
 					+ sourceFolder + " has to be not empty");
 		boolean isValid = false;
-		
+
 		for (final File f : sourceFolder.listFiles()) {
 			final String fName = f.getName();
 			if (!fName.matches(fileNameIdent)
@@ -2347,7 +2349,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					"The source folder: "
 							+ sourceFolder
 							+ " has to contain at least 1 file containing the given file name identifier");
-		
+
 		final LinkedHashMap<String, String> analysisData = new LinkedHashMap<String, String>(
 				this.analysisDataMap);
 		final LinkedHashMap<String, String> paramData = new LinkedHashMap<String, String>(
@@ -2362,10 +2364,10 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				resultingParticles, resultingParticlesValues,
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		this.fireEvent(evt);
-		
+
 		// this.fireEvent(evt);
 	}
-	
+
 	// TODO change IllegalArgumentException with a custom exception
 	private void importTrajectories(final boolean multifile,
 			final String fileNameIdent, final String dataIdent,
@@ -2380,7 +2382,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			throw new IllegalArgumentException("The destination folder: "
 					+ sourceFolder + " has to be not empty");
 		boolean isValid = false;
-		
+
 		Double fileCounter = 0.0;
 		for (final File f : sourceFolder.listFiles()) {
 			final String fName = f.getName();
@@ -2403,7 +2405,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 					"The source folder: "
 							+ sourceFolder
 							+ " has to contain at least 1 file containing the given file name identifier");
-		
+
 		final List<OmegaTrajectory> toRemoveTracks = new ArrayList<OmegaTrajectory>();
 		for (final OmegaTrajectory t : this.tracks) {
 			t.recalculateLength();
@@ -2416,7 +2418,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			throw new IllegalArgumentException(
 					"Something wrong with parameters: no tracks have been found in "
 							+ sourceFolder);
-		
+
 		final LinkedHashMap<String, String> analysisData = new LinkedHashMap<String, String>(
 				this.analysisDataMap);
 		final LinkedHashMap<String, String> paramData = new LinkedHashMap<String, String>(
@@ -2434,7 +2436,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				OmegaDataToolConstants.COMPLETE_CHAIN_AFTER_IMPORT);
 		this.fireEvent(evt);
 	}
-	
+
 	private void importParticles(final String fileName,
 			final String planeIdentifier, final String particleIdent,
 			final boolean startAtOne, final String commentIdent,
@@ -2450,7 +2452,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				line = br.readLine();
 				continue;
 			}
-			
+
 			if (((commentIdent != null) && !commentIdent.isEmpty())
 					&& line.startsWith(commentIdent)) {
 				this.importAnalysisData(this.analysisDataMap, this.paramMap,
@@ -2458,7 +2460,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				line = br.readLine();
 				continue;
 			}
-			
+
 			if (((particleIdent != null) && !particleIdent.isEmpty())
 					&& line.startsWith(particleIdent)) {
 				line = line.replaceFirst(particleIdent, "");
@@ -2471,7 +2473,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			line = br.readLine();
 		}
 	}
-	
+
 	private void importAnalysisData(final Map<String, String> analysisDataMap,
 			final Map<String, String> paramMap,
 			final Map<Integer, String> parents, final String commentIdent,
@@ -2563,7 +2565,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			}
 		}
 	}
-	
+
 	private void importTrajectories(final boolean multifile,
 			final String fileName, final Double fileCounter,
 			final String dataIdent, final String particleIdent,
@@ -2591,7 +2593,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				line = br.readLine();
 				continue;
 			}
-			
+
 			if (((commentIdent != null) && !commentIdent.isEmpty())
 					&& line.startsWith(commentIdent)
 					&& !line.startsWith(commentIdent + dataIdent)) {
@@ -2600,7 +2602,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				line = br.readLine();
 				continue;
 			}
-			
+
 			if (!multifile && ((dataIdent != null) && !dataIdent.isEmpty())
 					&& line.startsWith(dataIdent)) {
 				final String name = OmegaStringUtilities.removeSymbols(line);
@@ -2614,7 +2616,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				// trajectory.setName(name1 + "_" + name2);
 				this.tracks.add(trajectory);
 			}
-			
+
 			Integer tmpTrackIndex = -1;
 			if (particleDataOrder
 					.contains(OmegaDataToolConstants.PARTICLE_TRACKINDEX)) {
@@ -2623,7 +2625,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				final String s = line.split(lineSep)[ind];
 				tmpTrackIndex = Integer.valueOf(s);
 			}
-			
+
 			if (((particleIdent != null) && !particleIdent.isEmpty())
 					&& line.startsWith(particleIdent) && (trajectory != null)) {
 				line = line.replaceFirst(particleIdent, "");
@@ -2659,7 +2661,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			line = br.readLine();
 		}
 	}
-	
+
 	private OmegaParticle importParticle(final boolean startAtOne,
 			final String lineSep, final List<String> particleDataOrder,
 			final String particleToImport) throws IllegalArgumentException {
@@ -2727,7 +2729,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 				}
 			}
 		}
-		
+
 		OmegaPlane frame;
 		if (this.frames.containsKey(frameIndex)) {
 			frame = this.frames.get(frameIndex);
@@ -2735,7 +2737,7 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 			frame = new OmegaPlane(frameIndex);
 			this.frames.put(frameIndex, frame);
 		}
-		
+
 		List<OmegaROI> rois;
 		if (this.particles.containsKey(frame)) {
 			rois = this.particles.get(frame);
@@ -2745,49 +2747,49 @@ public class OmegaTracksImporter extends OmegaIOUtility {
 		rois.add(p);
 		this.particles.put(frame, rois);
 		this.particlesValues.put(p, particleValues);
-		
+
 		return p;
 	}
-	
+
 	public Map<Integer, String> getParents() {
 		return this.parents;
 	}
-	
+
 	public Map<String, String> getAnalysisData() {
 		return this.analysisDataMap;
 	}
-	
+
 	public Map<String, String> getParametersData() {
 		return this.paramMap;
 	}
-	
+
 	public Map<Integer, OmegaPlane> getFrames() {
 		return this.frames;
 	}
-	
+
 	public Map<OmegaPlane, List<OmegaROI>> getParticles() {
 		return this.particles;
 	}
-	
+
 	public Map<OmegaROI, Map<String, Object>> getParticlesValues() {
 		return this.particlesValues;
 	}
-	
+
 	public List<OmegaTrajectory> getTracks() {
 		return this.tracks;
 	}
-	
+
 	public void reset() {
 		this.frames.clear();
 		this.particles.clear();
 		this.particlesValues.clear();
 		this.tracks.clear();
 	}
-	
+
 	public void setContainer(final OmegaAnalysisRunContainerInterface container) {
 		this.container = container;
 	}
-	
+
 	public void setSegmentationTypes(final OmegaSegmentationTypes segmTypes) {
 		this.segmTypes = segmTypes;
 	}

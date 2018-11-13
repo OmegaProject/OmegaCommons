@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 import edu.umassmed.omega.commons.utilities.OmegaFileUtilities;
 
 public class OmegaLogFileManager implements UncaughtExceptionHandler {
@@ -33,7 +33,7 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 	private final File logsDir;
 	
 	private final File awtLogFile, generalUnhandledException, generalLogFile;
-	private final Map<OmegaPlugin, File> pluginLogFileMap;
+	private final Map<OmegaPluginArchetype, File> pluginLogFileMap;
 	
 	static {
 		OmegaLogFileManager.instance = new OmegaLogFileManager();
@@ -86,12 +86,12 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 		Thread.currentThread().setUncaughtExceptionHandler(this);
 	}
 	
-	public static void markPluginsNewRun(final List<OmegaPlugin> plugins) {
+	public static void markPluginsNewRun(final List<OmegaPluginArchetype> plugins) {
 		final List<File> files = new ArrayList<>();
 		final List<String> messages = new ArrayList<>();
 		final String msg = "Application started!";
 		messages.add(msg);
-		for (final OmegaPlugin plugin : plugins) {
+		for (final OmegaPluginArchetype plugin : plugins) {
 			final File f = OmegaLogFileManager.instance
 					.createNewLogFile(plugin);
 			OmegaLogFileManager.instance.pluginLogFileMap.put(plugin, f);
@@ -214,7 +214,7 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 		}
 	}
 	
-	public static void handlePluginException(final OmegaPlugin plugin,
+	public static void handlePluginException(final OmegaPluginArchetype plugin,
 			final Throwable t, final boolean isShowStopper) {
 		final List<String> messages = new ArrayList<>();
 		final List<Throwable> throwables = new ArrayList<>();
@@ -276,13 +276,13 @@ public class OmegaLogFileManager implements UncaughtExceptionHandler {
 		}
 	}
 	
-	private File createNewLogFile(final OmegaPlugin plugin) {
+	private File createNewLogFile(final OmegaPluginArchetype plugin) {
 		final String logFileName = OmegaLogFileManager.PLUGIN_LOG_NAME
 				+ plugin.getName().replace(" ", "") + ".log";
 		return new File(this.logsDir.getPath() + File.separator + logFileName);
 	}
 	
-	public static void appendToPluginLog(final OmegaPlugin plugin,
+	public static void appendToPluginLog(final OmegaPluginArchetype plugin,
 			final String msg) {
 		final List<String> messages = new ArrayList<>();
 		messages.add(msg);

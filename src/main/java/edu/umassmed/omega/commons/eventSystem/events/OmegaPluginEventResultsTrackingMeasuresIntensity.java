@@ -9,7 +9,7 @@ import edu.umassmed.omega.commons.data.coreElements.OmegaElement;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaROI;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaSegment;
 import edu.umassmed.omega.commons.data.trajectoryElements.OmegaTrajectory;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public class OmegaPluginEventResultsTrackingMeasuresIntensity extends
 		OmegaPluginEventResultsTrackingMeasures {
@@ -38,7 +38,7 @@ public class OmegaPluginEventResultsTrackingMeasuresIntensity extends
 	// SNR related END
 	
 	public OmegaPluginEventResultsTrackingMeasuresIntensity(
-			final OmegaPlugin source, final List<OmegaElement> selections,
+			final OmegaPluginArchetype source, final List<OmegaElement> selections,
 			final OmegaElement element, final List<OmegaParameter> params,
 			final Map<OmegaTrajectory, List<OmegaSegment>> segments,
 			final Map<OmegaSegment, Double[]> peakSignalsMap,

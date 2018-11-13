@@ -41,14 +41,14 @@ import javax.swing.RootPaneContainer;
 
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.gui.interfaces.GenericPluginPanelInterface;
-import edu.umassmed.omega.commons.plugins.OmegaPlugin;
+import edu.umassmed.omega.commons.pluginArchetypes.OmegaPluginArchetype;
 
 public abstract class GenericPluginPanel extends GenericPanel implements
         GenericPluginPanelInterface {
 
 	private static final long serialVersionUID = -8723953179147120178L;
 
-	private final OmegaPlugin plugin;
+	private final OmegaPluginArchetype plugin;
 
 	private final int index;
 	private boolean isAttached;
@@ -62,7 +62,7 @@ public abstract class GenericPluginPanel extends GenericPanel implements
 	}
 
 	public GenericPluginPanel(final RootPaneContainer parent,
-	        final OmegaPlugin plugin, final int index) {
+	        final OmegaPluginArchetype plugin, final int index) {
 		super(parent);
 		this.plugin = plugin;
 		this.index = index;
@@ -163,7 +163,7 @@ public abstract class GenericPluginPanel extends GenericPanel implements
 		}
 	}
 
-	public OmegaPlugin getPlugin() {
+	public OmegaPluginArchetype getPlugin() {
 		return this.plugin;
 	}
 }
