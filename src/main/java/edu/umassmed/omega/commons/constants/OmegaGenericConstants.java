@@ -57,11 +57,6 @@ public class OmegaGenericConstants {
 			+ "src" + File.separator + "main" + File.separator + "resources"
 			+ File.separator + "images";
 	public final static String OMEGA_IMGS_FOLDER = "images";
-	public final static String OMEGA_SPT_FOLDER_2 = "." + File.separator
-			+ "src" + File.separator + "main" + File.separator + "resources"
-			+ File.separator + "sptWinPlugin";
-	public final static String OMEGA_SPT_FOLDER = "sptWinPlugin";
-	public final static String OMEGA_SPT_DLL = "omega-spt-stats";
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER_2 = "."
 			+ File.separator + "src" + File.separator + "main" + File.separator
 			+ "resources" + File.separator + "errorInterpolation";
