@@ -34,24 +34,24 @@ import javax.swing.UIDefaults;
 import edu.umassmed.omega.commons.data.coreElements.OmegaExperimenter;
 
 public class OmegaGenericConstants {
-	
+
 	public final static OmegaExperimenter OMEGA_DEFAULT_EXPERIMENTER = new OmegaExperimenter(
 			"Default", "Experimenter");
-	
+
 	// BUILD AND INFO
 	public final static String OMEGA_TITLE = "OMEGA pre beta release";
-	public final static String OMEGA_BUILD = "build 0.39";
+	public final static String OMEGA_BUILD = "build 0.46";
 	public final static String OMEGA_WEBSITE = "http://omega.umassmed.edu/";
 	public final static String OMEGA_AUTHOR = "UMass Medical School";
 	public final static String OMEGA_DESCRIPTION = "<html>Open Microscopy Environment inteGrated Analysis</html>";
-	
+
 	public static String PREF_GRAPH_LINE_SIZE = "Graphics Line Size";
 	public static Integer PREF_GRAPH_LINE_SIZE_VAL = 2;
 	public static String PREF_GRAPH_SHAPE_SIZE = "Graphics Shape Size";
 	public static Integer PREF_GRAPH_SHAPE_SIZE_VAL = 2;
 	public static String PREF_TRACK_LINE_SIZE = "Trajectory Line Size";
 	public static Integer PREF_TRACK_LINE_SIZE_VAL = 2;
-	
+
 	// PATHS AND FILENAMES
 	public final static String OMEGA_IMGS_FOLDER_2 = "." + File.separator
 			+ "src" + File.separator + "main" + File.separator + "resources"
@@ -60,7 +60,7 @@ public class OmegaGenericConstants {
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER_2 = "."
 			+ File.separator + "src" + File.separator + "main" + File.separator
 			+ "resources" + File.separator + "errorInterpolation";
-	
+
 	public final static String OMEGA_ERROR_INTERPOLATION_FOLDER = "errorInterpolation";
 	public final static String OMEGA_ERROR_INTERPOLATION_DATA = "2018-05-10";
 	public final static String OMEGA_ERROR_INTERPOLATION_D_FILE = "D_interpolation_data_old.csv";
@@ -71,27 +71,27 @@ public class OmegaGenericConstants {
 	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L3 = "SMSS_interpolation_data_L3.csv";
 	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L5 = "SMSS_interpolation_data_L5.csv";
 	public final static String OMEGA_ERROR_INTERPOLATION_SMSS_FILE_L10 = "SMSS_interpolation_data_L10.csv";
-	
+
 	// LOGS
 	public final static String LOG_TRAIN_CALLED = "DLL train method called";
 	public final static String LOG_SEGMENT_CALLED = "DLL segment method called";
 	public final static String LOG_SET_INI_FAILED = "Cannot set the INI file";
-	
+
 	// DATE FORMATTING
 	public final static String OMEGA_DATE_FORMAT = "yyyy-MM-dd_hh-mm-ss";
 	public final static String OMEGA_DATE_FORMAT_LBL = "yyyy";
-	
+
 	// COLORS
 	public final static Color getDefaultSelectionBackgroundColor() {
 		final UIDefaults defaults = javax.swing.UIManager.getDefaults();
 		return defaults.getColor("List.selectionBackground");
 	}
-
+	
 	public final static Color getDefaultSelectionForegroundColor() {
 		final UIDefaults defaults = javax.swing.UIManager.getDefaults();
 		return defaults.getColor("List.selectionForeground");
 	}
-	
+
 	public static Color getDefaultBackgroundColor() {
 		final UIDefaults defaults = javax.swing.UIManager.getDefaults();
 		return defaults.getColor("List.background");
