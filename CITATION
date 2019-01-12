@@ -14,8 +14,8 @@ title: OmegaCommons
 version: v0.01.0-beta
 doi: https://zenodo.org/badge/latestdoi/157611858
 date-released: 2019-01-11
-repository: https://github.com/OmegaProject/Omega
-description: The OMEGA Commons API was designed to facilitate the extraction of OMEGA libraries for custom plugin development. In addition to general utility methods, it includes Java classes used as building blocks for the construction of individual plugins, interfaces necessary to mediate the communication between plugins and the core, and the system used for event-driven communication. Commons API also contains all foundational libraries necessary for trajectory analysis in OMEGA. In addition, Commons API contains data structures that are designed to store image data and metadata as well as the results produced at run time by the OMEGA application.
+repository: https://github.com/OmegaProject/OmegaCommons
+description: The OmegaCommons Application Programming Interface (API) facilitates the extraction of OMEGA libraries for custom plugin development. In addition to general utility methods, it includes Java classes used as building blocks for the construction of individual plugins, interfaces necessary to mediate the communication between plugins and the core, and the system used for event-driven communication. Commons API also contains all foundational libraries necessary for trajectory analysis in OMEGA. In addition, Commons API contains data structures that are designed to store image data and metadata as well as the results produced at run time by the OMEGA application.
 keywords:
   - java
   - particle-tracking
