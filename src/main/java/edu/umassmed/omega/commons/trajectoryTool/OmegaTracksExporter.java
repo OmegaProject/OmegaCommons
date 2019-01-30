@@ -766,8 +766,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		File f1 = null, f2 = null, f3 = null;
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -776,55 +775,47 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		String[] parents = null;
 		if ((path != null) && !path.isEmpty()) {
-			String sep = "\\"; // Added beginning escape
-			sep += String.valueOf(File.separatorChar);
+			// String sep = "\\"; // Added beginning escape
+			final String sep = String.valueOf(File.separator);
 			parents = path.split(sep);
 		}
 
 		if (multifile) {
-			f1 = new File(targetDir.getPath() + File.separatorChar + filename
+			f1 = new File(targetDir.getPath() + File.separator + filename
 					+ "_metadata." + extension);
 		} else {
 			if (analysisRun instanceof OmegaTrackingMeasuresDiffusivityRun) {
-				f1 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_DM_DDT + "."
+				f1 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_DM_DDT + "."
 						+ extension);
-				f2 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_DM_MSS + "."
+				f2 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_DM_MSS + "."
 						+ extension);
-				f3 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_DM_PS + "."
+				f3 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_DM_PS + "."
 						+ extension);
 			} else if (analysisRun instanceof OmegaSNRRun) {
-				f1 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_IMAGE + "."
-						+ extension);
-				f2 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_PLANE + "."
-						+ extension);
-				f3 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_ROI + "."
+				f1 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_SNR_IMAGE
+						+ "." + extension);
+				f2 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_SNR_PLANE
+						+ "." + extension);
+				f3 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_SNR_ROI + "."
 						+ extension);
 			} else if ((analysisRun instanceof OmegaTrackingMeasuresIntensityRun)
 					|| (analysisRun instanceof OmegaTrackingMeasuresVelocityRun)
 					|| (analysisRun instanceof OmegaTrackingMeasuresMobilityRun)) {
-				f1 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_GLOBAL + "."
+				f1 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_GLOBAL + "."
 						+ extension);
-				f2 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_"
-						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
+				f2 = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
 			} else {
-				f1 = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "." + extension);
+				f1 = new File(targetDir.getPath() + File.separator + filename
+						+ "." + extension);
 			}
 		}
 		if (!f1.exists()) {
@@ -1202,8 +1193,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -1263,9 +1253,9 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		final Map<OmegaROI, Integer> localArea = snrRun
 				.getResultingLocalParticleArea();
 		
-		final File globalFile = new File(targetDir.getPath()
-				+ File.separatorChar + filename + "_"
-				+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_IMAGE + "." + extension);
+		final File globalFile = new File(targetDir.getPath() + File.separator
+				+ filename + "_" + OmegaGUIConstants.INFO_FILE_TYPE_SNR_IMAGE
+				+ "." + extension);
 		if (!globalFile.exists()) {
 			globalFile.createNewFile();
 		}
@@ -1435,29 +1425,29 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				counter++;
 				File localFile1, localFile2;
 				if (multifile) {
-					localFile1 = new File(targetDir.getPath()
-							+ File.separatorChar + filename + "_Frame_" + index
-							+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_SNR_PLANE
-							+ "." + extension);
+					localFile1 = new File(targetDir.getPath() + File.separator
+							+ filename + "_Frame_" + index + "_"
+							+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_PLANE + "."
+							+ extension);
 					if (localFile1.exists())
 						throw new IllegalArgumentException("The file "
 								+ localFile1.getName() + " already exists in "
 								+ targetDir);
-					localFile2 = new File(targetDir.getPath()
-							+ File.separatorChar + filename + "_Frame_" + index
-							+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_SNR_ROI
-							+ "." + extension);
+					localFile2 = new File(targetDir.getPath() + File.separator
+							+ filename + "_Frame_" + index + "_"
+							+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_ROI + "."
+							+ extension);
 					if (localFile2.exists())
 						throw new IllegalArgumentException("The file "
 								+ localFile2.getName() + " already exists in "
 								+ targetDir);
 				} else {
-					localFile1 = new File(targetDir.getPath()
-							+ File.separatorChar + filename + "_"
+					localFile1 = new File(targetDir.getPath() + File.separator
+							+ filename + "_"
 							+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_PLANE + "."
 							+ extension);
-					localFile2 = new File(targetDir.getPath()
-							+ File.separatorChar + filename + "_"
+					localFile2 = new File(targetDir.getPath() + File.separator
+							+ filename + "_"
 							+ OmegaGUIConstants.INFO_FILE_TYPE_SNR_ROI + "."
 							+ extension);
 				}
@@ -1615,8 +1605,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -1628,14 +1617,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			final File localIntervalFile, localFile, globalFile;
 			if (multifile) {
 				localIntervalFile = new File(targetDir.getPath()
-						+ File.separatorChar + filename + "_" + track.getName()
+						+ File.separator + filename + "_" + track.getName()
 						+ "_" + OmegaGUIConstants.INFO_FILE_TYPE_DM_DDT + "."
 						+ extension);
 				if (localIntervalFile.exists())
 					throw new IllegalArgumentException("The file "
 							+ localIntervalFile.getName()
 							+ " already exists in " + targetDir);
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_" + track.getName() + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_DM_MSS + "."
 						+ extension);
@@ -1645,15 +1634,15 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ targetDir);
 			} else {
 				localIntervalFile = new File(targetDir.getPath()
-						+ File.separatorChar + filename + "_"
+						+ File.separator + filename + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_DM_DDT + "."
 						+ extension);
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_DM_MSS + "."
 						+ extension);
 			}
-			globalFile = new File(targetDir.getPath() + File.separatorChar
+			globalFile = new File(targetDir.getPath() + File.separator
 					+ filename + "_" + OmegaGUIConstants.INFO_FILE_TYPE_DM_PS
 					+ "." + extension);
 			if (!localFile.exists()) {
@@ -2049,8 +2038,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -2065,7 +2053,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			final File localFile, globalFile;
 			OmegaStringUtilities.getMultiDigitsCounter(counter, maxDigits);
 			if (multifile) {
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_" + track.getName() + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
@@ -2074,12 +2062,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ localFile.getName() + " already exists in "
 							+ targetDir);
 			} else {
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
 			}
-			globalFile = new File(targetDir.getPath() + File.separatorChar
+			globalFile = new File(targetDir.getPath() + File.separator
 					+ filename + "_" + OmegaGUIConstants.INFO_FILE_TYPE_GLOBAL
 					+ "." + extension);
 			if (!localFile.exists()) {
@@ -2293,8 +2281,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -2325,7 +2312,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			final File localFile, globalFile;
 			OmegaStringUtilities.getMultiDigitsCounter(counter, maxDigits);
 			if (multifile) {
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_" + track.getName() + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
@@ -2334,12 +2321,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ localFile.getName() + " already exists in "
 							+ targetDir);
 			} else {
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
 			}
-			globalFile = new File(targetDir.getPath() + File.separatorChar
+			globalFile = new File(targetDir.getPath() + File.separator
 					+ filename + "_" + OmegaGUIConstants.INFO_FILE_TYPE_GLOBAL
 					+ "." + extension);
 			if (!localFile.exists()) {
@@ -2594,8 +2581,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -2633,7 +2619,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		for (final OmegaTrajectory track : segments.keySet()) {
 			final File localFile, globalFile;
 			if (multifile) {
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_" + track.getName() + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
@@ -2642,12 +2628,12 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							+ localFile.getName() + " already exists in "
 							+ targetDir);
 			} else {
-				localFile = new File(targetDir.getPath() + File.separatorChar
+				localFile = new File(targetDir.getPath() + File.separator
 						+ filename + "_"
 						+ OmegaGUIConstants.INFO_FILE_TYPE_LOCAL + "."
 						+ extension);
 			}
-			globalFile = new File(targetDir.getPath() + File.separatorChar
+			globalFile = new File(targetDir.getPath() + File.separator
 					+ filename + "_" + OmegaGUIConstants.INFO_FILE_TYPE_GLOBAL
 					+ "." + extension);
 			if (!localFile.exists()) {
@@ -2952,8 +2938,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -2971,14 +2956,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			
 			final File f;
 			if (multifile) {
-				f = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_" + track.getName() + "." + extension);
+				f = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + track.getName() + "." + extension);
 				if (f.exists())
 					throw new IllegalArgumentException("The file "
 							+ f.getName() + " already exists in " + targetDir);
 			} else {
-				f = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "." + extension);
+				f = new File(targetDir.getPath() + File.separator + filename
+						+ "." + extension);
 			}
 			if (!f.exists()) {
 				f.createNewFile();
@@ -3098,8 +3083,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -3110,14 +3094,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		for (final OmegaTrajectory track : tracks) {
 			final File f;
 			if (multifile) {
-				f = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "_" + track.getName() + "." + extension);
+				f = new File(targetDir.getPath() + File.separator + filename
+						+ "_" + track.getName() + "." + extension);
 				if (f.exists())
 					throw new IllegalArgumentException("The file "
 							+ f.getName() + " already exists in " + targetDir);
 			} else {
-				f = new File(targetDir.getPath() + File.separatorChar
-						+ filename + "." + extension);
+				f = new File(targetDir.getPath() + File.separator + filename
+						+ "." + extension);
 			}
 			if (!f.exists()) {
 				f.createNewFile();
@@ -3203,8 +3187,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		
 		File targetDir = null;
 		if (createSubFolders) {
-			targetDir = new File(sourceFolder.getPath() + File.separatorChar
-					+ path);
+			targetDir = new File(sourceFolder.getPath() + File.separator + path);
 			if (!targetDir.exists()) {
 				targetDir.mkdirs();
 			}
@@ -3225,13 +3208,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 				}
 				final File f;
 				if (multifile) {
-					f = new File(targetDir.getPath() + File.separatorChar
+					f = new File(targetDir.getPath() + File.separator
 							+ filename + "_Frame_" + index + "." + extension);
 					if (f.exists()) {
 						append = false;
 					}
 				} else {
-					f = new File(targetDir.getPath() + File.separatorChar
+					f = new File(targetDir.getPath() + File.separator
 							+ filename + "." + extension);
 				}
 				if (!f.exists()) {
