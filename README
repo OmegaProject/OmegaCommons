@@ -1,18 +1,13 @@
-Open Microscopy Environment inteGrated Analysis (OMEGA)
-=====
-SUMMARY -->
-
-
 OmegaCommons API
 ================
 
 OmegaCommons facilitates the extraction of OMEGA libraries for custom plugin development.
 For this purpose it contains the following :
-1)	Java classes used as building blocks for the construction of individual plugins. 
-2)	Java interfaces necessary to mediate the communication between plugins and the core.
-3)	Components used for event-driven communication. 
-4)	All foundational libraries necessary for trajectory analysis in OMEGA: Such libraries are composed of math-oriented static Java classes, are sub-divided in five categories based on the tracking measure they are responsible for (i.e. Intensity, Mobility, Velocity, Diffusivity and Diffusivity Measures Uncertainty Estimation), and are specifically designed to facilitate the generation of stand-alone Tracking Measures tools. 
-5)	Generic GUI elements, as well as common constants and exceptions were included here to facilitate the application accessibility by third-party plugins.
+	1)	Java classes used as building blocks for the construction of individual plugins. 
+	2)	Java interfaces necessary to mediate the communication between plugins and the core.
+	3)	Components used for event-driven communication. 
+	4)	All foundational libraries necessary for trajectory analysis in OMEGA: Such libraries are composed of math-oriented static Java 		classes, are sub-divided in five categories based on the tracking measure they are responsible for (i.e. Intensity, Mobility, Velocity, Diffusivity and Diffusivity Measures Uncertainty Estimation), and are specifically designed to facilitate the generation of stand-alone Tracking Measures tools. 
+	5)	Generic GUI elements, as well as common constants and exceptions were included here to facilitate the application accessibility by third-party plugins.
 
 In addition, Commons API contains three categories of data structures that are designed to store image data and metadata as well as the results produced at run time by the OMEGA application: 
 1)	The first group includes structures designed to contain data and metadata originating from OME-XML specific elements, such as Project, Dataset, Image, Experimenter and Experimenter Group. 
