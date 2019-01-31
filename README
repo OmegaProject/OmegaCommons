@@ -1,4 +1,7 @@
-OmegaCommons facilitates the extraction of OMEGA libraries for custom plugin development. For this purpose it contains the following :
+OmegaCommons API
+================
+OmegaCommons facilitates the extraction of OMEGA libraries for custom plugin development.
+For this purpose it contains the following :
 1)	Java classes used as building blocks for the construction of individual plugins. 
 2)	Java interfaces necessary to mediate the communication between plugins and the core.
 3)	Components used for event-driven communication. 
