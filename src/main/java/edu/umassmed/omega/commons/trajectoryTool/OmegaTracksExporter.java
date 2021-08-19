@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.RootPaneContainer;
 
@@ -16,6 +17,7 @@ import edu.umassmed.omega.commons.constants.OmegaAlgorithmParameterConstants;
 import edu.umassmed.omega.commons.constants.OmegaGUIConstants;
 import edu.umassmed.omega.commons.constants.OmegaGenericConstants;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRun;
+import edu.umassmed.omega.commons.data.analysisRunElements.OmegaAnalysisRunContainerInterface;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParameter;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleDetectionRun;
 import edu.umassmed.omega.commons.data.analysisRunElements.OmegaParticleLinkingRun;
@@ -42,7 +44,7 @@ import edu.umassmed.omega.commons.utilities.OmegaTrajectoryUtilities;
 
 public class OmegaTracksExporter extends OmegaIOUtility {
 
-	private Map<Integer, OmegaImage> images;
+	private Map<Integer, OmegaAnalysisRunContainerInterface> images;
 	private Map<Integer, Map<Integer, OmegaParticleDetectionRun>> detRuns;
 	private Map<Integer, Map<Integer, OmegaParticleLinkingRun>> linkRuns;
 	private Map<Integer, Map<Integer, OmegaTrajectoriesRelinkingRun>> relinkRuns;
@@ -107,7 +109,11 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		String prefix = "";
 		if ((this.images != null) && (this.images.size() == 1)) {
-			prefix = this.images.get(0).getName();
+			if (this.images.get(0) instanceof OmegaImage) {
+				prefix = ((OmegaImage) this.images.get(0)).getName();
+			} else {
+				prefix = "OrphanedAnalysis";
+			}
 			this.dialog.setPrefix(prefix);
 		}
 		
@@ -209,8 +215,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						String filename = null;
 						final String path = this.runPaths.get(diffRun);
 						if (addImageName && !this.exportLastOnly) {
-							filename = this.images.get(imageIndex).getName()
-									+ "_" + diffRun.getName();
+							String prefix = null;
+							if (this.images.get(imageIndex) instanceof OmegaImage) {
+								prefix = ((OmegaImage) this.images
+										.get(imageIndex)).getName();
+							} else {
+								prefix = "OrphanedAnalysis";
+							}
+							filename = prefix + "_" + diffRun.getName();
 						} else if (!this.exportLastOnly) {
 							filename = diffRun.getName();
 						}/**
@@ -285,9 +297,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 									final String path = this.runPaths
 											.get(mobiRun);
 									if (addImageName && !this.exportLastOnly) {
-										filename = this.images.get(imageIndex)
-												.getName()
-												+ "_"
+										String prefix = null;
+										if (this.images.get(imageIndex) instanceof OmegaImage) {
+											prefix = ((OmegaImage) this.images
+													.get(imageIndex)).getName();
+										} else {
+											prefix = "OrphanedAnalysis";
+										}
+										filename = prefix + "_"
 												+ mobiRun.getName();
 									} else if (!this.exportLastOnly) {
 										filename = mobiRun.getName();
@@ -371,9 +388,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 									final String path = this.runPaths
 											.get(veloRun);
 									if (addImageName && !this.exportLastOnly) {
-										filename = this.images.get(imageIndex)
-												.getName()
-												+ "_"
+										String prefix = null;
+										if (this.images.get(imageIndex) instanceof OmegaImage) {
+											prefix = ((OmegaImage) this.images
+													.get(imageIndex)).getName();
+										} else {
+											prefix = "OrphanedAnalysis";
+										}
+										filename = prefix + "_"
 												+ veloRun.getName();
 									} else if (!this.exportLastOnly) {
 										filename = veloRun.getName();
@@ -457,9 +479,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 									final String path = this.runPaths
 											.get(inteRun);
 									if (addImageName && !this.exportLastOnly) {
-										filename = this.images.get(imageIndex)
-												.getName()
-												+ "_"
+										String prefix = null;
+										if (this.images.get(imageIndex) instanceof OmegaImage) {
+											prefix = ((OmegaImage) this.images
+													.get(imageIndex)).getName();
+										} else {
+											prefix = "OrphanedAnalysis";
+										}
+										filename = prefix + "_"
 												+ inteRun.getName();
 									} else if (!this.exportLastOnly) {
 										filename = inteRun.getName();
@@ -533,10 +560,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 								String filename = null;
 								final String path = this.runPaths.get(segmRun);
 								if (addImageName && !this.exportLastOnly) {
-									filename = this.images.get(imageIndex)
-											.getName()
-											+ "_"
-											+ segmRun.getName();
+									String prefix = null;
+									if (this.images.get(imageIndex) instanceof OmegaImage) {
+										prefix = ((OmegaImage) this.images
+												.get(imageIndex)).getName();
+									} else {
+										prefix = "OrphanedAnalysis";
+									}
+									filename = prefix + "_" + segmRun.getName();
 								} else if (!this.exportLastOnly) {
 									filename = segmRun.getName();
 								}/**
@@ -596,8 +627,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 							String filename = null;
 							final String path = this.runPaths.get(relinkRun);
 							if (addImageName && !this.exportLastOnly) {
-								filename = this.images.get(imageIndex)
-										.getName() + "_" + relinkRun.getName();
+								String prefix = null;
+								if (this.images.get(imageIndex) instanceof OmegaImage) {
+									prefix = ((OmegaImage) this.images
+											.get(imageIndex)).getName();
+								} else {
+									prefix = "OrphanedAnalysis";
+								}
+								filename = prefix + "_" + relinkRun.getName();
 							} else if (!this.exportLastOnly) {
 								filename = relinkRun.getName();
 							}/**
@@ -647,8 +684,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						String filename = null;
 						final String path = this.runPaths.get(linkRun);
 						if (addImageName && !this.exportLastOnly) {
-							filename = this.images.get(imageIndex).getName()
-									+ "_" + linkRun.getName();
+							String prefix = null;
+							if (this.images.get(imageIndex) instanceof OmegaImage) {
+								prefix = ((OmegaImage) this.images
+										.get(imageIndex)).getName();
+							} else {
+								prefix = "OrphanedAnalysis";
+							}
+							filename = prefix + "_" + linkRun.getName();
 						} else if (!this.exportLastOnly) {
 							filename = linkRun.getName();
 						}/**
@@ -675,7 +718,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		}
 		if (this.snrRuns != null) {
 			for (final Integer imageIndex : this.images.keySet()) {
-				final OmegaImage image = this.images.get(imageIndex);
+				OmegaImage image = null;
+				if (this.images.get(imageIndex) instanceof OmegaImage) {
+					image = (OmegaImage) this.images.get(imageIndex);
+				}
 				final Map<Integer, OmegaSNRRun> runs = this.snrRuns
 						.get(imageIndex);
 				final Map<Integer, OmegaParticleDetectionRun> runs2 = this.detRuns
@@ -695,8 +741,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 						String filename = null;
 						final String path = this.runPaths.get(snrRun);
 						if (addImageName && !this.exportLastOnly) {
-							filename = this.images.get(imageIndex).getName()
-									+ "_" + snrRun.getName();
+							String prefix = null;
+							if (this.images.get(imageIndex) instanceof OmegaImage) {
+								prefix = ((OmegaImage) this.images
+										.get(imageIndex)).getName();
+							} else {
+								prefix = "OrphanedAnalysis";
+							}
+							filename = prefix + "_" + snrRun.getName();
 						} else if (!this.exportLastOnly) {
 							filename = snrRun.getName();
 						}/**
@@ -730,8 +782,14 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 					String filename = null;
 					final String path = this.runPaths.get(detRun);
 					if (addImageName && !this.exportLastOnly) {
-						filename = this.images.get(imageIndex).getName() + "_"
-								+ detRun.getName();
+						String prefix = null;
+						if (this.images.get(imageIndex) instanceof OmegaImage) {
+							prefix = ((OmegaImage) this.images.get(imageIndex))
+									.getName();
+						} else {
+							prefix = "OrphanedAnalysis";
+						}
+						filename = prefix + "_" + detRun.getName();
 					} else if (!this.exportLastOnly) {
 						filename = detRun.getName();
 					}/**
@@ -776,10 +834,10 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		String[] parents = null;
 		if ((path != null) && !path.isEmpty()) {
 			// String sep = "\\"; // Added beginning escape
-			final String sep = String.valueOf(File.separator);
-			parents = path.split(sep);
+			final String pattern = Pattern.quote(File.separator);
+			parents = path.split(pattern);
 		}
-
+		
 		if (multifile) {
 			f1 = new File(targetDir.getPath() + File.separator + filename
 					+ "_metadata." + extension);
@@ -943,13 +1001,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		released = released.replace("_", " ");
 		tmpBuf.append(released);
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_REF);
 		tmpBuf.append(newDataSep);
 		tmpBuf.append(runDef.getAlgorithmInfo().getReference());
 		tmpBuf.append(newline);
-
+		
 		tmpBuf.append(newCommentIdent);
 		tmpBuf.append(OmegaGUIConstants.INFO_ALGO_DESC);
 		tmpBuf.append(newDataSep);
@@ -1038,8 +1096,13 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 			buf.append(newDataSep);
 			final Double ODC = ((OmegaTrackingMeasuresDiffusivityRun) analysisRun)
 					.getMinimumDetectableODC();
-			buf.append(String.valueOf(ODC));
-			buf.append(newline);
+			if (ODC != null) {
+				buf.append(String.valueOf(ODC));
+				buf.append(newline);
+			} else {
+				buf.append(OmegaGUIConstants.NOT_ASSIGNED);
+				buf.append(newline);
+			}
 		} else if (analysisRun instanceof OmegaTrackingMeasuresIntensityRun) {
 
 		} else if (analysisRun instanceof OmegaTrackingMeasuresMobilityRun) {
@@ -1360,7 +1423,7 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		bw3.write(headerBuf3.toString());
 		
 		String imageID;
-		if (image.getElementID() == -1) {
+		if ((image == null) || (image.getElementID() == -1)) {
 			imageID = OmegaGUIConstants.NOT_ASSIGNED;
 		} else {
 			imageID = String.valueOf(image.getElementID());
@@ -3316,7 +3379,8 @@ public class OmegaTracksExporter extends OmegaIOUtility {
 		bw.write(buf.toString());
 	}
 
-	public void setImages(final Map<Integer, OmegaImage> images) {
+	public void setImages(
+			final Map<Integer, OmegaAnalysisRunContainerInterface> images) {
 		this.images = images;
 	}
 
