@@ -32,6 +32,8 @@ public abstract class OmegaGateway {
 	
 	public abstract OmegaServerInformation getGatewayServerInfo();
 	
+	public abstract String getGatewaySessionID();
+	
 	public abstract boolean isConnected();
 	
 	public abstract void setConnected(boolean isConnected);
